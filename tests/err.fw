@@ -1,0 +1,46 @@
+// ok so what do we want from errors
+// (unspecified-call-err <val> <arg>)
+(: unspecified-call-err (ErrType (Struct [
+    (= val ?)
+    (= arg ?)
+]) "unspecified-call-err"))
+
+(let inst (unspecified-call-err 5 6) (Test
+    (== unspecified-call-err (typeof inst))
+    (== 5 (get inst val))
+    (== 6 (get inst arg))
+))
+
+(Test
+    (== (Symbol "unspecified-call-err") (call to-expr unspecified-call-err))
+)
+
+(: unexpected-call-err (ErrType (Struct [
+    (= cause Str)
+    (= val ?)
+    (= arg ?)
+]) "unexpected-call-err"))
+
+(let inst (unexpected-call-err "Operator expected" 5 6) (Test
+    (== unexpected-call-err (typeof inst))
+    (== 5 (get inst val))
+    (== 6 (get inst arg))
+    (== "Operator expected" (get inst cause))
+))
+
+(Test
+    (== (Symbol "unexpected-call-err") (call to-expr unexpected-call-err))
+)
+
+(: Range (Struct [
+    (= start DInt)
+    (= end DInt)
+]))
+
+(: out-of-bounds-err (ErrType (Struct [
+    (= container ?)
+    (= index DInt)
+    (= range Range)
+]) "out-of-bounds-err"))
+
+// (out-of-bounds-err <val> <arg> <range>)

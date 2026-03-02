@@ -1,0 +1,16 @@
+//(call true (Symbol "if") 30 40)
+//(call true (Symbol "lif") (VitVal 30) (VitVal 40) (var))
+
+//(call comp-env (call SyntaxResolve.builder
+//            (expr
+//                (if true (var) 40)
+//            )
+//            comp-env
+//        ))
+
+(if true 60 40)
+
+(Test
+    (== (if true 30 40) 30)
+)
+//(call (telephonist a (if true a 40)) 44)

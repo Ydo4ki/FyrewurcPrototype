@@ -1,0 +1,6 @@
+(Module
+    (: unspecified-call-err (ErrType (Struct [
+        (= val true)
+        (= arg true)
+    ]) "unspecified-call-err"))
+)

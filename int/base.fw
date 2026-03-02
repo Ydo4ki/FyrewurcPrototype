@@ -1,0 +1,284 @@
+(: call (jval "lib.expr.ExprCallFw" "call"))
+(: var (jval "lib.expr.ExprVarFw" "var"))
+(: invoke! (jval "lib.expr.ExprInvokeFw" "invoke"))
+
+(: get (jval "lib.expr.ExprGetFw" "get"))
+
+(: ExprAccumulator (jval "lib.expr.AccumulatorsExprFw" "exprAccumulator"))
+(: ExprSender (jval "lib.expr.SenderExprFw" "exprSender"))
+(: ExprOperator (jval "lib.expr.OperatorExprFw" "exprOperator"))
+
+(: type-get (jval "lib.ValsFw" "typeGet"))
+(: typeof (ExprOperator type-get))
+(: eq (jval "lib.ValsFw" "eq"))
+
+(: expr (jval "lib.expr.ExprFw" "expr"))
+(: Symbol (typeof (expr a)))
+(: ExprList (typeof (expr [])))
+
+
+// boolean
+(: not (ExprSender (Symbol "not")))
+
+// todo: implement them independently that way that there won't be any unnecessary evaluations
+(: or (ExprAccumulator (Symbol "or")))
+(: and (ExprAccumulator (Symbol "and")))
+(: xor (ExprAccumulator (Symbol "xor"))) // it doesn't concern you
+
+(: true (call eq 0 0))
+(: false (not true))
+(: Bool (typeof true))
+
+(: + (ExprAccumulator (Symbol "+")))
+(: - (ExprAccumulator (Symbol "-")))
+(: * (ExprAccumulator (Symbol "*")))
+(: / (ExprAccumulator (Symbol "/")))
+(: % (ExprAccumulator (Symbol "%")))
+
+(: BoxType (jval "lib.BoxFw" "boxType"))
+
+(: Module (jval "lib.ModuleFw" "module"))
+
+(: DVec (jval "lib.DVecFw" "dVec"))
+(: DVecBuilder (jval "lib.DVecFw" "dVecBuilder"))
+(: dvecbf (jval "lib.DVecFw" "dvecbf"))
+
+(: SyntaxResolve (jval "lib.expr.SyntaxResolveFw" "syntaxResolve"))
+(: telephonist (jval "lib.expr.TelephonistConstructorFw" "telephonist"))
+(: VitiateTelephonist (jval "lib.VitiateTelephonistFw" "vitiateTelephonist"))
+
+(: = (jval "lib.DeclarationFw" "field"))
+
+(: ExprCallOp (jval "lib.expr.ExprCallOpFw" "exprCallOp"))
+
+(: eval             (jval "lib.VitFw" "eval"))
+(: VitVal           (jval "lib.VitFw" "vitVal"))
+(: VitVar           (jval "lib.VitFw" "vitVar"))
+(: VitCall          (jval "lib.VitFw" "vitCall"))
+(: VitInvoke        (jval "lib.VitFw" "vitInvoke"))
+(: vit-simplify     (jval "lib.VitFw" "simplify"))
+(: vit-reduce       (jval "lib.VitFw" "reduce"))
+
+(: ReadOperation (jval "lib.state.OperationFw" "readOperation"))
+(: WriteOperation (jval "lib.state.OperationFw" "writeOperation"))
+(: VitOperation (jval "lib.state.OperationFw" "vitOperation"))
+(: LocalScopeOperation (jval "lib.state.OperationFw" "localScopeOperation"))
+(: Statehole (jval "lib.state.StateHoleFw" "statehole"))
+
+(: operation (jval "lib.state.OperationFw" "operationExpr"))
+
+(: unit (jval "state.operation.Operation" "unit"))
+
+(: unspecified (jval "base.Val" "unspecified"))
+
+
+(: if (telephonist arg
+    (call
+        (get (and (call eq (typeof arg) ExprCallOp) (call eq arg.size 3)) if)
+        (call (telephonist cenv
+            (VitInvoke (VitCall
+                (VitVal eval)
+                (VitCall
+                    (call cenv (SyntaxResolve (call arg 0) cenv))
+                    (VitVal (Symbol "if"))
+                    (VitVal (call cenv (SyntaxResolve (call arg 1) cenv)))
+                    (VitVal (call cenv (SyntaxResolve (call arg 2) cenv)))
+                )
+                (VitVar)
+            ))
+        ) arg.comp-env)
+        unspecified
+    )
+))
+
+(: compile-vit (telephonist arg
+    (if (call eq (typeof arg) ExprCallOp)
+        (if (call eq arg.size 1)
+            (VitVal (call arg.comp-env (SyntaxResolve (call arg 0) arg.comp-env)))
+            "One argument expected"
+        )
+        unspecified
+//        (if (call eq arg.size 2)
+//            unspecified // nevermind.
+//            unspecified
+//        )
+    )
+))
+
+(: let (telephonist arg
+    (if (and (call eq (typeof arg) ExprCallOp) (call eq arg.size 3))
+        (call (telephonist cenv
+            (VitInvoke (call cenv (call SyntaxResolve.builder
+                (ExprList
+                    (Symbol "call")
+                    (ExprList
+                        (Symbol "telephonist")
+                        (call arg 0)
+                        (ExprList
+                            (Symbol "operation")
+                            (call arg (- arg.size 1))
+                        )
+                    )
+                    (call arg 1)
+                )
+                cenv
+            )))
+        ) arg.comp-env)
+        unspecified
+    )
+))
+
+// todo: allow multiple arguments
+(: == (telephonist arg
+    (if
+        (and (call eq (typeof arg) ExprCallOp) (call eq arg.size 2))
+        (let cenv arg.comp-env
+            (VitCall
+                (VitVal eq)
+                (call cenv (SyntaxResolve (call arg 0) cenv))
+                (call cenv (SyntaxResolve (call arg 1) cenv))
+            )
+        )
+        unspecified
+    )
+))
+(: != (telephonist arg
+    (if
+        (and (call eq (typeof arg) ExprCallOp) (call eq arg.size 2))
+        (let cenv arg.comp-env
+            (VitCall
+                (VitVal eq)
+                (call cenv (SyntaxResolve (call arg 0) cenv))
+                (call cenv (SyntaxResolve (call arg 1) cenv))
+                (VitVal (Symbol "not"))
+            )
+        )
+        unspecified
+    )
+))
+
+
+
+
+
+(: toExpr (BoxType (Symbol "to-expr")))
+(: to-expr (telephonist %0
+    (call (typeof %0) (toExpr %0))))
+
+(: do (jval "lib.expr.DoFw" "_do"))
+(: Struct (jval "lib.StructFw" "struct"))
+(: ErrType (jval "lib.ErrTypeFw" "errType"))
+(: Enum (jval "lib.EnumFw" "enumeration"))
+
+(: Purity (Enum [(Symbol "Pure") (Symbol "Dirty")]))
+(: StaticSignature (Struct [
+    (= parameters DVec) // (Array Constraint)
+    (= result true) // Constraint
+]))
+(: FnTypePayload (Struct [
+    (= signature StaticSignature)
+    (= purity Purity)
+]))
+(: FnType (telephonist arg
+    unspecified
+))
+
+// todo: constraints
+(: ? true)
+
+(Module
+    (: FnType FnType)
+    (: Purity Purity)
+    (: StaticSignature StaticSignature)
+    (: Telephonist (typeof type-get))
+
+    (: unspecified unspecified)
+    (: Call (jval "base.Call" "call_t"))
+
+    (: DInt (typeof 0))
+    (: Str (typeof ""))
+
+    (: Module Module)
+
+    (: Declared (typeof (: : :)))
+    (: : :)
+
+    (: Declaration (typeof (= : :)))
+    (: = =)
+
+    (: telephonist telephonist)
+
+    (: ExprAccumulator ExprAccumulator)
+    (: ExprSender ExprSender)
+    (: ExprOperator ExprOperator)
+    (: + +)
+    (: - -)
+    (: * *)
+    (: / /)
+    (: % %)
+    (: not not)
+    (: and and)
+    (: or or)
+    (: xor xor)
+
+    (: var var)
+    (: call call)
+    (: get get)
+    (: invoke! invoke!)
+
+    (: operation operation)
+
+    (: SyntaxResolve SyntaxResolve)
+    (: VitiateTelephonist VitiateTelephonist)
+
+    (: ExprCallOp ExprCallOp)
+
+    (: ReadOperation ReadOperation)
+    (: WriteOperation WriteOperation)
+    (: VitOperation VitOperation)
+    (: LocalScopeOperation LocalScopeOperation)
+    (: Statehole Statehole)
+    (: unit unit)
+
+    (: DVec DVec)
+    (: DVecBuilder DVecBuilder)
+    (: dvecbf dvecbf)
+
+    (: type-get type-get)
+    (: eq eq)
+    (: do do)
+    (: Struct Struct)
+    (: ErrType ErrType)
+    (: Enum Enum)
+
+    (: typeof typeof)
+
+    (: BoxType BoxType)
+
+    (: Bool Bool)
+    (: true true)
+    (: false false)
+
+    (: eval             eval)
+    (: VitVal           VitVal)
+    (: VitVar           VitVar)
+    (: VitCall          VitCall)
+    (: VitInvoke        VitInvoke)
+    (: vit-simplify     vit-simplify)
+    (: vit-reduce       vit-reduce)
+
+    (: Symbol Symbol)
+    (: ExprList ExprList)
+    (: toExpr toExpr)
+    (: expr expr)
+    (: to-expr to-expr)
+
+    (: == ==)
+    (: != !=)
+
+    (: if if)
+    (: let let)
+    (: compile-vit compile-vit)
+
+    (: ? ?)
+)

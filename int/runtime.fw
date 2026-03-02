@@ -1,0 +1,22 @@
+/*(: Arch (struct
+    (= name Str)
+    (= bit-depth DInt)
+))
+
+(: System (struct
+    (= arch Arch)
+))
+
+(struct
+    (= console Console)
+    (= system System)
+)*/
+
+//(invoke! (get rt.system.properties "user.home"))
+
+(Module
+    (: console (Module
+        (: write (telephonist arg (WriteOperation sysconsole (operation arg))))
+        (: readline (ReadOperation sysconsole))
+    ))
+)

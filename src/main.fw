@@ -1,0 +1,21 @@
+//(: let <name> <arg> <body> (call (telephonist name body) arg))
+
+(telephonist rt (operation (do
+    (invoke! (call rt.console.write "Test"))
+    (let line (invoke! rt.console.readline) (do
+        (invoke! (call rt.console.write "You just entered:"))
+        (invoke! (call rt.console.write line))
+    ))
+)))
+
+//(telephonist rt (operation DInt))
+
+//(fn [(= line Str)] !> (do
+//    (invoke! (call rt.console.write "You just entered:"))
+//    (invoke! (call rt.console.write line))
+//))
+//
+//((FnType [Str] Telephonist Purity.dirty) [(Symbol "line")] (do
+//    (invoke! (call rt.console.write "You just entered:"))
+//    (invoke! (call rt.console.write line))
+//))

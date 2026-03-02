@@ -1,0 +1,24 @@
+(Test
+    (== (call (telephonist arg arg) 1) 1)
+    (== (call (telephonist arg
+        (call (== arg 1) (Symbol "if")
+            50
+            4
+        )
+    ) 1) 50)
+)
+
+(Test
+    (== (call (telephonist x (telephonist y x)) 5 10)  5)
+    (== (call (telephonist x (telephonist y y)) 5 10) 10)
+)
+
+(Test
+    (== (call type-get (telephonist x (telephonist y x))) VitiateTelephonist)
+)
+
+//(call Symbol (Symbol "constructor"))
+//(call (typeof Symbol) (Call Symbol (Symbol "constructor")))
+//(call (typeof (typeof Symbol)) (Call (typeof Symbol) (Call Symbol (Symbol "constructor"))))
+//
+//(typeof Symbol)

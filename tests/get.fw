@@ -1,0 +1,14 @@
+(: m (Module
+    (: fn (Module
+        (: property 15)
+    ))
+))
+
+(Test
+    (== (get m fn) (Module
+        (: property 15)
+    ))
+    (== (get m fn property) 15)
+    (== m.fn (get m fn))
+    (== m.fn.property 15)
+)

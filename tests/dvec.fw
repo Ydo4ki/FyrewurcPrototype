@@ -1,0 +1,9 @@
+(Test
+    (== (call dvecbf (call (get DVec builder) 6 7 10)) [6 7 10])
+
+    (== (call [6 7 10] -1) unspecified)
+    (== (call [6 7 10] 0) 6)
+    (== (call [6 7 10] 1) 7)
+    (== (call [6 7 10] 2) 10)
+    (== (call [6 7 10] (Symbol "size")) 3)
+)

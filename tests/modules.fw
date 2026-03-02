@@ -1,0 +1,18 @@
+
+// Declared
+(Test
+    (== (Declared (Symbol "funny") 6) (: funny 6))
+)
+
+// Module & get
+(Test
+    (== (call (Module
+        (: abc 943)
+        (: valid false)
+    ) (Symbol "valid")) false)
+
+    (== (get (Module
+        (: abc 943)
+        (: valid false)
+    ) abc) 943)
+)

@@ -1,0 +1,32 @@
+(Test
+    (get false not)
+    (not false)
+)
+
+(Test
+    (get (or true true)) // just gets itself cuz why not
+    (get (or false true))
+    (get (or true false))
+    (not (or false false))
+)
+
+(Test
+    (get (and true true))
+    (not (and false true))
+    (not (and true false))
+    (not (and false false))
+)
+
+// this is actually pretty useless since you can just do !=
+// but I wanted a complete set of operations
+(Test
+    (not (xor true true))
+    (get (xor false true))
+    (get (xor true false))
+    (not (xor false false))
+)
+
+(Test
+    (call (get true if) true false)
+    (call true (Symbol "if") true false)
+)

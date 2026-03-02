@@ -1,0 +1,11 @@
+(: Pos (Struct [
+    (= x DInt) // (@ x (typeof x) = DInt)
+    (= y DInt) // (@ x (typeof x) = DInt)
+]))
+
+(Test
+    (== (get (Pos 14 17) x) 14)
+    (== (get (Pos 14 17) y) 17)
+    (== (get (Pos 14 17) shmyak-popyak) unspecified)
+)
+

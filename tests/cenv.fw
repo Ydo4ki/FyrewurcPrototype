@@ -1,0 +1,48 @@
+//comp-env
+//(expr (+ 81 4))
+////(ExprList (Symbol "+") (Symbol "81") (Symbol "4"))
+//
+//(call eval
+//    (call comp-env (call (get SyntaxResolve builder)
+//        (expr
+//            (+ 81 4)
+//        )
+//        comp-env
+//    ))
+//    unspecified
+//)
+
+// OHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+// so I didn't need to add anything
+// I just needed to figure out how my own api works
+
+
+(Test
+    (== (invoke! (call eval
+        (call comp-env (call (get SyntaxResolve builder)
+            (expr
+                (+ 81 4)
+            )
+            comp-env
+        ))
+        unspecified
+    )) 85)
+)
+
+(Test
+    (== (invoke! (call eval
+        (call comp-env (call (get SyntaxResolve builder)
+            (expr
+                (+ 81 (get (var) arg))
+            )
+            comp-env
+        ))
+        (Module
+            (: arg 4)
+        )
+    )) 85)
+)
+
+// nah still
+// we can't just allow telephonists to be spread everywhere
+// but we can't restrict them neither

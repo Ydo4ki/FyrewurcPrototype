@@ -1,0 +1,46 @@
+// and also
+// read operation actually changes the object here
+// although the object itself doesn't mutate in any way
+// but if the stream is local
+// calling ReadOperation twice should return the same value
+// I wish I could just return something with WriteOperation
+// but that would be reading ._.
+// but if we need both read and write
+// how do we guarantee that the state of the object wouldn't change between these operations
+// even on a rude practical level we would have like
+// AtomicReadAndWriteOperationSomething
+// or I mean
+// WriteAndRead
+// and it doesn't matter what we write
+// we just need to write SOMETHING
+
+//obj-stream
+//(ReadOperation obj-stream)
+(: obj1 (invoke! (ReadOperation obj-stream)))
+(: sameObj (invoke! (ReadOperation obj-stream)))
+(invoke! (WriteOperation obj1 (operation 91)))
+(Test
+    (== obj1 sameObj)
+    (== (invoke! (ReadOperation sameObj)) 91)
+)
+
+(invoke! (WriteOperation obj-stream (operation 0)))
+(: obj2 (invoke! (ReadOperation obj-stream)))
+(invoke! (ReadOperation obj2))
+(Test
+    (get (== obj1 obj2) not)
+    (== (invoke! (ReadOperation obj2)) 0)
+)
+// wait there's one little problem with this approach
+// if something can mutate only in its own context
+// and the result of Read must remain the same if there weren't any Writes
+// When the things that suppose to change by itself suppose to change
+//(invoke! (ReadOperation systime))
+//(invoke! (ReadOperation systimenano))
+//(invoke! (WriteOperation sysconsole (operation "Hello World")))
+//
+//(: scope (invoke! (LocalScopeOperation)))
+//(ReadOperation (invoke! (LocalScopeOperation)))
+//(invoke! (ReadOperation scope))
+//(invoke! (ReadOperation (invoke! (LocalScopeOperation)))) // ok I'm stupid this was never a problem since I allowed dynamic operation evaluation
+

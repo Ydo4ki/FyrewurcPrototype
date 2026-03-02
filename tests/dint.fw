@@ -1,0 +1,26 @@
+
+// DInt
+(Test
+    (== DInt (call type-get 6))
+)
+(Test
+    (== 11 (call 5 (Symbol "+") 6))
+)
+(Test
+    (== 14 (+ 5 6 3))
+)
+(Test
+    (== 14 ((ExprAccumulator (Symbol "+")) 5 6 3))
+)
+(Test
+    (== -15 ((ExprAccumulator (Symbol "-")) 20 10 25))
+)
+(Test
+    (== 20 ((ExprAccumulator (Symbol "*")) 2 5 2))
+)
+(Test
+    (== 20 ((ExprAccumulator (Symbol "/")) 800 4 10))
+)
+(Test
+    (== 1 ((ExprAccumulator (Symbol "%")) 15 2))
+)

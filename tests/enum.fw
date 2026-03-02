@@ -1,0 +1,12 @@
+(: Color (Enum [(Symbol "Red") (Symbol "Green") (Symbol "Blue")]))
+
+(Test
+    (!= Color.Red unspecified)
+    (!= Color.Green unspecified)
+    (!= Color.Blue unspecified)
+    (== Color.Pink unspecified)
+)
+
+(Test
+    (== (call to-expr Color.Red) (Symbol "Red"))
+)

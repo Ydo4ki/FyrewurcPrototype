@@ -1,0 +1,100 @@
+//test-obj
+
+//VitInvoke
+(Test
+    (== (call type-get (ReadOperation test-obj)) ReadOperation)
+    (== (call type-get (WriteOperation test-obj (VitOperation (VitVal 15) (var)))) WriteOperation)
+    (== (call type-get (VitOperation (VitVal 15) (var))) VitOperation)
+)
+
+
+
+//(VitInvoke (ReadOperation test-obj))
+//(call vit-reduce (VitInvoke (ReadOperation test-obj)) (var))
+//(: read-op (call eval (VitInvoke (ReadOperation test-obj)) (var)))
+(: read-op (ReadOperation test-obj))
+(: write-op (WriteOperation test-obj (VitOperation (VitVal 91) (var))))
+//read-op
+//(get read-op reads)
+//(get read-op writes)
+//(get write-op writes)
+//(invoke! read-op)
+(invoke! write-op)
+// this shouldn't work
+(invoke! (call (telephonist arg
+    (operation (invoke! read-op))
+) 5))
+//(invoke! (call (telephonist arg
+//    (WriteOperation test-obj (VitOperation (VitVal arg)))
+//) 5))
+(call (telephonist arg
+    (operation (invoke! (WriteOperation test-obj (VitOperation (VitVal arg) (var)))))
+) 5)
+(invoke! (call (telephonist arg
+    (operation (invoke! (WriteOperation test-obj (VitOperation (VitVal arg) (var)))))
+) 5))
+(Test
+    (== (invoke! read-op) 5)
+)
+
+//(VitOperation
+//    (VitInvoke
+//        (VitCall
+//            (VitVal
+//                (call (get WriteOperation builder) {Statehole})
+//            )
+//        (VitCall
+//            (VitVal (get VitOperation constructor))
+//            (VitCall (VitVal (get VitVal constructor)) (VitCall (VitVar) (VitVal (Symbol "arg"))))))))
+
+
+//(invoke! (call (telephonist arg
+//    // maybe we should just stick with this option for now
+//    // at least it is kind of visual
+////    (VitOperation (VitInvoke (WriteOperation test-obj arg)))
+//    (WriteOperation test-obj arg)
+//) 5))
+//(invoke (call (telephonist arg
+//    (operation (WriteOperation test-obj arg)) // ok I understand now we need a custom comp-env in order to get this working
+// which is a whole another story as I didn't even make a Module based comp env that I planned to make
+//) 5))
+//(invoke (call (telephonist arg
+//    (operation (invoke (WriteOperation test-obj arg)))
+//) 5))
+
+
+
+// so everything from that point will just be a tree
+// that is constantly reducing
+// we won't have any concrete values
+// only vit
+// and if we got lucky it would be VitVal
+// and if not
+// just pass it further
+// I don't know how sane it is
+
+//(Scope o (Statehole 14) (do
+//    (invoke (ReadOperation o))
+//    // this is never gonna work
+//))
+//
+//distant = new object(new object());
+//
+//function () {
+//    o = new object();
+//    distant.value = o;
+//} -> side effects: modifies distant
+//
+//so the moment when we modify distant
+//is the moment when the local scope of the function is already dead
+//or maybe not
+//depends on when we actually execute the rest of the code
+//
+//ok I figured something out
+//probably
+
+// ok bye
+
+
+
+

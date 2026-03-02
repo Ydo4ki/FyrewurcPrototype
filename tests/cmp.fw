@@ -1,0 +1,16 @@
+(: expr-call-op (telephonist arg (VitVal arg)))
+
+
+(Test
+    (== 5 5)
+)
+
+(Test
+    (== (typeof (expr-call-op 5 5)) ExprCallOp)
+)
+
+//(call == (expr-call-op 5 5))
+//
+//(Module
+//    (: name "Hi")
+//)

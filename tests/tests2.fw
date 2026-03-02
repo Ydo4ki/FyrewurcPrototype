@@ -1,0 +1,15 @@
+//(Declared "Vasya" 6)
+//(Declared (Symbol "funny") 6)
+//(: funny 6)
+//
+//
+//(Module
+//    (: x 5)
+//    (: y 10)
+//    (: entity-data (Module
+//        (: username "Евграф Уткин")
+//        (: bio "Люблю сверлить")
+//        (: json-moment true)
+//    ))
+//)
+//

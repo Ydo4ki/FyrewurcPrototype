@@ -1,0 +1,11 @@
+//(struct
+//    (= name Str)
+//    (= amount-of-smth DInt (@ x (> x 10)))
+//    // we wouldn't be able to do so using declareds
+//    // so yes
+//)
+
+(Test
+    (== (get (= name Str) key) (Symbol "name"))
+    (== (get (= name Str) constraint) Str)
+)
