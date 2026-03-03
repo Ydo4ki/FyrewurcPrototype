@@ -1,9 +1,6 @@
 // ok so what do we want from errors
 // (unspecified-call-err <val> <arg>)
-(: unspecified-call-err (ErrType (Struct [
-    (= val ?)
-    (= arg ?)
-]) "unspecified-call-err"))
+
 
 (let inst (unspecified-call-err 5 6) (Test
     (== unspecified-call-err (typeof inst))
@@ -15,11 +12,7 @@
     (== (Symbol "unspecified-call-err") (call to-expr unspecified-call-err))
 )
 
-(: unexpected-call-err (ErrType (Struct [
-    (= cause Str)
-    (= val ?)
-    (= arg ?)
-]) "unexpected-call-err"))
+
 
 (let inst (unexpected-call-err "Operator expected" 5 6) (Test
     (== unexpected-call-err (typeof inst))

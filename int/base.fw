@@ -1,3 +1,5 @@
+(: jincludeval (jval "lib.expr.j.JConstInclude" "constInclude"))
+
 (: call (jval "lib.expr.ExprCallFw" "call"))
 (: var (jval "lib.expr.ExprVarFw" "var"))
 (: invoke! (jval "lib.expr.ExprInvokeFw" "invoke"))
@@ -70,7 +72,6 @@
 (: unit (jval "state.operation.Operation" "unit"))
 
 (: unspecified (jval "base.Val" "unspecified"))
-
 
 (: if (telephonist arg
     (call
@@ -186,6 +187,11 @@
 // todo: constraints
 (: ? true)
 
+(: DInt (typeof 0))
+(: Str (typeof ""))
+
+(: errs (jincludeval "errs.fw"))
+
 (Module
     (: FnType FnType)
     (: Purity Purity)
@@ -195,8 +201,8 @@
     (: unspecified unspecified)
     (: Call (jval "base.Call" "call_t"))
 
-    (: DInt (typeof 0))
-    (: Str (typeof ""))
+    (: DInt DInt)
+    (: Str Str)
 
     (: Module Module)
 
@@ -281,4 +287,7 @@
     (: compile-vit compile-vit)
 
     (: ? ?)
+
+    (: unspecified-call-err errs.unspecified-call-err)
+    (: unexpected-call-err errs.unexpected-call-err)
 )

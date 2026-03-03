@@ -1,6 +1,12 @@
 (Module
     (: unspecified-call-err (ErrType (Struct [
-        (= val true)
-        (= arg true)
+        (= val ?)
+        (= arg ?)
     ]) "unspecified-call-err"))
+
+    (: unexpected-call-err (ErrType (Struct [
+        (= cause Str)
+        (= val ?)
+        (= arg ?)
+    ]) "unexpected-call-err"))
 )

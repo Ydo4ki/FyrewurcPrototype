@@ -1,22 +1,16 @@
 package org.fw.lib.comp;
 
 import org.fw.FW;
-import org.fw.base.Call;
-import org.fw.base.Context;
 import org.fw.base.Val;
 import org.fw.lib.*;
 import org.fw.lib.expr.*;
-import org.fw.lib.state.OperationFw;
+import org.fw.lib.expr.j.JValConstGetter;
 import org.fw.state.obj.ObjSystemConsole;
 import org.fw.state.obj.ObjSystemTimeMillis;
 import org.fw.state.obj.ObjSystemTimeNano;
-import org.fw.state.obj.Scope;
 import org.fw.lib.state.StateHoleFw;
-import org.fw.state.operation.Operation;
-import org.fw.vit.RtEnv;
 import org.fw.vit.Vit;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
