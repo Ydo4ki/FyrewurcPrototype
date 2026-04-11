@@ -11,6 +11,7 @@ import org.fw.lib.*;
 import org.fw.lib.comp.*;
 import org.fw.lib.expr.CompEnv;
 import org.fw.lib.state.OperationFw;
+import org.fw.lib.telephonist.VitiateTelephonistFw;
 import org.fw.state.operation.Operation;
 import org.fw.vit.RtEnv;
 import org.fw.vit.Vit;
@@ -80,7 +81,7 @@ public class Main {
                     System.exit(-1);
                 }
                 Val mainF = vit.eval(context);
-                Val resultOperation = mainF.call(runtime, context);
+                Val resultOperation = mainF.call(DVecFw.vec(runtime), context);
                 if (!OperationFw.isOperation(resultOperation.type())) {
                     System.out.println("# " + resultOperation.toExpr(context));
                 } else {

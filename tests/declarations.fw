@@ -6,6 +6,13 @@
 //)
 
 (Test
-    (== (get (= name Str) key) (Symbol "name"))
-    (== (get (= name Str) constraint) Str)
+    (== (typeof (= name (@ Str))) Declaration)
+    (== (= name Str) (= name (@ Str)))
+//    (!= (typeof (= name 0)) Declaration)
+)
+
+
+(Test
+    (== (get (= name (@ Str)) key) (Symbol "name"))
+    (== (get (= name (@ Str)) constraint) (@ Str))
 )

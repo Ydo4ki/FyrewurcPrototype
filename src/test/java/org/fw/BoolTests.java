@@ -31,8 +31,8 @@ public class BoolTests {
     }
 
     @Test
-    void orBool() {        assertEquals(BoolFw._true, b.call(symbol("or"), context).call(BoolFw._false, context));
-
+    void orBool() {
+        assertEquals(BoolFw._true, b.call(symbol("or"), context).call(BoolFw._false, context));
     }
 
     @Test

@@ -11,7 +11,7 @@ import org.fw.base.Context;
 import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.lib.expr.ExprFw;
-import org.fw.vit.RtEnv;
+import org.fw.lib.telephonist.VitiateTelephonistFw;
 import org.fw.vit.Vit;
 
 import static org.fw.FW.symbol;

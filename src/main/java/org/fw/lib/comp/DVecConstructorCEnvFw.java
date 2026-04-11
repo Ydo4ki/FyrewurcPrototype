@@ -22,7 +22,7 @@ public final class DVecConstructorCEnvFw {
             Expr expr = exprVal._unpack();
             if (expr instanceof ExprList list && list.getBracketsType().equals(BracketsTypes.square)) {
                 if (list.size() == 0)
-                    return DVecFw.dvecbf.call(DVecFw.emptyBuilder, context);
+                    return VitFw.wrap(Vit.val(DVecFw.dvecbf.call(DVecFw.emptyBuilder, context)));
 
                 Vit ctor = Vit.val(DVecFw.emptyBuilder);
                 for (int i = 0; i < list.size(); i++) {

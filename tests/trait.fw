@@ -1,0 +1,23 @@
+(: Pos (Trait [
+    (= x DInt)
+    (= y DInt)
+]))
+(Test
+    (call (get (@ Pos) check) (Module
+        (: x 943)
+        (: y 17)
+    ))
+)
+(Test
+    (call (get (@ Pos) check) (Module
+        (: x 943)
+        (: y 17)
+        (: valid true)
+    ))
+)
+(Test
+    (not (call (get (@ Pos) check) (Module
+        (: x 943)
+        (: y true)
+    )))
+)

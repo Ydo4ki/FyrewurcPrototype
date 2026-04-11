@@ -2,6 +2,7 @@ package org.fw.lib;
 
 import org.fw.FW;
 import org.fw.FwUtils;
+import org.fw.annotation.Insightful;
 import org.fw.ast.BracketsTypes;
 import org.fw.ast.Expr;
 import org.fw.ast.ExprList;
@@ -10,6 +11,7 @@ import org.fw.base.Call;
 import org.fw.base.Context;
 import org.fw.base.Type;
 import org.fw.base.Val;
+import org.fw.lib.constraint.ConstraintFw;
 import org.fw.lib.expr.CompEnv;
 import org.fw.lib.expr.ExprCallOpFw;
 import org.fw.lib.expr.ExprFw;
@@ -20,6 +22,7 @@ import java.math.BigInteger;
 import static org.fw.FW.symbol;
 
 public final class DeclarationFw {
+    @Insightful
     public static final Val field = FW.telephonist("=", (arg, context) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
@@ -36,12 +39,14 @@ public final class DeclarationFw {
             Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(value.type())) return value; // error idk
 
-            return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(name).call(VitFw.unwrap(value)));
+            return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(name)
+                    .call(Vit.call(ConstraintFw.to_constraint, VitFw.unwrap(value))));
         }
         return Val.unspecified;
     });
 
     // I hope it will be possible to make it a struct later
+    @Insightful
     public static final Type declaration = FW.telephonist("Declaration", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, DeclarationFw.declaration, context)) {
             Val instance = Call.getVal(arg, context);
@@ -72,6 +77,7 @@ public final class DeclarationFw {
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Declaration.builder", (key, context1) -> {
                 return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (value, context2) -> {
+                    if (!ConstraintFw.isConstraint(value)) return Val.unspecified;
                     return Val.of(DeclarationFw.declaration, new Declaration(key, value));
                 });
             });

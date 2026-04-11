@@ -104,7 +104,7 @@ public final class DVecFw {
         return value;
     }
 
-    public static Val vec(Val[] value) {
+    public static Val vec(Val... value) {
         return Val.of(dVec, value);
     }
 

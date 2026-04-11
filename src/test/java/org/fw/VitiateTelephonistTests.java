@@ -4,6 +4,7 @@ import org.fw.base.Call;
 import org.fw.base.Context;
 import org.fw.base.Val;
 import org.fw.lib.*;
+import org.fw.lib.telephonist.VitiateTelephonistFw;
 import org.fw.state.obj.Scope;
 import org.fw.vit.RtEnv;
 import org.fw.vit.Vit;

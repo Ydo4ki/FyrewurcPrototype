@@ -38,8 +38,13 @@ public sealed interface Val {
         return type().instanceToExpr(this, context);
     }
 
+    @Deprecated
     Val unspecified = Val.of(Val.ofTelephonist(0).asType(),
             new TelephonistType.Telephonist(() -> Symbol.of("unspecified"), (_, _) -> Val.unspecified));
+
+    static Val unspecified(Val val, Val arg) {
+        return unspecified;
+    }
 
     static Val of(Type type, Object value) {
         if (type instanceof TelephonistType && !(value instanceof TelephonistType.Telephonist))

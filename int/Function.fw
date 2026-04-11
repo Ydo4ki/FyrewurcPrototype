@@ -1,0 +1,56 @@
+(telephonist arg
+    (if (and (== (typeof arg) Call) (== (typeof (get arg val)) (get (var) this)))
+        (let unpk       (get (var) private unpacker)
+        (let payload    (call unpk (get arg val))
+        (let functionArg(get arg arg) /* how do I construct the actual rt-env */
+        (let N functionArg.size
+        (if (== (typeof functionArg) DVec)
+            (if (== N payload.params.size)
+                (let rt-env (telephonist vr
+                    (call (telephonist i
+                        // if i < N
+                        (if (== (call N (Symbol "<=>") i) 1)
+                            (if (== vr (get (call payload.params i) key))
+                                (call functionArg i)
+                                (call (get (var) this) (+ i 1)))
+                            (call payload.rt-env vr) // OHHHHHHHHHHHHHH IT WORKS
+                        )) 0)
+                ) (VitOperation payload.body rt-env))
+                (errs.unspecified-call-err (get (var) this) arg) // todo: this is not the correct 'this', we just can't reference it
+            )
+            (if
+                (and (== (typeof functionArg) ExprCallOp))
+                (let cenv functionArg.comp-env
+                    (VitInvoke
+                        (VitCall
+                            (VitVal (get arg val))
+                            (VitCall
+                                (VitVal dvecbf)
+                                (call (telephonist i
+                                    (if (== i -1)
+                                        (VitVal DVec.builder)
+                                        (VitCall
+                                            (call (get (var) this) (- i 1))
+                                            (call cenv (SyntaxResolve (call functionArg i) cenv))
+                                        )
+                                    )
+                                ) (- functionArg.size 1))
+                            )
+                        )
+                    )
+                )
+                (errs.unspecified-call-err (get (var) this) arg) // todo: this is not the correct 'this', we just can't reference it
+            )
+        )
+        ))))
+        (if (== arg (Symbol "constructor"))
+            (let ctor (get (var) private instancer)
+                (telephonist arg2
+                    (if (== (typeof arg2) FunctionPayload)
+                        (call ctor arg2)
+                        (errs.unspecified-call-err (get (var) this) arg2) // todo: this is not the correct 'this', we just can't reference it
+                    )))
+            (errs.unspecified-call-err (get (var) this) arg) // todo: this is not the correct 'this', we just can't reference it
+        )
+    )
+)

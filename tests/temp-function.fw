@@ -1,0 +1,46 @@
+(: pl (FunctionPayload [(= rt ?) (= i ?)] (compile-vit (+ (get (var) rt) (get (var) i))) (var)))
+//(: pl (FunctionPayload [] (compile-vit (+ 10 15)) (var)))
+
+(: function (call Function (Symbol "constructor") pl))
+
+(: fun2 (fn [(= rt ?) (= i ?) (= i2 ?)] !>
+//    (let v (var) (+ v.rt v.i))
+    (+ (get (var) rt) (get (var) i) (get (var) i2))
+))
+
+fun2
+
+(invoke! (call function [14 25]))
+
+//(fun2 14 25 55)
+
+//(function 0) -> (invoke! (call function [0]))
+
+//(: main (fn [] !>
+//    (invoke! (WriteOperation sysconsole (operation "Hello World")))
+//))
+
+//(main)
+
+/*
+
+I've just got an idea of replacing invoke! and all the operations with a single Vit instruction "StateSwap".
+(As state could be the only variable that actually changes over time, and all the objects would just depend on it)
+
+This is horrible
+Because I have absolutely no time to think of it enough or implement it.
+
+But this idea for now seems almost like it solves all the problems we could've had
+Like "having to describe objects completely separately from the Vals"
+So invoke! just means that it depends on the current state
+in fact current invoke does just this
+We pass the state implicitly
+The only possible issue with StateSwap is that I need to think through how we can make it so "Swapping a state" from which
+program started wouldn't take more memory than it actually need
+
+But all the objects
+They'll be just values
+
+Man this is so brilliant I hate it
+
+*/

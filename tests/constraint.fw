@@ -1,0 +1,15 @@
+(: equalsTo35 (call Constraint.builder (VitVar) (VitVal 35)))
+
+(: IsConstraint (@ Constraint))
+
+(Test
+    (call equalsTo35.check 35)
+    (not (call equalsTo35.check 36))
+)
+
+(Test
+    (call IsConstraint.check equalsTo35)
+    (call IsConstraint.check IsConstraint)
+    (call IsConstraint.check ?)
+    (not (call IsConstraint.check Constraint))
+)

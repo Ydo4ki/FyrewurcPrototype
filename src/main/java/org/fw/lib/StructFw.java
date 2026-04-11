@@ -2,6 +2,7 @@ package org.fw.lib;
 
 import org.fw.FW;
 import org.fw.FwUtils;
+import org.fw.annotation.Insightful;
 import org.fw.ast.BracketsTypes;
 import org.fw.ast.Expr;
 import org.fw.ast.ExprList;
@@ -21,6 +22,7 @@ import java.util.List;
 import static org.fw.FW.symbol;
 
 public final class StructFw {
+    @Insightful
     public static final Type struct = FW.telephonist("Struct", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.struct, context)) {
             Val instance = Call.getVal(arg, context);

@@ -28,9 +28,9 @@
 )
 
 
-(compile-vit (+ 6 7))
-(compile-vit comp-env (+ 6 7))
-(call comp-env (SyntaxResolve (expr (+ 6 7)) comp-env))
+//(compile-vit (+ 6 7))
+//(compile-vit comp-env (+ 6 7))
+//(call comp-env (SyntaxResolve (expr (+ 6 7)) comp-env))
 
 //(call vit-simplify (call comp-env (call (get SyntaxResolve builder)
 //            (expr

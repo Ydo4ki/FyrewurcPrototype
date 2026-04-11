@@ -1,7 +1,8 @@
-package org.fw.lib;
+package org.fw.lib.telephonist;
 
 import org.fw.FW;
 import org.fw.FwUtils;
+import org.fw.annotation.Insightful;
 import org.fw.ast.BracketsTypes;
 import org.fw.ast.ExprList;
 import org.fw.ast.Symbol;
@@ -9,6 +10,8 @@ import org.fw.base.Call;
 import org.fw.base.Context;
 import org.fw.base.Type;
 import org.fw.base.Val;
+import org.fw.lib.BoxFw;
+import org.fw.lib.VitFw;
 import org.fw.lib.expr.ExprFw;
 import org.fw.state.obj.Scope;
 import org.fw.vit.RtEnv;
@@ -56,6 +59,7 @@ public final class VitiateTelephonistFw {
      * }
      *
      * */
+    @Insightful
     public static final Type vitiateTelephonist = FW.telephonist("VitiateTelephonist", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, VitiateTelephonistFw.vitiateTelephonist, context)) {
             Val instance = Call.getVal(arg, context);

@@ -1,12 +1,29 @@
 //(: let <name> <arg> <body> (call (telephonist name body) arg))
 
-(telephonist rt (operation (do
-    (invoke! (call rt.console.write "Test"))
-    (let line (invoke! rt.console.readline) (do
-        (invoke! (call rt.console.write "You just entered:"))
-        (invoke! (call rt.console.write line))
-    ))
-)))
+(fn [(= rt ?)] !> (get (var) rt))
+//(fn [(= rt ?)] !> (do
+//    (invoke! (call rt.console.write "Test"))
+//    (let line (invoke! rt.console.readline) (do
+//        (invoke! (call rt.console.write "You just entered:"))
+//        (invoke! (call rt.console.write line))
+//    ))
+//))
+//(fn [(= rt ?)] !> (let rt (get (var) rt) (do
+//    (invoke! (call rt.console.write "Test"))
+//    (let line (invoke! rt.console.readline) (do
+//        (invoke! (call rt.console.write "You just entered:"))
+//        (invoke! (call rt.console.write line))
+////        (invoke! (call (get (var) this) (invoke! rt.console.readline)))
+//    ))
+//)))
+
+//(telephonist rt (operation (do
+//    (invoke! (call rt.console.write "Test"))
+//    (let line (invoke! rt.console.readline) (do
+//        (invoke! (call rt.console.write "You just entered:"))
+//        (invoke! (call rt.console.write line))
+//    ))
+//)))
 
 //(telephonist rt (operation DInt))
 

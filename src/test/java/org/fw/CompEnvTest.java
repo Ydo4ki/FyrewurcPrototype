@@ -27,7 +27,7 @@ import static org.fw.vit.Vit.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CompEnvTest {
-    private static final Context context = new Context(RtEnv.unspecified, Scope.eternal());
+    private static final Context context = new Context(RtEnv.unspecified, InternalSystemContext.context.scope());
 
     //            VitiateTelephonistFw.vitiate(
 //            FW.vIf(FW.vEq(val(ValsFw.typeGet).call(argExpr), val(ExprFw.exprList.asVal())),
@@ -163,7 +163,7 @@ class CompEnvTest {
 
         File testFolder = new File("tests");
         for (File file : Objects.requireNonNull(testFolder.listFiles())) {
-            if (!file.getName().endsWith("err.fw") || file.getName().startsWith("temp"))
+            if (!file.getName().endsWith(".fw") || file.getName().startsWith("temp"))
                 continue;
 
             System.out.println("========================================= " + file.getName() + " =========================================");

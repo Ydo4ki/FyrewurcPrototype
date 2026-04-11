@@ -34,6 +34,7 @@ public final class OperationFw {
         return Val.unspecified;
     }
 
+    @Deprecated // I know this is wrong I just don't know how to fix it and whether I really need it at all
     private static Val readAndWrite(Operation operation, Val arg, Context context) {
         if (arg.equals(symbol("reads")))
             return DVecFw.vec(operation.reads(context).stream().map(StateHoleFw::wrap).toArray(Val[]::new));
@@ -190,6 +191,7 @@ public final class OperationFw {
     });
 
     public static Val wrap(Operation operation) {
+        if (operation == null) return Val.unspecified;
         return switch (operation) {
             case ReadOperation _ -> Val.of(readOperation, operation);
             case VitOperation _ -> Val.of(vitOperation, operation);

@@ -58,7 +58,7 @@ public final class CompEnv extends AbstractValAdapted {
             }
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("CompEnv.builder", (resolver, context1) -> {
-                return FW.telephonist(() -> "(CompEnv.builder " + resolver.toExpr(context1) + ")", (parentCEnv, _) -> {
+                return FW.telephonist(() -> "(call CompEnv.builder " + resolver.toExpr(context1) + ")", (parentCEnv, _) -> {
                     return Val.of(CompEnv.compEnv, new SyntaxResolveFw.CompEnvRecord(resolver, parentCEnv));
                 });
             });

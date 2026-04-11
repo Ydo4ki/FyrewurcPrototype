@@ -20,6 +20,7 @@ public final class VitOperation implements Operation {
     private final Vit vit;
     private Set<Obj> reads;
     private Set<Obj> writes;
+    private Context lastContext = null;
 
     VitOperation(Vit vit) {
 //        if (vit instanceof VitVal val && val.val().toExpr(new Context(RtEnv.unspecified, Scope.eternal())).equals(Symbol.of("vitiate-telephonist-runtime-env")))
@@ -38,13 +39,19 @@ public final class VitOperation implements Operation {
 
     @Override
     public Set<Obj> reads(Context context) {
-        if (reads == null) this.reads = Vit.reads(vit, context);
+        if (lastContext != context || reads == null) {
+            this.reads = Vit.reads(vit, context);
+            lastContext = context;
+        }
         return reads;
     }
 
     @Override
     public Set<Obj> writes(Context context) {
-        if (writes == null) this.writes = Vit.writes(vit, context);
+        if (lastContext != context || writes == null) {
+            this.writes = Vit.writes(vit, context);
+            lastContext = context;
+        }
         return writes;
     }
 

@@ -47,7 +47,7 @@
 
 (: SyntaxResolve (jval "lib.expr.SyntaxResolveFw" "syntaxResolve"))
 (: telephonist (jval "lib.expr.TelephonistConstructorFw" "telephonist"))
-(: VitiateTelephonist (jval "lib.VitiateTelephonistFw" "vitiateTelephonist"))
+(: VitiateTelephonist (jval "lib.telephonist.VitiateTelephonistFw" "vitiateTelephonist"))
 
 (: = (jval "lib.DeclarationFw" "field"))
 
@@ -70,6 +70,9 @@
 (: operation (jval "lib.state.OperationFw" "operationExpr"))
 
 (: unit (jval "state.operation.Operation" "unit"))
+
+(: Constraint (jval "lib.constraint.ConstraintFw" "constraint"))
+(: @ (jval "lib.constraint.ConstraintFw" "at"))
 
 (: unspecified (jval "base.Val" "unspecified"))
 
@@ -168,38 +171,95 @@
 
 (: do (jval "lib.expr.DoFw" "_do"))
 (: Struct (jval "lib.StructFw" "struct"))
+(: Trait (jval "lib.TraitFw" "trait"))
 (: ErrType (jval "lib.ErrTypeFw" "errType"))
 (: Enum (jval "lib.EnumFw" "enumeration"))
 
 (: Purity (Enum [(Symbol "Pure") (Symbol "Dirty")]))
-(: StaticSignature (Struct [
-    (= parameters DVec) // (Array Constraint)
-    (= result true) // Constraint
-]))
-(: FnTypePayload (Struct [
-    (= signature StaticSignature)
-    (= purity Purity)
-]))
-(: FnType (telephonist arg
-    unspecified
-))
+//(: StaticSignature (Struct [
+//    (= parameters DVec) // (Array Constraint)
+//    (= result true) // Constraint
+//]))
+//(: FnTypePayload (Struct [
+//    (= signature StaticSignature)
+//    (= purity Purity)
+//]))
 
 // todo: constraints
-(: ? true)
+(: ? (call Constraint.builder (VitVar) (VitVar)))
+
+(: FunctionPayload (Struct [
+    (= params ?)
+    (= body ?)
+    (= rt-env ?)
+]))
+
+(: Call (jval "base.Call" "call_t"))
+
 
 (: DInt (typeof 0))
 (: Str (typeof ""))
 
-(: errs (jincludeval "errs.fw"))
+//(: errs (jincludeval "errs.fw"))
+
+// todo: as let is currently a macro it redefines (get (var) this)
+//  so you can make a recursion out of let
+//  which is not bad
+//  what is bad though is that nobody would expect a (get (var) this) to give us current let instead of current telephonist
+//  so you shall fix this somehow (probably just by making let a normal function and not a macro)
+(: Function (jincludeval "Function.fw"))
+
+(: CompEnv (jval "lib.expr.CompEnv" "compEnv"))
+
+(: fn (telephonist arg
+    (if
+        (and (== (typeof arg) ExprCallOp) (== arg.size 3) (== (call arg 1) (Symbol "!>")))
+        (let cenv arg.comp-env
+            (let bcenv (call CompEnv.builder (telephonist sr
+//                (if (== (typeof sr) SyntaxResolve)
+//                    (if (== sr.expr (Symbol "rt"))
+//                        (VitVal "memememmememe")
+//                        unspecified
+//                        unspecified
+//                    )
+                    unspecified
+//                )
+            ) cenv) (VitCall
+                    (VitVal Function)
+                    (VitVal (Symbol "constructor"))
+                    (VitCall
+                        (VitVal FunctionPayload)
+                        (VitVal (Symbol "builder"))
+                        (call cenv (SyntaxResolve (call arg 0) cenv))
+                        (VitVal (call (SyntaxResolve (call arg 2) bcenv)))
+                        (VitVar)
+                    )
+                )
+            )
+        )
+        unspecified
+    )
+))
+
+/*
+function {
+    Declareds[]
+    Vit
+}
+*/
+
 
 (Module
-    (: FnType FnType)
-    (: Purity Purity)
-    (: StaticSignature StaticSignature)
+    (: Function Function)
+    (: FunctionPayload FunctionPayload)
+    (: fn fn)
     (: Telephonist (typeof type-get))
 
+    (: Constraint Constraint)
+    (: @ @)
+
     (: unspecified unspecified)
-    (: Call (jval "base.Call" "call_t"))
+    (: Call Call)
 
     (: DInt DInt)
     (: Str Str)
@@ -209,7 +269,7 @@
     (: Declared (typeof (: : :)))
     (: : :)
 
-    (: Declaration (typeof (= : :)))
+    (: Declaration (typeof (= : ?)))
     (: = =)
 
     (: telephonist telephonist)
@@ -254,6 +314,7 @@
     (: eq eq)
     (: do do)
     (: Struct Struct)
+    (: Trait Trait)
     (: ErrType ErrType)
     (: Enum Enum)
 
@@ -288,6 +349,6 @@
 
     (: ? ?)
 
-    (: unspecified-call-err errs.unspecified-call-err)
-    (: unexpected-call-err errs.unexpected-call-err)
+//    (: unspecified-call-err errs.unspecified-call-err)
+//    (: unexpected-call-err errs.unexpected-call-err)
 )

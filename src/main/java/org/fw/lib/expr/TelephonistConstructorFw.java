@@ -1,11 +1,10 @@
 package org.fw.lib.expr;
 
 import org.fw.FW;
-import org.fw.ast.Symbol;
 import org.fw.base.Val;
 import org.fw.lib.DIntFw;
 import org.fw.lib.VitFw;
-import org.fw.lib.VitiateTelephonistFw;
+import org.fw.lib.telephonist.VitiateTelephonistFw;
 import org.fw.vit.Vit;
 
 import java.math.BigInteger;
