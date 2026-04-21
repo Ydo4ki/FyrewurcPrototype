@@ -1,0 +1,5 @@
+(Module
+    (: bit (jval "memlib.Bit" "bit"))
+    (: bit0 (jval "memlib.Bit" "bit0"))
+    (: bit1 (jval "memlib.Bit" "bit1"))
+)

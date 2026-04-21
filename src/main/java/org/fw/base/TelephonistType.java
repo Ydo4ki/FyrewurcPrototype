@@ -25,10 +25,10 @@ public final class TelephonistType implements Type {
         return val;
     }
 
-    @Override
-    public Expr instanceToExpr(Val instance, Context context) {
-        return instance._unpack(Telephonist.class).representation.get();
-    }
+//    @Override
+//    public Expr instanceToExpr(Val instance, Context context) {
+//        return instance._unpack(Telephonist.class).representation.get();
+//    }
 
     @Override
     public String toString() {

@@ -15,7 +15,7 @@ public sealed interface Type permits TelephonistType, Type.ValType {
 
     Val asVal();
 
-    Expr instanceToExpr(Val instance, Context context);
+//    Expr instanceToExpr(Val instance, Context context);
 
     record ValType(Val.Box asVal) implements Type {
         @Override
@@ -27,15 +27,15 @@ public sealed interface Type permits TelephonistType, Type.ValType {
             return ret;
         }
 
-        @Override
-        public Expr instanceToExpr(Val instance, Context context) {
-            Val e = asVal.call(Val.of(ExprFw.toExpr, instance), context);
-            // todo: constraint check
-            if (e.type().equals(ExprFw.symbol) || e.type().equals(ExprFw.exprList)) {
-                return e._unpack();
-            }
-            return ExprList.of(BracketsTypes.braces, asVal.toExpr(context));
-        }
+//        @Override
+//        public Expr instanceToExpr(Val instance, Context context) {
+//            Val e = asVal.call(Val.of(ExprFw.toExpr, instance), context);
+//            // todo: constraint check
+//            if (e.type().equals(ExprFw.symbol) || e.type().equals(ExprFw.exprList)) {
+//                return e._unpack();
+//            }
+//            return ExprList.of(BracketsTypes.braces, asVal.toExpr(context));
+//        }
 
         @Override
         public String toString() {

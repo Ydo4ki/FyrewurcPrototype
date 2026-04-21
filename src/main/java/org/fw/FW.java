@@ -17,6 +17,10 @@ public final class FW {
         return telephonistE(() -> FwUtils.parse(name), call);
     }
 
+    public static Val telephonist(TelephonistType.CallFunction call) {
+        return Val.of(Val.ofTelephonist(0).asType(), new TelephonistType.Telephonist(null, call));
+    }
+
     public static Val telephonist(Supplier<String> name, TelephonistType.CallFunction call) {
         return telephonistE(() -> FwUtils.parse(name.get()), call);
     }

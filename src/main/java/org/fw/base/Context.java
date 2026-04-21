@@ -19,4 +19,7 @@ public final class Context {
     public Scope scope() {
         return scope;
     }
+
+
+    public static final Context blank = new Context(RtEnv.unspecified, Scope.eternal());
 }

@@ -85,6 +85,14 @@ public final class ModuleFw {
         return Val.unspecified;
     }).asType();
 
+    public static Val module(Val... values) {
+        for (Val value : values) {
+            if (!value.type().equals(DeclaredFw.declared))
+                throw new IllegalArgumentException(value.toString());
+        }
+        return Val.of(ModuleFw.module, new Module(values));
+    }
+
     // todo: replace this with map idk
     private record Module(Val[] declareds) {
         public Expr toExpr(Context context) {

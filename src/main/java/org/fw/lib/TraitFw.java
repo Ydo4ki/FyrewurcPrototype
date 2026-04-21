@@ -91,6 +91,14 @@ public final class TraitFw {
         return Val.unspecified;
     }).asType();
 
+    public static Val trait(Val... fields) {
+        for (Val field : fields) {
+            if (!field.type().equals(DeclarationFw.declaration))
+                throw new IllegalArgumentException("Declaration expected");
+        }
+        return Val.of(TraitFw.trait, new Trait(fields, Context.blank));
+    }
+
     private static final class Trait {
         private final Val[] fields;
         private final Val constraint;

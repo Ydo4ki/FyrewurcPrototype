@@ -76,9 +76,9 @@ public final class DeclarationFw {
             return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(VitFw.unwrap(name)).call(VitFw.unwrap(value)));
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Declaration.builder", (key, context1) -> {
-                return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (value, context2) -> {
-                    if (!ConstraintFw.isConstraint(value)) return Val.unspecified;
-                    return Val.of(DeclarationFw.declaration, new Declaration(key, value));
+                return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint, context2) -> {
+                    if (!ConstraintFw.isConstraint(constraint)) return Val.unspecified;
+                    return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
                 });
             });
         } else if (arg.type().equals(ExprFw.toExpr)) {
@@ -98,6 +98,12 @@ public final class DeclarationFw {
 
     public static Val getConstraint(Val declaration, Context context) {
         return declaration.call(symbol("constraint"), context);
+    }
+
+    public static Val declaration(Val key, Val constraint) {
+        if (!ConstraintFw.isConstraint(constraint))
+            throw new IllegalArgumentException();
+        return Val.of(declaration, new Declaration(key, constraint));
     }
 
     private record Declaration(Val key, Val constraint) {

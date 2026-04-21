@@ -10,6 +10,7 @@ import org.fw.base.Val;
 import org.fw.lib.*;
 import org.fw.lib.comp.*;
 import org.fw.lib.expr.CompEnv;
+import org.fw.lib.expr.ToExprFn;
 import org.fw.lib.state.OperationFw;
 import org.fw.lib.telephonist.VitiateTelephonistFw;
 import org.fw.state.operation.Operation;
@@ -25,7 +26,10 @@ import static org.fw.vit.Vit.*;
 
 public class Main {
 
-    private static final Context context = new Context(RtEnv.unspecified, InternalSystemContext.context.scope());
+    public static final RtEnv rtEnv = RtEnv.of(ModuleFw.module(
+            DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExpr)
+    ));
+    private static final Context context = new Context(rtEnv, InternalSystemContext.context.scope());
 
     public static final CompEnv internalCompEnv = CompEnv.of(CompEnv.compEnv(context,
             DotGettersCEnvFw.cenv,

@@ -349,6 +349,8 @@ function {
 
     (: ? ?)
 
+    (: mem (jincludeval "memlib.fw"))
+
 //    (: unspecified-call-err errs.unspecified-call-err)
 //    (: unexpected-call-err errs.unexpected-call-err)
 )

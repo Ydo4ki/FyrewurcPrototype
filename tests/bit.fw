@@ -1,0 +1,9 @@
+(: bit mem.bit)
+(: bit0 mem.bit0)
+(: bit1 mem.bit1)
+
+bit
+bit0
+bit1
+
+//~

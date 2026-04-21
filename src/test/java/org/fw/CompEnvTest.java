@@ -27,7 +27,7 @@ import static org.fw.vit.Vit.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CompEnvTest {
-    private static final Context context = new Context(RtEnv.unspecified, InternalSystemContext.context.scope());
+    private static final Context context = new Context(Main.rtEnv, InternalSystemContext.context.scope());
 
     //            VitiateTelephonistFw.vitiate(
 //            FW.vIf(FW.vEq(val(ValsFw.typeGet).call(argExpr), val(ExprFw.exprList.asVal())),

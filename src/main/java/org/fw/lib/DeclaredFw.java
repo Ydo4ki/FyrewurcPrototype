@@ -73,7 +73,7 @@ public final class DeclaredFw {
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Declared.builder", (name, context1) -> {
                 return FW.telephonist(() -> "(call Declared.builder " + name.toExpr(context1) + ")", (value, context2) -> {
-                    return Val.of(DeclaredFw.declared, new Declared(name, value));
+                    return declared(name, value);
                 });
             });
         } else if (arg.type().equals(ExprFw.toExpr)) {
@@ -93,6 +93,11 @@ public final class DeclaredFw {
 
     public static Val getValue(Val declared, Context context) {
         return declared.call(symbol("value"), context);
+    }
+
+
+    public static Val declared(Val key, Val value) {
+        return Val.of(DeclaredFw.declared, new Declared(key, value));
     }
 
     private record Declared(Val key, Val value) {

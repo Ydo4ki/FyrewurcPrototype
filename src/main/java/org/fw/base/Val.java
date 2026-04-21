@@ -5,8 +5,11 @@ import org.fw.ast.BracketsTypes;
 import org.fw.ast.Expr;
 import org.fw.ast.ExprList;
 import org.fw.ast.Symbol;
+import org.fw.lib.expr.ExprFw;
 
 import java.util.*;
+
+import static org.fw.FW.symbol;
 
 public sealed interface Val {
     Type type();
@@ -35,7 +38,13 @@ public sealed interface Val {
                 Call.getVal(this, context).toExpr(context),
                 Call.getArg(this, context).toExpr(context)
         ); // huh
-        return type().instanceToExpr(this, context);
+        Val function = context.rtEnv().get(symbol("to-expr"), context);
+        Val result = function.call(this, context);
+        if (ExprFw.isExpr(result))
+            return result._unpack();
+
+        return ExprList.of(BracketsTypes.braces);
+//        return type().instanceToExpr(this, context);
     }
 
     @Deprecated
