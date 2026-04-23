@@ -29,15 +29,7 @@ public final class VitFw {
         case "val" -> instance._unpack(VitVal.class).val();
         default -> Val.unspecified;
     }, (arg1, context1) -> {
-        Type me = VitFw.vitVal;
-        if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(me))
-                return Val.unspecified; // wrong type
-
-            VitVal vitVal = instance._unpack();
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, me.asVal().toExpr(context1), vitVal.val().toExpr(context1)));
-        } else if (arg1.equals(symbol("constructor"))) {
+        if (arg1.equals(symbol("constructor"))) {
             return FW.telephonist(() -> "(get VitVal constructor)", (arg, _) -> {
                 return wrap(Vit.val(arg));
             });
@@ -62,15 +54,7 @@ public final class VitFw {
         case "operation" -> VitFw.wrap(instance._unpack(VitInvoke.class).operation());
         default -> Val.unspecified;
     }, (arg1, context1) -> {
-        Type me = VitFw.vitInvoke;
-        if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(me))
-                return Val.unspecified; // wrong type
-
-            VitInvoke vitInvoke = instance._unpack();
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, me.asVal().toExpr(context1), VitFw.wrap(vitInvoke.operation()).toExpr(context1)));
-        } else if (arg1.equals(symbol("constructor"))) {
+        if (arg1.equals(symbol("constructor"))) {
             return FW.telephonist(() -> "(get VitInvoke constructor)", (arg, ctx) -> {
                 if (!VitFw.isVit(arg.type()))
                     return Val.unspecified;
@@ -100,22 +84,7 @@ public final class VitFw {
 //        case "key" -> ((VitVar) instance._unpack()).key();
         default -> Val.unspecified;
     }, (arg1, context1) -> {
-        Type me = VitFw.vitVar;
-        if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(me))
-                return Val.unspecified; // wrong type
-
-
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, me.asVal().toExpr(context1)));
-//            VitVar vitVal = instance._unpack();
-//            if (vitVal.key() == null)
-//            return ExprFw.wrap(ExprList.of(BracketsTypes.round, me.asVal().toExpr(context1), vitVal.key().toExpr(context1)));
-        } /*else if (arg1.equals(symbol("constructor"))) {
-            return FW.telephonist("(get VitVar constructor)", (arg, context) -> {
-                return wrap(Vit.var(arg));
-            });
-        } */else if (arg1.equals(symbol("instance"))) {
+        if (arg1.equals(symbol("instance"))) {
             return wrap(Vit.var);
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg1.call(symbol("size"), context1);
@@ -136,19 +105,7 @@ public final class VitFw {
         case "arg" -> wrap(((VitCall) instance._unpack()).arg());
         default -> Val.unspecified;
     }, (arg1, context1) -> {
-        Type me = VitFw.vitCall;
-        if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(me))
-                return Val.unspecified; // wrong type
-
-            VitCall vitVal = instance._unpack();
-            List<Expr> elements = new ArrayList<>();
-            elements.add(me.asVal().toExpr(context1));
-            elements.addAll(vitVal.exprs(context1));
-
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
-        } else if (arg1.equals(symbol("builder"))) {
+        if (arg1.equals(symbol("builder"))) {
             return telephonist(repr, (func, context) -> {
                 if (!isVit(func.type())) {
                     return Val.unspecified;
@@ -197,7 +154,7 @@ public final class VitFw {
     public static final Val eval = telephonist("eval", (arg, context) -> {
         if (isVit(arg.type())) {
             Vit vit = arg._unpack();
-            return telephonist(() -> "(call eval " + arg.toExpr(context) + ")", (env, context1) -> {
+            return telephonist((env, context1) -> {
                 return Scope.performAndDie(context1.scope(), scope ->
                         OperationFw.wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(env), scope)))));
 //                return ;

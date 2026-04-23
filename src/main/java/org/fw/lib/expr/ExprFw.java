@@ -137,6 +137,7 @@ public final class ExprFw {
         });
     }).asType(); // bruh
 
+    @Deprecated
     public static final Type toExpr = Val.of(BoxFw.boxType, symbol("to-expr")).asType();
 
     public static Val wrap(Expr expr) {
