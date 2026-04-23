@@ -63,13 +63,14 @@ public final class OperationFw {
                 return retVit; // compile error idk
 
             return VitFw.wrap(Vit.val(OperationFw.readOperation.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
-        } else if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(OperationFw.readOperation))
-                return Val.unspecified; // wrong type
-
-            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
         }
+//        else if (arg1.type().equals(ExprFw.toExpr)) {
+//            Val instance = BoxFw.unbox(arg1);
+//            if (!instance.type().equals(OperationFw.readOperation))
+//                return Val.unspecified; // wrong type
+//
+//            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
+//        }
         return handleRAW(OperationFw.readOperation, arg1, context);
     }).asType();
 
@@ -83,13 +84,14 @@ public final class OperationFw {
             if (isize != 0) return Val.unspecified;
 
             return VitFw.wrap(Vit.val(OperationFw.localScopeOperation.asVal()).call(symbol("instance")));
-        } else if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(OperationFw.readOperation))
-                return Val.unspecified; // wrong type
-
-            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
         }
+//        else if (arg1.type().equals(ExprFw.toExpr)) {
+//            Val instance = BoxFw.unbox(arg1);
+//            if (!instance.type().equals(OperationFw.readOperation))
+//                return Val.unspecified; // wrong type
+//
+//            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
+//        }
         return handleRAW(OperationFw.localScopeOperation, arg1, context);
     }).asType();
 
@@ -123,13 +125,14 @@ public final class OperationFw {
                 return writeValue; // compile error idk
 
             return VitFw.wrap(Vit.val(OperationFw.writeOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(writeValue)));
-        } else if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(OperationFw.writeOperation))
-                return Val.unspecified; // wrong type
-
-            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
         }
+//        else if (arg1.type().equals(ExprFw.toExpr)) {
+//            Val instance = BoxFw.unbox(arg1);
+//            if (!instance.type().equals(OperationFw.writeOperation))
+//                return Val.unspecified; // wrong type
+//
+//            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
+//        }
         return handleRAW(OperationFw.writeOperation, arg1, context);
     }).asType();
 
@@ -160,13 +163,14 @@ public final class OperationFw {
                 return varVit; // compile error idk
 
             return VitFw.wrap(Vit.val(OperationFw.vitOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(varVit)));
-        } else if (arg1.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg1);
-            if (!instance.type().equals(OperationFw.vitOperation))
-                return Val.unspecified; // wrong type
-
-            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
         }
+//        else if (arg1.type().equals(ExprFw.toExpr)) {
+//            Val instance = BoxFw.unbox(arg1);
+//            if (!instance.type().equals(OperationFw.vitOperation))
+//                return Val.unspecified; // wrong type
+//
+//            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
+//        }
         return handleRAW(OperationFw.vitOperation, arg1, context);
     }).asType();
 

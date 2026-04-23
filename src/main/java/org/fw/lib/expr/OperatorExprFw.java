@@ -63,15 +63,6 @@ public final class OperatorExprFw {
             return telephonist(OperatorExprFw.exprOperator.asVal().toExpr(context) + ".constructor", (argument, _) -> {
                 return Val.of(OperatorExprFw.exprOperator, argument);
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(OperatorExprFw.exprOperator))
-                return Val.unspecified;
-
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    OperatorExprFw.exprOperator.asVal().toExpr(context),
-                    instance.call(symbol("operator"), context).toExpr(context)
-            ));
         }
         return Val.unspecified;
     })).asType();

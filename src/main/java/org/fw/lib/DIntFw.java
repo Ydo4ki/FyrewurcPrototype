@@ -43,12 +43,6 @@ public final class DIntFw {
             } else if (cArg.equals(symbol("<=>"))) {
                 return bop("<=>", instance, context, (a, b) -> BigInteger.valueOf(a.compareTo(b)));
             }
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(DIntFw.dint))
-                return Val.unspecified;
-
-            return symbol(instance._unpack().toString());
         } else if (arg.equals(symbol("parse"))) {
             return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("get"), DIntFw.dint.asVal().toExpr(context), Symbol.of("parse")), (arg1, context1) -> {
                 if (arg1.type().equals(StrFw.str)) {

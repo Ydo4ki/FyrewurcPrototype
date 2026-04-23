@@ -8,5 +8,5 @@
 )
 
 (Test
-    (== (call to-expr Color.Red) (Symbol "Red"))
+    (== (call (get (var) to-expr) Color.Red) (Symbol "Red"))
 )

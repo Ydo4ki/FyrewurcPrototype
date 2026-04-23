@@ -21,14 +21,14 @@ final class InstancerFw {
 
             Instancer ctor = instance._unpack();
             return Val.of(ctor.type(), cArg);
-        } else if (arg.type().equals(ExprFw.toExpr)) {
+        }/* else if (arg.type().equals(ExprFw.toExpr)) {
             Val instance = BoxFw.unbox(arg);
             if (!instance.type().equals(InstancerFw.instancer))
                 return Val.unspecified;
 
             Instancer ctor = instance._unpack();
             return ExprFw.wrap(ctor.toExpr(context));
-        }
+        }*/
         return Val.unspecified;
     }).asType();
 

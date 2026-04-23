@@ -95,7 +95,7 @@ public final class VitiateTelephonistFw {
             return Scope.performAndDie(parentScope, scope -> src.eval(new Context(RtEnv.of(env), scope)));
         } else if (arg.equals(symbol("builder"))) {
             return builder;
-        } else if (arg.type().equals(ExprFw.toExpr)) {
+        } /*else if (arg.type().equals(ExprFw.toExpr)) {
             Val instance = BoxFw.unbox(arg);
             if (!instance.type().equals(VitiateTelephonistFw.vitiateTelephonist))
                 return Val.unspecified;
@@ -119,7 +119,7 @@ public final class VitiateTelephonistFw {
             ));
 
             // the day of weird music
-        }
+        }*/
 
         // well actually we might expose source in toExpr
         // at least for now

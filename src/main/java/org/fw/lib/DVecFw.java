@@ -47,18 +47,6 @@ public final class DVecFw {
                     return Val.unspecified; // out of range
                 return vec[i];
             }
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(DVecFw.dVec))
-                return Val.unspecified;
-
-            Val[] vec = instance._unpack();
-            List<Expr> elements = new ArrayList<>();
-            elements.add(DVecFw.dVec.asVal().toExpr(context));
-            for (Val val : vec) {
-                elements.add(val.toExpr(context));
-            }
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
         } else if (arg.equals(symbol("builder"))) {
             return DVecFw.emptyBuilder;
         }
@@ -72,18 +60,6 @@ public final class DVecFw {
             Val[] value = instance._unpack();
 
             return Val.of(DVecFw.dVecBuilder, appended(value, cArg));
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(DVecFw.dVecBuilder))
-                return Val.unspecified;
-
-            Val[] vec = instance._unpack();
-            List<Expr> elements = new ArrayList<>();
-            elements.add(DVecFw.dVecBuilder.asVal().toExpr(context));
-            for (Val val : vec) {
-                elements.add(val.toExpr(context));
-            }
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
         }
         return Val.unspecified;
     }).asType();

@@ -62,13 +62,6 @@ public final class CompEnv extends AbstractValAdapted {
                     return Val.of(CompEnv.compEnv, new SyntaxResolveFw.CompEnvRecord(resolver, parentCEnv));
                 });
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(CompEnv.compEnv))
-                return Val.unspecified;
-
-            SyntaxResolveFw.CompEnvRecord env = instance._unpack();
-            return ExprFw.wrap(env.toExpr(context));
         }
 
         return Val.unspecified;

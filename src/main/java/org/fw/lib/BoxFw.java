@@ -47,10 +47,6 @@ public final class BoxFw {
             ), (arg1, _) -> {
                 return Val.of(BoxFw.boxType, arg1);
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = unbox(arg);
-            if (!instance.type().equals(BoxFw.boxType)) return Val.unspecified;
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, BoxFw.boxType.asVal().toExpr(context), unbox(instance).toExpr(context)));
         }
         return Val.unspecified;
     }).asType();
@@ -91,10 +87,6 @@ public final class BoxFw {
                     ), (arg1, context1) -> {
                         return Val.of(type, arg1);
                     });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = unbox(arg);
-            if (!instance.type().equals(type)) return Val.unspecified;
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), unbox(instance).toExpr(context)));
         }
         return Val.unspecified;
     }

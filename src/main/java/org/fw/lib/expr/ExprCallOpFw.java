@@ -6,6 +6,7 @@ import org.fw.ast.BracketsTypes;
 import org.fw.ast.Expr;
 import org.fw.ast.ExprList;
 import org.fw.base.Call;
+import org.fw.base.Context;
 import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.lib.BoxFw;
@@ -54,21 +55,19 @@ public final class ExprCallOpFw {
                     return Val.unspecified;
                 }
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(ExprCallOpFw.exprCallOp))
-                return Val.unspecified;
-
-            ExprCallOp vec = instance._unpack(ExprCallOp.class);
-            List<Expr> elements = new ArrayList<>();
-            elements.add(ExprCallOpFw.exprCallOp.asVal().toExpr(context));
-            for (Expr val : vec.args) {
-                elements.add(ExprFw.wrap(val).toExpr(context));
-            }
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
         }
         return Val.unspecified;
     }).asType();
+
+    public static Val toExpr(Val arg, Context context) {
+        ExprCallOpFw.ExprCallOp vec = arg._unpack(ExprCallOpFw.ExprCallOp.class);
+        List<Expr> elements = new ArrayList<>();
+        elements.add(ExprCallOpFw.exprCallOp.asVal().toExpr(context));
+        for (Expr val : vec.args) {
+            elements.add(ExprFw.wrap(val).toExpr(context));
+        }
+        return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
+    }
 
     private record ExprCallOp(Expr[] args, CompEnv compEnv) {}
 }

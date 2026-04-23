@@ -7,6 +7,7 @@ import org.fw.ast.Expr;
 import org.fw.ast.ExprList;
 import org.fw.ast.Symbol;
 import org.fw.base.Call;
+import org.fw.base.Context;
 import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.lib.expr.CompEnv;
@@ -28,14 +29,6 @@ public final class EnumFw {
             Enum anEnum = instance._unpack();
             for (Val value : anEnum.values) {
                 if (value._unpack(Val.class).equals(arg)) return value;
-            }
-            if (arg.type().equals(ExprFw.toExpr)) {
-                Val instanceEnum = BoxFw.unbox(arg);
-                if (!instanceEnum.type().equals(instance.asType()))
-                    return Val.unspecified;
-
-                Val value = instanceEnum._unpack();
-                return value; // it supposes to be a symbol
             }
             return Val.unspecified;
         }
@@ -67,23 +60,21 @@ public final class EnumFw {
                 }
                 return resultingType.asVal();
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(EnumFw.enumeration))
-                return Val.unspecified;
-
-            Enum value = instance._unpack();
-            List<Expr> finElements = new ArrayList<>();
-            finElements.add(EnumFw.enumeration.asVal().toExpr(context));
-            List<Expr> elements = new ArrayList<>();
-            for (Val val : value.values()) {
-                elements.add(val._unpack(Val.class).toExpr(context));
-            }
-            finElements.add(ExprList.of(BracketsTypes.square, elements));
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
         }
         return Val.unspecified;
     }).asType();
+
+    public static Val toExpr(Val arg, Context context) {
+        EnumFw.Enum value = arg._unpack();
+        List<Expr> finElements = new ArrayList<>();
+        finElements.add(EnumFw.enumeration.asVal().toExpr(context));
+        List<Expr> elements = new ArrayList<>();
+        for (Val val : value.values()) {
+            elements.add(val._unpack(Val.class).toExpr(context));
+        }
+        finElements.add(ExprList.of(BracketsTypes.square, elements));
+        return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
+    }
 
     private record Enum(Val[] values) {
     }

@@ -67,15 +67,6 @@ public final class AccumulatorsExprFw {
             return telephonist(AccumulatorsExprFw.exprAccumulator.asVal().toExpr(context) + ".constructor", (argument, _) -> {
                 return Val.of(AccumulatorsExprFw.exprAccumulator, argument);
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(AccumulatorsExprFw.exprAccumulator))
-                return Val.unspecified;
-
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(context),
-                    instance.call(symbol("operator"), context).toExpr(context)
-            ));
         }
         return Val.unspecified;
     })).asType();

@@ -76,13 +76,6 @@ public final class DeclaredFw {
                     return declared(name, value);
                 });
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(DeclaredFw.declared))
-                return Val.unspecified;
-
-            Expr expr = instance._unpack(Declared.class).toExpr(context);
-            return ExprFw.wrap(expr);
         }
         return Val.unspecified;
     }).asType();
@@ -98,6 +91,10 @@ public final class DeclaredFw {
 
     public static Val declared(Val key, Val value) {
         return Val.of(DeclaredFw.declared, new Declared(key, value));
+    }
+
+    public static Expr toExpr(Val arg, Context context) {
+        return arg._unpack(DeclaredFw.Declared.class).toExpr(context);
     }
 
     private record Declared(Val key, Val value) {

@@ -40,12 +40,6 @@ public final class SyntaxResolveFw {
                     return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolve(expr._unpack(), CompEnv.of(callerEnv)));
                 });
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(SyntaxResolveFw.syntaxResolve))
-                return Val.unspecified;
-
-            return ExprFw.wrap(instance._unpack(SyntaxResolve.class).toExpr(context));
         } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
             Val cEnv = arg.call(symbol("comp-env"), context);

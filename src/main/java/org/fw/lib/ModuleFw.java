@@ -66,12 +66,6 @@ public final class ModuleFw {
 
                 return Val.of(ModuleFw.module, new Module(values));
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(ModuleFw.module))
-                return Val.unspecified;
-
-            return ExprFw.wrap(instance._unpack(Module.class).toExpr(context));
         } else if (arg.equals(symbol("contains-key"))) {
             return FW.telephonist("Module.contains-key", (arg1, context1) -> {
                 if (!arg1.type().equals(ModuleFw.module)) return Val.unspecified;
@@ -91,6 +85,10 @@ public final class ModuleFw {
                 throw new IllegalArgumentException(value.toString());
         }
         return Val.of(ModuleFw.module, new Module(values));
+    }
+
+    public static Val toExpr(Val arg, Context context) {
+        return ExprFw.wrap(arg._unpack(ModuleFw.Module.class).toExpr(context));
     }
 
     // todo: replace this with map idk

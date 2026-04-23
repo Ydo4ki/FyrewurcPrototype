@@ -166,13 +166,13 @@
 
 
 (: toExpr (BoxType (Symbol "to-expr")))
-(: to-expr (telephonist %0
-    (call (typeof %0) (toExpr %0))))
+//(: to-expr (telephonist %0
+//    (call (typeof %0) (toExpr %0))))
 
 (: do (jval "lib.expr.DoFw" "_do"))
 (: Struct (jval "lib.StructFw" "struct"))
 (: Trait (jval "lib.TraitFw" "trait"))
-(: ErrType (jval "lib.ErrTypeFw" "errType"))
+//(: ErrType (jval "lib.ErrTypeFw" "errType"))
 (: Enum (jval "lib.EnumFw" "enumeration"))
 
 (: Purity (Enum [(Symbol "Pure") (Symbol "Dirty")]))
@@ -315,7 +315,7 @@ function {
     (: do do)
     (: Struct Struct)
     (: Trait Trait)
-    (: ErrType ErrType)
+//    (: ErrType ErrType)
     (: Enum Enum)
 
     (: typeof typeof)
@@ -338,7 +338,7 @@ function {
     (: ExprList ExprList)
     (: toExpr toExpr)
     (: expr expr)
-    (: to-expr to-expr)
+//    (: to-expr to-expr)
 
     (: == ==)
     (: != !=)

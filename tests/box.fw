@@ -1,11 +1,10 @@
 //(== 5 5)
 
 (Test
-    (== toExpr (call BoxType (Symbol "constructor") (Symbol "to-expr")))
-    (== toExpr (BoxType (Symbol "to-expr")))
+    (== (call BoxType (Symbol "constructor") (Symbol "to-expr")) (BoxType (Symbol "to-expr")))
 )
 
-(Test
-    (== (call DInt (call (get toExpr constructor) 14)) (Symbol "14"))
-    (== (call (get toExpr constructor) 14) (toExpr 14))
-)
+//(Test
+//    (== (call DInt (call (get toExpr constructor) 14)) (Symbol "14"))
+//    (== (call (get toExpr constructor) 14) (toExpr 14))
+//)

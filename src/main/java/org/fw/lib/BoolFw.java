@@ -66,12 +66,6 @@ public final class BoolFw {
                         });
                 });
             }*/
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(BoolFw.bool))
-                return Val.unspecified;
-
-            return symbol(instance._unpack().toString());
         }
         return Val.unspecified;
     }).asType();

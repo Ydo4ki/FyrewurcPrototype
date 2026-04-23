@@ -35,19 +35,19 @@ public final class TraitFw {
             if (arg.equals(symbol("to-constraint"))) {
                 return trait.constraint();
             }
-            if (arg.type().equals(ExprFw.toExpr)) {
-                Val strInstance = BoxFw.unbox(arg);
-                if (!strInstance.type().equals(instance.asType()))
-                    return Val.unspecified;
-
-                Val[] value = strInstance._unpack();
-                List<Expr> elements = new ArrayList<>();
-                elements.add(instance.toExpr(context));
-                for (Val val : value) {
-                    elements.add(val.toExpr(context));
-                }
-                return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
-            }
+//            if (arg.type().equals(ExprFw.toExpr)) {
+//                Val strInstance = BoxFw.unbox(arg);
+//                if (!strInstance.type().equals(instance.asType()))
+//                    return Val.unspecified;
+//
+//                Val[] value = strInstance._unpack();
+//                List<Expr> elements = new ArrayList<>();
+//                elements.add(instance.toExpr(context));
+//                for (Val val : value) {
+//                    elements.add(val.toExpr(context));
+//                }
+//                return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
+//            }
         }
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
@@ -73,20 +73,6 @@ public final class TraitFw {
                 }
                 return Val.of(TraitFw.trait, new Trait(fields, context));
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(TraitFw.trait))
-                return Val.unspecified;
-
-            Trait value = instance._unpack();
-            List<Expr> finElements = new ArrayList<>();
-            finElements.add(TraitFw.trait.asVal().toExpr(context));
-            List<Expr> elements = new ArrayList<>();
-            for (Val val : value.fields) {
-                elements.add(val.toExpr(context));
-            }
-            finElements.add(ExprList.of(BracketsTypes.square, elements));
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
         }
         return Val.unspecified;
     }).asType();
@@ -97,6 +83,18 @@ public final class TraitFw {
                 throw new IllegalArgumentException("Declaration expected");
         }
         return Val.of(TraitFw.trait, new Trait(fields, Context.blank));
+    }
+
+    public static Val toExpr(Val arg, Context context) {
+        TraitFw.Trait value = arg._unpack();
+        List<Expr> finElements = new ArrayList<>();
+        finElements.add(TraitFw.trait.asVal().toExpr(context));
+        List<Expr> elements = new ArrayList<>();
+        for (Val val : value.fields) {
+            elements.add(val.toExpr(context));
+        }
+        finElements.add(ExprList.of(BracketsTypes.square, elements));
+        return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
     }
 
     private static final class Trait {

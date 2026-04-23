@@ -55,18 +55,6 @@ public final class StructFw {
                 return VitFw.wrap(ctor);
             } else if (arg.equals(symbol("builder"))) {
                 return structBuilder(struct, instance);
-            } else if (arg.type().equals(ExprFw.toExpr)) {
-                Val strInstance = BoxFw.unbox(arg);
-                if (!strInstance.type().equals(instance.asType()))
-                    return Val.unspecified;
-
-                Val[] value = strInstance._unpack();
-                List<Expr> elements = new ArrayList<>();
-                elements.add(instance.toExpr(context));
-                for (Val val : value) {
-                    elements.add(val.toExpr(context));
-                }
-                return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
             }
         } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
@@ -92,23 +80,31 @@ public final class StructFw {
                 }
                 return Val.of(StructFw.struct, new Struct(fields));
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(StructFw.struct))
-                return Val.unspecified;
-
-            Struct value = instance._unpack();
-            List<Expr> finElements = new ArrayList<>();
-            finElements.add(StructFw.struct.asVal().toExpr(context));
-            List<Expr> elements = new ArrayList<>();
-            for (Val val : value.fields) {
-                elements.add(val.toExpr(context));
-            }
-            finElements.add(ExprList.of(BracketsTypes.square, elements));
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
         }
         return Val.unspecified;
     }).asType();
+
+    public static Val toExpr(Val arg, Context context) {
+        StructFw.Struct value = arg._unpack();
+        List<Expr> finElements = new ArrayList<>();
+        finElements.add(StructFw.struct.asVal().toExpr(context));
+        List<Expr> elements = new ArrayList<>();
+        for (Val val : value.fields) {
+            elements.add(val.toExpr(context));
+        }
+        finElements.add(ExprList.of(BracketsTypes.square, elements));
+        return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
+    }
+
+    public static Val instanceToExpr(Val arg, Context context) {
+        Val[] value = arg._unpack();
+        List<Expr> elements = new ArrayList<>();
+        elements.add(arg.type().asVal().toExpr(context));
+        for (Val val : value) {
+            elements.add(val.toExpr(context));
+        }
+        return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
+    }
 
     private record Struct(Val[] fields) {
         public int indexOf(Val key, Context context) {

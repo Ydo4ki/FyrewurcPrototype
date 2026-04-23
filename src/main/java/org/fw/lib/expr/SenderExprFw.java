@@ -1,6 +1,7 @@
 package org.fw.lib.expr;
 
 import org.fw.FwUtils;
+import org.fw.annotation.Insightful;
 import org.fw.ast.BracketsTypes;
 import org.fw.ast.ExprList;
 import org.fw.base.Call;
@@ -18,6 +19,7 @@ import static org.fw.FW.telephonist;
 
 public final class SenderExprFw {
 
+    @Insightful
     public static final Type exprSender = telephonist("ExprSender", ((arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, SenderExprFw.exprSender, context)) {
             Val instance = Call.getVal(arg, context);
@@ -63,15 +65,6 @@ public final class SenderExprFw {
             return telephonist(SenderExprFw.exprSender.asVal().toExpr(context) + ".constructor", (argument, _) -> {
                 return Val.of(SenderExprFw.exprSender, argument);
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(SenderExprFw.exprSender))
-                return Val.unspecified;
-
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    SenderExprFw.exprSender.asVal().toExpr(context),
-                    instance.call(symbol("operator"), context).toExpr(context)
-            ));
         }
         return Val.unspecified;
     })).asType();

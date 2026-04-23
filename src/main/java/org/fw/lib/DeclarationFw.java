@@ -81,13 +81,6 @@ public final class DeclarationFw {
                     return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
                 });
             });
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(DeclarationFw.declaration))
-                return Val.unspecified;
-
-            Expr expr = instance._unpack(Declaration.class).toExpr(context);
-            return ExprFw.wrap(expr);
         }
         return Val.unspecified;
     }).asType();
@@ -104,6 +97,10 @@ public final class DeclarationFw {
         if (!ConstraintFw.isConstraint(constraint))
             throw new IllegalArgumentException();
         return Val.of(declaration, new Declaration(key, constraint));
+    }
+
+    public static Expr toExpr(Val arg, Context context) {
+        return arg._unpack(DeclarationFw.Declaration.class).toExpr(context);
     }
 
     private record Declaration(Val key, Val constraint) {

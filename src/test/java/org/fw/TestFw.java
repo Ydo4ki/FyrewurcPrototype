@@ -47,12 +47,13 @@ public final class TestFw {
                     return Val.of(TestFw.test, new TestRecord(instance.statements(), new Context(RtEnv.of(arg1), context1.scope())));
                 });
             }
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(TestFw.test))
-                return Val.unspecified;
+        }
+        return Val.unspecified;
+    }).asType();
 
-            TestRecord test = instance._unpack();
+    public static final Val testToExpr = FW.telephonist((arg, context) -> {
+        if (arg.type().equals(TestFw.test)) {
+            TestRecord test = arg._unpack();
 
             List<Expr> exprs = new ArrayList<>();
             exprs.add(TestFw.test.asVal().toExpr(context));
@@ -62,7 +63,7 @@ public final class TestFw {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, exprs));
         }
         return Val.unspecified;
-    }).asType();
+    });
 
     record TestRecord(Vit[] statements, Context context) {}
 }

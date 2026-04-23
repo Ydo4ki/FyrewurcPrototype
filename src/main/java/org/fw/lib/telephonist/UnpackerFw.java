@@ -27,14 +27,15 @@ final class UnpackerFw {
                 return Val.unspecified; // wrong unpacker / unsupported value / consider using boxes
             }
             return cArg._unpack(Val.class);
-        } else if (arg.type().equals(ExprFw.toExpr)) {
-            Val instance = BoxFw.unbox(arg);
-            if (!instance.type().equals(UnpackerFw.unpacker))
-                return Val.unspecified;
-
-            Unpacker unpkg = instance._unpack();
-            return ExprFw.wrap(unpkg.toExpr(context));
         }
+//        else if (arg.type().equals(ExprFw.toExpr)) {
+//            Val instance = BoxFw.unbox(arg);
+//            if (!instance.type().equals(UnpackerFw.unpacker))
+//                return Val.unspecified;
+//
+//            Unpacker unpkg = instance._unpack();
+//            return ExprFw.wrap(unpkg.toExpr(context));
+//        }
         return Val.unspecified;
     }).asType();
 

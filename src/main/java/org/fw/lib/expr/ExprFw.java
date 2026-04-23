@@ -24,13 +24,7 @@ public final class ExprFw {
             }
             return Val.unspecified; // unknown property
         }, (arg, context) -> {
-            if (arg.type().equals(ExprFw.toExpr)) {
-                Val instance = BoxFw.unbox(arg);
-                if (!instance.type().equals(ExprFw.symbol)) return Val.unspecified; // wrong type
-                String str = instance._unpack().toString();
-                str = str.replace("\"", "\\\"");
-                return ExprFw.wrap(ExprList.of(BracketsTypes.round, Symbol.of("Symbol"), Symbol.of('"' + str + '"')));
-            } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
+            if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
                 Val size = arg.call(symbol("size"), context);
                 Val cEnv = arg.call(symbol("comp-env"), context);
                 int isize = size._unpack(BigInteger.class).intValue();
@@ -87,17 +81,7 @@ public final class ExprFw {
 
             return ExprFw.wrap(list.get(index));
         }, (arg, context) -> {
-            if (arg.type().equals(ExprFw.toExpr)) {
-                Val instance = BoxFw.unbox(arg);
-                if (!instance.type().equals(ExprFw.exprList)) return Val.unspecified; // wrong type
-                List<Expr> content = new ArrayList<>();
-                content.add(Symbol.of("ExprList"));
-                ExprList el = instance._unpack();
-                for (Expr expr : el) {
-                    content.add(wrap(expr).toExpr(context));
-                }
-                return ExprFw.wrap(ExprList.of(BracketsTypes.round, content));
-            } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
+            if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
                 Val size = arg.call(symbol("size"), context);
                 Val cEnv = arg.call(symbol("comp-env"), context);
                 int isize = size._unpack(BigInteger.class).intValue();
@@ -136,9 +120,6 @@ public final class ExprFw {
             return Val.unspecified;
         });
     }).asType(); // bruh
-
-    @Deprecated
-    public static final Type toExpr = Val.of(BoxFw.boxType, symbol("to-expr")).asType();
 
     public static Val wrap(Expr expr) {
         switch (expr) {
