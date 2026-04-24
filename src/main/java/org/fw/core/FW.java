@@ -2,7 +2,6 @@ package org.fw.core;
 
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
-import org.fw.base.*;
 import org.fw.core.base.TelephonistType;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.ExprFw;

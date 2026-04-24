@@ -1,5 +1,10 @@
 (Module
-    (: bit (jval "memlib.Bit" "bit"))
-    (: bit0 (jval "memlib.Bit" "bit0"))
-    (: bit1 (jval "memlib.Bit" "bit1"))
+    (: bit (jval "memlib.lib.BitFw" "bit"))
+    (: bit0 (jval "memlib.lib.BitFw" "bit0"))
+    (: bit1 (jval "memlib.lib.BitFw" "bit1"))
+
+    (: byte (jval "memlib.lib.ByteFw" "$byte"))
+    (: word (jval "memlib.lib.WordFw" "word"))
+    (: dword (jval "memlib.lib.DWordFw" "dword"))
+    (: qword (jval "memlib.lib.QWordFw" "qword"))
 )

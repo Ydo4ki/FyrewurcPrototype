@@ -1,20 +1,20 @@
-(: jincludeval (jval "lib.expr.j.JConstInclude" "constInclude"))
+(: jincludeval (jval "core.lib.expr.j.JConstInclude" "constInclude"))
 
-(: call (jval "lib.expr.ExprCallFw" "call"))
-(: var (jval "lib.expr.ExprVarFw" "var"))
-(: invoke! (jval "lib.expr.ExprInvokeFw" "invoke"))
+(: call (jval "core.lib.expr.ExprCallFw" "call"))
+(: var (jval "core.lib.expr.ExprVarFw" "var"))
+(: invoke! (jval "core.lib.expr.ExprInvokeFw" "invoke"))
 
-(: get (jval "lib.expr.ExprGetFw" "get"))
+(: get (jval "core.lib.expr.ExprGetFw" "get"))
 
-(: ExprAccumulator (jval "lib.expr.AccumulatorsExprFw" "exprAccumulator"))
-(: ExprSender (jval "lib.expr.SenderExprFw" "exprSender"))
-(: ExprOperator (jval "lib.expr.OperatorExprFw" "exprOperator"))
+(: ExprAccumulator (jval "core.lib.expr.AccumulatorsExprFw" "exprAccumulator"))
+(: ExprSender (jval "core.lib.expr.SenderExprFw" "exprSender"))
+(: ExprOperator (jval "core.lib.expr.OperatorExprFw" "exprOperator"))
 
-(: type-get (jval "lib.ValsFw" "typeGet"))
+(: type-get (jval "core.lib.ValsFw" "typeGet"))
 (: typeof (ExprOperator type-get))
-(: eq (jval "lib.ValsFw" "eq"))
+(: eq (jval "core.lib.ValsFw" "eq"))
 
-(: expr (jval "lib.expr.ExprFw" "expr"))
+(: expr (jval "core.lib.expr.ExprFw" "expr"))
 (: Symbol (typeof (expr a)))
 (: ExprList (typeof (expr [])))
 
@@ -37,44 +37,44 @@
 (: / (ExprAccumulator (Symbol "/")))
 (: % (ExprAccumulator (Symbol "%")))
 
-(: BoxType (jval "lib.BoxFw" "boxType"))
+(: BoxType (jval "core.lib.BoxFw" "boxType"))
 
-(: Module (jval "lib.ModuleFw" "module"))
+(: Module (jval "core.lib.ModuleFw" "module"))
 
-(: DVec (jval "lib.DVecFw" "dVec"))
-(: DVecBuilder (jval "lib.DVecFw" "dVecBuilder"))
-(: dvecbf (jval "lib.DVecFw" "dvecbf"))
+(: DVec (jval "core.lib.DVecFw" "dVec"))
+(: DVecBuilder (jval "core.lib.DVecFw" "dVecBuilder"))
+(: dvecbf (jval "core.lib.DVecFw" "dvecbf"))
 
-(: SyntaxResolve (jval "lib.expr.SyntaxResolveFw" "syntaxResolve"))
-(: telephonist (jval "lib.expr.TelephonistConstructorFw" "telephonist"))
-(: VitiateTelephonist (jval "lib.telephonist.VitiateTelephonistFw" "vitiateTelephonist"))
+(: SyntaxResolve (jval "core.lib.expr.SyntaxResolveFw" "syntaxResolve"))
+(: telephonist (jval "core.lib.expr.TelephonistConstructorFw" "telephonist"))
+(: VitiateTelephonist (jval "core.lib.telephonist.VitiateTelephonistFw" "vitiateTelephonist"))
 
-(: = (jval "lib.DeclarationFw" "field"))
+(: = (jval "core.lib.DeclarationFw" "field"))
 
-(: ExprCallOp (jval "lib.expr.ExprCallOpFw" "exprCallOp"))
+(: ExprCallOp (jval "core.lib.expr.ExprCallOpFw" "exprCallOp"))
 
-(: eval             (jval "lib.VitFw" "eval"))
-(: VitVal           (jval "lib.VitFw" "vitVal"))
-(: VitVar           (jval "lib.VitFw" "vitVar"))
-(: VitCall          (jval "lib.VitFw" "vitCall"))
-(: VitInvoke        (jval "lib.VitFw" "vitInvoke"))
-(: vit-simplify     (jval "lib.VitFw" "simplify"))
-(: vit-reduce       (jval "lib.VitFw" "reduce"))
+(: eval             (jval "core.lib.VitFw" "eval"))
+(: VitVal           (jval "core.lib.VitFw" "vitVal"))
+(: VitVar           (jval "core.lib.VitFw" "vitVar"))
+(: VitCall          (jval "core.lib.VitFw" "vitCall"))
+(: VitInvoke        (jval "core.lib.VitFw" "vitInvoke"))
+(: vit-simplify     (jval "core.lib.VitFw" "simplify"))
+(: vit-reduce       (jval "core.lib.VitFw" "reduce"))
 
-(: ReadOperation (jval "lib.state.OperationFw" "readOperation"))
-(: WriteOperation (jval "lib.state.OperationFw" "writeOperation"))
-(: VitOperation (jval "lib.state.OperationFw" "vitOperation"))
-(: LocalScopeOperation (jval "lib.state.OperationFw" "localScopeOperation"))
-(: Statehole (jval "lib.state.StateHoleFw" "statehole"))
+(: ReadOperation (jval "core.lib.state.OperationFw" "readOperation"))
+(: WriteOperation (jval "core.lib.state.OperationFw" "writeOperation"))
+(: VitOperation (jval "core.lib.state.OperationFw" "vitOperation"))
+(: LocalScopeOperation (jval "core.lib.state.OperationFw" "localScopeOperation"))
+(: Statehole (jval "core.lib.state.StateHoleFw" "statehole"))
 
-(: operation (jval "lib.state.OperationFw" "operationExpr"))
+(: operation (jval "core.lib.state.OperationFw" "operationExpr"))
 
-(: unit (jval "state.operation.Operation" "unit"))
+(: unit (jval "core.state.operation.Operation" "unit"))
 
-(: Constraint (jval "lib.constraint.ConstraintFw" "constraint"))
-(: @ (jval "lib.constraint.ConstraintFw" "at"))
+(: Constraint (jval "core.lib.constraint.ConstraintFw" "constraint"))
+(: @ (jval "core.lib.constraint.ConstraintFw" "at"))
 
-(: unspecified (jval "base.Val" "unspecified"))
+(: unspecified (jval "core.base.Val" "unspecified"))
 
 (: if (telephonist arg
     (call
@@ -169,11 +169,11 @@
 //(: to-expr (telephonist %0
 //    (call (typeof %0) (toExpr %0))))
 
-(: do (jval "lib.expr.DoFw" "_do"))
-(: Struct (jval "lib.StructFw" "struct"))
-(: Trait (jval "lib.TraitFw" "trait"))
-//(: ErrType (jval "lib.ErrTypeFw" "errType"))
-(: Enum (jval "lib.EnumFw" "enumeration"))
+(: do (jval "core.lib.expr.DoFw" "_do"))
+(: Struct (jval "core.lib.StructFw" "struct"))
+(: Trait (jval "core.lib.TraitFw" "trait"))
+//(: ErrType (jval "core.lib.ErrTypeFw" "errType"))
+(: Enum (jval "core.lib.EnumFw" "enumeration"))
 
 (: Purity (Enum [(Symbol "Pure") (Symbol "Dirty")]))
 //(: StaticSignature (Struct [
@@ -194,7 +194,7 @@
     (= rt-env ?)
 ]))
 
-(: Call (jval "base.Call" "call_t"))
+(: Call (jval "core.base.Call" "call_t"))
 
 
 (: DInt (typeof 0))
@@ -209,7 +209,7 @@
 //  so you shall fix this somehow (probably just by making let a normal function and not a macro)
 (: Function (jincludeval "Function.fw"))
 
-(: CompEnv (jval "lib.expr.CompEnv" "compEnv"))
+(: CompEnv (jval "core.lib.expr.CompEnv" "compEnv"))
 
 (: fn (telephonist arg
     (if

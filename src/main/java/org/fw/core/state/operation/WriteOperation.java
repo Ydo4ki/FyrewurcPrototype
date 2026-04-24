@@ -52,4 +52,9 @@ public final class WriteOperation implements Operation {
                 x.toExpr(context)
         );
     }
+
+    @Override
+    public Val asVal() {
+        return Val.of(OperationFw.writeOperation, this);
+    }
 }

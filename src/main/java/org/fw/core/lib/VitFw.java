@@ -3,7 +3,6 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.FwUtils;
 import org.fw.core.ast.Expr;
-import org.fw.base.*;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
@@ -13,7 +12,6 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.lib.state.OperationFw;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.vit.*;
-import org.fw.vit.*;
 
 import java.math.BigInteger;
 

@@ -4,6 +4,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Context;
+import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.state.OperationFw;
 import org.fw.core.lib.state.StateHoleFw;
@@ -43,5 +44,10 @@ public final class ReadOperation implements Operation {
                 OperationFw.readOperation.asVal().toExpr(context),
                 StateHoleFw.wrap(obj).toExpr(context)
         );
+    }
+
+    @Override
+    public Val asVal() {
+        return Val.of(OperationFw.readOperation, this);
     }
 }

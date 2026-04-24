@@ -19,8 +19,6 @@ import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.ObjStream;
-import org.fw.lib.comp.*;
-import org.fw.state.obj.*;
 import org.fw.core.lib.state.StateHoleFw;
 import org.fw.core.vit.Vit;
 import org.junit.jupiter.api.Assertions;

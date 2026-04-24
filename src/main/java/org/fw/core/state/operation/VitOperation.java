@@ -58,4 +58,9 @@ public final class VitOperation implements Operation {
                 VitFw.wrap(vit).toExpr(context)
         );
     }
+
+    @Override
+    public Val asVal() {
+        return Val.of(OperationFw.vitOperation, this);
+    }
 }

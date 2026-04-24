@@ -44,7 +44,7 @@ public final class OperationFw {
     @Insightful
     public static final Type readOperation = FW.telephonist("ReadOperation", (arg1, context) -> {
         if (arg1.equals(symbol("constructor"))) {
-            return FW.telephonist(() -> "(get ReadOperation constructor)", (arg, _) -> {
+            return FW.telephonist(() -> "ReadOperation.constructor", (arg, _) -> {
                 if (!arg.type().equals(StateHoleFw.statehole)) {
                     return Val.unspecified;
                 }
@@ -76,7 +76,7 @@ public final class OperationFw {
     @Insightful
     public static final Type localScopeOperation = FW.telephonist("LocalScopeOperation", (arg1, context) -> {
         if (arg1.equals(symbol("instance"))) {
-            return OperationFw.localScopeOperationInstance;
+            return LocalScopeOperation.getInstance().asVal();
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg1.call(symbol("size"), context);
             Val cEnv = arg1.call(symbol("comp-env"), context);
@@ -95,8 +95,6 @@ public final class OperationFw {
         return handleRAW(OperationFw.localScopeOperation, arg1, context);
     }).asType();
 
-    @Insightful
-    private static final Val localScopeOperationInstance = Val.of(localScopeOperation, LocalScopeOperation.getInstance());
 
     @Insightful
     public static final Type writeOperation = FW.telephonist("WriteOperation", (arg1, context) -> {
@@ -200,12 +198,14 @@ public final class OperationFw {
 
     public static Val wrap(Operation operation) {
         if (operation == null) return Val.unspecified;
-        return switch (operation) {
-            case ReadOperation _ -> Val.of(readOperation, operation);
-            case VitOperation _ -> Val.of(vitOperation, operation);
-            case WriteOperation _ -> Val.of(writeOperation, operation);
-            case LocalScopeOperation _ -> localScopeOperationInstance;
-        };
+        return operation.asVal();
+//        return switch (operation) {
+//            case ReadOperation _ -> Val.of(readOperation, operation);
+//            case VitOperation _ -> Val.of(vitOperation, operation);
+//            case WriteOperation _ -> Val.of(writeOperation, operation);
+//            case LocalScopeOperation _ -> localScopeOperationInstance;
+//            default -> throw new IllegalStateException("Unexpected value: " + operation);
+//        };
     }
 
     public static Operation unwrap(Val operation) {
