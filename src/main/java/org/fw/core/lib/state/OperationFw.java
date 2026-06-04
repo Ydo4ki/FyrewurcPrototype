@@ -44,7 +44,7 @@ public final class OperationFw {
     @Insightful
     public static final Type readOperation = FW.telephonist("ReadOperation", (arg1, context) -> {
         if (arg1.equals(symbol("constructor"))) {
-            return FW.telephonist(() -> "ReadOperation.constructor", (arg, _) -> {
+            return FW.telephonist(() -> "ReadOperation.constructor", (arg, c) -> {
                 if (!arg.type().equals(StateHoleFw.statehole)) {
                     return Val.unspecified;
                 }

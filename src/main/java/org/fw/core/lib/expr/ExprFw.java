@@ -100,7 +100,7 @@ public final class ExprFw {
                 ctor = Vit.val(DVecFw.dvecbf).call(ctor);
                 return VitFw.wrap(Vit.val(ExprFw.exprList.asVal()).call(symbol("constructor")).call(ctor));
             } else if (arg.equals(symbol("constructor"))) {
-                return FW.telephonist("ExprList.constructor", (arg1, _) -> {
+                return FW.telephonist("ExprList.constructor", (arg1, c) -> {
                     if (!arg1.type().equals(DVecFw.dVec))
                         return Val.unspecified;
 
@@ -123,15 +123,13 @@ public final class ExprFw {
     }).asType(); // bruh
 
     public static Val wrap(Expr expr) {
-        switch (expr) {
-            case ExprList list -> {
-                return Val.of(exprList, list);
-            }
-            case Symbol sym -> {
-                return Val.of(symbol, sym);
-            }
-            default -> throw new IllegalStateException("This should never happen: " + expr);
+        if (expr instanceof ExprList) {
+            return Val.of(exprList, expr);
         }
+        if (expr instanceof Symbol) {
+            return Val.of(symbol, expr);
+        }
+        throw new IllegalStateException("This should never happen: " + expr);
     }
 
     public static boolean isExpr(Val val) {

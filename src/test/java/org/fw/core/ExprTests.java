@@ -17,7 +17,7 @@ import static org.fw.core.FW.symbol;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExprTests {
-    private static final Context context = new Context(RtEnv.unspecified, Scope.eternal());
+    private static final Context context = new Context(Main.rtEnv, Scope.eternal());
 
     @Test
     void apiSymbol() {

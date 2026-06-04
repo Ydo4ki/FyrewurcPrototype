@@ -11,7 +11,7 @@ public final class ValsFw {
 
     public static final Val typeGet = FW.telephonist(
             () -> "type-get",
-            (arg, _) -> arg.type().asVal()
+            (arg, c) -> arg.type().asVal()
     );
 
     public static final Val eq = FW.telephonist(
@@ -21,7 +21,7 @@ public final class ValsFw {
                         Symbol.of("call"),
                         Symbol.of("eq"),
                         arg.toExpr(context)
-                        ), (arg1, _) -> {
+                        ), (arg1, c) -> {
                     return BoolFw.wrap(arg.equals(arg1));
                 });
             }

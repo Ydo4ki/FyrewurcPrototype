@@ -20,6 +20,7 @@ import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.WeakHashMap;
 
 import static org.fw.core.FW.symbol;
@@ -122,8 +123,51 @@ public final class ConstraintFw {
         return Val.unspecified(instance, arg);
     }
 
-    private record Constraint(Vit a, Vit b, boolean alwaysTrue) {
+    private static final class Constraint {
+        private final Vit a;
+        private final Vit b;
+        private final boolean alwaysTrue;
 
+        private Constraint(Vit a, Vit b, boolean alwaysTrue) {
+            this.a = a;
+            this.b = b;
+            this.alwaysTrue = alwaysTrue;
+        }
+
+        public Vit a() {
+            return a;
+        }
+
+        public Vit b() {
+            return b;
+        }
+
+        public boolean alwaysTrue() {
+            return alwaysTrue;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            Constraint that = (Constraint) obj;
+            return Objects.equals(this.a, that.a) &&
+                    Objects.equals(this.b, that.b) &&
+                    this.alwaysTrue == that.alwaysTrue;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(a, b, alwaysTrue);
+        }
+
+        @Override
+        public String toString() {
+            return "Constraint[" +
+                    "a=" + a + ", " +
+                    "b=" + b + ", " +
+                    "alwaysTrue=" + alwaysTrue + ']';
+        }
     }
 
     public static boolean isConstraint(Val val) {

@@ -1,40 +1,54 @@
 package org.fw.core.base;
 
-public sealed interface Type permits TelephonistType, Type.ValType {
+public abstract class Type {
 
-    static Type of(Val.Box val) {
+    public static Type of(Val.Box val) {
         return new ValType(val);
     }
 
-    Val callInstance(Val instance, Val arg, Context context);
+    public abstract Val callInstance(Val instance, Val arg, Context context);
 
-    Val asVal();
+    public abstract Val asVal();
 
-//    Expr instanceToExpr(Val instance, Context context);
+    public static final class ValType extends Type {
 
-    record ValType(Val.Box asVal) implements Type {
+        private final Val.Box asVal;
+
+        public ValType(Val.Box asVal) {
+            this.asVal = asVal;
+        }
+
         @Override
         public Val callInstance(Val instance, Val arg, Context context) {
             Val ret = asVal.call(Call.fwCall(instance, arg), context);
-            // ok I'm not sure why but that doesn't work
-//            if (ret == Val.unspecified)
-//                return UnspecifiedCallFw.unspecifiedCall(instance, arg);
+
+            // if (ret == Val.unspecified)
+            //     return UnspecifiedCallFw.unspecifiedCall(instance, arg);
+
             return ret;
         }
 
-//        @Override
-//        public Expr instanceToExpr(Val instance, Context context) {
-//            Val e = asVal.call(Val.of(ExprFw.toExpr, instance), context);
-//            // todo: constraint check
-//            if (e.type().equals(ExprFw.symbol) || e.type().equals(ExprFw.exprList)) {
-//                return e._unpack();
-//            }
-//            return ExprList.of(BracketsTypes.braces, asVal.toExpr(context));
-//        }
+        @Override
+        public Val asVal() {
+            return asVal;
+        }
 
         @Override
         public String toString() {
             return asVal.toString();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ValType)) return false;
+            ValType that = (ValType) o;
+            return java.util.Objects.equals(asVal, that.asVal);
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Objects.hash(asVal);
         }
     }
 }

@@ -15,6 +15,7 @@ import org.fw.core.vit.VitVal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.fw.core.FW.symbol;
 
@@ -25,7 +26,7 @@ public class ToExprFn {
         Type type = arg.type();
         if (type.equals(Val.ofTelephonist(0).asType())) {
             TelephonistType.Telephonist tele = arg._unpack();
-            var r = tele.representation();
+            Supplier<Expr> r = tele.representation();
             if (r != null)
                 return ExprFw.wrap(r.get());
         } else if (type.equals(VitFw.vitVal)) {
@@ -155,6 +156,9 @@ public class ToExprFn {
         if (type instanceof TelephonistType) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.braces));
         }
-        return ExprFw.wrap(ExprList.of(BracketsTypes.braces, arg.type().asVal().toExpr(context)));
+        return ExprFw.wrap(ExprList.of(BracketsTypes.braces,
+//                arg.type().asVal().toExpr(context)
+                Symbol.of(arg.toString())
+        ));
     });
 }

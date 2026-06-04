@@ -65,7 +65,7 @@ class CompEnvTest {
         testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 
-    public static final Val testValsCenv = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, _) -> {
+    public static final Val testValsCenv = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
         if (!arg1.type().equals(ExprFw.symbol))
             return Val.unspecified;
         String string = arg1._unpack().toString();
@@ -151,7 +151,7 @@ class CompEnvTest {
 
         Map<String, Val> defineds = new HashMap<>();
 
-        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, _) -> {
+        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
             if (!arg1.type().equals(ExprFw.symbol))
                 return Val.unspecified;
             String string = arg1._unpack().toString();

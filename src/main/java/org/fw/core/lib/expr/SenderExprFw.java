@@ -59,7 +59,7 @@ public final class SenderExprFw {
             Vit v = Vit.val(SenderExprFw.exprSender.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit));
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
-            return telephonist(SenderExprFw.exprSender.asVal().toExpr(context) + ".constructor", (argument, _) -> {
+            return telephonist(SenderExprFw.exprSender.asVal().toExpr(context) + ".constructor", (argument, c) -> {
                 return Val.of(SenderExprFw.exprSender, argument);
             });
         }

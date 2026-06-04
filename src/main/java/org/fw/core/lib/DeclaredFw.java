@@ -16,6 +16,7 @@ import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
@@ -97,9 +98,47 @@ public final class DeclaredFw {
         return arg._unpack(DeclaredFw.Declared.class).toExpr(context);
     }
 
-    private record Declared(Val key, Val value) {
+    private static final class Declared {
+        private final Val key;
+        private final Val value;
+
+        private Declared(Val key, Val value) {
+            this.key = key;
+            this.value = value;
+        }
+
         public Expr toExpr(Context context) {
             return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr(context), value.toExpr(context));
         }
+
+        public Val key() {
+            return key;
+        }
+
+        public Val value() {
+            return value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            Declared that = (Declared) obj;
+            return Objects.equals(this.key, that.key) &&
+                    Objects.equals(this.value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
+
+        @Override
+        public String toString() {
+            return "Declared[" +
+                    "key=" + key + ", " +
+                    "value=" + value + ']';
+        }
+
     }
 }

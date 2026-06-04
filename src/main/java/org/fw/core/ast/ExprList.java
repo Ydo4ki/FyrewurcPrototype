@@ -31,7 +31,7 @@ public final class ExprList extends Expr implements Iterable<Expr> {
 		return of(Location.unknown(null, ""), bracketsType, elements);
 	}
 	public static ExprList of(BracketsType bracketsType, Expr... elements) {
-		return of(bracketsType, List.of(elements));
+		return of(bracketsType, Arrays.asList(elements));
 	}
 	
 	@Override

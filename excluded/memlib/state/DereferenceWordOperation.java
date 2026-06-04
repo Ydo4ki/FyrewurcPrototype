@@ -32,6 +32,6 @@ public record DereferenceWordOperation(MemorySegment segment, long pointer) impl
         return Val.of(operationType, this);
     }
 
-    public static final Type operationType = FW.telephonist("DereferenceWordOperation", (_, _) -> Val.unspecified).asType();
+    public static final Type operationType = FW.telephonist("DereferenceWordOperation", (_, c) -> Val.unspecified).asType();
 }
 

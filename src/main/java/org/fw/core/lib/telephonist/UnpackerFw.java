@@ -37,7 +37,21 @@ final class UnpackerFw {
         return Val.unspecified;
     }).asType();
 
-    private record Unpacker(Type type, Val source, String name) {
+    private static final class Unpacker {
+        private final Type type;
+        private final Val source;
+        private final String name;
+
+        private Unpacker(Type type, Val source, String name) {
+            this.type = type;
+            this.source = source;
+            this.name = name;
+        }
+
+        Type type() {
+            return type;
+        }
+
         Expr toExpr(Context context) {
             return ExprList.of(BracketsTypes.round,
                     Symbol.of("get"),

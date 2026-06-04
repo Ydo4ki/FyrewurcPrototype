@@ -17,7 +17,8 @@ public final class DotGettersCEnvFw {
             Val exprVal = arg.call(symbol("expr"), context);
             Val compEnv = arg.call(symbol("comp-env"), context);
             Expr expr = exprVal._unpack();
-            if (expr instanceof Symbol sym) {
+            if (expr instanceof Symbol) {
+                Symbol sym = (Symbol) expr;
                 String fullQualifier = sym.getValue();
                 int dotIndex = fullQualifier.lastIndexOf('.');
                 if (dotIndex == -1)

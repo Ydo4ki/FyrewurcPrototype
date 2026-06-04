@@ -10,108 +10,164 @@ import java.util.Objects;
 import java.util.Set;
 
 // no side effects for now
-public sealed interface Vit permits VitCall, VitInvoke, VitVal, VitVar {
-    Vit var = new VitVar(); // ok it was kind of quick
+public abstract class Vit {
+
+    public static final Vit var = new VitVar(); // ok it was kind of quick
     // but we'll need to do some cleanup
-    
-    static Vit simplify(Vit vit, Context context) {
-        return switch (vit) {
-            case VitVal _, VitVar _: yield vit;
-            case VitCall(Vit func, Vit arg, _, _):
-                func = simplify(func, context);
-                arg = simplify(arg, context);
-                if (func instanceof VitVal(Val f) && arg instanceof VitVal(Val argument)) {
-                    yield val(f.call(argument, context));
-                }
-                yield new VitCall(func, arg);
-            case VitInvoke vitInvoke:
-                yield vitInvoke; // you can't really simplify this one without runtime context
-        };
+
+    public static Vit simplify(Vit vit, Context context) {
+        if (vit instanceof VitVal || vit instanceof VitVar) {
+            return vit;
+        }
+
+        if (vit instanceof VitCall) {
+            VitCall call = (VitCall) vit;
+
+            Vit func = simplify(call.func(), context);
+            Vit arg = simplify(call.arg(), context);
+
+            if (func instanceof VitVal && arg instanceof VitVal) {
+                Val f = ((VitVal) func).val();
+                Val a = ((VitVal) arg).val();
+                return val(f.call(a, context));
+            }
+
+            return new VitCall(func, arg);
+        }
+
+        if (vit instanceof VitInvoke) {
+            return vit; // you can't really simplify this one without runtime context
+        }
+
+        throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
     // simplifies and applies var value from the given context (so there won't be any VitVars in the resulting tree)
-    static Vit reduce(Vit vit, Context context) {
-        return switch (vit) {
-            case VitVal _: yield vit;
-            case VitVar _: yield val(context.rtEnv().asVal());
-            case VitCall(Vit func, Vit arg, _, _):
-                func = reduce(func, context);
-                arg = reduce(arg, context);
-                if (func instanceof VitVal(Val f) && arg instanceof VitVal(Val argument)) {
-                    yield val(f.call(argument, context));
-                }
-                yield new VitCall(func, arg);
-            case VitInvoke vitInvoke:
-                yield vitInvoke.isConst()
-                        ? vitInvoke
-                        : new VitInvoke(reduce(vitInvoke.operation(), context));
-        };
+    public static Vit reduce(Vit vit, Context context) {
+        if (vit instanceof VitVal) {
+            return vit;
+        }
+
+        if (vit instanceof VitVar) {
+            return val(context.rtEnv().asVal());
+        }
+
+        if (vit instanceof VitCall) {
+            VitCall call = (VitCall) vit;
+
+            Vit func = reduce(call.func(), context);
+            Vit arg = reduce(call.arg(), context);
+
+            if (func instanceof VitVal && arg instanceof VitVal) {
+                Val f = ((VitVal) func).val();
+                Val a = ((VitVal) arg).val();
+                return val(f.call(a, context));
+            }
+
+            return new VitCall(func, arg);
+        }
+
+        if (vit instanceof VitInvoke) {
+            VitInvoke inv = (VitInvoke) vit;
+            return inv.isConst()
+                    ? inv
+                    : new VitInvoke(reduce(inv.operation(), context));
+        }
+
+        throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
-    static Set<Obj> reads(Vit vit, Context context) {
+    public static Set<Obj> reads(Vit vit, Context context) {
 //        if (!vit.isConst())
 //            throw new IllegalArgumentException("Clean up: " + VitFw.wrap(vit).toExpr(new Context(RtEnv.unspecified, Scope.eternal())));
-        return switch (vit) {
-            case VitVal _, VitVar _ -> Set.of();
-            case VitCall(Vit func, Vit arg, _, _) -> FwUtils.mergeImmut(reads(func, context), reads(arg, context));
-            case VitInvoke vitInvoke ->
-                    Objects.requireNonNull(OperationFw.unwrap(vitInvoke.operationVal(context))).reads(context);
-        };
+        if (vit instanceof VitVal || vit instanceof VitVar) {
+            return java.util.Collections.emptySet();
+        }
+
+        if (vit instanceof VitCall) {
+            VitCall call = (VitCall) vit;
+            return FwUtils.mergeImmut(
+                    reads(call.func(), context),
+                    reads(call.arg(), context)
+            );
+        }
+
+        if (vit instanceof VitInvoke) {
+            VitInvoke inv = (VitInvoke) vit;
+            return Objects.requireNonNull(
+                    OperationFw.unwrap(inv.operationVal(context))
+            ).reads(context);
+        }
+
+        throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
-    static Set<Obj> writes(Vit vit, Context context) {
+    public static Set<Obj> writes(Vit vit, Context context) {
 //        if (!vit.isConst())
 //            throw new IllegalArgumentException("Clean up");
-        return switch (vit) {
-            case VitVal _, VitVar _ -> Set.of();
-            case VitCall(Vit func, Vit arg, _, _) -> FwUtils.mergeImmut(writes(func, context), writes(arg, context));
-            case VitInvoke vitInvoke ->
-                    Objects.requireNonNull(OperationFw.unwrap(vitInvoke.operationVal(context))).writes(context);
-        };
+        if (vit instanceof VitVal || vit instanceof VitVar) {
+            return java.util.Collections.emptySet();
+        }
+
+        if (vit instanceof VitCall) {
+            VitCall call = (VitCall) vit;
+            return FwUtils.mergeImmut(
+                    writes(call.func(), context),
+                    writes(call.arg(), context)
+            );
+        }
+
+        if (vit instanceof VitInvoke) {
+            VitInvoke inv = (VitInvoke) vit;
+            return Objects.requireNonNull(
+                    OperationFw.unwrap(inv.operationVal(context))
+            ).writes(context);
+        }
+
+        throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
-    Val eval(Context context);
+    public abstract Val eval(Context context);
 
-    boolean isConst();
+    public abstract boolean isConst();
 
-    boolean isPure();
+    public abstract boolean isPure();
 
-    boolean isLocal(Context context);
+    public abstract boolean isLocal(Context context);
 
-    default Vit call(Vit arg) {
+    public Vit call(Vit arg) {
         return call(this, arg);
     }
 
-    default Vit call(Val arg) {
+    public Vit call(Val arg) {
         return call(this, arg);
     }
 
-    static Vit val(Val val) {
+    public static Vit val(Val val) {
         return new VitVal(val);
     }
 
-    static Vit var(Val key) {
-        return new VitVar().call(key);
+    public static Vit var(Val key) {
+        return var.call(key);
     }
 
-    static Vit call(Vit val, Vit arg) {
+    public static Vit call(Vit val, Vit arg) {
         return new VitCall(val, arg);
     }
 
-    static Vit call(Val val, Val arg) {
+    public static Vit call(Val val, Val arg) {
         return call(val(val), val(arg));
     }
 
-    static Vit call(Val val, Vit arg) {
+    public static Vit call(Val val, Vit arg) {
         return call(val(val), arg);
     }
 
-    static Vit call(Vit val, Val arg) {
+    public static Vit call(Vit val, Val arg) {
         return call(val, val(arg));
     }
 
-    static Vit invoke(Vit operation) {
+    public static Vit invoke(Vit operation) {
         return new VitInvoke(operation);
     }
 }
-

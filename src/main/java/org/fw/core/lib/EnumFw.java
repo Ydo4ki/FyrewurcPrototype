@@ -16,7 +16,9 @@ import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
@@ -75,6 +77,35 @@ public final class EnumFw {
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
     }
 
-    private record Enum(Val[] values) {
+    private static final class Enum {
+        private final Val[] values;
+
+        private Enum(Val[] values) {
+            this.values = values;
+        }
+
+        public Val[] values() {
+            return values;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            Enum that = (Enum) obj;
+            return Arrays.equals(this.values, that.values);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash((Object[]) values);
+        }
+
+        @Override
+        public String toString() {
+            return "Enum[" +
+                    "values=" + Arrays.toString(values) + ']';
+        }
+
     }
 }

@@ -61,7 +61,7 @@ public final class AccumulatorsExprFw {
             Vit v = Vit.val(AccumulatorsExprFw.exprAccumulator.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit));
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
-            return telephonist(AccumulatorsExprFw.exprAccumulator.asVal().toExpr(context) + ".constructor", (argument, _) -> {
+            return telephonist(AccumulatorsExprFw.exprAccumulator.asVal().toExpr(context) + ".constructor", (argument, c) -> {
                 return Val.of(AccumulatorsExprFw.exprAccumulator, argument);
             });
         }

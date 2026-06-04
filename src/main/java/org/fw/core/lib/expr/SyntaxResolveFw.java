@@ -62,7 +62,23 @@ public final class SyntaxResolveFw {
         return Val.unspecified;
     }).asType();
 
-    record SyntaxResolve(Expr expr, CompEnv env) {
+    static final class SyntaxResolve {
+        private final Expr expr;
+        private final CompEnv env;
+
+        SyntaxResolve(Expr expr, CompEnv env) {
+            this.expr = expr;
+            this.env = env;
+        }
+
+        public Expr expr() {
+            return expr;
+        }
+
+        public CompEnv env() {
+            return env;
+        }
+
         public Expr toExpr(Context context) {
             return ExprList.of(BracketsTypes.round,
                     SyntaxResolveFw.syntaxResolve.asVal().toExpr(context),
@@ -72,7 +88,23 @@ public final class SyntaxResolveFw {
         }
     }
 
-    record CompEnvRecord(Val resolver, Val parentCEnv) {
+    static final class CompEnvRecord {
+        private final Val resolver;
+        private final Val parentCEnv;
+
+        CompEnvRecord(Val resolver, Val parentCEnv) {
+            this.resolver = resolver;
+            this.parentCEnv = parentCEnv;
+        }
+
+        public Val resolver() {
+            return resolver;
+        }
+
+        public Val parentCEnv() {
+            return parentCEnv;
+        }
+
         public Expr toExpr(Context context) {
             return ExprList.of(BracketsTypes.round, Symbol.of("comp-env"), resolver.toExpr(context), parentCEnv.toExpr(context));
         }

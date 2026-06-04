@@ -42,7 +42,7 @@ public final class BoxFw {
                     Symbol.of("get"),
                     BoxFw.boxType.asVal().toExpr(context),
                     Symbol.of("constructor")
-            ), (arg1, _) -> {
+            ), (arg1, c) -> {
                 return Val.of(BoxFw.boxType, arg1);
             });
         }

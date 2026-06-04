@@ -18,6 +18,7 @@ import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
@@ -103,9 +104,47 @@ public final class DeclarationFw {
         return arg._unpack(DeclarationFw.Declaration.class).toExpr(context);
     }
 
-    private record Declaration(Val key, Val constraint) {
-        public Expr toExpr(Context context) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(context), constraint.toExpr(context));
+    private static final class Declaration {
+        private final Val key;
+        private final Val constraint;
+
+        private Declaration(Val key, Val constraint) {
+            this.key = key;
+            this.constraint = constraint;
         }
-    }
+
+        public Expr toExpr(Context context) {
+                return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(context), constraint.toExpr(context));
+            }
+
+        public Val key() {
+            return key;
+        }
+
+        public Val constraint() {
+            return constraint;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            Declaration that = (Declaration) obj;
+            return Objects.equals(this.key, that.key) &&
+                    Objects.equals(this.constraint, that.constraint);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, constraint);
+        }
+
+        @Override
+        public String toString() {
+            return "Declaration[" +
+                    "key=" + key + ", " +
+                    "constraint=" + constraint + ']';
+        }
+
+        }
 }

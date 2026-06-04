@@ -39,7 +39,7 @@ public final class InternalSymbolMapCEnvFw {
     }
 
 
-    public static final Val valsCenv = symbolMapVitEnv(val(FW.telephonist("vals", (arg1, _) -> {
+    public static final Val valsCenv = symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
         if (!arg1.type().equals(ExprFw.symbol))
             return Val.unspecified;
         String string = arg1._unpack().toString();

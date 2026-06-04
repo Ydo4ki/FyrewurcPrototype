@@ -3,14 +3,17 @@ package org.fw.core.vit;
 import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 
-public record VitVar() implements Vit {
+public final class VitVar extends Vit {
+
+    VitVar() {
+        if (var != null) throw new UnsupportedOperationException();
+        // empty
+    }
 
     @Override
     public Val eval(Context context) {
         return context.rtEnv().asVal();
 //        if (key == null)
-//        // I think we'll keep this for now
-//        // and delete the key later
 //        return context.rtEnv().get(key, context);
     }
 
@@ -31,8 +34,6 @@ public record VitVar() implements Vit {
 
     @Override
     public String toString() {
-//        if (key == null)
-//        return "(VitVar " + key + ")";
         return "(VitVar)";
     }
 }

@@ -10,6 +10,7 @@ import org.fw.core.lib.state.OperationFw;
 import org.fw.core.lib.state.StateHoleFw;
 import org.fw.core.state.obj.Obj;
 
+import java.util.Collections;
 import java.util.Set;
 
 public final class ReadOperation implements Operation {
@@ -30,12 +31,12 @@ public final class ReadOperation implements Operation {
 
     @Override
     public Set<Obj> reads(Context context) {
-        return Set.of(obj);
+        return Collections.singleton(obj);
     }
 
     @Override
     public Set<Obj> writes(Context context) {
-        return Set.of();
+        return Collections.emptySet();
     }
 
     @Override

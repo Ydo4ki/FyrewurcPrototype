@@ -2,6 +2,7 @@ package org.fw.core.ast;
 
 import java.util.Collection;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Sulphuris
@@ -33,7 +34,8 @@ public abstract class Expr {
             if (sym.getValue().equals(symbol.getValue())) return newValue;
             else return sym;
         }, list
-                -> ExprList.of(list.getLocation(), list.getBracketsType(), list.getElements().stream().map(e -> e.replace(symbol, newValue)).toList()));
+                -> ExprList.of(list.getLocation(), list.getBracketsType(), list.getElements().stream()
+                .map(e -> e.replace(symbol, newValue)).collect(Collectors.toList())));
     }
 }
 

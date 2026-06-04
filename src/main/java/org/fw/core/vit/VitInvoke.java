@@ -9,13 +9,19 @@ import org.fw.core.lib.state.OperationFw;
 
 import java.util.Objects;
 
-public final record VitInvoke(Vit operation) implements Vit {
-    public VitInvoke {
-        Objects.requireNonNull(operation);
-//        operation = Vit.simplify(operation, null);
+public final class VitInvoke extends Vit {
+
+    private final Vit operation;
+
+    public VitInvoke(Vit operation) {
+        this.operation = Objects.requireNonNull(operation);
+//        this.operation = Vit.simplify(operation, null);
     }
 
-//     I'm not sure if this operation would even make sense after the changes I'm making
+    public Vit operation() {
+        return operation;
+    }
+
     @Override
     public Val eval(Context context) {
         if (!operation.isLocal(context))
@@ -52,5 +58,23 @@ public final record VitInvoke(Vit operation) implements Vit {
 
     public Val operationVal(Context context) {
         return operation.eval(context);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VitInvoke)) return false;
+        VitInvoke that = (VitInvoke) o;
+        return Objects.equals(operation, that.operation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(operation);
+    }
+
+    @Override
+    public String toString() {
+        return "VitInvoke[operation=" + operation + "]";
     }
 }

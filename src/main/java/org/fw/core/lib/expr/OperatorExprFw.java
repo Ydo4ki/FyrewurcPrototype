@@ -57,7 +57,7 @@ public final class OperatorExprFw {
             Vit v = Vit.val(OperatorExprFw.exprOperator.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit));
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
-            return telephonist(OperatorExprFw.exprOperator.asVal().toExpr(context) + ".constructor", (argument, _) -> {
+            return telephonist(OperatorExprFw.exprOperator.asVal().toExpr(context) + ".constructor", (argument, c) -> {
                 return Val.of(OperatorExprFw.exprOperator, argument);
             });
         }

@@ -14,6 +14,7 @@ import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
 import org.fw.core.vit.VitVal;
 
+import java.util.Collections;
 import java.util.Set;
 
 public interface Operation {
@@ -23,12 +24,12 @@ public interface Operation {
 
     @Deprecated
     default Set<Obj> reads(Context context) {
-        return Set.of();
+        return Collections.emptySet();
     }
 
     @Deprecated
     default Set<Obj> writes(Context context) {
-        return Set.of();
+        return Collections.emptySet();
     }
 
     static Operation read(Obj obj) {
@@ -40,7 +41,8 @@ public interface Operation {
     }
 
     static Operation vit(Vit vit) {
-        if (vit instanceof VitInvoke(Vit operation) && operation instanceof VitVal(Val val)) return OperationFw.unwrap(val);
+        if (vit instanceof VitInvoke && ((VitInvoke) vit).operation() instanceof VitVal)
+            return OperationFw.unwrap(((VitVal) ((VitInvoke) vit).operation()).val());
         return new VitOperation(vit);
     }
 

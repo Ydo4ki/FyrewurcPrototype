@@ -12,6 +12,8 @@ import org.fw.core.state.obj.Scope;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
+import java.util.Objects;
+
 import static org.fw.core.FW.symbol;
 
 // sorry this is the best name I could come up with
@@ -36,7 +38,60 @@ public final class VitiateTelephonistFw {
         });
     });
 
-    private record VitiateTelephonist(Vit src, Val argKey, RtEnv parentRtEnv, Scope parentScope) {}
+    private static final class VitiateTelephonist {
+        private final Vit src;
+        private final Val argKey;
+        private final RtEnv parentRtEnv;
+        private final Scope parentScope;
+
+        private VitiateTelephonist(Vit src, Val argKey, RtEnv parentRtEnv, Scope parentScope) {
+            this.src = src;
+            this.argKey = argKey;
+            this.parentRtEnv = parentRtEnv;
+            this.parentScope = parentScope;
+        }
+
+        public Vit src() {
+            return src;
+        }
+
+        public Val argKey() {
+            return argKey;
+        }
+
+        public RtEnv parentRtEnv() {
+            return parentRtEnv;
+        }
+
+        public Scope parentScope() {
+            return parentScope;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            VitiateTelephonist that = (VitiateTelephonist) obj;
+            return Objects.equals(this.src, that.src) &&
+                    Objects.equals(this.argKey, that.argKey) &&
+                    Objects.equals(this.parentRtEnv, that.parentRtEnv) &&
+                    Objects.equals(this.parentScope, that.parentScope);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(src, argKey, parentRtEnv, parentScope);
+        }
+
+        @Override
+        public String toString() {
+            return "VitiateTelephonist[" +
+                    "src=" + src + ", " +
+                    "argKey=" + argKey + ", " +
+                    "parentRtEnv=" + parentRtEnv + ", " +
+                    "parentScope=" + parentScope + ']';
+        }
+    }
 
     /*
      * VitiateTelephonist {

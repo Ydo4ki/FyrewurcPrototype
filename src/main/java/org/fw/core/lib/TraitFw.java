@@ -141,7 +141,7 @@ public final class TraitFw {
         public boolean equals(Object obj) {
             if (obj == this) return true;
             if (obj == null || obj.getClass() != this.getClass()) return false;
-            var that = (Trait) obj;
+            Trait that = (Trait) obj;
             return Arrays.equals(this.fields, that.fields);
         }
 

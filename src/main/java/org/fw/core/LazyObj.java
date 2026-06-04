@@ -11,7 +11,7 @@ public final class LazyObj<T> implements Supplier<T> {
     }
 
     public static <T> LazyObj<T> of(Supplier<T> supplier) {
-        if (supplier instanceof LazyObj<T>)
+        if (supplier instanceof LazyObj)
             return (LazyObj<T>) supplier;
         return new LazyObj<>(supplier);
     }

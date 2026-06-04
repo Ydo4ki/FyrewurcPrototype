@@ -11,18 +11,20 @@ import java.util.*;
 
 import static org.fw.core.FW.symbol;
 
-public sealed interface Val {
-    Type type();
+public abstract class Val {
+    Val() {}
+
+    public abstract Type type();
 
     /**
      * @deprecated use _unpack() instead
      */
     @Deprecated
-    Object value();
+    public abstract Object value();
 
-    Type asType();
+    public abstract Type asType();
 
-    default Val call(Val arg, Context context) {
+    public Val call(Val arg, Context context) {
         Objects.requireNonNull(context);
         // evil
         // this is to evil
@@ -31,7 +33,7 @@ public sealed interface Val {
         return type().callInstance(this, arg, context);
     }
 
-    default Expr toExpr(Context context) {
+    public Expr toExpr(Context context) {
         if (type().equals(Call.call_t)) return ExprList.of(
                 BracketsTypes.round,
                 Symbol.of("Call"),
@@ -48,34 +50,35 @@ public sealed interface Val {
     }
 
     @Deprecated
+    public static final
     Val unspecified = Val.of(Val.ofTelephonist(0).asType(),
-            new TelephonistType.Telephonist(() -> Symbol.of("unspecified"), (_, _) -> Val.unspecified));
+            new TelephonistType.Telephonist(() -> Symbol.of("unspecified"), (val, c) -> Val.unspecified));
 
-    static Val unspecified(Val val, Val arg) {
+    public static Val unspecified(Val val, Val arg) {
         return unspecified;
     }
 
-    static Val of(Type type, Object value) {
+    public static Val of(Type type, Object value) {
         if (type instanceof TelephonistType && !(value instanceof TelephonistType.Telephonist))
             throw new Error();
         return new Box(Objects.requireNonNull(type), value);
     }
 
-    static Val ofTelephonist(int depth) {
+    public static Val ofTelephonist(int depth) {
         return TelephonistVal.of(depth);
     }
 
     @SuppressWarnings("unchecked")
-    default <T> T _unpack() {
+    public <T> T _unpack() {
         return (T)value();
     }
 
     @SuppressWarnings("unused")
-    default <T> T _unpack(Class<T> cls) {
+    public <T> T _unpack(Class<T> cls) {
         return _unpack();
     }
 
-    final class Box implements Val {
+    public static final class Box extends Val {
         private final Type type;
         private final Object value;
         private Type _asType;
@@ -107,7 +110,7 @@ public sealed interface Val {
         public boolean equals(Object obj) {
             if (obj == this) return true;
             if (obj == null || obj.getClass() != this.getClass()) return false;
-            var that = (Box) obj;
+            Box that = (Box) obj;
             if (!Objects.equals(this.type, that.type)) return false;
             boolean valEq = Objects.equals(this.value, that.value);
             if (!valEq && this.value.getClass().isArray() && that.value.getClass().isArray()) {
@@ -134,7 +137,7 @@ public sealed interface Val {
     }
 
     // todo: merge this with TelephonistType and make Val final class/record
-    final class TelephonistVal implements Val {
+    public static final class TelephonistVal extends Val {
 
         private final int depth;
         private TelephonistType asType;

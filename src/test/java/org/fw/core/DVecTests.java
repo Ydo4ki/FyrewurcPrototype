@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DVecTests {
 
-    private static final Context context = new Context(RtEnv.unspecified, Scope.eternal());
+    private static final Context context = new Context(Main.rtEnv, Scope.eternal());
 
     @Test
     void apiDVecExpr() {
@@ -25,7 +25,7 @@ public class DVecTests {
         b = b.call(DIntFw.dint(60), context);
         b = b.call(StrFw.str("content"), context);
         b = DVecFw.dvecbf.call(b, context);
-        assertEquals("(DVec 50 60 \"content\")", b.toExpr(context).toString());
+        assertEquals("[50 60 \"content\"]", b.toExpr(context).toString());
     }
 
     @Test

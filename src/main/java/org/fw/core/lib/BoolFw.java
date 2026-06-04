@@ -71,7 +71,7 @@ public final class BoolFw {
 
     private static Val bop(String name, Val instance, Context context, FwUtils.BoolBinaryOperator operator) {
         boolean value = instance._unpack(Boolean.class);
-        return FW.telephonist(callReprs(name, instance, context), (arg1, _) -> {
+        return FW.telephonist(callReprs(name, instance, context), (arg1, c) -> {
             if (arg1.type().equals(BoolFw.bool)) {
                 boolean v2 = arg1._unpack(Boolean.class);
                 return wrap(operator.apply(value, v2));

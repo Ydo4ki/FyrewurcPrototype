@@ -106,7 +106,13 @@ public final class StructFw {
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
     }
 
-    private record Struct(Val[] fields) {
+    private static final class Struct {
+        private final Val[] fields;
+
+        private Struct(Val[] fields) {
+            this.fields = fields;
+        }
+
         public int indexOf(Val key, Context context) {
             for (int i = 0; i < fields.length; i++) {
                 Val field = fields[i];
@@ -116,7 +122,18 @@ public final class StructFw {
             return -1;
         }
     }
-    record StructBuilder(Struct struct, Val sameStructButItsAVal, Val[] progress) {}
+
+    private static final class StructBuilder {
+        private final Struct struct;
+        private final Val sameStructButItsAVal;
+        private final Val[] progress;
+
+        private StructBuilder(Struct struct, Val sameStructButItsAVal, Val[] progress) {
+            this.struct = struct;
+            this.sameStructButItsAVal = sameStructButItsAVal;
+            this.progress = progress;
+        }
+    }
 
     private static Val structBuilder(Struct struct, Val sameStructButItsAVal) {
         if (struct.fields.length == 0) return Val.of(sameStructButItsAVal.asType(), new Val[0]);

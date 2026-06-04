@@ -30,7 +30,21 @@ final class InstancerFw {
         return Val.unspecified;
     }).asType();
 
-    private record Instancer(Type type, Val source, String name) {
+    private static final class Instancer {
+        private final Type type;
+        private final Val source;
+        private final String name;
+
+        private Instancer(Type type, Val source, String name) {
+            this.type = type;
+            this.source = source;
+            this.name = name;
+        }
+
+        Type type() {
+            return type;
+        }
+
         Expr toExpr(Context context) {
             return ExprList.of(BracketsTypes.round,
                     Symbol.of("get"),

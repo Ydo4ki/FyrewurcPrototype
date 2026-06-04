@@ -8,6 +8,7 @@ import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -67,5 +68,42 @@ public final class Call {
         return call.call(symbol("arg"), ctx);
     }
 
-    private record CallRecord(Val val, Val arg) { }
+    private static final class CallRecord {
+        private final Val val;
+        private final Val arg;
+
+        private CallRecord(Val val, Val arg) {
+            this.val = val;
+            this.arg = arg;
+        }
+
+        public Val val() {
+            return val;
+        }
+
+        public Val arg() {
+            return arg;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            CallRecord that = (CallRecord) obj;
+            return Objects.equals(this.val, that.val) &&
+                    Objects.equals(this.arg, that.arg);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(val, arg);
+        }
+
+        @Override
+        public String toString() {
+            return "CallRecord[" +
+                    "val=" + val + ", " +
+                    "arg=" + arg + ']';
+        }
+    }
 }

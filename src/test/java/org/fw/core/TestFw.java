@@ -17,7 +17,9 @@ import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
@@ -64,5 +66,42 @@ public final class TestFw {
         return Val.unspecified;
     });
 
-    record TestRecord(Vit[] statements, Context context) {}
+    static final class TestRecord {
+        private final Vit[] statements;
+        private final Context context;
+
+        TestRecord(Vit[] statements, Context context) {
+            this.statements = statements;
+            this.context = context;
+        }
+
+        public Vit[] statements() {
+            return statements;
+        }
+
+        public Context context() {
+            return context;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            TestRecord that = (TestRecord) obj;
+            return Arrays.equals(this.statements, that.statements) &&
+                    Objects.equals(this.context, that.context);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(Arrays.hashCode(statements), context);
+        }
+
+        @Override
+        public String toString() {
+            return "TestRecord[" +
+                    "statements=" + Arrays.toString(statements) + ", " +
+                    "context=" + context + ']';
+        }
+    }
 }

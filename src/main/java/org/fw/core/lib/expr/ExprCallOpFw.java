@@ -13,7 +13,9 @@ import org.fw.core.lib.DIntFw;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
@@ -47,7 +49,7 @@ public final class ExprCallOpFw {
                     for (int i = 0; i < args.length; i++) {
                         args[i] = list.get(i + 1);
                     }
-                    return FW.telephonist("(ExprCallOp.of-expr-list " + arg1.toExpr(context1) + ")", (cEnv, _) -> {
+                    return FW.telephonist("(ExprCallOp.of-expr-list " + arg1.toExpr(context1) + ")", (cEnv, c) -> {
                         return Val.of(ExprCallOpFw.exprCallOp, new ExprCallOp(args, CompEnv.of(cEnv)));
                     });
                 } else {
@@ -68,5 +70,42 @@ public final class ExprCallOpFw {
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
     }
 
-    private record ExprCallOp(Expr[] args, CompEnv compEnv) {}
+    private static final class ExprCallOp {
+        private final Expr[] args;
+        private final CompEnv compEnv;
+
+        private ExprCallOp(Expr[] args, CompEnv compEnv) {
+            this.args = args;
+            this.compEnv = compEnv;
+        }
+
+        public Expr[] args() {
+            return args;
+        }
+
+        public CompEnv compEnv() {
+            return compEnv;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            ExprCallOp that = (ExprCallOp) obj;
+            return Arrays.equals(this.args, that.args) &&
+                    Objects.equals(this.compEnv, that.compEnv);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(Arrays.hashCode(args), compEnv);
+        }
+
+        @Override
+        public String toString() {
+            return "ExprCallOp[" +
+                    "args=" + Arrays.toString(args) + ", " +
+                    "compEnv=" + compEnv + ']';
+        }
+    }
 }

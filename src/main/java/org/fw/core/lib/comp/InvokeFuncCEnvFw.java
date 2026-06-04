@@ -23,8 +23,8 @@ public final class InvokeFuncCEnvFw {
             Val exprVal = arg.call(symbol("expr"), context);
             Val compEnv = arg.call(symbol("comp-env"), context);
             Expr expr = exprVal._unpack();
-            if (expr instanceof ExprList list && list.getBracketsType().equals(BracketsTypes.round) && list.size() > 0) {
-                Expr f = list.get(0);
+            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
+                Expr f = ((ExprList) expr).get(0);
                 Vit func = CompEnv.of(compEnv).compile(ExprFw.wrap(f), context);
                 if (func == null)
                     return Val.unspecified;

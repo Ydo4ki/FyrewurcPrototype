@@ -21,13 +21,16 @@ import static org.fw.core.FW.telephonist;
 public final class VitFw {
 
     public static final Type vitVal = telephonist("VitVal", (arg0, context0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitVal, context0, (instance, symbol)
-            -> switch (symbol) {
-        case "val" -> instance._unpack(VitVal.class).val();
-        default -> Val.unspecified;
+            -> FwUtils.handleSymbols(arg0, VitFw.vitVal, context0, (instance, symbol) -> {
+        switch (symbol) {
+            case "val":
+                return instance._unpack(VitVal.class).val();
+            default:
+                return Val.unspecified;
+        }
     }, (arg1, context1) -> {
         if (arg1.equals(symbol("constructor"))) {
-            return FW.telephonist(() -> "(get VitVal constructor)", (arg, _) -> {
+            return FW.telephonist(() -> "(get VitVal constructor)", (arg, c) -> {
                 return wrap(Vit.val(arg));
             });
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
@@ -46,10 +49,13 @@ public final class VitFw {
     })).asType();
 
     public static final Type vitInvoke = telephonist("VitInvoke", (arg0, context0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitInvoke, context0, (instance, symbol)
-            -> switch (symbol) {
-        case "operation" -> VitFw.wrap(instance._unpack(VitInvoke.class).operation());
-        default -> Val.unspecified;
+            -> FwUtils.handleSymbols(arg0, VitFw.vitInvoke, context0, (instance, symbol) -> {
+        switch (symbol) {
+            case "operation":
+                return VitFw.wrap(instance._unpack(VitInvoke.class).operation());
+            default:
+                return Val.unspecified;
+        }
     }, (arg1, context1) -> {
         if (arg1.equals(symbol("constructor"))) {
             return FW.telephonist(() -> "(get VitInvoke constructor)", (arg, ctx) -> {
@@ -76,10 +82,13 @@ public final class VitFw {
     })).asType();
 
     public static final Type vitVar = telephonist("VitVar", (arg0, context0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitVar, context0, (instance, symbol)
-            -> switch (symbol) {
-//        case "key" -> ((VitVar) instance._unpack()).key();
-        default -> Val.unspecified;
+            -> FwUtils.handleSymbols(arg0, VitFw.vitVar, context0, (instance, symbol) -> {
+        switch (symbol) {
+//        case "key":
+//            return ((VitVar) instance._unpack()).key();
+            default:
+                return Val.unspecified;
+        }
     }, (arg1, context1) -> {
         if (arg1.equals(symbol("instance"))) {
             return wrap(Vit.var);
@@ -96,11 +105,15 @@ public final class VitFw {
 
     private static final Expr repr = FwUtils.parse("(get VitCall builder)");
     public static final Type vitCall = telephonist("VitCall", (arg0, context0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitCall, context0, (instance, symbol)
-            -> switch (symbol) {
-        case "func" -> wrap(((VitCall) instance._unpack()).func());
-        case "arg" -> wrap(((VitCall) instance._unpack()).arg());
-        default -> Val.unspecified;
+            -> FwUtils.handleSymbols(arg0, VitFw.vitCall, context0, (instance, symbol) -> {
+        switch (symbol) {
+            case "func":
+                return wrap(((VitCall) instance._unpack()).func());
+            case "arg":
+                return wrap(((VitCall) instance._unpack()).arg());
+            default:
+                return Val.unspecified;
+        }
     }, (arg1, context1) -> {
         if (arg1.equals(symbol("builder"))) {
             return telephonist(repr, (func, context) -> {
@@ -183,22 +196,25 @@ public final class VitFw {
     private static final Val vitVarVal = Val.of(vitVar, Vit.var);
 
     public static Val wrap(Vit vit) {
-        switch (vit) {
-            case VitCall call -> {
-                return Val.of(vitCall, call);
-            }
-            case VitVal val -> {
-                return Val.of(vitVal, val);
-            }
-            case VitVar var -> {
-                //noinspection ConstantValue
-                if (vitVarVal == null) throw new IllegalStateException();
-                return vitVarVal;
-            }
-            case VitInvoke invoke -> {
-                return Val.of(vitInvoke, invoke);
-            }
+        if (vit instanceof VitCall) {
+            return Val.of(vitCall, vit);
         }
+
+        if (vit instanceof VitVal) {
+            return Val.of(vitVal, vit);
+        }
+
+        if (vit instanceof VitVar) {
+            //noinspection ConstantValue
+            if (vitVarVal == null) throw new IllegalStateException();
+            return vitVarVal;
+        }
+
+        if (vit instanceof VitInvoke) {
+            return Val.of(vitInvoke, vit);
+        }
+
+        throw new IllegalStateException("Unknown Vit implementation: " + vit.getClass());
     }
 
     public static Vit unwrap(Val vit) {

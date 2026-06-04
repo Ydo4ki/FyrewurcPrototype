@@ -61,7 +61,7 @@ public final class FwUtils {
 
         Map<String, Val> defineds = new HashMap<>();
 
-        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, _) -> {
+        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, с) -> {
             if (!arg1.type().equals(ExprFw.symbol))
                 return Val.unspecified;
             String string = arg1._unpack().toString();

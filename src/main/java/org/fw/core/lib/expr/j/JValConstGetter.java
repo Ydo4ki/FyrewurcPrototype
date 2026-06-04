@@ -56,7 +56,7 @@ public final class JValConstGetter {
                 field.setAccessible(true);
                 Object ret = field.get(null);
 
-                if (ret instanceof Type type) ret = type.asVal();
+                if (ret instanceof Type) ret = ((Type) ret).asVal();
                 if (ret == null)
                     throw new NullPointerException("Not initialized yet: " + fieldName + " in " + name);
 

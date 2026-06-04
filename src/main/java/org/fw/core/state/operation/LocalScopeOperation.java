@@ -8,6 +8,7 @@ import org.fw.core.lib.state.OperationFw;
 import org.fw.core.lib.state.StateHoleFw;
 import org.fw.core.state.obj.Obj;
 
+import java.util.Collections;
 import java.util.Set;
 
 public final class LocalScopeOperation implements Operation {
@@ -31,12 +32,12 @@ public final class LocalScopeOperation implements Operation {
 
     @Override
     public Set<Obj> reads(Context context) {
-        return Set.of(context.scope()); // lmao
+        return Collections.singleton(context.scope()); // lmao
     }
 
     @Override
     public Set<Obj> writes(Context context) {
-        return Set.of();
+        return Collections.emptySet();
     }
 
     @Override

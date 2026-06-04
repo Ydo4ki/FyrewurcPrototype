@@ -20,7 +20,8 @@ public final class DVecConstructorCEnvFw {
             Val exprVal = arg.call(symbol("expr"), context);
             Val compEnv = arg.call(symbol("comp-env"), context);
             Expr expr = exprVal._unpack();
-            if (expr instanceof ExprList list && list.getBracketsType().equals(BracketsTypes.square)) {
+            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.square)) {
+                ExprList list = (ExprList) expr;
                 if (list.size() == 0)
                     return VitFw.wrap(Vit.val(DVecFw.dvecbf.call(DVecFw.emptyBuilder, context)));
 

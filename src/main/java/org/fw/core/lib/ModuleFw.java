@@ -54,7 +54,7 @@ public final class ModuleFw {
             ctor = Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(ctor); // ok nice
             return VitFw.wrap(ctor);
         } else if (arg.equals(symbol("constructor"))) {
-            return FW.telephonist("Module.constructor", (arg1, _) -> {
+            return FW.telephonist("Module.constructor", (arg1, c) -> {
                 if (!arg1.type().equals(DVecFw.dVec))
                     return Val.unspecified;
 
@@ -92,7 +92,17 @@ public final class ModuleFw {
     }
 
     // todo: replace this with map idk
-    private record Module(Val[] declareds) {
+    private static final class Module {
+        private final Val[] declareds;
+
+        private Module(Val[] declareds) {
+            this.declareds = declareds;
+        }
+
+        public Val[] declareds() {
+            return declareds;
+        }
+
         public Expr toExpr(Context context) {
             List<Expr> elements = new ArrayList<>();
             elements.add(ModuleFw.module.asVal().toExpr(context));
@@ -113,7 +123,12 @@ public final class ModuleFw {
         public boolean equals(Object o) {
             if (o == null || getClass() != o.getClass()) return false;
             Module module = (Module) o;
-            return Objects.deepEquals(declareds, module.declareds);
+            if (declareds.length != module.declareds.length) return false;
+            for (int i = 0; i < declareds.length; i++) {
+                if (!declareds[i].equals(module.declareds[i])) return false;
+            }
+            return true;
+//            return Objects.deepEquals(declareds, module.declareds);
         }
 
         @Override
