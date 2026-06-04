@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // best tests ever
 public class BoolTests {
-    private static final Context context = new Context(RtEnv.unspecified, Scope.eternal());
+    private static final Context context = new Context(Main.rtEnv, Scope.eternal());
     private static final Val b = BoolFw._true;
 
     @Test
