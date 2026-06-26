@@ -157,8 +157,8 @@ public class ToExprFn {
             return ExprFw.wrap(ExprList.of(BracketsTypes.braces));
         }
         return ExprFw.wrap(ExprList.of(BracketsTypes.braces,
-//                arg.type().asVal().toExpr(context)
-                Symbol.of(arg.toString())
+                arg.type().asVal().toExpr(context)
+//                Symbol.of(arg.toString())
         ));
     });
 }

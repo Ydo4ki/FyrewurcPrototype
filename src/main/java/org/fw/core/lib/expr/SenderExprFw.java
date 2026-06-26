@@ -1,6 +1,6 @@
 package org.fw.core.lib.expr;
 
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.base.Call;
 import org.fw.core.base.Type;

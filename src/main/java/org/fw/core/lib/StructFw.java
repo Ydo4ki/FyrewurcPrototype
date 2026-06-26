@@ -1,7 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -106,6 +106,18 @@ public final class StructFw {
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
     }
 
+    public static Type struct(Val... fields) {
+        for (Val value : fields) {
+            if (!value.type().equals(DeclarationFw.declaration))
+                throw new IllegalArgumentException(value.toString());
+        }
+        return Val.of(StructFw.struct, new Struct(fields)).asType();
+    }
+
+    public static Val instance(Type struct, Val... values) {
+        return Val.of(struct, values);
+    }
+
     private static final class Struct {
         private final Val[] fields;
 
@@ -145,7 +157,7 @@ public final class StructFw {
             Val instance = Call.getVal(arg, context);
             arg = Call.getArg(arg, context);
             StructBuilder payload = instance._unpack();
-            Val[] values = DVecFw.appended(payload.progress, arg);
+            Val[] values = DVecFw.arAppended(payload.progress, arg);
             if (values.length == payload.struct.fields.length) {
                 return Val.of(payload.sameStructButItsAVal.asType(), values);
             }

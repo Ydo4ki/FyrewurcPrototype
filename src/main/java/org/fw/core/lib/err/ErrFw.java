@@ -1,6 +1,6 @@
 package org.fw.core.lib.err;
 
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.Main;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;

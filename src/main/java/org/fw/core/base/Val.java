@@ -1,6 +1,6 @@
 package org.fw.core.base;
 
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;

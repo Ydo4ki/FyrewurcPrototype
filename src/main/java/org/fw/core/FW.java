@@ -5,6 +5,8 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.TelephonistType;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.util.FwUtils;
+import org.fw.core.util.LazyObj;
 import org.fw.core.vit.Vit;
 
 import java.util.function.Supplier;

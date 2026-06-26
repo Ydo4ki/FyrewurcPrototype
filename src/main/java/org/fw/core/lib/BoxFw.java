@@ -1,7 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;

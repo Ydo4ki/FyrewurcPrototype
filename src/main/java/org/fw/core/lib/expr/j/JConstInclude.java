@@ -1,7 +1,7 @@
 package org.fw.core.lib.expr.j;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;

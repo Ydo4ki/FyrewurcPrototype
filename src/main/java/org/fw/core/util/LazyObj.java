@@ -1,4 +1,4 @@
-package org.fw.core;
+package org.fw.core.util;
 
 import java.util.function.Supplier;
 

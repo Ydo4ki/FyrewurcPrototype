@@ -1,7 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;

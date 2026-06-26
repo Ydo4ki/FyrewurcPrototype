@@ -1,5 +1,6 @@
-package org.fw.core;
+package org.fw.core.util;
 
+import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
@@ -11,6 +12,8 @@ import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.state.obj.Scope;
+import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.io.File;
@@ -52,6 +55,22 @@ public final class FwUtils {
             return val.type().equals(type);
         }
         return false;
+    }
+
+    public static Val getValueFromFile(File file, CompEnv compEnv) throws IOException {
+        return Scope.performAndDie(null, s -> {
+            try {
+                return getValueFromFile(file, compEnv, new Context(RtEnv.unspecified, s));
+            } catch (IOException e) {
+                sneakyThrow(e);
+                return null;
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Throwable> void sneakyThrow(Throwable t) throws T {
+        throw (T) t;
     }
 
     public static Val getValueFromFile(File file, CompEnv compEnv, Context context) throws IOException {

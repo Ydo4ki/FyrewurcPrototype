@@ -1,7 +1,7 @@
 package org.fw.core.lib.constraint;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Call;
@@ -45,6 +45,14 @@ public final class ConstraintFw {
             return ConstraintFw.constraintBuilder.call(a, context).call(b, context);
         });
     });
+
+    public static Val toConstraint(Val val) {
+        return to_constraint.call(val, Context.blank);
+    }
+
+    public static Val toConstraint(Type type) {
+        return to_constraint.call(type.asVal(), Context.blank);
+    }
 
     @Insightful
     public static final Val at = FW.telephonist("@", (arg, context) -> {

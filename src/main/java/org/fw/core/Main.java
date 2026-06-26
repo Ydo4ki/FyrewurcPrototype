@@ -14,6 +14,7 @@ import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.lib.state.OperationFw;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
 import org.fw.core.state.operation.Operation;
+import org.fw.core.util.FwUtils;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
@@ -24,6 +25,7 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.lib.ValsFw.eq;
 import static org.fw.core.vit.Vit.*;
 
+@Deprecated
 public class Main {
 
     public static final RtEnv rtEnv = RtEnv.of(ModuleFw.module(

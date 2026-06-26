@@ -1,7 +1,7 @@
 package org.fw.core.lib.state;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.base.Call;
 import org.fw.core.base.Context;

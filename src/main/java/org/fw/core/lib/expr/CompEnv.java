@@ -1,7 +1,7 @@
 package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.adapter.AbstractValAdapted;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Call;

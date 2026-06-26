@@ -1,7 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -18,7 +18,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
@@ -91,7 +90,7 @@ public final class ModuleFw {
         return ExprFw.wrap(arg._unpack(ModuleFw.Module.class).toExpr(context));
     }
 
-    // todo: replace this with map idk
+    // todo: replace with map, order shouldn't matter
     private static final class Module {
         private final Val[] declareds;
 

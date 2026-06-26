@@ -1,7 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.base.Call;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;
@@ -54,7 +54,7 @@ public final class DVecFw {
             Val cArg = Call.getArg(arg, context);
             Val[] value = instance._unpack();
 
-            return Val.of(DVecFw.dVecBuilder, appended(value, cArg));
+            return Val.of(DVecFw.dVecBuilder, arAppended(value, cArg));
         }
         return Val.unspecified;
     }).asType();
@@ -68,7 +68,7 @@ public final class DVecFw {
 
     public static final Val emptyBuilder = Val.of(DVecFw.dVecBuilder, new Val[0]);
 
-    public static Val[] appended(Val[] value, Val arg) {
+    static Val[] arAppended(Val[] value, Val arg) {
         int i = value.length;
         value = Arrays.copyOf(value, i + 1);
         value[i] = arg;

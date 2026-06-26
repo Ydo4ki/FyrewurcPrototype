@@ -1,6 +1,6 @@
 package org.fw.core.vit;
 
-import org.fw.core.FwUtils;
+import org.fw.core.util.FwUtils;
 import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.Obj;
