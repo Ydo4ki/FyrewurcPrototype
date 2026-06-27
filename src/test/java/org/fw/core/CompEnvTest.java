@@ -13,7 +13,6 @@ import org.fw.core.lib.DeclaredFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.comp.InternalSystemContext;
-import org.fw.core.lib.comp.ParseDIntCEnvFw;
 import org.fw.core.lib.expr.AccumulatorsExprFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
@@ -81,7 +80,7 @@ class CompEnvTest {
 
         Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next();
 
-        CompEnv env = CompEnv.of(CompEnv.compEnv(ParseDIntCEnvFw.parseNumCenv, Val.unspecified, context));
+        CompEnv env = CompEnv.of(CompEnv.compEnv(DIntFw.ParseDIntCEnvFw.parseNumCenv, Val.unspecified, context));
         Vit vit = env.compile(expr, context);
         Val vv = vit == null ? Val.unspecified : VitFw.wrap(vit);
 //        System.out.println(vv.toExpr(context));
