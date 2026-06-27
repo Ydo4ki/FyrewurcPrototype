@@ -1,6 +1,59 @@
 {
+    esast {
+        Symbol
+        ExprList
+    }
+    vit {
+        VitVal
+        VitVar
+        VitCall
+        VitInvoke
+    }
+    get-type
+
     string {
         Str
-        
+        parseStrCEnv
     }
+    dint {
+        DInt
+        parseDIntCEnv
+    }
+    dvec {
+        DVec
+        DVecBuilder
+        dvecbf
+    }
+    bool {
+        Bool
+        true
+        false
+        eq
+    }
+    operation {
+
+    }
+
+    Declaration
+    Declared
+
+    BoxType
+    Enum
+    Module
+    Struct
+    Trait
 }
+
+
+
+default CEnv stack:
+
+dotGettersCEnv
+parseDIntCEnv
+//invokeFuncCEnv
+dVecConstructorCEnv
+parseStrCEnv
+currentCompEnvCEnv
+
+
+

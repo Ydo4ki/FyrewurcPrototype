@@ -9,7 +9,7 @@ import org.fw.core.lib.*;
 import org.fw.core.lib.comp.DVecConstructorCEnvFw;
 import org.fw.core.lib.comp.InvokeFuncCEnvFw;
 import org.fw.core.lib.comp.ModuleCEnvFw;
-import org.fw.core.lib.comp.ParseNumCEnvFw;
+import org.fw.core.lib.comp.ParseDIntCEnvFw;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ToExprFn;
@@ -60,7 +60,7 @@ public class LocSerial {
             ModuleCEnvFw.compEnv(module),
             InvokeFuncCEnvFw.invokeFuncCenv,
             DVecConstructorCEnvFw.dVecConstructorCenv,
-            ParseNumCEnvFw.parseNumCenv
+            ParseDIntCEnvFw.parseNumCenv
     ));
 
     public static GameLoc[] loadLocations(File file) throws IOException {

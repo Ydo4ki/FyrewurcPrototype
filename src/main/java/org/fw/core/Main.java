@@ -10,6 +10,7 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.*;
 import org.fw.core.lib.comp.*;
 import org.fw.core.lib.expr.CompEnv;
+import org.fw.core.lib.expr.ExprGetFw;
 import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.lib.state.OperationFw;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
@@ -34,12 +35,12 @@ public class Main {
     private static final Context context = new Context(rtEnv, InternalSystemContext.context.scope());
 
     public static final CompEnv internalCompEnv = CompEnv.of(CompEnv.compEnv(context,
-            DotGettersCEnvFw.cenv,
+            ExprGetFw.DotGettersCEnvFw.cenv,
             InternalSymbolMapCEnvFw.valsCenv,
-            ParseNumCEnvFw.parseNumCenv,
+            DIntFw.ParseDIntCEnvFw.parseNumCenv,
             InvokeFuncCEnvFw.invokeFuncCenv,
-            DVecConstructorCEnvFw.dVecConstructorCenv,
-            ParseStrCEnvFw.parseStrCenv,
+            DVecFw.DVecConstructorCEnvFw.dVecConstructorCenv,
+            StrFw.ParseStrCEnvFw.parseStrCenv,
             CurrentCompEnvCEnvFw.currentCompEnvCenv
     ));
 
@@ -50,8 +51,8 @@ public class Main {
     static {
         try {
             publicModule = FwUtils.getValueFromFile(new File("int/base.fw"), internalCompEnv, context);
-            publicCompEnv = CompEnv.of(CompEnv.compEnv(context, ModuleCEnvFw.compEnv(publicModule), ParseNumCEnvFw.parseNumCenv, InvokeFuncCEnvFw.invokeFuncCenv, DotGettersCEnvFw.cenv,
-                    DVecConstructorCEnvFw.dVecConstructorCenv, ParseStrCEnvFw.parseStrCenv, CurrentCompEnvCEnvFw.currentCompEnvCenv));
+            publicCompEnv = CompEnv.of(CompEnv.compEnv(context, ModuleFw.ModuleCEnvFw.compEnv(publicModule), DIntFw.ParseDIntCEnvFw.parseNumCenv, InvokeFuncCEnvFw.invokeFuncCenv, ExprGetFw.DotGettersCEnvFw.cenv,
+                    DVecFw.DVecConstructorCEnvFw.dVecConstructorCenv, StrFw.ParseStrCEnvFw.parseStrCenv, CurrentCompEnvCEnvFw.currentCompEnvCenv));
 
             CompEnv env = CompEnv.of(CompEnv.compEnv(context, Main.publicCompEnv.asVal(), InternalSymbolMapCEnvFw.valsCenv));
 //            runtime = FwUtils.getValueFromFile(new File("int/runtime.fw"), CompEnv.of(CompEnv.compEnv(context, internalCompEnv.asVal(), ModuleCEnvFw.compEnv(publicModule))), context);

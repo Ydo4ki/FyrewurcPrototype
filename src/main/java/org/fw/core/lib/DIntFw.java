@@ -10,10 +10,12 @@ import org.fw.core.base.Call;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
 
 import static org.fw.core.FW.symbol;
+import static org.fw.core.vit.Vit.val;
 
 public final class DIntFw {
     public static final Type dint = FW.telephonist("DInt", (arg, context) -> {
@@ -90,5 +92,12 @@ public final class DIntFw {
 
     public static BigInteger unwrap0(Val dint) {
         return dint._unpack();
+    }
+
+    public static final class ParseDIntCEnvFw {
+        public static final Val parseNumCenv = StrFw.ParseStrCEnvFw.symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {
+            return Vit.val(dint.asVal()).call(symbol("parse")).call(arg1.call(symbol("value"), context1))
+                    .eval(context1);
+        })));
     }
 }

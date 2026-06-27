@@ -1,12 +1,18 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.ast.BracketsTypes;
+import org.fw.core.ast.Expr;
+import org.fw.core.ast.ExprList;
+import org.fw.core.lib.expr.CompEnv;
+import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.Call;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -87,5 +93,37 @@ public final class DVecFw {
             b = b.call(val, context);
         }
         return DVecFw.dvecbf.call(b, context);
+    }
+
+    public static final class DVecConstructorCEnvFw {
+        public static final Val dVecConstructorCenv = telephonist(() -> "dVecConstructorCenv", (arg, context) -> {
+            if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+                Val exprVal = arg.call(symbol("expr"), context);
+                Val compEnv = arg.call(symbol("comp-env"), context);
+                Expr expr = exprVal._unpack();
+                if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.square)) {
+                    ExprList list = (ExprList) expr;
+                    if (list.size() == 0)
+                        return VitFw.wrap(Vit.val(dvecbf.call(emptyBuilder, context)));
+
+                    Vit ctor = Vit.val(emptyBuilder);
+                    for (int i = 0; i < list.size(); i++) {
+                        Expr f = list.get(i);
+                        Val elVitVal = CompEnv.of(compEnv).compileV(ExprFw.wrap(f), context);
+                        if (!VitFw.isVit(elVitVal.type()))
+                            return elVitVal;
+
+                        Vit vit = VitFw.unwrap(elVitVal);
+                        assert vit != null;
+                        ctor = ctor.call(Vit.simplify(vit, context));
+                    }
+
+                    ctor = Vit.val(dvecbf).call(ctor);
+
+                    return VitFw.wrap(ctor);
+                }
+            }
+            return Val.unspecified;
+        });
     }
 }

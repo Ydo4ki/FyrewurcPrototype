@@ -114,8 +114,8 @@ public final class DeclarationFw {
         }
 
         public Expr toExpr(Context context) {
-                return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(context), constraint.toExpr(context));
-            }
+            return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(context), constraint.toExpr(context));
+        }
 
         public Val key() {
             return key;
@@ -145,6 +145,5 @@ public final class DeclarationFw {
                     "key=" + key + ", " +
                     "constraint=" + constraint + ']';
         }
-
-        }
+    }
 }
