@@ -1,7 +1,5 @@
 (: jincludeval (jval "core.lib.expr.j.JConstInclude" "constInclude"))
 
-(: get (jval "core.lib.expr.ExprGetFw" "get"))
-
 (: ExprAccumulator (jval "core.lib.expr.AccumulatorsExprFw" "exprAccumulator"))
 (: ExprSender (jval "core.lib.expr.SenderExprFw" "exprSender"))
 (: ExprOperator (jval "core.lib.expr.OperatorExprFw" "exprOperator"))
@@ -282,8 +280,6 @@ function {
     (: and and)
     (: or or)
     (: xor xor)
-
-    (: get get)
 
     (: operation operation)
 

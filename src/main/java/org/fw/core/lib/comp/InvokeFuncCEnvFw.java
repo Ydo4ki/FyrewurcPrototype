@@ -18,6 +18,8 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class InvokeFuncCEnvFw {
+
+    @Deprecated // todo: think of something better than that
     public static final Val invokeFuncCenv = telephonist("invokeFuncCenv", (arg, context) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"), context);
