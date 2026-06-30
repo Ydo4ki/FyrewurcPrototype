@@ -35,6 +35,7 @@ public class Main {
     private static final Context context = new Context(rtEnv, InternalSystemContext.context.scope());
 
     public static final CompEnv internalCompEnv = CompEnv.of(CompEnv.compEnv(context,
+            VitFw.directivesCenv.asVal(),
             ExprGetFw.DotGettersCEnvFw.cenv,
             InternalSymbolMapCEnvFw.valsCenv,
             DIntFw.ParseDIntCEnvFw.parseNumCenv,
@@ -51,7 +52,9 @@ public class Main {
     static {
         try {
             publicModule = FwUtils.getValueFromFile(new File("int/base.fw"), internalCompEnv, context);
-            publicCompEnv = CompEnv.of(CompEnv.compEnv(context, ModuleFw.ModuleCEnvFw.compEnv(publicModule), DIntFw.ParseDIntCEnvFw.parseNumCenv, InvokeFuncCEnvFw.invokeFuncCenv, ExprGetFw.DotGettersCEnvFw.cenv,
+            publicCompEnv = CompEnv.of(CompEnv.compEnv(context, ModuleFw.ModuleCEnvFw.compEnv(publicModule),
+                    VitFw.directivesCenv.asVal(),
+                    DIntFw.ParseDIntCEnvFw.parseNumCenv, InvokeFuncCEnvFw.invokeFuncCenv, ExprGetFw.DotGettersCEnvFw.cenv,
                     DVecFw.DVecConstructorCEnvFw.dVecConstructorCenv, StrFw.ParseStrCEnvFw.parseStrCenv, CurrentCompEnvCEnvFw.currentCompEnvCenv));
 
             CompEnv env = CompEnv.of(CompEnv.compEnv(context, Main.publicCompEnv.asVal(), InternalSymbolMapCEnvFw.valsCenv));

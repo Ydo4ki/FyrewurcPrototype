@@ -1,9 +1,5 @@
 (: jincludeval (jval "core.lib.expr.j.JConstInclude" "constInclude"))
 
-(: call (jval "core.lib.expr.ExprCallFw" "call"))
-(: var (jval "core.lib.expr.ExprVarFw" "var"))
-(: invoke! (jval "core.lib.expr.ExprInvokeFw" "invoke"))
-
 (: get (jval "core.lib.expr.ExprGetFw" "get"))
 
 (: ExprAccumulator (jval "core.lib.expr.AccumulatorsExprFw" "exprAccumulator"))
@@ -287,10 +283,7 @@ function {
     (: or or)
     (: xor xor)
 
-    (: var var)
-    (: call call)
     (: get get)
-    (: invoke! invoke!)
 
     (: operation operation)
 

@@ -1,6 +1,10 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.ast.BracketsTypes;
+import org.fw.core.ast.ExprList;
+import org.fw.core.ast.Symbol;
+import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Context;
@@ -228,4 +232,56 @@ public final class VitFw {
         }
         return null;
     }
+
+
+    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg, context) -> {
+        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+            Val exprVal = arg.call(symbol("expr"), context);
+            Val compEnv = arg.call(symbol("comp-env"), context);
+            Expr expr = exprVal._unpack();
+            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
+                Expr f = ((ExprList) expr).get(0);
+                int isize = ((ExprList) expr).size();
+                if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
+                    case "var": {
+                        if (isize != 1) {
+                            return Val.unspecified;
+                        }
+                        return VitFw.wrap(Vit.var);
+                    }
+                    case "call": {
+                        if (isize == 1) {
+                            return Val.unspecified;
+                        }
+                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        if (!VitFw.isVit(retVit.type()))
+                            return retVit; // compile error idk
+
+                        for (int i = 1; i < (isize - 1); i++) {
+                            Val argNVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i + 1), context)._unpack(), CompEnv.of(compEnv)), context);
+                            if (!VitFw.isVit(argNVit.type()))
+                                return argNVit; // compile error idk
+
+                            retVit = VitFw.wrap(VitFw.unwrap(retVit).call(VitFw.unwrap(argNVit)));
+                        }
+                        return retVit;
+                    }
+                    case "invoke!": {
+                        if (isize != 2) {
+                            return Val.unspecified;
+                        }
+
+                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        if (!VitFw.isVit(retVit.type()))
+                            return retVit; // compile error idk
+
+                        Vit vit = Vit.simplify(VitFw.unwrap(retVit), context);
+
+                        return VitFw.wrap(Vit.invoke(vit));
+                    }
+                }
+            }
+        }
+        return Val.unspecified;
+    }));
 }
