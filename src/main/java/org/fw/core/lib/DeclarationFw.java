@@ -41,7 +41,7 @@ public final class DeclarationFw {
             if (!VitFw.isVit(value.type())) return value; // error idk
 
             return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(name)
-                    .call(Vit.call(ConstraintFw.to_constraint, VitFw.unwrap(value))));
+                    .call(Vit.call(ConstraintFw.to_constraint, VitFw.unwrap0(value))));
         }
         return Val.unspecified;
     });
@@ -72,9 +72,10 @@ public final class DeclarationFw {
                 return name; // error idk
 
             Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
-            if (!VitFw.isVit(value.type())) return value; // error idk
+            if (!VitFw.isVit(value.type()))
+                return value; // error idk
 
-            return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(VitFw.unwrap(name)).call(VitFw.unwrap(value)));
+            return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(VitFw.unwrap0(name)).call(VitFw.unwrap0(value)));
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Declaration.builder", (key, context1) -> {
                 return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint, context2) -> {

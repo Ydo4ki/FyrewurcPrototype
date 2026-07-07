@@ -40,7 +40,7 @@ public final class SenderExprFw {
             Val argNVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(argNVit.type()))
                 return argNVit; // compile error idk
-            Vit argVit = VitFw.unwrap(argNVit);
+            Vit argVit = VitFw.unwrap0(argNVit);
 
             assert argVit != null;
             return VitFw.wrap(argVit.call(operator));
@@ -56,7 +56,7 @@ public final class SenderExprFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Vit v = Vit.val(SenderExprFw.exprSender.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit));
+            Vit v = Vit.val(SenderExprFw.exprSender.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit));
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
             return telephonist(SenderExprFw.exprSender.asVal().toExpr(context) + ".constructor", (argument, c) -> {

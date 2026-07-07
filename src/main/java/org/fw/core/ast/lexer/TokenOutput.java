@@ -3,13 +3,27 @@ package org.fw.core.ast.lexer;
 import org.fw.core.ast.BracketsType;
 import org.fw.core.ast.BracketsTypes;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 public final class TokenOutput implements Iterable<Token> {
+
+	public static TokenOutput valueOf(InputStream in) {
+		return new TokenOutput(readStream(in), null, BracketsTypes.bracketsTypes);
+	}
+
+	// todo: add support for infinite streams
+	private static String readStream(InputStream inputStream) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+			return reader.lines().collect(Collectors.joining("\n"));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
 	private final String source;
 	private final File file;

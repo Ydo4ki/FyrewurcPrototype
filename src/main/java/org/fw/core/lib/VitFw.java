@@ -47,7 +47,11 @@ public final class VitFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            try {
+                return VitFw.wrap(Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
         }
         return Val.unspecified;
     })).asType();
@@ -80,7 +84,11 @@ public final class VitFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(VitFw.vitInvoke.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            try {
+                return VitFw.wrap(Vit.val(VitFw.vitInvoke.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
         }
         return Val.unspecified;
     })).asType();
@@ -119,48 +127,56 @@ public final class VitFw {
                 return Val.unspecified;
         }
     }, (arg1, context1) -> {
-        if (arg1.equals(symbol("builder"))) {
-            return telephonist(repr, (func, context) -> {
-                if (!isVit(func.type())) {
-                    return Val.unspecified;
-                }
-
-                return telephonist(() -> "(call " + repr + " " + func.toExpr(context) + ")", (arg, context2) -> {
-                    if (!isVit(arg.type())) {
+        try {
+            if (arg1.equals(symbol("builder"))) {
+                return telephonist(repr, (func, context) -> {
+                    if (!isVit(func.type())) {
                         return Val.unspecified;
                     }
-                    return wrap(Vit.call(unwrap(func), unwrap(arg)));
+
+                    return telephonist(() -> "(call " + repr + " " + func.toExpr(context) + ")", (arg, context2) -> {
+                        if (!isVit(arg.type())) {
+                            return Val.unspecified;
+                        }
+                        try {
+                            return wrap(Vit.call(unwrap(func), unwrap(arg)));
+                        } catch (VitCompilationException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                 });
-            });
-        } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg1.call(symbol("size"), context1);
-            Val cEnv = arg1.call(symbol("comp-env"), context1);
-            int isize = size._unpack(BigInteger.class).intValue();
-            if (isize < 2) return Val.unspecified;
+            } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
+                Val size = arg1.call(symbol("size"), context1);
+                Val cEnv = arg1.call(symbol("comp-env"), context1);
+                int isize = size._unpack(BigInteger.class).intValue();
+                if (isize < 2) return Val.unspecified;
 
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg1.call(DIntFw.dint(0), context1)._unpack(), CompEnv.of(cEnv)), context1);
-            if (!VitFw.isVit(retVit.type()))
-                return retVit; // compile error idk
+                Val retVit = cEnv.call(CompEnv.syntaxResolve(arg1.call(DIntFw.dint(0), context1)._unpack(), CompEnv.of(cEnv)), context1);
+                if (!VitFw.isVit(retVit.type()))
+                    return retVit; // compile error idk
 
-            Val retVit2 = cEnv.call(CompEnv.syntaxResolve(arg1.call(DIntFw.dint(1), context1)._unpack(), CompEnv.of(cEnv)), context1);
-            if (!VitFw.isVit(retVit2.type()))
-                return retVit2; // compile error idk
+                Val retVit2 = cEnv.call(CompEnv.syntaxResolve(arg1.call(DIntFw.dint(1), context1)._unpack(), CompEnv.of(cEnv)), context1);
+                if (!VitFw.isVit(retVit2.type()))
+                    return retVit2; // compile error idk
 
-            Vit vit = Vit.val(VitFw.vitCall.asVal()).call(symbol("builder"))
-                    .call(VitFw.unwrap(retVit))
-                    .call(VitFw.unwrap(retVit2));
+                Vit vit = Vit.val(VitFw.vitCall.asVal()).call(symbol("builder"))
+                        .call(VitFw.unwrap(retVit))
+                        .call(VitFw.unwrap(retVit2));
 
-            for (int i = 2; i < isize; i++) {
-                Val retVitN = cEnv.call(CompEnv.syntaxResolve(arg1.call(DIntFw.dint(i), context1)._unpack(), CompEnv.of(cEnv)), context1);
-                if (!VitFw.isVit(retVitN.type()))
-                    return retVitN; // compile error idk
+                for (int i = 2; i < isize; i++) {
+                    Val retVitN = cEnv.call(CompEnv.syntaxResolve(arg1.call(DIntFw.dint(i), context1)._unpack(), CompEnv.of(cEnv)), context1);
+                    if (!VitFw.isVit(retVitN.type()))
+                        return retVitN; // compile error idk
 
-                vit = Vit.val(VitFw.vitCall.asVal()).call(symbol("builder"))
-                        .call(vit)
-                        .call(VitFw.unwrap(retVitN));
+                    vit = Vit.val(VitFw.vitCall.asVal()).call(symbol("builder"))
+                            .call(vit)
+                            .call(VitFw.unwrap(retVitN));
+                }
+
+                return VitFw.wrap(vit);
             }
-
-            return VitFw.wrap(vit);
+        } catch (VitCompilationException e) {
+            throw new RuntimeException(e);
         }
         return Val.unspecified;
     })).asType();
@@ -221,7 +237,20 @@ public final class VitFw {
         throw new IllegalStateException("Unknown Vit implementation: " + vit.getClass());
     }
 
-    public static Vit unwrap(Val vit) {
+    public static Vit unwrap(Val vit) throws VitCompilationException {
+        if (
+                vit.type().equals(vitVal)
+                        || vit.type().equals(vitVar)
+                        || vit.type().equals(vitCall)
+                        || vit.type().equals(vitInvoke)
+        ) {
+            return vit._unpack();
+        }
+        throw new VitCompilationException(vit);
+    }
+
+    @Deprecated // nafiga you did this, _unpack exists, its just one function spodifoisdfoiusiodfuiu
+    public static Vit unwrap0(Val vit) {
         if (
                 vit.type().equals(vitVal)
                         || vit.type().equals(vitVar)
@@ -262,7 +291,11 @@ public final class VitFw {
                             if (!VitFw.isVit(argNVit.type()))
                                 return argNVit; // compile error idk
 
-                            retVit = VitFw.wrap(VitFw.unwrap(retVit).call(VitFw.unwrap(argNVit)));
+                            try {
+                                retVit = VitFw.wrap(VitFw.unwrap(retVit).call(VitFw.unwrap(argNVit)));
+                            } catch (VitCompilationException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                         return retVit;
                     }
@@ -275,7 +308,12 @@ public final class VitFw {
                         if (!VitFw.isVit(retVit.type()))
                             return retVit; // compile error idk
 
-                        Vit vit = Vit.simplify(VitFw.unwrap(retVit), context);
+                        Vit vit = null;
+                        try {
+                            vit = Vit.simplify(VitFw.unwrap(retVit), context);
+                        } catch (VitCompilationException e) {
+                            throw new RuntimeException(e);
+                        }
 
                         return VitFw.wrap(Vit.invoke(vit));
                     }

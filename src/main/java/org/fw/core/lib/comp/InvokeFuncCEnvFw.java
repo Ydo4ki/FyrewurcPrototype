@@ -12,6 +12,7 @@ import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.lib.state.OperationFw;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 import org.fw.core.vit.VitVal;
 
 import static org.fw.core.FW.symbol;
@@ -27,9 +28,12 @@ public final class InvokeFuncCEnvFw {
             Expr expr = exprVal._unpack();
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
-                Vit func = CompEnv.of(compEnv).compile(ExprFw.wrap(f), context);
-                if (func == null)
+                Vit func = null;
+                try {
+                    func = CompEnv.of(compEnv).compile(ExprFw.wrap(f), context);
+                } catch (VitCompilationException e) {
                     return Val.unspecified;
+                }
 
                 func = Vit.simplify(func, context);
 

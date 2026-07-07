@@ -1,5 +1,6 @@
 package org.fw.core.lib.expr;
 
+import org.fw.core.FW;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.Call;
 import org.fw.core.base.Type;
@@ -7,6 +8,7 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import java.math.BigInteger;
 
@@ -38,7 +40,12 @@ public final class OperatorExprFw {
             Val argNVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(argNVit.type()))
                 return argNVit; // compile error idk
-            Vit argVit = VitFw.unwrap(argNVit);
+            Vit argVit = null;
+            try {
+                argVit = VitFw.unwrap(argNVit);
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
 
             assert argVit != null;
             return VitFw.wrap(Vit.val(operator).call(argVit));
@@ -54,7 +61,12 @@ public final class OperatorExprFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Vit v = Vit.val(OperatorExprFw.exprOperator.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit));
+            Vit v = null;
+            try {
+                v = Vit.val(OperatorExprFw.exprOperator.asVal()).call(FW.symbol("constructor")).call(VitFw.unwrap(retVit));
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
             return telephonist(OperatorExprFw.exprOperator.asVal().toExpr(context) + ".constructor", (argument, c) -> {

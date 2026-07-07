@@ -39,7 +39,7 @@ public final class AccumulatorsExprFw {
                 Val argNVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(cEnv)), context);
                 if (!VitFw.isVit(argNVit.type()))
                     return argNVit; // compile error idk
-                Vit argVit = VitFw.unwrap(argNVit);
+                Vit argVit = VitFw.unwrap0(argNVit);
 
                 if (ret == null) ret = argVit;
                 else ret = ret.call(operator).call(argVit);
@@ -58,7 +58,7 @@ public final class AccumulatorsExprFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Vit v = Vit.val(AccumulatorsExprFw.exprAccumulator.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit));
+            Vit v = Vit.val(AccumulatorsExprFw.exprAccumulator.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit));
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
             return telephonist(AccumulatorsExprFw.exprAccumulator.asVal().toExpr(context) + ".constructor", (argument, c) -> {

@@ -1,6 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -100,4 +101,12 @@ public final class DIntFw {
                     .eval(context1);
         })));
     }
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.blank,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("DInt"), DIntFw.dint.asVal()),
+                    DeclaredFw.declared(symbol("parseDIntCEnv"), ParseDIntCEnvFw.parseNumCenv)
+            )),
+            ParseDIntCEnvFw.parseNumCenv
+    ));
 }

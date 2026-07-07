@@ -14,6 +14,7 @@ import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -49,7 +50,11 @@ public final class StructFw {
                     if (!VitFw.isVit(retVit.type()))
                         return retVit; // compile error idk
 
-                    ctor = ctor.call(VitFw.unwrap(retVit));
+                    try {
+                        ctor = ctor.call(VitFw.unwrap(retVit));
+                    } catch (VitCompilationException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
                 return VitFw.wrap(ctor);
@@ -68,7 +73,11 @@ public final class StructFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(StructFw.struct.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            try {
+                return VitFw.wrap(Vit.val(StructFw.struct.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Struct.constructor", (payload, context1) -> {
                 if (!payload.type().equals(DVecFw.dVec))

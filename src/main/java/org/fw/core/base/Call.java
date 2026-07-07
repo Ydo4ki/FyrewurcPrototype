@@ -37,21 +37,19 @@ public final class Call {
             if (!VitFw.isVit(arg0Vit.type()))
                 return arg0Vit; // compile error idk
 
-            retVit = retVit.call(VitFw.unwrap(arg0Vit));
+            retVit = retVit.call(VitFw.unwrap0(arg0Vit));
 
             Val arg1Vit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(arg1Vit.type()))
                 return arg1Vit; // compile error idk
 
-            retVit = retVit.call(VitFw.unwrap(arg1Vit));
+            retVit = retVit.call(VitFw.unwrap0(arg1Vit));
 
             return VitFw.wrap(retVit);
         } else if (arg.equals(symbol("builder"))) {
-            return FW.telephonist("Call.builder", (func, context1) -> {
-                return FW.telephonist(() -> "(Call.builder " + func.toExpr(context1) + ")", (argument, context2) -> {
-                    return fwCall(func, argument);
-                });
-            });
+            return FW.telephonist("Call.builder",
+                    (func, context1) -> FW.telephonist(() -> "(Call.builder " + func.toExpr(context1) + ")",
+                            (argument, context2) -> fwCall(func, argument)));
         }
         return Val.unspecified;
     }).asType();

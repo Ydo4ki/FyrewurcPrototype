@@ -9,6 +9,7 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import java.math.BigInteger;
 
@@ -32,9 +33,12 @@ public final class ExprGetFw {
                 String origin = fullQualifier.substring(0, dotIndex);
                 String property = fullQualifier.substring(dotIndex + 1);
 
-                Vit first = CompEnv.of(compEnv).compile(symbol(origin), context);
-                if (first == null)
+                Vit first = null;
+                try {
+                    first = CompEnv.of(compEnv).compile(FW.symbol(origin), context);
+                } catch (VitCompilationException e) {
                     return Val.unspecified;
+                }
 
                 return VitFw.wrap(first.call(symbol(property)));
             } else if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
@@ -56,7 +60,7 @@ public final class ExprGetFw {
                         if (!property.type().equals(ExprFw.symbol))
                             return Val.unspecified; // not a compile error idk (actually it still is)
 
-                        retVit = VitFw.wrap(VitFw.unwrap(retVit).call(Vit.val(property)));
+                        retVit = VitFw.wrap(VitFw.unwrap0(retVit).call(Vit.val(property)));
                     }
 
                     return retVit;

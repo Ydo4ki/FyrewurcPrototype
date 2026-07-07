@@ -54,8 +54,8 @@ public final class SyntaxResolveFw {
                 return retVit2; // compile error idk
 
             Vit vit = Vit.val(SyntaxResolveFw.syntaxResolve.asVal()).call(symbol("builder"))
-                    .call(VitFw.unwrap(retVit))
-                    .call(VitFw.unwrap(retVit2));
+                    .call(VitFw.unwrap0(retVit))
+                    .call(VitFw.unwrap0(retVit2));
 
             return VitFw.wrap(vit);
         }

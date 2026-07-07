@@ -29,7 +29,7 @@ public final class DoFw {
                     return argNVit; // compile error idk
 
 //                ctor = ctor.call(OperationFw.wrap(Operation.vit(VitFw.unwrap(argNVit))));
-                ctor = ctor.call(VitFw.unwrap(argNVit));
+                ctor = ctor.call(VitFw.unwrap0(argNVit));
             }
 
             ctor = Vit.val(DVecFw.dvecbf).call(ctor);

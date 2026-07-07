@@ -2,15 +2,25 @@ package org.fw.core.ast.lexer;
 
 import org.fw.core.ast.*;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Sulphuris
  * @since 4/16/2025 7:50 PM
  */
 public final class ExprOutput implements Iterable<Expr> {
+
+	public static ExprOutput valueOf(InputStream in) {
+		return new ExprOutput(TokenOutput.valueOf(in));
+	}
+
 	private final Iterable<Token> tokenOutput;
 	private final BracketsTypes bracketsTypes;
 	

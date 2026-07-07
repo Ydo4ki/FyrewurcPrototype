@@ -41,7 +41,7 @@ public final class TelephonistConstructorFw {
             if (!VitFw.isVit(bodyVit.type()))
                 return bodyVit; // error probably
 
-            bodyVit = VitFw.wrap(Vit.simplify(VitFw.unwrap(bodyVit), context));
+            bodyVit = VitFw.wrap(Vit.simplify(VitFw.unwrap0(bodyVit), context));
 
             return VitFw.wrap(Vit.val(VitiateTelephonistFw.vitiateTelephonist.asVal()).call(symbol("builder")).call(bodyVit).call(varKey).call(Vit.var));
         }

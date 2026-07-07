@@ -18,6 +18,7 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +43,8 @@ public class Main {
             InvokeFuncCEnvFw.invokeFuncCenv,
             DVecFw.DVecConstructorCEnvFw.dVecConstructorCenv,
             StrFw.ParseStrCEnvFw.parseStrCenv,
-            CurrentCompEnvCEnvFw.currentCompEnvCenv
+            CurrentCompEnvCEnvFw.currentCompEnvCenv,
+            DeclaredFw.directivesCenv.asVal()
     ));
 
     public static final Val publicModule;
@@ -85,8 +87,10 @@ public class Main {
         try {
             Iterable<Expr> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
             for (Expr expr : expressions) {
-                Vit vit = env.compile(expr, context);
-                if (vit == null) {
+                Vit vit = null;
+                try {
+                    vit = env.compile(expr, context);
+                } catch (VitCompilationException e) {
                     System.err.println("Compile error: " + expr);
                     System.exit(-1);
                 }

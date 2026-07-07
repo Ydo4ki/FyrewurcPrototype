@@ -29,7 +29,7 @@ public final class JValConstGetter {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Vit nameVit = VitFw.unwrap(retVit);
+            Vit nameVit = VitFw.unwrap0(retVit);
             assert nameVit != null;
 
             Val nameVal = nameVit.eval(context);
@@ -42,7 +42,7 @@ public final class JValConstGetter {
             if (!VitFw.isVit(fretVit.type()))
                 return fretVit; // compile error idk
 
-            Vit fnameVit = VitFw.unwrap(fretVit);
+            Vit fnameVit = VitFw.unwrap0(fretVit);
             assert fnameVit != null;
 
             Val fnameVal = fnameVit.eval(context);

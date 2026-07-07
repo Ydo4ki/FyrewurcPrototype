@@ -35,7 +35,7 @@ public final class BoxFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(BoxFw.boxType.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            return VitFw.wrap(Vit.val(BoxFw.boxType.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit)));
         } else if (arg.equals(symbol("constructor"))) {
 //            return InstancerFw.mkInstancer(BoxFw.boxType, BoxFw.boxType.asVal(), "constructor");
             return FW.telephonist(ExprList.of(BracketsTypes.round,
@@ -62,7 +62,7 @@ public final class BoxFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(type.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            return VitFw.wrap(Vit.val(type.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit)));
         } else if (FwUtils.isTypeApiCall(arg, type, context)) {
             Val instance = Call.getVal(arg, context);
             Val cArg = Call.getArg(arg, context);

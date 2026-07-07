@@ -66,7 +66,7 @@ public final class ConstraintFw {
                     return retVit; // compile error idk
 
                 return VitFw.wrap(
-                        Vit.call(to_constraint, VitFw.unwrap(retVit))
+                        Vit.call(to_constraint, VitFw.unwrap0(retVit))
 //                        Vit.call(
 //                                Vit.call(ConstraintFw.constraintBuilder, VitFw.wrap(Vit.call(ValsFw.typeGet, Vit.var))),
 //                                retVit
@@ -83,7 +83,7 @@ public final class ConstraintFw {
         return FW.telephonist("Constraint.builderb", (arg2, context2) -> {
             if (!VitFw.isVit(arg2.type()))
                 return Val.unspecified;
-            return Val.of(ConstraintFw.constraint, new Constraint(VitFw.unwrap(arg1), VitFw.unwrap(arg2), arg1.equals(arg2)));
+            return Val.of(ConstraintFw.constraint, new Constraint(VitFw.unwrap0(arg1), VitFw.unwrap0(arg2), arg1.equals(arg2)));
         });
     });
 

@@ -6,6 +6,7 @@ import org.fw.core.base.Val;
 import org.fw.core.state.obj.Obj;
 
 // and object handle
+@Deprecated // todo: replace with laser pointer
 public final class StateHoleFw {
     // todo: custom stateholes using Obj.partOf()
     public static final Type statehole = FW.telephonist("Statehole", (arg, context) -> {

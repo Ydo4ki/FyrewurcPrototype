@@ -29,7 +29,7 @@ public final class InternalSymbolMapCEnvFw {
 
 //        valsMap.put("unspecified_call", UnspecifiedCallFw.unspecified_call.asVal());
 
-        valsMap.put(":", DeclaredFw.colon);
+//        valsMap.put(":", DeclaredFw.colon);
 
         valsMap.put("systime", Val.of(StateHoleFw.statehole, new ObjSystemTimeMillis(InternalSystemContext.context.scope())));
         valsMap.put("systimenano", Val.of(StateHoleFw.statehole, new ObjSystemTimeNano(InternalSystemContext.context.scope())));

@@ -45,7 +45,7 @@ public final class EnumFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(EnumFw.enumeration.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            return VitFw.wrap(Vit.val(EnumFw.enumeration.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit)));
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Enum.constructor", (payload, context1) -> {
                 if (!payload.type().equals(DVecFw.dVec))

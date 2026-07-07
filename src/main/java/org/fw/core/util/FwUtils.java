@@ -15,6 +15,7 @@ import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,15 +24,18 @@ import java.util.*;
 
 import static org.fw.core.vit.Vit.val;
 
+// todo: replace all java File with FwFiles or something like that so they won't be attached to the actual filesystem
 public final class FwUtils {
     private FwUtils() throws InstantiationException
         { throw new InstantiationException(); }
 
 
+    @Deprecated
     public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, TelephonistType.CallFunction orStatic) {
         return handleSymbols(arg, type, context, handler, (instance, arg1) -> Val.unspecified, orStatic);
     }
 
+    @Deprecated
     public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, NSHandler nonSymbolicHandler, TelephonistType.CallFunction orStatic) {
         if (isTypeApiCall(arg, type, context)) {
             Val instance = Call.getVal(arg, context);
@@ -94,9 +98,11 @@ public final class FwUtils {
         CompEnv env = CompEnv.of(CompEnv.compEnv(context, compEnv.asVal(), defined));
 
         for (Expr expr : expressions) {
-            Vit vit = env.compile(expr, context);
-            if (vit == null) {
-                throw new IOException("Cannot compile: " + expr);
+            Vit vit = null;
+            try {
+                vit = env.compile(expr, context);
+            } catch (VitCompilationException e) {
+                throw new RuntimeException("Cannot compile: " + expr, e);
             }
             result = vit.eval(context);
             if (result.type().equals(DeclaredFw.declared)) {

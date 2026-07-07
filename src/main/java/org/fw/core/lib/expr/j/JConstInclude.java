@@ -32,7 +32,7 @@ public final class JConstInclude {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Vit nameVit = VitFw.unwrap(retVit);
+            Vit nameVit = VitFw.unwrap0(retVit);
             assert nameVit != null;
 
             Val nameVal = nameVit.eval(context);

@@ -13,6 +13,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -113,8 +114,12 @@ public final class DVecFw {
                         if (!VitFw.isVit(elVitVal.type()))
                             return elVitVal;
 
-                        Vit vit = VitFw.unwrap(elVitVal);
-                        assert vit != null;
+                        Vit vit = null;
+                        try {
+                            vit = VitFw.unwrap(elVitVal);
+                        } catch (VitCompilationException e) {
+                            throw new RuntimeException(e);
+                        }
                         ctor = ctor.call(Vit.simplify(vit, context));
                     }
 

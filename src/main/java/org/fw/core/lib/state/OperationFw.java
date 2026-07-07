@@ -16,6 +16,7 @@ import org.fw.core.state.obj.Obj;
 import org.fw.core.state.operation.*;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import java.math.BigInteger;
 
@@ -61,7 +62,11 @@ public final class OperationFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(OperationFw.readOperation.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            try {
+                return VitFw.wrap(Vit.val(OperationFw.readOperation.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
         }
 //        else if (arg1.type().equals(ExprFw.toExpr)) {
 //            Val instance = BoxFw.unbox(arg1);
@@ -124,7 +129,11 @@ public final class OperationFw {
             if (!VitFw.isVit(writeValue.type()))
                 return writeValue; // compile error idk
 
-            return VitFw.wrap(Vit.val(OperationFw.writeOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(writeValue)));
+            try {
+                return VitFw.wrap(Vit.val(OperationFw.writeOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(writeValue)));
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
         }
 //        else if (arg1.type().equals(ExprFw.toExpr)) {
 //            Val instance = BoxFw.unbox(arg1);
@@ -163,7 +172,11 @@ public final class OperationFw {
             if (!VitFw.isVit(varVit.type()))
                 return varVit; // compile error idk
 
-            return VitFw.wrap(Vit.val(OperationFw.vitOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(varVit)));
+            try {
+                return VitFw.wrap(Vit.val(OperationFw.vitOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(varVit)));
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
+            }
         }
 //        else if (arg1.type().equals(ExprFw.toExpr)) {
 //            Val instance = BoxFw.unbox(arg1);
@@ -186,9 +199,12 @@ public final class OperationFw {
                 return Val.unspecified;
 
             Val expr = arg.call(DIntFw.dint(0), InternalSystemContext.context);
-            Vit vit = CompEnv.of(cEnv).compile(expr, context1);
-            if (vit == null)
+            Vit vit = null;
+            try {
+                vit = CompEnv.of(cEnv).compile(expr, context1);
+            } catch (VitCompilationException e) {
                 return Val.unspecified;
+            }
 //                return VitFw.wrap(Vit.val(OperationFw.wrap(Operation.vit(vit, context1))));
             vit = Vit.simplify(vit, context1);
             return VitFw.wrap(Vit.val(OperationFw.vitOperation.asVal()).call(symbol("builder")).call(VitFw.wrap(vit)).call(Vit.var));

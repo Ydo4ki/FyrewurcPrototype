@@ -10,6 +10,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCompilationException;
 
 import static org.fw.core.FW.symbol;
 
@@ -26,7 +27,7 @@ public final class CompEnv extends AbstractValAdapted {
         return compileV(ExprFw.wrap(expr), context);
     }
 
-    public Vit compile(Expr expr, Context context) {
+    public Vit compile(Expr expr, Context context) throws VitCompilationException {
         return compile(ExprFw.wrap(expr), context);
     }
 
@@ -35,7 +36,7 @@ public final class CompEnv extends AbstractValAdapted {
         return v;
     }
 
-    public Vit compile(Val expr, Context context) {
+    public Vit compile(Val expr, Context context) throws VitCompilationException {
         Val v = asVal().call(syntaxResolve(expr._unpack(), this), context);
         return VitFw.unwrap(v);
     }

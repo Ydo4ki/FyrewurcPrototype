@@ -49,7 +49,7 @@ public final class ModuleFw {
                 Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(cEnv)), context);
                 if (!VitFw.isVit(value.type()))
                     return value; // error idk
-                ctor = ctor.call(VitFw.unwrap(value));
+                ctor = ctor.call(VitFw.unwrap0(value));
             }
             ctor = Vit.val(DVecFw.dvecbf).call(ctor);
             ctor = Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(ctor); // ok nice
@@ -140,6 +140,9 @@ public final class ModuleFw {
 
     public static final class ModuleCEnvFw {
         public static final Type moduleCEnvFn = FW.telephonist("ModuleCEnvFn", (arg, context) -> {
+            if (arg.equals(symbol("constructor"))) {
+                return FW.telephonist((module, context1) -> compEnv(module));
+            }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCEnvFn, context)) {
                 Val instance = Call.getVal(arg, context);
                 arg = Call.getArg(arg, context);
