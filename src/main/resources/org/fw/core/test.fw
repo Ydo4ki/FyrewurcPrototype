@@ -28,5 +28,8 @@
            (compile-vit (var))
            (var)
        ) (symbol "fn-call") [0])
- 0
+
+ (: a 2)
+ (: b 1)
+ (call a (symbol "+") b)
 )

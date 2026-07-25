@@ -119,21 +119,69 @@ public class Main {
                         ));
                     }
                     case "do": {
-                        Vit execution = Vit.val(Val.of(unaryStoreType, Val.unspecified));
-                        for (int i = 0; i < isize - 1; i++) {
-                            Expr line = exprVal.call(DIntFw.dint(i + 1), context)._unpack();
-
-                            Val compiled = compEnv.call(CompEnv.syntaxResolve(line, CompEnv.of(compEnv)), context);
-                            execution = execution.call(compiled);
+                        try {
+                            return VitFw.wrap(compileDo(exprVal, 0, isize, compEnv, context));
+                        } catch (VitCompilationException e) {
+                            return e.getValue();
                         }
-                        Vit getLast = Vit.val(usLast).call(execution);
-                        return VitFw.wrap(getLast);
                     }
                 }
             }
         }
         return Val.unspecified;
     }));
+
+    private static Vit compileDo(Val exprVal, int start, int isize, Val compEnv, Context context) throws VitCompilationException {
+        Vit execution = Vit.val(Val.of(unaryStoreType, Val.unspecified));
+        for (int i = start; i < isize - 1; i++) {
+            Expr line = exprVal.call(DIntFw.dint(i + 1), context)._unpack();
+            if (line instanceof ExprList && ((ExprList) line).size() == 3 && ((ExprList) line).get(0).toString().equals(":")) {
+                if (i == isize - 2) break;
+
+                Expr nameE = ((ExprList) line).get(1);
+                if (!(nameE instanceof Symbol))
+                    throw new VitCompilationException(Val.unspecified); // syntax error: symbol expected
+                String name = ((Symbol) nameE).getValue();
+                Expr valueE = ((ExprList) line).get(2);
+                Vit valueV = VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv)), context));
+
+                // OK FINE
+                Val newRtGetter = FW.telephonist((oldRt, context1) -> FW.telephonist((varValue, context3) -> {
+                    return FW.telephonist((arg, context2) -> {
+                        if (arg.type().equals(ExprFw.symbol) && arg._unpack(Symbol.class).getValue().equals(name)) {
+                            return varValue;
+                        }
+                        return oldRt.call(arg, context2);
+                    });
+                }));
+                // this looks cryptic as hell
+                // still probably conceptually the best way to do this
+
+                Val newCompEnv = CompEnv.compEnv(context, compEnv, FW.telephonist((arg, context1) -> {
+                    if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+                        Val exprVal0 = arg.call(symbol("expr"), context);
+                        Expr expr = exprVal0._unpack();
+                        if (expr instanceof Symbol && ((Symbol) expr).getValue().equals(name)) {
+                            return VitFw.wrap(Vit.var.call(symbol(name)));
+                        }
+                    }
+                    return Val.unspecified;
+                }));
+
+                Vit rest = compileDo(exprVal, i + 1, isize, newCompEnv, context);
+
+                Vit evalRest = Vit.val(VitFw.evalVit).call(VitFw.wrap(rest)).call(Vit.call(newRtGetter, Vit.var).call(valueV));
+
+                execution = execution.call(evalRest);
+                break;
+            } else {
+                Val compiled = compEnv.call(CompEnv.syntaxResolve(line, CompEnv.of(compEnv)), context);
+                Vit cv = VitFw.unwrap(compiled);
+                execution = execution.call(cv);
+            }
+        }
+        return Vit.val(usLast).call(execution);
+    }
 
     public static final CompEnv useDirectivesCenv = CompEnv.of(telephonist((arg, context) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
