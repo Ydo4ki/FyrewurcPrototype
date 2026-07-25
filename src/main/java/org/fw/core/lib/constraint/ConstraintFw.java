@@ -1,6 +1,8 @@
 package org.fw.core.lib.constraint;
 
 import org.fw.core.FW;
+import org.fw.core.adapter.AbstractValAdapted;
+import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.Symbol;
@@ -8,10 +10,6 @@ import org.fw.core.base.Call;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.lib.BoolFw;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.ValsFw;
-import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -47,11 +45,11 @@ public final class ConstraintFw {
     });
 
     public static Val toConstraint(Val val) {
-        return to_constraint.call(val, Context.blank);
+        return to_constraint.call(val, Context.outOf);
     }
 
     public static Val toConstraint(Type type) {
-        return to_constraint.call(type.asVal(), Context.blank);
+        return to_constraint.call(type.asVal(), Context.outOf);
     }
 
     @Insightful
@@ -66,7 +64,7 @@ public final class ConstraintFw {
                     return retVit; // compile error idk
 
                 return VitFw.wrap(
-                        Vit.call(to_constraint, VitFw.unwrap0(retVit))
+                        Vit.call(to_constraint, retVit._unpack(Vit.class))
 //                        Vit.call(
 //                                Vit.call(ConstraintFw.constraintBuilder, VitFw.wrap(Vit.call(ValsFw.typeGet, Vit.var))),
 //                                retVit
@@ -80,10 +78,10 @@ public final class ConstraintFw {
     public static final Val constraintBuilder = FW.telephonist("Constraint.builder", (arg1, context1) -> {
         if (!VitFw.isVit(arg1.type()))
             return Val.unspecified;
-        return FW.telephonist("Constraint.builderb", (arg2, context2) -> {
+        return FW.telephonist((arg2, context2) -> {
             if (!VitFw.isVit(arg2.type()))
                 return Val.unspecified;
-            return Val.of(ConstraintFw.constraint, new Constraint(VitFw.unwrap0(arg1), VitFw.unwrap0(arg2), arg1.equals(arg2)));
+            return Val.of(ConstraintFw.constraint, new Constraint(arg1._unpack(), arg2._unpack(), arg1.equals(arg2)));
         });
     });
 
@@ -178,7 +176,19 @@ public final class ConstraintFw {
         }
     }
 
+    public static final Val free = constraint(Vit.var, Vit.var);
+
     public static boolean isConstraint(Val val) {
         return val.type().equals(ConstraintFw.constraint);
     }
+
+    public static Val constraint(Vit a, Vit b) {
+        return Val.of(ConstraintFw.constraint, new Constraint(a, b, a.equals(b)));
+    }
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("Constraint"), constraint.asVal())
+            ))
+    ));
 }

@@ -21,5 +21,5 @@ public final class Context {
     }
 
 
-    public static final Context blank = new Context(RtEnv.unspecified, Scope.eternal());
+    public static final Context outOf = new Context(RtEnv.unspecified, Scope.eternal());
 }

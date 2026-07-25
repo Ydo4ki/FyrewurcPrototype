@@ -5,6 +5,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Val;
+import org.fw.core.vit.Vit;
 
 public final class ValsFw {
     // basic stuff
@@ -26,4 +27,8 @@ public final class ValsFw {
                 });
             }
     );
+
+    public static Vit equals(Vit a, Vit b) {
+        return Vit.val(eq).call(a).call(b);
+    }
 }

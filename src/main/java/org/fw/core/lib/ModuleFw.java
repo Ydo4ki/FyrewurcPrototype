@@ -139,11 +139,11 @@ public final class ModuleFw {
     }
 
     public static final class ModuleCEnvFw {
-        public static final Type moduleCEnvFn = FW.telephonist("ModuleCEnvFn", (arg, context) -> {
+        public static final Type moduleCompEnv = FW.telephonist("ModuleCEnvFn", (arg, context) -> {
             if (arg.equals(symbol("constructor"))) {
                 return FW.telephonist((module, context1) -> compEnv(module));
             }
-            if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCEnvFn, context)) {
+            if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv, context)) {
                 Val instance = Call.getVal(arg, context);
                 arg = Call.getArg(arg, context);
                 Val payload = instance._unpack(Val.class);
@@ -164,7 +164,7 @@ public final class ModuleFw {
         }).asType();
 
         public static Val compEnv(Val module) {
-            return Val.of(moduleCEnvFn, module);
+            return Val.of(moduleCompEnv, module);
         }
     }
 }

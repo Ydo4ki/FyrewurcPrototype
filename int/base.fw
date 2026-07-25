@@ -89,19 +89,19 @@
     )
 ))
 
-(: compile-vit (telephonist arg
-    (if (call eq (typeof arg) ExprCallOp)
-        (if (call eq arg.size 1)
-            (VitVal (call arg.comp-env (SyntaxResolve (call arg 0) arg.comp-env)))
-            "One argument expected"
-        )
-        unspecified
-//        (if (call eq arg.size 2)
-//            unspecified // nevermind.
-//            unspecified
+//(: compile-vit (telephonist arg
+//    (if (call eq (typeof arg) ExprCallOp)
+//        (if (call eq arg.size 1)
+//            (VitVal (call arg.comp-env (SyntaxResolve (call arg 0) arg.comp-env)))
+//            "One argument expected"
 //        )
-    )
-))
+//        unspecified
+////        (if (call eq arg.size 2)
+////            unspecified // nevermind.
+////            unspecified
+////        )
+//    )
+//))
 
 (: let (telephonist arg
     (if (and (call eq (typeof arg) ExprCallOp) (call eq arg.size 3))

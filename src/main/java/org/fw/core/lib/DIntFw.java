@@ -102,7 +102,7 @@ public final class DIntFw {
         })));
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.blank,
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                     DeclaredFw.declared(symbol("DInt"), DIntFw.dint.asVal()),
                     DeclaredFw.declared(symbol("parseDIntCEnv"), ParseDIntCEnvFw.parseNumCenv)

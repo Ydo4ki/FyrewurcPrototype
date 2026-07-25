@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
+import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
@@ -181,6 +182,7 @@ public final class VitFw {
         return Val.unspecified;
     })).asType();
 
+    @Deprecated // this just converts it to operation, it does not evaluate anything (which leaves no room for local evaluations)
     public static final Val eval = telephonist("eval", (arg, context) -> {
         if (isVit(arg.type())) {
             Vit vit = arg._unpack();
@@ -188,6 +190,16 @@ public final class VitFw {
                 return Scope.performAndDie(context1.scope(), scope ->
                         OperationFw.wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(env), scope)))));
 //                return ;
+            });
+        }
+        return Val.unspecified;
+    });
+    public static final Val evalVit = telephonist("eval-vit", (arg, context) -> {
+        if (isVit(arg.type())) {
+            Vit vit = arg._unpack();
+            return telephonist((env, context1) -> {
+                return Scope.performAndDie(null, scope ->
+                        vit.eval(new Context(RtEnv.of(env), scope)));
             });
         }
         return Val.unspecified;
@@ -208,6 +220,29 @@ public final class VitFw {
         }
         return Val.unspecified;
     });
+
+    public static final Val constraint = ConstraintFw.constraint(
+            Vit.val(BoolFw._true),
+            ValsFw.equals(
+                    Vit.val(ValsFw.typeGet).call(Vit.var),
+                    Vit.val(VitFw.vitVal.asVal())
+            ).call(symbol("or")).call(
+                    ValsFw.equals(
+                            Vit.val(ValsFw.typeGet).call(Vit.var),
+                            Vit.val(VitFw.vitVar.asVal())
+                    )
+            ).call(symbol("or")).call(
+                    ValsFw.equals(
+                            Vit.val(ValsFw.typeGet).call(Vit.var),
+                            Vit.val(VitFw.vitCall.asVal())
+                    )
+            ).call(symbol("or")).call(
+                    ValsFw.equals(
+                            Vit.val(ValsFw.typeGet).call(Vit.var),
+                            Vit.val(VitFw.vitInvoke.asVal())
+                    )
+            )
+    );
 
     public static boolean isVit(Type type) {
         return type.equals(vitVal) || type.equals(vitVar) || type.equals(vitCall) || type.equals(vitInvoke);

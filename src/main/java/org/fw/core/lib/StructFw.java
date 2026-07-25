@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.fw.core.FW.symbol;
 
+// so should the order of fields matter or not?
 public final class StructFw {
     @Insightful
     public static final Type struct = FW.telephonist("Struct", (arg, context) -> {

@@ -1,18 +1,32 @@
-(call 5 (symbol "+") 5)
+(do
+ (call 5 (symbol "+") 5)
+ 
+ (call Module.constructor [
+     (call Declared.builder (symbol "use-comp-env") 0)
+     (: zero 0)
+ ])
+ // (usec <CEnv> <...>) // use a comp env on top of your current cenv stack
+ // (usem <Module> <...>) // use a module as comp env (basically import)
+ // (telephonize <val>) // erase type information (wrap with telephonist that behaves exactly the same, basically x -> (telephonist arg (call x arg)))
 
-(call Module.constructor [
-    (call Declared.builder (symbol "use-comp-env") 0)
-    (: zero 0)
-])
-// (usec <CEnv> <...>) // use a comp env on top of your current cenv stack
-// (usem <Module> <...>) // use a module as comp env (basially import)
-// (telephonize <val>) // erase type information (wrap with telephonist that behaves exactly the same, basically x -> (telephonist arg (call x arg)))
+ test-mod.test-value
+ (usem test-mod
+     test-value
+ )
+ (usec (call ModuleCompEnv.constructor test-mod)
+     test-value
+ )
 
-test-mod.test-value
-(usem test-mod
-    test-value
+ VitVal
+ VitVar
+ (compile-vit (var))
+ VitVar.instance
+ (call eval-vit VitVar.instance) // this literally creates a new telephonist with given code, why would you need anything else
+
+ (call (call Function.builder
+           (call Constraint.builder (call VitVal.constructor 0) (call VitVal.constructor 0))
+           (compile-vit (var))
+           (var)
+       ) (symbol "fn-call") [0])
+ 0
 )
-(usec (call ModuleCompEnv.constructor test-mod)
-    test-value
-)
-

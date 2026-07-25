@@ -49,7 +49,7 @@ public final class InvokeFuncCEnvFw {
                 }
 
 //                Vit resultingCode = Vit.val(VitFw.eval).call(vit).call(Vit.var);
-                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(VitFw.eval).call(vit).call(Vit.var)))));
+                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(VitFw.eval).call(vit).call(Vit.var))))); // ._.
 
                 return VitFw.wrap(resultingCode);
             }

@@ -82,7 +82,7 @@ public final class TraitFw {
             if (!field.type().equals(DeclarationFw.declaration))
                 throw new IllegalArgumentException("Declaration expected");
         }
-        return Val.of(TraitFw.trait, new Trait(fields, Context.blank));
+        return Val.of(TraitFw.trait, new Trait(fields, Context.outOf));
     }
 
     public static Val toExpr(Val arg, Context context) {
