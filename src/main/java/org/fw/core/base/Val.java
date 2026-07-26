@@ -16,11 +16,7 @@ public abstract class Val {
 
     public abstract Type type();
 
-    /**
-     * @deprecated use _unpack() instead
-     */
-    @Deprecated
-    public abstract Object value();
+    protected abstract Object value();
 
     public abstract Type asType();
 
@@ -30,7 +26,13 @@ public abstract class Val {
         // this is to evil
 //        return Scope.performAndDie(context.scope(), scope
 //                -> type().callInstance(this, arg, new Context(context.rtEnv(), scope)));
-        return type().callInstance(this, arg, context);
+        try {
+            return type().callInstance(this, arg, context);
+        } catch (Exception e) {
+            System.out.println("UNEXPECTED EXCEPTION, AAAAA:");
+            e.printStackTrace(System.out);
+            return Val.unspecified(this, arg);
+        }
     }
 
     public Expr toExpr(Context context) {
@@ -94,7 +96,7 @@ public abstract class Val {
         }
 
         @Override
-        public Object value() {
+        protected Object value() {
             return value;
         }
 

@@ -6,9 +6,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Context;
 import org.fw.core.base.Val;
-import org.fw.core.lib.state.LaserPointerFw;
 import org.fw.core.lib.state.OperationFw;
-import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
@@ -18,7 +16,6 @@ import org.fw.core.vit.VitVal;
 public abstract class Operation {
     // a Val symbolizing successful completion of the operation
     public static final Val unit = FW.telephonist("unit", (arg, context) -> Operation.unit);
-    public static final State systemState = State.eternal();
 
     public abstract Val execute(Context context);
 
@@ -59,34 +56,5 @@ public abstract class Operation {
         return asVal;
     }
 
-    public static class HelloWorldOperation extends Operation {
-
-        @Override
-        public Val execute(Context context) {
-            // errr ok I'm not sure how to determine if that's a system context or not
-            // and it's not like it will be much useful later
-            // I should probably create a random instance and call it a system context
-            if (context.state() != systemState) {
-                return Val.unspecified;
-            }
-            System.out.println("Hello World!!!");
-            return Operation.unit;
-        }
-    }
-
-    public static class CreateNewObjectOperation extends Operation {
-
-        private final Val initialValue;
-
-        public CreateNewObjectOperation(Val initialValue) {
-            this.initialValue = initialValue;
-        }
-
-        @Override
-        public Val execute(Context context) {
-            Obj.ValObj obj = new Obj.ValObj(initialValue, context.state());
-            return Val.of(LaserPointerFw.laserPointer, obj);
-        }
-    }
 }
 

@@ -6,7 +6,7 @@ public abstract class Type {
         return new ValType(val);
     }
 
-    public abstract Val callInstance(Val instance, Val arg, Context context);
+    public abstract Val callInstance(Val instance, Val arg, Context context) throws Exception;
 
     public abstract Val asVal();
 

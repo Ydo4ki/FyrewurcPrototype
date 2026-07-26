@@ -14,7 +14,7 @@ public final class TelephonistType extends Type {
     }
 
     @Override
-    public Val callInstance(Val instance, Val arg, Context context) {
+    public Val callInstance(Val instance, Val arg, Context context) throws Exception {
         Val ret = instance._unpack(Telephonist.class).function().call(arg, context);
         if (ret == null)
             throw new NullPointerException("INVALID RESULT OF EXTERN T: " + instance + "(" + arg + ") -> null");
@@ -37,7 +37,7 @@ public final class TelephonistType extends Type {
     }
 
     public interface CallFunction {
-        Val call(Val arg, Context context);
+        Val call(Val arg, Context context) throws Exception;
     }
 
     public static final class Telephonist {

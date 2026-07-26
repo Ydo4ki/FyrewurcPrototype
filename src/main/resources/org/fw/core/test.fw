@@ -18,6 +18,8 @@
  (invoke! (call _ReadOperation obj))
 )
 
+(invoke! _ReadLine)
+
 (do
  (call 5 (symbol "+") 5)
  

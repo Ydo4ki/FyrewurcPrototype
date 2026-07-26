@@ -31,12 +31,12 @@ public final class FwUtils {
 
 
     @Deprecated
-    public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, TelephonistType.CallFunction orStatic) {
+    public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, TelephonistType.CallFunction orStatic) throws Exception {
         return handleSymbols(arg, type, context, handler, (instance, arg1) -> Val.unspecified, orStatic);
     }
 
     @Deprecated
-    public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, NSHandler nonSymbolicHandler, TelephonistType.CallFunction orStatic) {
+    public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, NSHandler nonSymbolicHandler, TelephonistType.CallFunction orStatic) throws Exception {
         if (isTypeApiCall(arg, type, context)) {
             Val instance = Call.getVal(arg, context);
             Val callArg = Call.getArg(arg, context);

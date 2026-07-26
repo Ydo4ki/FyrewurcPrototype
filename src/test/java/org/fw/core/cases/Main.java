@@ -15,10 +15,14 @@ import org.fw.core.lib.state.LaserPointerFw;
 import org.fw.core.lib.state.OperationFw;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
+import org.fw.core.state.operation.CreateObjectOperation;
 import org.fw.core.state.operation.Operation;
+import org.fw.core.state.operation.SystemOperation;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
+
+import java.util.Scanner;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -32,7 +36,7 @@ public class Main {
     public static void main(String[] args) {
         Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test.fw"));
 
-        State state = Operation.systemState;
+        State state = SystemOperation.systemState;
         Context context = new Context(rtEnv, state);
         CompEnv compEnv;
         compEnv = CompEnv.of(CompEnv.compEnv(context,
@@ -47,9 +51,10 @@ public class Main {
                         DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
                 )),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new Operation.HelloWorldOperation().asVal()),
+                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new SystemOperation.PrintOperation(System.out, "Hello World!").asVal()),
+                        DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
                         DeclaredFw.declared(symbol("_CreateNewObjectOperation"), FW.telephonist((arg, context1) -> {
-                            return new Operation.CreateNewObjectOperation(arg).asVal();
+                            return new CreateObjectOperation(arg).asVal();
                         })),
                         DeclaredFw.declared(symbol("_ReadOperation"), FW.telephonist((arg, context1) -> {
                             if (arg.type() != LaserPointerFw.laserPointer)
