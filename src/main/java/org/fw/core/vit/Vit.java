@@ -86,65 +86,11 @@ public abstract class Vit {
         throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
-    @Deprecated
-    public static Set<Obj> reads(Vit vit, Context context) {
-//        if (!vit.isConst())
-//            throw new IllegalArgumentException("Clean up: " + VitFw.wrap(vit).toExpr(new Context(RtEnv.unspecified, Scope.eternal())));
-        if (vit instanceof VitVal || vit instanceof VitVar) {
-            return java.util.Collections.emptySet();
-        }
-
-        if (vit instanceof VitCall) {
-            VitCall call = (VitCall) vit;
-            return FwUtils.mergeImmut(
-                    reads(call.func(), context),
-                    reads(call.arg(), context)
-            );
-        }
-
-        if (vit instanceof VitInvoke) {
-            VitInvoke inv = (VitInvoke) vit;
-            return Objects.requireNonNull(
-                    OperationFw.unwrap_old(inv.operationVal(context))
-            ).reads_deprecated(context);
-        }
-
-        throw new IllegalStateException("Unknown Vit: " + vit);
-    }
-
-    @Deprecated
-    public static Set<Obj> writes_deprecated(Vit vit, Context context) {
-//        if (!vit.isConst())
-//            throw new IllegalArgumentException("Clean up");
-        if (vit instanceof VitVal || vit instanceof VitVar) {
-            return java.util.Collections.emptySet();
-        }
-
-        if (vit instanceof VitCall) {
-            VitCall call = (VitCall) vit;
-            return FwUtils.mergeImmut(
-                    writes_deprecated(call.func(), context),
-                    writes_deprecated(call.arg(), context)
-            );
-        }
-
-        if (vit instanceof VitInvoke) {
-            VitInvoke inv = (VitInvoke) vit;
-            return Objects.requireNonNull(
-                    OperationFw.unwrap_old(inv.operationVal(context))
-            ).writes_deprecated(context);
-        }
-
-        throw new IllegalStateException("Unknown Vit: " + vit);
-    }
-
     public abstract Val eval(Context context);
 
     public abstract boolean isConst();
 
     public abstract boolean isPure();
-
-    public abstract boolean isLocal(Context context);
 
     public Vit call(Vit arg) {
         return call(this, arg);

@@ -5,7 +5,7 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.DVecFw;
 import org.fw.core.lib.StrFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DVecTests {
 
-    private static final Context context = new Context(Main.rtEnv, Scope.eternal());
+    private static final Context context = new Context(Main.rtEnv, State.eternal());
 
     @Test
     void apiDVecExpr() {

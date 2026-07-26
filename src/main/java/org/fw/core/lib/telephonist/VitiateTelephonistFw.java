@@ -1,6 +1,7 @@
 package org.fw.core.lib.telephonist;
 
 import org.fw.core.FW;
+import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.base.Call;
@@ -8,7 +9,6 @@ import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
-import org.fw.core.state.obj.Scope;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
@@ -42,13 +42,13 @@ public final class VitiateTelephonistFw {
         private final Vit src;
         private final Val argKey;
         private final RtEnv parentRtEnv;
-        private final Scope parentScope;
+        private final State parentState;
 
-        private VitiateTelephonist(Vit src, Val argKey, RtEnv parentRtEnv, Scope parentScope) {
+        private VitiateTelephonist(Vit src, Val argKey, RtEnv parentRtEnv, State parentState) {
             this.src = src;
             this.argKey = argKey;
             this.parentRtEnv = parentRtEnv;
-            this.parentScope = parentScope;
+            this.parentState = parentState;
         }
 
         public Vit src() {
@@ -63,8 +63,8 @@ public final class VitiateTelephonistFw {
             return parentRtEnv;
         }
 
-        public Scope parentScope() {
-            return parentScope;
+        public State parentScope() {
+            return parentState;
         }
 
         @Override
@@ -75,12 +75,12 @@ public final class VitiateTelephonistFw {
             return Objects.equals(this.src, that.src) &&
                     Objects.equals(this.argKey, that.argKey) &&
                     Objects.equals(this.parentRtEnv, that.parentRtEnv) &&
-                    Objects.equals(this.parentScope, that.parentScope);
+                    Objects.equals(this.parentState, that.parentState);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(src, argKey, parentRtEnv, parentScope);
+            return Objects.hash(src, argKey, parentRtEnv, parentState);
         }
 
         @Override
@@ -89,7 +89,7 @@ public final class VitiateTelephonistFw {
                     "src=" + src + ", " +
                     "argKey=" + argKey + ", " +
                     "parentRtEnv=" + parentRtEnv + ", " +
-                    "parentScope=" + parentScope + ']';
+                    "parentScope=" + parentState + ']';
         }
     }
 
@@ -119,7 +119,7 @@ public final class VitiateTelephonistFw {
             Vit src = vt.src();
             Val varKey = vt.argKey();
             RtEnv parentRtEnv = vt.parentRtEnv();
-            Scope parentScope = vt.parentScope();
+            State parentState = vt.parentScope();
 
             Val privateSpace = FW.telephonist(".private", (arg1, context1) -> {
                 if (arg1.equals(symbol("instancer"))) {
@@ -142,7 +142,7 @@ public final class VitiateTelephonistFw {
                 return parentRtEnv.get(arg1, context1);
             });
             // no something is wrong
-            return Scope.performAndDie(parentScope, scope -> src.eval(new Context(RtEnv.of(env), scope)));
+            return State.performAndDie(scope -> src.eval(new Context(RtEnv.of(env), scope)));
         } else if (arg.equals(symbol("builder"))) {
             return builder;
         } /*else if (arg.type().equals(ExprFw.toExpr)) {

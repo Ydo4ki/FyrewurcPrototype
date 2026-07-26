@@ -4,29 +4,29 @@ import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.state.StateHoleFw;
 
-public final class ObjStream extends AbstractObj {
-
-    private Val initialValue;
-    private Obj lastGiven;
-
-    public ObjStream(Val initialValue, Scope owner) {
-        super(owner);
-        this.initialValue = initialValue;
-    }
-
-    @Override
-    public Val read(Context context) {
-        if (lastGiven == null)
-            lastGiven = new ValObj(initialValue, context.scope());
-        return Val.of(StateHoleFw.statehole, lastGiven);
-    }
-
-    @Override
-    public void write(Context context, Val x) {
-        initialValue = x;
-        lastGiven = null;
-    }
-}
+//public final class ObjStream extends AbstractObj {
+//
+//    private Val initialValue;
+//    private Obj lastGiven;
+//
+//    public ObjStream(Val initialValue, State owner) {
+//        super(owner);
+//        this.initialValue = initialValue;
+//    }
+//
+//    @Override
+//    public Val read(Context context) {
+//        if (lastGiven == null)
+//            lastGiven = new ValObj(initialValue, context.scope());
+//        return Val.of(StateHoleFw.statehole, lastGiven);
+//    }
+//
+//    @Override
+//    public void write(Context context, Val x) {
+//        initialValue = x;
+//        lastGiven = null;
+//    }
+//}
 
 // so we need to somehow
 // get the access to some local object

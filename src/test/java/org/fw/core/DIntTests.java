@@ -4,7 +4,7 @@ import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.StrFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.RtEnv;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DIntTests {
 
-    private static final Context context = new Context(RtEnv.unspecified, Scope.eternal());
+    private static final Context context = new Context(RtEnv.unspecified, State.eternal());
 
     @Test
     void test() {

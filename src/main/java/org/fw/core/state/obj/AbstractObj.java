@@ -3,23 +3,16 @@ package org.fw.core.state.obj;
 import java.util.Objects;
 
 abstract class AbstractObj implements Obj {
-    private Scope owner;
+    private State owner;
 
-    protected AbstractObj(Scope owner) {
+    protected AbstractObj(State owner) {
         Objects.requireNonNull(owner);
         this.owner = owner;
         owner.add(this);
     }
 
     @Override
-    public final Scope owner() {
+    public final State owner() {
         return owner;
-    }
-
-    @Override
-    public final void move(Scope newScope) {
-        owner.remove(this);
-        owner = newScope;
-        owner.add(this);
     }
 }

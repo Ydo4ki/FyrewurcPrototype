@@ -22,11 +22,6 @@ public final class VitCall extends Vit {
     }
 
     @Override
-    public boolean isLocal(Context context) {
-        return func().isLocal(context) && arg.isLocal(context);
-    }
-
-    @Override
     public String toString() {
         return "(VitCall " + func + " " + arg + ")";
     }

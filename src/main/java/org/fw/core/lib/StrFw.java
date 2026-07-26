@@ -11,7 +11,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
@@ -25,7 +25,7 @@ public final class StrFw {
     }
 
     public static final class ParseStrCEnvFw {
-        private static final Context context = new Context(RtEnv.unspecified, Scope.eternal());
+        private static final Context context = new Context(RtEnv.unspecified, State.eternal());
 
         private static final Vit arg = var(symbol("arg"));
         private static final Vit argExpr = arg.call(symbol("expr"));

@@ -131,4 +131,13 @@ public final class DVecFw {
             return Val.unspecified;
         });
     }
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("DVec"), DVecFw.dVec.asVal()),
+                    DeclaredFw.declared(symbol("DVecBuilder"), DVecFw.dVecBuilder.asVal()),
+                    DeclaredFw.declared(symbol("dvecbf"), DVecFw.dvecbf)
+            )),
+            DVecConstructorCEnvFw.dVecConstructorCenv
+    ));
 }

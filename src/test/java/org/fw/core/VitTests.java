@@ -3,7 +3,7 @@ package org.fw.core;
 import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import static org.fw.core.FW.symbol;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VitTests {
-    private static final Context context = new Context(RtEnv.unspecified, Scope.eternal());
+    private static final Context context = new Context(RtEnv.unspecified, State.eternal());
     private static final Val v1 = FW.telephonist("v1", (arg, context1) -> Val.unspecified);
     private static final Val v2 = FW.telephonist("v2", (arg, context1) -> Val.unspecified);
 

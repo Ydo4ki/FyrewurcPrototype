@@ -11,7 +11,9 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.*;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.lib.state.OperationFw;
+import org.fw.core.state.obj.State;
+import org.fw.core.state.operation.Operation;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -28,46 +30,47 @@ public class Main {
     public static void main(String[] args) {
         Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test.fw"));
 
-        Scope.performAndDie(null, scope -> {
-            Context context = new Context(rtEnv, scope);
-            CompEnv compEnv;
-            compEnv = CompEnv.of(CompEnv.compEnv(context,
-                    VitFw.exports.asVal(),
-                    ExprGetFw.getterCEnv,
-                    DIntFw.exports.asVal(),
-                    ExprFw.exports.asVal(),
-                    StrFw.exports.asVal(),
-                    DVecFw.exports.asVal(),
-                    ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                            DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
-                    )),
-                    ModuleFw.exports.asVal(),
-                    FunctionFw.exports.asVal(),
-                    DeclaredFw.exports.asVal(),
-                    ConstraintFw.exports.asVal(),
-                    DoFw.exports.asVal(),
-                    UseFw.useDirectivesCenv.asVal(),
-                    directivesCenv.asVal(),
+        State state = Operation.HelloWorldOperation.systemState;
+        Context context = new Context(rtEnv, state);
+        CompEnv compEnv;
+        compEnv = CompEnv.of(CompEnv.compEnv(context,
+                VitFw.exports.asVal(),
+                ExprGetFw.getterCEnv,
+                DIntFw.exports.asVal(),
+                ExprFw.exports.asVal(),
+                StrFw.exports.asVal(),
+                DVecFw.exports.asVal(),
+                ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                        DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
+                )),
+                ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new Operation.HelloWorldOperation().asVal())
+                )),
+                ModuleFw.exports.asVal(),
+                FunctionFw.exports.asVal(),
+                DeclaredFw.exports.asVal(),
+                ConstraintFw.exports.asVal(),
+                DoFw.exports.asVal(),
+                UseFw.useDirectivesCenv.asVal(),
+                directivesCenv.asVal(),
 
-                    ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                            DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(
-                                    DeclaredFw.declared(symbol("test-value"), DIntFw.dint(94))
-                            ))
-                    ))
-            ));
+                ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                        DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(
+                                DeclaredFw.declared(symbol("test-value"), DIntFw.dint(94))
+                        ))
+                ))
+        ));
 
-            for (Expr expression : expressions) {
-                Vit vit;
-                try {
-                    vit = compEnv.compile(expression, context);
-                } catch (VitCompilationException e) {
-                    throw new RuntimeException(e);
-                }
-                Val val = vit.eval(context);
-                System.out.println(val.toExpr(context));
+        for (Expr expression : expressions) {
+            Vit vit;
+            try {
+                vit = compEnv.compile(expression, context);
+            } catch (VitCompilationException e) {
+                throw new RuntimeException(e);
             }
-            return null;
-        });
+            Val val = vit.eval(context);
+            System.out.println(val.toExpr(context));
+        }
     }
 
     public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg, context) -> {

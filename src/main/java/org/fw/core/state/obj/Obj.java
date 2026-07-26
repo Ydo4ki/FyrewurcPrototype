@@ -5,29 +5,29 @@ import org.fw.core.base.Val;
 
 public interface Obj {
 
-    Val read(Context context);
+    State owner();
 
-    void write(Context context, Val x);
+    default void shmert() {
 
-    Scope owner();
-
-    void move(Scope newScope);
+    }
 
     final class ValObj extends AbstractObj {
         private Val value;
 
-        public ValObj(Val value, Scope owner) {
+        public ValObj(Val value, State owner) {
             super(owner);
             this.value = value;
         }
 
-        @Override
         public Val read(Context context) {
+            if (owner() != context.scope())
+                return Val.unspecified; // c'mon at least use exceptions you're getting too far with this
             return value;
         }
 
-        @Override
         public void write(Context context, Val x) {
+            if (owner() != context.scope())
+                return;
             value = x;
         }
     }

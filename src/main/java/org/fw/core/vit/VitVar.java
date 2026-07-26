@@ -28,11 +28,6 @@ public final class VitVar extends Vit {
     }
 
     @Override
-    public boolean isLocal(Context context) {
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "(VitVar)";
     }

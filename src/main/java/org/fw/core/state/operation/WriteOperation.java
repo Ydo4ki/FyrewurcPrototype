@@ -12,11 +12,11 @@ import org.fw.core.state.obj.Obj;
 import java.util.Collections;
 import java.util.Set;
 
-public final class WriteOperation implements Operation {
-    private final Obj obj;
+public final class WriteOperation extends Operation {
+    private final Obj.ValObj obj;
     private final Operation x;
 
-    WriteOperation(Obj obj, Operation x) {
+    WriteOperation(Obj.ValObj obj, Operation x) {
         this.obj = obj;
         this.x = x;
     }
@@ -36,26 +36,11 @@ public final class WriteOperation implements Operation {
     }
 
     @Override
-    public Set<Obj> reads(Context context) {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public Set<Obj> writes(Context context) {
-        return Collections.singleton(obj);
-    }
-
-    @Override
     public Expr toExpr(Context context) {
         return ExprList.of(BracketsTypes.round,
-                OperationFw.writeOperation.asVal().toExpr(context),
+                OperationFw.writeOperation_old.asVal().toExpr(context),
                 StateHoleFw.wrap(obj).toExpr(context),
                 x.toExpr(context)
         );
-    }
-
-    @Override
-    public Val asVal() {
-        return Val.of(OperationFw.writeOperation, this);
     }
 }

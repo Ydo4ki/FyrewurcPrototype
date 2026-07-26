@@ -6,7 +6,7 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Context;
@@ -187,7 +187,7 @@ public final class VitFw {
         if (isVit(arg.type())) {
             Vit vit = arg._unpack();
             return telephonist((env, context1) -> {
-                return Scope.performAndDie(context1.scope(), scope ->
+                return State.performAndDie(scope ->
                         OperationFw.wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(env), scope)))));
 //                return ;
             });
@@ -198,7 +198,7 @@ public final class VitFw {
         if (isVit(arg.type())) {
             Vit vit = arg._unpack();
             return telephonist((env, context1) -> {
-                return Scope.performAndDie(null, scope ->
+                return State.performAndDie(scope ->
                         vit.eval(new Context(RtEnv.of(env), scope)));
             });
         }
@@ -215,7 +215,7 @@ public final class VitFw {
     public static final Val reduce = FW.telephonist("vit-reduce", (arg, context1) -> {
         if (VitFw.isVit(arg.type())) {
             return FW.telephonist(() -> "(call vit-reduce " + arg.toExpr(context1) + ")", (env, context2)
-                    -> Scope.performAndDie(context2.scope(),
+                    -> State.performAndDie(
                     scope -> VitFw.wrap(Vit.reduce(arg._unpack(), new Context(RtEnv.of(env), scope))))); // thx java
         }
         return Val.unspecified;

@@ -1,3 +1,14 @@
+
+test-mod.test-value
+(usem test-mod
+    test-value
+)
+(usec (call ModuleCompEnv.constructor test-mod)
+    test-value
+)
+
+(invoke! _PrintHelloWorld)
+
 (do
  (call 5 (symbol "+") 5)
  
@@ -9,27 +20,21 @@
  // (usem <Module> <...>) // use a module as comp env (basically import)
  // (telephonize <val>) // erase type information (wrap with telephonist that behaves exactly the same, basically x -> (telephonist arg (call x arg)))
 
- test-mod.test-value
- (usem test-mod
-     test-value
- )
- (usec (call ModuleCompEnv.constructor test-mod)
-     test-value
- )
-
- VitVal
- VitVar
- (compile-vit (var))
- VitVar.instance
  (call eval-vit VitVar.instance) // this literally creates a new telephonist with given code, why would you need anything else
 
- (call (call Function.builder
-           (call Constraint.builder (call VitVal.constructor 0) (call VitVal.constructor 0))
-           (compile-vit (var))
+ (: func (call Function.builder
+           (call Constraint.builder
+                (compile-vit (call (var) (symbol "size")))
+                (compile-vit 2)
+           )
+           (compile-vit (call (var) (symbol "size")))
            (var)
-       ) (symbol "fn-call") [0])
+       ))
 
  (: a 2)
  (: b 1)
  (call a (symbol "+") b)
+
+ (call func (symbol "fn-call") [0 1])
 )
+Symbol

@@ -1,7 +1,6 @@
 package org.fw.core.lib.constraint;
 
 import org.fw.core.FW;
-import org.fw.core.adapter.AbstractValAdapted;
 import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
@@ -13,7 +12,7 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
@@ -111,10 +110,10 @@ public final class ConstraintFw {
                         RtEnv rtEnv = RtEnv.of(arg1);
 
                         // we might as well do it in parallel
-                        Val a = Scope.performAndDie(context1.scope(), scope -> {
+                        Val a = State.performAndDie(scope -> {
                             return payload.a().eval(new Context(rtEnv, scope));
                         });
-                        Val b = Scope.performAndDie(context1.scope(), scope -> {
+                        Val b = State.performAndDie(scope -> {
                             return payload.b().eval(new Context(rtEnv, scope));
                         });
 

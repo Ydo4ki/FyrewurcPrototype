@@ -7,9 +7,6 @@ import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.j.JValConstGetter;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
-import org.fw.core.state.obj.ObjSystemConsole;
-import org.fw.core.state.obj.ObjSystemTimeMillis;
-import org.fw.core.state.obj.ObjSystemTimeNano;
 import org.fw.core.lib.state.StateHoleFw;
 import org.fw.core.vit.Vit;
 
@@ -31,9 +28,9 @@ public final class InternalSymbolMapCEnvFw {
 
 //        valsMap.put(":", DeclaredFw.colon);
 
-        valsMap.put("systime", Val.of(StateHoleFw.statehole, new ObjSystemTimeMillis(InternalSystemContext.context.scope())));
-        valsMap.put("systimenano", Val.of(StateHoleFw.statehole, new ObjSystemTimeNano(InternalSystemContext.context.scope())));
-        valsMap.put("sysconsole", Val.of(StateHoleFw.statehole, new ObjSystemConsole(InternalSystemContext.context.scope())));
+//        valsMap.put("systime", Val.of(StateHoleFw.statehole, new ObjSystemTimeMillis(InternalSystemContext.context.scope())));
+//        valsMap.put("systimenano", Val.of(StateHoleFw.statehole, new ObjSystemTimeNano(InternalSystemContext.context.scope())));
+//        valsMap.put("sysconsole", Val.of(StateHoleFw.statehole, new ObjSystemConsole(InternalSystemContext.context.scope())));
 
 //        valsMap.put("unspecified-call-err", ErrFw.unspecifiedCall.asVal());
     }

@@ -3,7 +3,7 @@ package org.fw.core;
 import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.BoolFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // best tests ever
 public class BoolTests {
-    private static final Context context = new Context(Main.rtEnv, Scope.eternal());
+    private static final Context context = new Context(Main.rtEnv, State.eternal());
     private static final Val b = BoolFw._true;
 
     @Test

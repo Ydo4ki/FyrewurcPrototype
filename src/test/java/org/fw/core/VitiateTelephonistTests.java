@@ -8,7 +8,7 @@ import org.fw.core.lib.StrFw;
 import org.fw.core.lib.ValsFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 // V18T lmao
 public class VitiateTelephonistTests {
 
-    private static final Context context = new Context(Main.rtEnv, Scope.eternal());
+    private static final Context context = new Context(Main.rtEnv, State.eternal());
 
     @Test
     void oooooo() {

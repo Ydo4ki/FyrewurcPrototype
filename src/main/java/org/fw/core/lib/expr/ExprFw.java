@@ -2,14 +2,12 @@ package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.adapter.AbstractValAdapted;
+import org.fw.core.base.Context;
+import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.*;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.DVecFw;
-import org.fw.core.lib.StrFw;
-import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
@@ -210,4 +208,12 @@ public final class ExprFw {
         }
         return Val.unspecified;
     }));
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("Symbol"), symbol.asVal()),
+                    DeclaredFw.declared(symbol("ExprList"), exprList.asVal())
+            )),
+            ExprFw.directivesCenv.asVal()
+    ));
 }

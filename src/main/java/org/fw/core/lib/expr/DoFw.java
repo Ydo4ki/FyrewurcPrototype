@@ -11,7 +11,8 @@ import java.math.BigInteger;
 
 import static org.fw.core.FW.symbol;
 
-public final class DoFw {
+@Deprecated
+final class DoFw {
     public static final Val _do = FW.telephonist("do", (arg, context) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);

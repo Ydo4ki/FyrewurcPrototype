@@ -33,11 +33,6 @@ public final class VitVal extends Vit {
     }
 
     @Override
-    public boolean isLocal(Context context) {
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "(VitVal " + val + ")";
     }

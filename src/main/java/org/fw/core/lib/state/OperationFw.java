@@ -24,17 +24,22 @@ import static org.fw.core.FW.symbol;
 
 public final class OperationFw {
 
-    private static Val handleRAW(Type type, Val arg, Context context) {
+    public static final Type operation = FW.telephonist("Operation", (arg, context) -> {
+        return Val.unspecified;
+    }).asType();
+
+    @Deprecated
+    private static Val handleRAW_old(Type type, Val arg, Context context) {
         if (FwUtils.isTypeApiCall(arg, type, context)) {
             Val instance = Call.getVal(arg, context);
             arg = Call.getArg(arg, context);
-            return readAndWrite(instance._unpack(Operation.class), arg, context);
+            return readAndWrite_old(instance._unpack(Operation.class), arg, context);
         }
         return Val.unspecified;
     }
 
     @Deprecated // I know this is wrong I just don't know how to fix it and whether I really need it at all
-    private static Val readAndWrite(Operation operation, Val arg, Context context) {
+    private static Val readAndWrite_old(Operation operation, Val arg, Context context) {
 //        if (arg.equals(symbol("reads")))
 //            return DVecFw.vec(operation.reads(context).stream().map(StateHoleFw::wrap).toArray(Val[]::new));
 //        if (arg.equals(symbol("writes")))
@@ -43,14 +48,15 @@ public final class OperationFw {
     }
 
     @Insightful
-    public static final Type readOperation = FW.telephonist("ReadOperation", (arg1, context) -> {
+    @Deprecated
+    public static final Type readOperation_old = FW.telephonist("ReadOperation", (arg1, context) -> {
         if (arg1.equals(symbol("constructor"))) {
             return FW.telephonist(() -> "ReadOperation.constructor", (arg, c) -> {
                 if (!arg.type().equals(StateHoleFw.statehole)) {
                     return Val.unspecified;
                 }
                 Obj object = arg._unpack();
-                return wrap(Operation.read(object));
+                return wrap(Operation.read((Obj.ValObj) object));
             });
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg1.call(symbol("size"), context);
@@ -63,7 +69,7 @@ public final class OperationFw {
                 return retVit; // compile error idk
 
             try {
-                return VitFw.wrap(Vit.val(OperationFw.readOperation.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
+                return VitFw.wrap(Vit.val(OperationFw.readOperation_old.asVal()).call(symbol("constructor")).call(VitFw.unwrap(retVit)));
             } catch (VitCompilationException e) {
                 throw new RuntimeException(e);
             }
@@ -75,20 +81,21 @@ public final class OperationFw {
 //
 //            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
 //        }
-        return handleRAW(OperationFw.readOperation, arg1, context);
+        return handleRAW_old(OperationFw.readOperation_old, arg1, context);
     }).asType();
 
     @Insightful
-    public static final Type localScopeOperation = FW.telephonist("LocalScopeOperation", (arg1, context) -> {
+    @Deprecated
+    public static final Type localScopeOperation_old = FW.telephonist("LocalScopeOperation", (arg1, context) -> {
         if (arg1.equals(symbol("instance"))) {
-            return LocalScopeOperation.getInstance().asVal();
+            return GetLocalStateOperation.getInstance().asVal();
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg1.call(symbol("size"), context);
             Val cEnv = arg1.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 0) return Val.unspecified;
 
-            return VitFw.wrap(Vit.val(OperationFw.localScopeOperation.asVal()).call(symbol("instance")));
+            return VitFw.wrap(Vit.val(OperationFw.localScopeOperation_old.asVal()).call(symbol("instance")));
         }
 //        else if (arg1.type().equals(ExprFw.toExpr)) {
 //            Val instance = BoxFw.unbox(arg1);
@@ -97,12 +104,13 @@ public final class OperationFw {
 //
 //            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
 //        }
-        return handleRAW(OperationFw.localScopeOperation, arg1, context);
+        return handleRAW_old(OperationFw.localScopeOperation_old, arg1, context);
     }).asType();
 
 
     @Insightful
-    public static final Type writeOperation = FW.telephonist("WriteOperation", (arg1, context) -> {
+    @Deprecated
+    public static final Type writeOperation_old = FW.telephonist("WriteOperation", (arg1, context) -> {
         if (arg1.equals(symbol("builder"))) {
             return FW.telephonist(() -> "(get WriteOperation builder)", (arg, context1) -> {
                 if (!arg.type().equals(StateHoleFw.statehole)) {
@@ -110,9 +118,9 @@ public final class OperationFw {
                 }
                 Obj object = arg._unpack();
                 return FW.telephonist(() -> "(call (get WriteOperation builder) " + arg.toExpr(context1) + ")", (arg2, context2) -> {
-                    if (!OperationFw.isOperation(arg2.type()))
+                    if (!OperationFw.isOperation_old(arg2.type()))
                         return Val.unspecified;
-                    return wrap(Operation.write(object, OperationFw.unwrap(arg2)));
+                    return wrap(Operation.write((Obj.ValObj) object, OperationFw.unwrap_old(arg2)));
                 });
             });
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
@@ -130,7 +138,7 @@ public final class OperationFw {
                 return writeValue; // compile error idk
 
             try {
-                return VitFw.wrap(Vit.val(OperationFw.writeOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(writeValue)));
+                return VitFw.wrap(Vit.val(OperationFw.writeOperation_old.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(writeValue)));
             } catch (VitCompilationException e) {
                 throw new RuntimeException(e);
             }
@@ -142,11 +150,12 @@ public final class OperationFw {
 //
 //            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
 //        }
-        return handleRAW(OperationFw.writeOperation, arg1, context);
+        return handleRAW_old(OperationFw.writeOperation_old, arg1, context);
     }).asType();
 
     @Insightful
-    public static final Type vitOperation = FW.telephonist("VitOperation", (arg1, context) -> {
+    @Deprecated
+    public static final Type vitOperation_old = FW.telephonist("VitOperation", (arg1, context) -> {
         if (arg1.equals(symbol("builder"))) {
             return FW.telephonist(() -> "(get VitOperation builder)", (arg, ctx) -> {
                 if (!VitFw.isVit(arg.type())) {
@@ -173,7 +182,7 @@ public final class OperationFw {
                 return varVit; // compile error idk
 
             try {
-                return VitFw.wrap(Vit.val(OperationFw.vitOperation.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(varVit)));
+                return VitFw.wrap(Vit.val(OperationFw.vitOperation_old.asVal()).call(symbol("builder")).call(VitFw.unwrap(retVit)).call(VitFw.unwrap(varVit)));
             } catch (VitCompilationException e) {
                 throw new RuntimeException(e);
             }
@@ -185,7 +194,7 @@ public final class OperationFw {
 //
 //            return ExprFw.wrap(instance._unpack(Operation.class).toExpr(context));
 //        }
-        return handleRAW(OperationFw.vitOperation, arg1, context);
+        return handleRAW_old(OperationFw.vitOperation_old, arg1, context);
     }).asType();
 
     @Insightful
@@ -207,7 +216,7 @@ public final class OperationFw {
             }
 //                return VitFw.wrap(Vit.val(OperationFw.wrap(Operation.vit(vit, context1))));
             vit = Vit.simplify(vit, context1);
-            return VitFw.wrap(Vit.val(OperationFw.vitOperation.asVal()).call(symbol("builder")).call(VitFw.wrap(vit)).call(Vit.var));
+            return VitFw.wrap(Vit.val(OperationFw.vitOperation_old.asVal()).call(symbol("builder")).call(VitFw.wrap(vit)).call(Vit.var));
         }
         return Val.unspecified;
     });
@@ -224,16 +233,24 @@ public final class OperationFw {
 //        };
     }
 
-    public static Operation unwrap(Val operation) {
-        if (isOperation(operation.type()))
+    @Deprecated
+    public static Operation unwrap_old(Val operation) {
+        if (isOperation_old(operation.type()))
             return operation._unpack(Operation.class);
         return null;
     }
 
-    public static boolean isOperation(Type type) {
-        return type.equals(readOperation)
-                || type.equals(writeOperation)
-                || type.equals(vitOperation)
-                || type.equals(localScopeOperation);
+    public static Operation unwrap(Val operation) {
+        if (operation.type() == OperationFw.operation)
+            return operation._unpack(Operation.class);
+        return null;
+    }
+
+    @Deprecated
+    public static boolean isOperation_old(Type type) {
+        return type.equals(readOperation_old)
+                || type.equals(writeOperation_old)
+                || type.equals(vitOperation_old)
+                || type.equals(localScopeOperation_old);
     }
 }

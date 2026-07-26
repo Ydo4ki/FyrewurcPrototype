@@ -12,7 +12,7 @@ import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
-import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -62,7 +62,7 @@ public final class FwUtils {
     }
 
     public static Val getValueFromFile(File file, CompEnv compEnv) throws IOException {
-        return Scope.performAndDie(null, s -> {
+        return State.performAndDie(s -> {
             try {
                 return getValueFromFile(file, compEnv, new Context(RtEnv.unspecified, s));
             } catch (IOException e) {

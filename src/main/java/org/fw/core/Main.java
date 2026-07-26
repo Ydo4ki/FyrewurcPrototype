@@ -96,10 +96,10 @@ public class Main {
                 }
                 Val mainF = vit.eval(context);
                 Val resultOperation = mainF.call(DVecFw.vec(runtime), context);
-                if (!OperationFw.isOperation(resultOperation.type())) {
+                if (!OperationFw.isOperation_old(resultOperation.type())) {
                     System.out.println("# " + resultOperation.toExpr(context));
                 } else {
-                    Operation operation = OperationFw.unwrap(resultOperation);
+                    Operation operation = OperationFw.unwrap_old(resultOperation);
                     assert operation != null;
                     Val result = operation.execute(context);
                     if (!result.equals(Operation.unit))

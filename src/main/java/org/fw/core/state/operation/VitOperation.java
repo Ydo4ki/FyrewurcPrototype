@@ -12,7 +12,7 @@ import org.fw.core.vit.Vit;
 
 import java.util.Set;
 
-public final class VitOperation implements Operation {
+public final class VitOperation extends Operation {
     private final Vit vit;
     private Set<Obj> reads;
     private Set<Obj> writes;
@@ -34,33 +34,10 @@ public final class VitOperation implements Operation {
     }
 
     @Override
-    public Set<Obj> reads(Context context) {
-        if (lastContext != context || reads == null) {
-            this.reads = Vit.reads(vit, context);
-            lastContext = context;
-        }
-        return reads;
-    }
-
-    @Override
-    public Set<Obj> writes(Context context) {
-        if (lastContext != context || writes == null) {
-            this.writes = Vit.writes(vit, context);
-            lastContext = context;
-        }
-        return writes;
-    }
-
-    @Override
     public Expr toExpr(Context context) {
         return ExprList.of(BracketsTypes.round,
-                OperationFw.vitOperation.asVal().toExpr(context),
+                OperationFw.vitOperation_old.asVal().toExpr(context),
                 VitFw.wrap(vit).toExpr(context)
         );
-    }
-
-    @Override
-    public Val asVal() {
-        return Val.of(OperationFw.vitOperation, this);
     }
 }
