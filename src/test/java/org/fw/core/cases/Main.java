@@ -18,6 +18,7 @@ import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.CreateObjectOperation;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.SystemOperation;
+import org.fw.core.state.operation.WhileOperation;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -34,7 +35,7 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-        Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test.fw"));
+        Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test2.fw"));
 
         State state = SystemOperation.systemState;
         Context context = new Context(rtEnv, state);
@@ -47,12 +48,33 @@ public class Main {
                 StrFw.exports.asVal(),
                 DVecFw.exports.asVal(),
                 ValsFw.exports.asVal(),
+                BoolFw.exports.asVal(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
                 )),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new SystemOperation.PrintOperation(System.out, "Hello World!").asVal()),
+                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new SystemOperation.PrintOperation(System.out, "Hello World!\n").asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
+                        DeclaredFw.declared(symbol("_Print"), FW.telephonist((arg, context1) -> {
+                            return new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal();
+                        })),
+                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist((arg, context1) -> {
+                            if (arg.type() != DIntFw.dint)
+                                return Val.unspecified;
+
+                            return new SystemOperation.ThreadSleepOperation(DIntFw.unwrap(arg).longValue()).asVal();
+                        })),
+                        DeclaredFw.declared(symbol("_While"), FW.telephonist((condition, context1) -> {
+                            if (condition.type() != OperationFw.operation)
+                                return Val.unspecified;
+
+                            return FW.telephonist((body, context2) -> {
+                                if (body.type() != OperationFw.operation)
+                                    return Val.unspecified;
+
+                                return new WhileOperation(condition._unpack(), body._unpack()).asVal();
+                            });
+                        })),
                         DeclaredFw.declared(symbol("_CreateNewObjectOperation"), FW.telephonist((arg, context1) -> {
                             return new CreateObjectOperation(arg).asVal();
                         })),
@@ -64,7 +86,7 @@ public class Main {
                             if (!(obj instanceof Obj.ValObj))
                                 return Val.unspecified;
 
-                            return Operation.read((Obj.ValObj)obj).asVal();
+                            return Operation.read((Obj.ValObj) obj).asVal();
                         })),
                         DeclaredFw.declared(symbol("_WriteOperation"), FW.telephonist((arg, context1) -> {
                             if (arg.type() != LaserPointerFw.laserPointer)
@@ -75,7 +97,7 @@ public class Main {
                                 return Val.unspecified;
 
                             return FW.telephonist((arg1, context2) -> {
-                                return Operation.write((Obj.ValObj)obj, arg1).asVal();
+                                return Operation.write((Obj.ValObj) obj, arg1).asVal();
                             });
                         })),
                         DeclaredFw.declared(symbol("_VitOperation"), OperationFw.vitOperation)
@@ -103,7 +125,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
             Val val = vit.eval(context);
-            System.out.println(val.toExpr(context));
+//            System.out.println(val.toExpr(context));
         }
     }
 
@@ -123,6 +145,20 @@ public class Main {
                         return VitFw.wrap(Vit.val(
                                 compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
                         ));
+                    }
+                    case "operation": {
+                        if (isize != 2)
+                            return Val.unspecified;
+
+
+                        Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        if (!VitFw.isVit(val.type()))
+                            return Val.unspecified;
+
+                        return VitFw.wrap(Vit.val(OperationFw.vitOperation).call(val).call(Vit.var));
+//                        Vit vit = VitFw.unwrap(
+//                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
+//                        );
                     }
                 }
             }

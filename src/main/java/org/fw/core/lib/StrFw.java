@@ -47,6 +47,7 @@ public final class StrFw {
                 return Val.unspecified;
 
             String s = str._unpack();
+            s = s.replace("\\n", "\n");
             if (s.length() >= 2 && s.startsWith("\"") && s.endsWith("\"")) {
                 return str(s.substring(1, s.length() - 1)); // uh okay
             }

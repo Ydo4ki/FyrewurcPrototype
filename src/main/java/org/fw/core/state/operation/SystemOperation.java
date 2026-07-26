@@ -40,7 +40,7 @@ public abstract class SystemOperation extends Operation {
 
         @Override
         public Val execute0() {
-            out.println(string);
+            out.print(string);
             return Operation.unit;
         }
     }
@@ -55,6 +55,24 @@ public abstract class SystemOperation extends Operation {
         @Override
         protected Val execute0() {
             return StrFw.str(scanner.nextLine());
+        }
+    }
+
+    public static class ThreadSleepOperation extends SystemOperation {
+        private final long millis;
+
+        public ThreadSleepOperation(long millis) {
+            this.millis = millis;
+        }
+
+        @Override
+        protected Val execute0() {
+            try {
+                Thread.sleep(millis, 0);
+            } catch (InterruptedException e) {
+                return Val.unspecified;
+            }
+            return Operation.unit;
         }
     }
 
