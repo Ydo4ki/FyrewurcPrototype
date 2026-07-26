@@ -6,6 +6,7 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
+import org.fw.core.state.obj.Scope;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Context;
@@ -15,7 +16,6 @@ import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.lib.state.OperationFw;
-import org.fw.core.state.obj.Scope;
 import org.fw.core.vit.*;
 
 import java.math.BigInteger;
@@ -357,4 +357,16 @@ public final class VitFw {
         }
         return Val.unspecified;
     }));
+
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("VitVal"), VitFw.vitVal.asVal()),
+                    DeclaredFw.declared(symbol("VitVar"), VitFw.vitVar.asVal()),
+                    DeclaredFw.declared(symbol("VitCall"), VitFw.vitCall.asVal()),
+                    DeclaredFw.declared(symbol("VitInvoke"), VitFw.vitInvoke.asVal()),
+                    DeclaredFw.declared(symbol("eval-vit"), VitFw.evalVit)
+            )),
+            VitFw.directivesCenv.asVal()
+    ));
 }

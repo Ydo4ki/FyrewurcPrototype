@@ -6,7 +6,6 @@ import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.DVecFw;
 import org.fw.core.lib.StrFw;
 import org.fw.core.state.obj.Scope;
-import org.fw.core.vit.RtEnv;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;

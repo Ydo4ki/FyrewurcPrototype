@@ -4,7 +4,6 @@ import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.state.obj.Scope;
-import org.fw.core.vit.RtEnv;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;

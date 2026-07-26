@@ -15,7 +15,16 @@ public abstract class Vit {
     public static final Vit var = new VitVar(); // ok it was kind of quick
     // but we'll need to do some cleanup
 
+    public static Vit simplify(Vit vit) {
+        return simplify0(vit, Context.outOf);
+    }
+
+    @Deprecated // but test if everything actually works without it before removing, I might have forgotten something
     public static Vit simplify(Vit vit, Context context) {
+        return simplify0(vit, context);
+    }
+
+    private static Vit simplify0(Vit vit, Context context) {
         if (vit instanceof VitVal || vit instanceof VitVar) {
             return vit;
         }
@@ -77,6 +86,7 @@ public abstract class Vit {
         throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
+    @Deprecated
     public static Set<Obj> reads(Vit vit, Context context) {
 //        if (!vit.isConst())
 //            throw new IllegalArgumentException("Clean up: " + VitFw.wrap(vit).toExpr(new Context(RtEnv.unspecified, Scope.eternal())));
@@ -95,14 +105,15 @@ public abstract class Vit {
         if (vit instanceof VitInvoke) {
             VitInvoke inv = (VitInvoke) vit;
             return Objects.requireNonNull(
-                    OperationFw.unwrap(inv.operationVal(context))
-            ).reads(context);
+                    OperationFw.unwrap_old(inv.operationVal(context))
+            ).reads_deprecated(context);
         }
 
         throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
-    public static Set<Obj> writes(Vit vit, Context context) {
+    @Deprecated
+    public static Set<Obj> writes_deprecated(Vit vit, Context context) {
 //        if (!vit.isConst())
 //            throw new IllegalArgumentException("Clean up");
         if (vit instanceof VitVal || vit instanceof VitVar) {
@@ -112,16 +123,16 @@ public abstract class Vit {
         if (vit instanceof VitCall) {
             VitCall call = (VitCall) vit;
             return FwUtils.mergeImmut(
-                    writes(call.func(), context),
-                    writes(call.arg(), context)
+                    writes_deprecated(call.func(), context),
+                    writes_deprecated(call.arg(), context)
             );
         }
 
         if (vit instanceof VitInvoke) {
             VitInvoke inv = (VitInvoke) vit;
             return Objects.requireNonNull(
-                    OperationFw.unwrap(inv.operationVal(context))
-            ).writes(context);
+                    OperationFw.unwrap_old(inv.operationVal(context))
+            ).writes_deprecated(context);
         }
 
         throw new IllegalStateException("Unknown Vit: " + vit);

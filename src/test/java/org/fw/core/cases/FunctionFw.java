@@ -3,10 +3,12 @@ package org.fw.core.cases;
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Call;
+import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
+import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
@@ -56,6 +58,12 @@ public class FunctionFw {
         }
         return ret;
     }).asType();
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("Function"), FunctionFw.function.asVal())
+            ))
+    ));
 
     private static Val builderWrapper(Val builder) {
         return FW.telephonist((arg, context) -> {

@@ -167,4 +167,11 @@ public final class ModuleFw {
             return Val.of(moduleCompEnv, module);
         }
     }
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("Module"), ModuleFw.module.asVal()),
+                    DeclaredFw.declared(symbol("ModuleCompEnv"), ModuleFw.ModuleCEnvFw.moduleCompEnv.asVal())
+            ))
+    ));
 }

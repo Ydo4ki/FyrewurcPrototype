@@ -9,7 +9,6 @@ import org.fw.core.lib.ValsFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
 import org.fw.core.state.obj.Scope;
-import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.junit.jupiter.api.Test;
 

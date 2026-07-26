@@ -9,6 +9,7 @@ import org.fw.core.FW;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.vit.RtEnv;
@@ -53,4 +54,11 @@ public final class StrFw {
         })));
 
     }
+
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                    DeclaredFw.declared(symbol("Str"), StrFw.str.asVal())
+            )),
+            ParseStrCEnvFw.parseStrCenv
+    ));
 }
