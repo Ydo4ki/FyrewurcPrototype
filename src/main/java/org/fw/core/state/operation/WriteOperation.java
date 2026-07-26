@@ -14,14 +14,14 @@ import java.util.Set;
 
 public final class WriteOperation extends Operation {
     private final Obj.ValObj obj;
-    private final Operation x;
+    private final Val x;
 
-    WriteOperation(Obj.ValObj obj, Operation x) {
+    WriteOperation(Obj.ValObj obj, Val x) {
         this.obj = obj;
         this.x = x;
     }
 
-    public Operation x() {
+    public Val x() {
         return x;
     }
 
@@ -31,7 +31,7 @@ public final class WriteOperation extends Operation {
 
     @Override
     public Val execute(Context context) {
-        obj.write(context, x.execute(context));
+        obj.write(context, x);
         return Operation.unit;
     }
 

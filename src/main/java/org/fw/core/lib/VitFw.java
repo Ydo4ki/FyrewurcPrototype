@@ -188,7 +188,7 @@ public final class VitFw {
             Vit vit = arg._unpack();
             return telephonist((env, context1) -> {
                 return State.performAndDie(scope ->
-                        OperationFw.wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(env), scope)))));
+                        OperationFw.wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(env), scope)), RtEnv.of(env))));
 //                return ;
             });
         }

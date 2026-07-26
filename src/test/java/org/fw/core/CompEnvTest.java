@@ -33,7 +33,7 @@ import static org.fw.core.vit.Vit.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CompEnvTest {
-    private static final Context context = new Context(Main.rtEnv, InternalSystemContext.context.scope());
+    private static final Context context = new Context(Main.rtEnv, InternalSystemContext.context.state());
 
     //            VitiateTelephonistFw.vitiate(
 //            FW.vIf(FW.vEq(val(ValsFw.typeGet).call(argExpr), val(ExprFw.exprList.asVal())),
@@ -60,7 +60,7 @@ class CompEnvTest {
     static {
         testValsMap.put("Test", TestFw.test.asVal());
         testValsMap.put("+", Val.of(AccumulatorsExprFw.exprAccumulator, symbol("+")));
-        testValsMap.put("test-obj", Val.of(StateHoleFw.statehole, new Obj.ValObj(DIntFw.dint(14), context.scope())));
+        testValsMap.put("test-obj", Val.of(StateHoleFw.statehole, new Obj.ValObj(DIntFw.dint(14), context.state())));
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 

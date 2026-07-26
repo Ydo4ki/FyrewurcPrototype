@@ -5,10 +5,6 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.state.StateHoleFw;
-import org.fw.core.state.obj.Obj;
-
-import java.util.Collections;
-import java.util.Set;
 
 public final class GetLocalStateOperation extends Operation {
 
@@ -25,7 +21,7 @@ public final class GetLocalStateOperation extends Operation {
 
     @Override
     public Val execute(Context context) {
-        return StateHoleFw.wrap(context.scope());
+        return StateHoleFw.wrap(context.state());
     }
 
     @Override

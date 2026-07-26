@@ -28,6 +28,15 @@ public final class OperationFw {
         return Val.unspecified;
     }).asType();
 
+    public static final Val vitOperation = FW.telephonist((arg, context1) -> {
+        if (!VitFw.isVit(arg.type()))
+            return Val.unspecified;
+
+        Vit vit = arg._unpack();
+
+        return FW.telephonist((rtEnv, context) -> Operation.vit(vit, RtEnv.of(rtEnv)).asVal());
+    });
+
     @Deprecated
     private static Val handleRAW_old(Type type, Val arg, Context context) {
         if (FwUtils.isTypeApiCall(arg, type, context)) {
@@ -120,7 +129,7 @@ public final class OperationFw {
                 return FW.telephonist(() -> "(call (get WriteOperation builder) " + arg.toExpr(context1) + ")", (arg2, context2) -> {
                     if (!OperationFw.isOperation_old(arg2.type()))
                         return Val.unspecified;
-                    return wrap(Operation.write((Obj.ValObj) object, OperationFw.unwrap_old(arg2)));
+                    return wrap(Operation.write((Obj.ValObj) object, arg2));
                 });
             });
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {
@@ -164,7 +173,7 @@ public final class OperationFw {
                 Vit vit = arg._unpack();
 //                vit = Vit.reduce(vit, ctx);
                 return FW.telephonist(() -> "(call (get VitOperation builder) " + arg.toExpr(context) + ")", (rtEnv, context1) -> {
-                    return wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(rtEnv), context1.scope()))));
+                    return wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(rtEnv), context1.state())), RtEnv.of(rtEnv)));
                 });
             });
         } else if (arg1.type().equals(ExprCallOpFw.exprCallOp)) {

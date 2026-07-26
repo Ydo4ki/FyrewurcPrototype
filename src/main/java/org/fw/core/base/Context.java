@@ -16,7 +16,7 @@ public final class Context {
         return rtEnv;
     }
 
-    public State scope() {
+    public State state() {
         return state;
     }
 

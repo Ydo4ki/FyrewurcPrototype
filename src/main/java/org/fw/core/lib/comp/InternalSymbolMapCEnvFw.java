@@ -2,12 +2,10 @@ package org.fw.core.lib.comp;
 
 import org.fw.core.FW;
 import org.fw.core.base.Val;
-import org.fw.core.lib.DeclaredFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.j.JValConstGetter;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
-import org.fw.core.lib.state.StateHoleFw;
 import org.fw.core.vit.Vit;
 
 import java.util.HashMap;

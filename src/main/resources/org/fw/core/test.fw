@@ -6,8 +6,12 @@ test-mod.test-value
 (usec (call ModuleCompEnv.constructor test-mod)
     test-value
 )
-
 (invoke! _PrintHelloWorld)
+(do
+ (: obj (invoke! (call _CreateNewObjectOperation 51)))
+ (invoke! (call _WriteOperation obj (call (invoke! (call _ReadOperation obj)) (symbol "+") 10)))
+ (invoke! (call _ReadOperation obj))
+)
 
 (do
  (call 5 (symbol "+") 5)

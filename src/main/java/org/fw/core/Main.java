@@ -33,14 +33,14 @@ public class Main {
     public static final RtEnv rtEnv = RtEnv.of(ModuleFw.module(
             DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExpr)
     ));
-    private static final Context context = new Context(rtEnv, InternalSystemContext.context.scope());
+    private static final Context context = new Context(rtEnv, InternalSystemContext.context.state());
 
     public static final CompEnv internalCompEnv = CompEnv.of(CompEnv.compEnv(context,
             VitFw.directivesCenv.asVal(),
             ExprGetFw.getterCEnv,
             InternalSymbolMapCEnvFw.valsCenv,
             DIntFw.ParseDIntCEnvFw.parseNumCenv,
-            InvokeFuncCEnvFw.invokeFuncCenv,
+//            InvokeFuncCEnvFw.invokeFuncCenv,
             DVecFw.DVecConstructorCEnvFw.dVecConstructorCenv,
             StrFw.ParseStrCEnvFw.parseStrCenv,
             CurrentCompEnvCEnvFw.currentCompEnvCenv,
@@ -56,7 +56,7 @@ public class Main {
             publicModule = FwUtils.getValueFromFile(new File("int/base.fw"), internalCompEnv, context);
             publicCompEnv = CompEnv.of(CompEnv.compEnv(context, ModuleFw.ModuleCEnvFw.compEnv(publicModule),
                     VitFw.directivesCenv.asVal(),
-                    DIntFw.ParseDIntCEnvFw.parseNumCenv, InvokeFuncCEnvFw.invokeFuncCenv, ExprGetFw.getterCEnv,
+                    DIntFw.ParseDIntCEnvFw.parseNumCenv /*InvokeFuncCEnvFw.invokeFuncCenv*/, ExprGetFw.getterCEnv,
                     DVecFw.DVecConstructorCEnvFw.dVecConstructorCenv, StrFw.ParseStrCEnvFw.parseStrCenv, CurrentCompEnvCEnvFw.currentCompEnvCenv));
 
             CompEnv env = CompEnv.of(CompEnv.compEnv(context, Main.publicCompEnv.asVal(), InternalSymbolMapCEnvFw.valsCenv));

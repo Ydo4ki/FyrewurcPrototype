@@ -18,42 +18,42 @@ import org.fw.core.vit.VitVal;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
-public final class InvokeFuncCEnvFw {
-
-    @Deprecated // todo: think of something better than that
-    public static final Val invokeFuncCenv = telephonist("invokeFuncCenv", (arg, context) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"), context);
-            Val compEnv = arg.call(symbol("comp-env"), context);
-            Expr expr = exprVal._unpack();
-            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
-                Expr f = ((ExprList) expr).get(0);
-                Vit func = null;
-                try {
-                    func = CompEnv.of(compEnv).compile(ExprFw.wrap(f), context);
-                } catch (VitCompilationException e) {
-                    return Val.unspecified;
-                }
-
-                func = Vit.simplify(func, context);
-
-                Val exprCallOp = ExprCallOpFw.exprCallOp.asVal().call(symbol("of-expr-list"), context).call(exprVal, context).call(compEnv, context);
-                Vit vit = func.call(exprCallOp);
-
-                if (func instanceof VitVal) {
-                    Val codeToWhichFunctionJustCompiled = vit.eval(context);
-                    if (!VitFw.isVit(codeToWhichFunctionJustCompiled.type())) {
-                        return codeToWhichFunctionJustCompiled;
-                    }
-                    return codeToWhichFunctionJustCompiled;
-                }
-
-//                Vit resultingCode = Vit.val(VitFw.eval).call(vit).call(Vit.var);
-                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(VitFw.eval).call(vit).call(Vit.var))))); // ._.
-
-                return VitFw.wrap(resultingCode);
-            }
-        }
-        return Val.unspecified;
-    });
-}
+//public final class InvokeFuncCEnvFw {
+//
+//    @Deprecated // todo: think of something better than that
+//    public static final Val invokeFuncCenv = telephonist("invokeFuncCenv", (arg, context) -> {
+//        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+//            Val exprVal = arg.call(symbol("expr"), context);
+//            Val compEnv = arg.call(symbol("comp-env"), context);
+//            Expr expr = exprVal._unpack();
+//            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
+//                Expr f = ((ExprList) expr).get(0);
+//                Vit func = null;
+//                try {
+//                    func = CompEnv.of(compEnv).compile(ExprFw.wrap(f), context);
+//                } catch (VitCompilationException e) {
+//                    return Val.unspecified;
+//                }
+//
+//                func = Vit.simplify(func, context);
+//
+//                Val exprCallOp = ExprCallOpFw.exprCallOp.asVal().call(symbol("of-expr-list"), context).call(exprVal, context).call(compEnv, context);
+//                Vit vit = func.call(exprCallOp);
+//
+//                if (func instanceof VitVal) {
+//                    Val codeToWhichFunctionJustCompiled = vit.eval(context);
+//                    if (!VitFw.isVit(codeToWhichFunctionJustCompiled.type())) {
+//                        return codeToWhichFunctionJustCompiled;
+//                    }
+//                    return codeToWhichFunctionJustCompiled;
+//                }
+//
+////                Vit resultingCode = Vit.val(VitFw.eval).call(vit).call(Vit.var);
+//                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(VitFw.eval).call(vit).call(Vit.var), )))); // ._.
+//
+//                return VitFw.wrap(resultingCode);
+//            }
+//        }
+//        return Val.unspecified;
+//    });
+//}

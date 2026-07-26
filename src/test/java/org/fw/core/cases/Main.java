@@ -11,7 +11,9 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.*;
+import org.fw.core.lib.state.LaserPointerFw;
 import org.fw.core.lib.state.OperationFw;
+import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.vit.RtEnv;
@@ -30,7 +32,7 @@ public class Main {
     public static void main(String[] args) {
         Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test.fw"));
 
-        State state = Operation.HelloWorldOperation.systemState;
+        State state = Operation.systemState;
         Context context = new Context(rtEnv, state);
         CompEnv compEnv;
         compEnv = CompEnv.of(CompEnv.compEnv(context,
@@ -44,7 +46,33 @@ public class Main {
                         DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
                 )),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new Operation.HelloWorldOperation().asVal())
+                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new Operation.HelloWorldOperation().asVal()),
+                        DeclaredFw.declared(symbol("_CreateNewObjectOperation"), FW.telephonist((arg, context1) -> {
+                            return new Operation.CreateNewObjectOperation(arg).asVal();
+                        })),
+                        DeclaredFw.declared(symbol("_ReadOperation"), FW.telephonist((arg, context1) -> {
+                            if (arg.type() != LaserPointerFw.laserPointer)
+                                return Val.unspecified;
+
+                            Obj obj = arg._unpack();
+                            if (!(obj instanceof Obj.ValObj))
+                                return Val.unspecified;
+
+                            return Operation.read((Obj.ValObj)obj).asVal();
+                        })),
+                        DeclaredFw.declared(symbol("_WriteOperation"), FW.telephonist((arg, context1) -> {
+                            if (arg.type() != LaserPointerFw.laserPointer)
+                                return Val.unspecified;
+
+                            Obj obj = arg._unpack();
+                            if (!(obj instanceof Obj.ValObj))
+                                return Val.unspecified;
+
+                            return FW.telephonist((arg1, context2) -> {
+                                return Operation.write((Obj.ValObj)obj, arg1).asVal();
+                            });
+                        })),
+                        DeclaredFw.declared(symbol("_VitOperation"), OperationFw.vitOperation)
                 )),
                 ModuleFw.exports.asVal(),
                 FunctionFw.exports.asVal(),

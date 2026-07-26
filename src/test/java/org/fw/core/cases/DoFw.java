@@ -16,6 +16,7 @@ import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
+import org.fw.core.lib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -101,7 +102,7 @@ public class DoFw {
 
                 Vit rest = compileDo(exprVal, i + 1, isize, newCompEnv, context);
 
-                Vit evalRest = Vit.val(VitFw.evalVit).call(VitFw.wrap(rest)).call(Vit.call(newRtGetter, Vit.var).call(valueV));
+                Vit evalRest = Vit.invoke(Vit.val(OperationFw.vitOperation).call(VitFw.wrap(rest)).call(Vit.call(newRtGetter, Vit.var).call(valueV)) );
 
                 execution = execution.call(evalRest);
                 break;

@@ -20,13 +20,13 @@ public interface Obj {
         }
 
         public Val read(Context context) {
-            if (owner() != context.scope())
+            if (owner() != context.state())
                 return Val.unspecified; // c'mon at least use exceptions you're getting too far with this
             return value;
         }
 
         public void write(Context context, Val x) {
-            if (owner() != context.scope())
+            if (owner() != context.state())
                 return;
             value = x;
         }

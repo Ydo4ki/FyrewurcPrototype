@@ -33,7 +33,7 @@ public final class VitiateTelephonistFw {
 
         return FW.telephonist("(call (get VitiateTelephonist builder) " + VitFw.wrap(vit).toExpr(ctx) + ")", (arg, context) -> {
             return FW.telephonist("(call (get VitiateTelephonist builder) " + VitFw.wrap(vit).toExpr(ctx) + " " + arg.toExpr(context) + ")", (parentRtEnv, context1) -> {
-                return Val.of(VitiateTelephonistFw.vitiateTelephonist, new VitiateTelephonist(vit, arg, RtEnv.of(parentRtEnv), context1.scope()));
+                return Val.of(VitiateTelephonistFw.vitiateTelephonist, new VitiateTelephonist(vit, arg, RtEnv.of(parentRtEnv), context1.state()));
             });
         });
     });

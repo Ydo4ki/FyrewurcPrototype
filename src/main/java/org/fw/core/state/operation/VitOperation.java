@@ -8,25 +8,25 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.state.OperationFw;
 import org.fw.core.state.obj.Obj;
+import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.util.Set;
 
 public final class VitOperation extends Operation {
     private final Vit vit;
-    private Set<Obj> reads;
-    private Set<Obj> writes;
-    private Context lastContext = null;
+    private final RtEnv rtEnv;
 
-    VitOperation(Vit vit) {
+    VitOperation(Vit vit, RtEnv rtEnv) {
 //        if (vit instanceof VitVal val && val.val().toExpr(new Context(RtEnv.unspecified, Scope.eternal())).equals(Symbol.of("vitiate-telephonist-runtime-env")))
 //            throw new Error();
         this.vit = vit;
+        this.rtEnv = rtEnv;
     }
 
     @Override
     public Val execute(Context context) {
-        return vit.eval(context);
+        return vit.eval(new Context(rtEnv, context.state()));
     }
 
     public Vit vit() {

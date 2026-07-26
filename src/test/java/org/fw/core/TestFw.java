@@ -46,7 +46,7 @@ public final class TestFw {
             arg = Call.getArg(arg, context);
             if (arg.equals(symbol("complete"))) {
                 return FW.telephonist("completion", (arg1, context1) -> {
-                    return Val.of(TestFw.test, new TestRecord(instance.statements(), new Context(RtEnv.of(arg1), context1.scope())));
+                    return Val.of(TestFw.test, new TestRecord(instance.statements(), new Context(RtEnv.of(arg1), context1.state())));
                 });
             }
         }
