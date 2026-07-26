@@ -1,0 +1,30 @@
+(do
+ (: slowprint (call Function.builder
+     (call Constraint.builder
+          (compile-vit (call (var) (symbol "size")))
+          (compile-vit 1)
+     )
+     (compile-vit (operation (do
+      (: string (call (var) 0))
+      (: i (invoke! (call _CreateNewObjectOperation 0)))
+
+      (invoke! (call _While (operation (call eq (call (invoke! (call _ReadOperation i)) (symbol "<=>") string.size) -1)) (operation (do
+
+       (: s (invoke! (call _ReadOperation i)))
+       (: e (call s (symbol "+") 1))
+
+       (invoke! (call _Print (call string (symbol "sub") s e)))
+       (invoke! (call _Sleep 100))
+       (invoke! (call _WriteOperation i (call (invoke! (call _ReadOperation i)) (symbol "+") 1)))
+      ))))
+     )))
+     (var)
+ ))
+
+ (invoke! (call slowprint.fn-call ["Hi.\n"]))
+ (invoke! (call _Sleep 500))
+ (invoke! (call slowprint.fn-call ["This is slowprint test.\n"]))
+ (invoke! (call _Sleep 500))
+ (invoke! (call slowprint.fn-call ["Feel free to join.\n"]))
+)
+

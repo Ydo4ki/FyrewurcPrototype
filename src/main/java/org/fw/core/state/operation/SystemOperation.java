@@ -45,6 +45,20 @@ public abstract class SystemOperation extends Operation {
         }
     }
 
+    public static class FlushOperation extends SystemOperation {
+        private final PrintStream out;
+
+        public FlushOperation(PrintStream out) {
+            this.out = out;
+        }
+
+        @Override
+        protected Val execute0() {
+            out.flush();
+            return Operation.unit;
+        }
+    }
+
     public static class ReadLineOperation extends SystemOperation {
         private final Scanner scanner;
 

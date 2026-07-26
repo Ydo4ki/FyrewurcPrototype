@@ -6,17 +6,52 @@ import static org.fw.core.vit.Vit.val;
 import static org.fw.core.vit.Vit.var;
 
 import org.fw.core.FW;
+import org.fw.core.ast.BracketsTypes;
+import org.fw.core.ast.ExprList;
+import org.fw.core.ast.Symbol;
+import org.fw.core.base.Call;
 import org.fw.core.base.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
 import org.fw.core.state.obj.State;
+import org.fw.core.util.FwUtils;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 
+import java.math.BigInteger;
+
 public final class StrFw {
     public static final Type str = FW.telephonist("Str", (arg, context) -> {
+        if (FwUtils.isTypeApiCall(arg, StrFw.str, context)) {
+            Val instance = Call.getVal(arg, context);
+            Val cArg = Call.getArg(arg, context);
+
+            String value = instance._unpack();
+            assert value != null;
+            if (cArg.equals(symbol("sub"))) {
+                return FW.telephonist((start, context1) -> {
+                    if (start.type() != DIntFw.dint)
+                        return Val.unspecified;
+                    int s = start._unpack(BigInteger.class).intValue();
+
+                    return FW.telephonist((end, context2) -> {
+                        if (end.type() != DIntFw.dint)
+                            return Val.unspecified;
+                        int e = end._unpack(BigInteger.class).intValue();
+
+                        try {
+                            return str(value.substring(s, e));
+                        } catch (StringIndexOutOfBoundsException ee) {
+                            return Val.unspecified;
+                        }
+                    });
+                });
+            } if (cArg.equals(symbol("size"))) {
+                return DIntFw.dint(value.length());
+            }
+        }
         return Val.unspecified;
     }).asType();
 

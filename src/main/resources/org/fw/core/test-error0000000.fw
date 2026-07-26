@@ -6,7 +6,7 @@
  (invoke! (call _Print "\n"))
  (invoke! (call _Sleep 1000))
  (invoke! (call _Print "We're getting everything ready for you\n"))
- (invoke! (call _Sleep 1000))
+ (invoke! (call _Sleep 10000))
  (invoke! (call _Print "Almost there\n"))
  (invoke! (call _Sleep 3000))
  (invoke! (call _Print "Ah\n"))

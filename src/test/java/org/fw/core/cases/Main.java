@@ -35,7 +35,7 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-        Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test2.fw"));
+        Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-slowprint.fw"));
 
         State state = SystemOperation.systemState;
         Context context = new Context(rtEnv, state);
@@ -54,6 +54,7 @@ public class Main {
                 )),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_PrintHelloWorld"), new SystemOperation.PrintOperation(System.out, "Hello World!\n").asVal()),
+                        DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
                         DeclaredFw.declared(symbol("_Print"), FW.telephonist((arg, context1) -> {
                             return new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal();
