@@ -1,11 +1,16 @@
 
-test-mod.test-value
-(usem test-mod
-    test-value
+(do
+ (: a test-mod.test-value)
+ (: b (usem test-mod
+     test-value
+ ))
+ (: c (usec (call ModuleCompEnv.constructor test-mod)
+     test-value
+ ))
+ (call eq c b)
 )
-(usec (call ModuleCompEnv.constructor test-mod)
-    test-value
-)
+
+
 (invoke! _PrintHelloWorld)
 (do
  (: obj (invoke! (call _CreateNewObjectOperation 51)))

@@ -42,6 +42,7 @@ public class Main {
                 ExprFw.exports.asVal(),
                 StrFw.exports.asVal(),
                 DVecFw.exports.asVal(),
+                ValsFw.exports.asVal(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
                 )),
