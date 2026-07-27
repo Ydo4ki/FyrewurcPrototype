@@ -20,19 +20,6 @@ public final class BoxFw {
             Val instance = Call.getVal(arg, context);
             Val cArg = Call.getArg(arg, context);
             return handleBoxTypeCall(instance.asType(), cArg, context);
-        } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
-            int isize = size._unpack(BigInteger.class).intValue();
-            if (isize != 1) {
-                return null;
-            }
-
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
-            if (!VitFw.isVit(retVit.type()))
-                return retVit; // compile error idk
-
-            return VitFw.wrap(Vit.val(BoxFw.boxType.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit)));
         } else if (arg.equals(symbol("constructor"))) {
 //            return InstancerFw.mkInstancer(BoxFw.boxType, BoxFw.boxType.asVal(), "constructor");
             return FW.telephonist(ExprList.of(BracketsTypes.round,
@@ -48,20 +35,7 @@ public final class BoxFw {
 
     @Deprecated
     private static Val handleBoxTypeCall(Type type, Val arg, Context context) {
-        if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
-            int isize = size._unpack(BigInteger.class).intValue();
-            if (isize != 1) {
-                return null;
-            }
-
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
-            if (!VitFw.isVit(retVit.type()))
-                return retVit; // compile error idk
-
-            return VitFw.wrap(Vit.val(type.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit)));
-        } else if (FwUtils.isTypeApiCall(arg, type, context)) {
+        if (FwUtils.isTypeApiCall(arg, type, context)) {
             Val instance = Call.getVal(arg, context);
             Val cArg = Call.getArg(arg, context);
             if (cArg.equals(symbol("unbox"))) {
@@ -80,9 +54,7 @@ public final class BoxFw {
                             Symbol.of("get"),
                             type.asVal().toExpr(context),
                             Symbol.of("constructor")
-                    ), (arg1, context1) -> {
-                        return Val.of(type, arg1);
-                    });
+                    ), (arg1, context1) -> Val.of(type, arg1));
         }
         return null;
     }
