@@ -69,15 +69,15 @@ public final class ConstraintFw {
                 );
             }
         }
-        return Unspecified.unspecified;
+        return null;
     });
 
     public static final Val constraintBuilder = FW.telephonist("Constraint.builder", (arg1, context1) -> {
         if (!VitFw.isVit(arg1.type()))
-            return Unspecified.unspecified;
+            return null;
         return FW.telephonist((arg2, context2) -> {
             if (!VitFw.isVit(arg2.type()))
-                return Unspecified.unspecified;
+                return null;
             return Val.of(ConstraintFw.constraint, new Constraint(arg1._unpack(), arg2._unpack(), arg1.equals(arg2)));
         });
     });
@@ -93,7 +93,7 @@ public final class ConstraintFw {
                 return constraintBuilder;
             }
         }
-        return Unspecified.unspecified(ConstraintFw.constraint.asVal(), arg);
+        return null;
     }).asType();
 
     private static Val handleInstanceCall(Val instance, Constraint payload, Val arg, Context context) {
@@ -123,7 +123,7 @@ public final class ConstraintFw {
                     return VitFw.wrap(payload.b());
             }
         }
-        return Unspecified.unspecified(instance, arg);
+        return null;
     }
 
     private static final class Constraint {

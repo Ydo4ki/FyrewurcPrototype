@@ -22,20 +22,7 @@ public abstract class Val {
 
     public Val call(Val arg, Context context) {
         Objects.requireNonNull(context);
-        // evil
-        // this is to evil
-//        return Scope.performAndDie(context.scope(), scope
-//                -> type().callInstance(this, arg, new Context(context.rtEnv(), scope)));
-        try {
-            Val v = type().callInstance(this, arg, context);
-            if (v == null)
-                return Unspecified.unspecified(this, arg);
-            return v;
-        } catch (Exception e) {
-            System.out.println("UNEXPECTED EXCEPTION, AAAAA:");
-            e.printStackTrace(System.out);
-            return Unspecified.unspecified(this, arg);
-        }
+        return type().callInstance(this, arg, context);
     }
 
     public Expr toExpr(Context context) {
@@ -157,7 +144,8 @@ public abstract class Val {
 
                     return instance.call(cArg, context); // so here we're going in the opposite direction
                 }
-                return Unspecified.unspecified; // idk
+                throw new RuntimeException("I have no idea when is this suppose to happen so if you see this message now you know");
+//                return Unspecified.unspecified; // idk
             });
             return value;
         }

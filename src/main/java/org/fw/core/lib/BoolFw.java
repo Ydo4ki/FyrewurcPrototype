@@ -64,7 +64,7 @@ public final class BoolFw {
                 });
             }*/
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     private static Val bop(String name, Val instance, Context context, FwUtils.BoolBinaryOperator operator) {
@@ -74,7 +74,7 @@ public final class BoolFw {
                 boolean v2 = arg1._unpack(Boolean.class);
                 return wrap(operator.apply(value, v2));
             }
-            return Unspecified.unspecified;
+            return null;
         });
     }
 

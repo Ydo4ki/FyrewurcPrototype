@@ -23,7 +23,7 @@ public final class JValConstGetter {
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2) {
-                return Unspecified.unspecified;
+                return null;
             }
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -35,7 +35,7 @@ public final class JValConstGetter {
 
             Val nameVal = nameVit.eval(context);
             if (!nameVal.type().equals(StrFw.str))
-                return Unspecified.unspecified;
+                return null;
 
             String name = nameVal._unpack();
 
@@ -48,7 +48,7 @@ public final class JValConstGetter {
 
             Val fnameVal = fnameVit.eval(context);
             if (!fnameVal.type().equals(StrFw.str))
-                return Unspecified.unspecified;
+                return null;
 
             String fieldName = fnameVal._unpack();
             try {
@@ -66,6 +66,6 @@ public final class JValConstGetter {
                 throw new RuntimeException(e);
             }
         }
-        return Unspecified.unspecified;
+        return null;
     });
 }

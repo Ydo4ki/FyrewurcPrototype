@@ -20,11 +20,11 @@ public final class TelephonistConstructorFw {
             int isize = size._unpack(BigInteger.class).intValue();
 
             if (isize != 2)
-                return Unspecified.unspecified;
+                return null;
 
             Val varKey = arg.call(DIntFw.dint(0), context);
             if (!varKey.type().equals(ExprFw.symbol)) {
-                return Unspecified.unspecified;
+                return null;
             }
 
             Val argCEnv = FW.telephonist("arg-comp-env", (arg1, context1) -> {
@@ -33,7 +33,7 @@ public final class TelephonistConstructorFw {
                     if (exprVal.equals(varKey))
                         return VitFw.wrap(Vit.var(varKey));
                 }
-                return Unspecified.unspecified;
+                return null;
             });
 
             cEnv = CompEnv.compEnv(context, cEnv, argCEnv);
@@ -46,6 +46,6 @@ public final class TelephonistConstructorFw {
 
             return VitFw.wrap(Vit.val(VitiateTelephonistFw.vitiateTelephonist.asVal()).call(symbol("builder")).call(bodyVit).call(varKey).call(Vit.var));
         }
-        return Unspecified.unspecified;
+        return null;
     });
 }

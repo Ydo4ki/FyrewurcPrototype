@@ -22,7 +22,7 @@ public abstract class SystemOperation extends Operation {
         // and it's not like it will be much useful later
         // I should probably create a random instance and call it a system context
         if (context.state() != systemState) {
-            return Unspecified.unspecified;
+            return Operation.unit;
         }
         return execute0();
     }
@@ -85,7 +85,7 @@ public abstract class SystemOperation extends Operation {
             try {
                 Thread.sleep(millis, 0);
             } catch (InterruptedException e) {
-                return Unspecified.unspecified;
+                return Operation.unit;
             }
             return Operation.unit;
         }

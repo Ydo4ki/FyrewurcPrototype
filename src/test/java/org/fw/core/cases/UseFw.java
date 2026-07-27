@@ -29,15 +29,15 @@ public class UseFw {
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
                     case "usem": {
                         if (isize != 3)
-                            return Unspecified.unspecified;
+                            return null;
 
                         Val moduleVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
                         if (!VitFw.isVit(moduleVit.type()))
-                            return Unspecified.unspecified; // could not compile module
+                            return null; // could not compile module
 
                         Vit vit = Vit.simplify(moduleVit._unpack(Vit.class), context);
                         if (!(vit instanceof VitVal))
-                            return Unspecified.unspecified; // this is meant to be known at compile-time
+                            return null; // this is meant to be known at compile-time
 
                         Val newCompEnv = CompEnv.compEnv(context,
                                 compEnv,
@@ -52,15 +52,15 @@ public class UseFw {
                     }
                     case "usec": {
                         if (isize != 3)
-                            return Unspecified.unspecified;
+                            return null;
 
                         Val cEnvVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
                         if (!VitFw.isVit(cEnvVit.type()))
-                            return Unspecified.unspecified; // could not compile cenv
+                            return null; // could not compile cenv
 
                         Vit vit = Vit.simplify(cEnvVit._unpack(Vit.class), context);
                         if (!(vit instanceof VitVal))
-                            return Unspecified.unspecified; // this is meant to be known at compile-time
+                            return null; // this is meant to be known at compile-time
 
                         Val newCompEnv = CompEnv.compEnv(context,
                                 compEnv,
@@ -76,6 +76,6 @@ public class UseFw {
                 }
             }
         }
-        return Unspecified.unspecified;
+        return null;
     }));
 }

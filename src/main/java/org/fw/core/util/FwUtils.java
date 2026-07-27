@@ -14,6 +14,7 @@ import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.state.obj.State;
+import org.fw.core.state.operation.Operation;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -33,7 +34,7 @@ public final class FwUtils {
 
     @Deprecated
     public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, TelephonistType.CallFunction orStatic) throws Exception {
-        return handleSymbols(arg, type, context, handler, (instance, arg1) -> Unspecified.unspecified, orStatic);
+        return handleSymbols(arg, type, context, handler, (instance, arg1) -> null, orStatic);
     }
 
     @Deprecated
@@ -80,7 +81,7 @@ public final class FwUtils {
 
     public static Val getValueFromFile(File file, CompEnv compEnv, Context context) throws IOException {
         Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
-        Val result = Unspecified.unspecified;
+        Val result = Operation.unit; // this will be returned if the file is empty
 
 
         Map<String, Val> defineds = new HashMap<>();

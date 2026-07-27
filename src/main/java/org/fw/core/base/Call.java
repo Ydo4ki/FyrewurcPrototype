@@ -29,7 +29,7 @@ public final class Call {
                     (func, context1) -> FW.telephonist(() -> "(Call.builder " + func.toExpr(context1) + ")",
                             (argument, context2) -> fwCall(func, argument)));
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static Val fwCall(Val instance, Val arg) {

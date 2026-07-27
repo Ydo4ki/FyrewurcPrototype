@@ -65,7 +65,7 @@ public final class DeclaredFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
-                return Unspecified.unspecified;
+                return null;
 
             Val name = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(name.type()))
@@ -86,7 +86,7 @@ public final class DeclaredFw {
                 });
             });
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static Val getKey(Val declared, Context context) {
@@ -160,11 +160,11 @@ public final class DeclaredFw {
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
                     case ":": {
                         if (isize != 3)
-                            return Unspecified.unspecified;
+                            return null;
 
                         Val name = exprVal.call(DIntFw.dint(1), context);
                         if (!name.type().equals(ExprFw.symbol))
-                            return Unspecified.unspecified; // symbol expected
+                            return null; // symbol expected
 
                         Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(compEnv)), context);
                         if (!VitFw.isVit(value.type()))
@@ -175,7 +175,7 @@ public final class DeclaredFw {
                 }
             }
         }
-        return Unspecified.unspecified;
+        return null;
     }));
 
     public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,

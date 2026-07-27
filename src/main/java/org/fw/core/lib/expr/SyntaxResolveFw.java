@@ -30,7 +30,7 @@ public final class SyntaxResolveFw {
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("SyntaxResolve.builder", (expr, context1) -> {
                 if (!expr.type().equals(ExprFw.symbol) && !expr.type().equals(ExprFw.exprList)) {
-                    return Unspecified.unspecified;
+                    return null;
                 }
                 return FW.telephonist(() -> "(SyntaxResolve.builder " + expr.toExpr(context1) + ")", (callerEnv, context2) -> {
                     return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolve(expr._unpack(), CompEnv.of(callerEnv)));
@@ -40,7 +40,7 @@ public final class SyntaxResolveFw {
             Val size = arg.call(symbol("size"), context);
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
-            if (isize != 2) return Unspecified.unspecified;
+            if (isize != 2) return null;
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(retVit.type()))
@@ -51,12 +51,12 @@ public final class SyntaxResolveFw {
                 return retVit2; // compile error idk
 
             Vit vit = Vit.val(SyntaxResolveFw.syntaxResolve.asVal()).call(symbol("builder"))
-                    .call(VitFw.unwrap0(retVit))
-                    .call(VitFw.unwrap0(retVit2));
+                    .call(VitFw.unwrap(retVit))
+                    .call(VitFw.unwrap(retVit2));
 
             return VitFw.wrap(vit);
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     static final class SyntaxResolve {

@@ -18,6 +18,6 @@ public final class CurrentCompEnvCEnvFw {
                 return VitFw.wrap(Vit.val(compEnv));
             }
         }
-        return Unspecified.unspecified;
+        return null;
     });
 }

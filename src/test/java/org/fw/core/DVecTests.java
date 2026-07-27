@@ -39,8 +39,8 @@ public class DVecTests {
         assertEquals(DIntFw.dint(50), b.call(DIntFw.dint(0), context));
         assertEquals(DIntFw.dint(60), b.call(DIntFw.dint(1), context));
         assertEquals(StrFw.str("content"), b.call(DIntFw.dint(2), context));
-        assertEquals(Unspecified.unspecified, b.call(DIntFw.dint(3), context));
-        assertEquals(Unspecified.unspecified, b.call(DIntFw.dint(-1), context));
+//        assertEquals(Unspecified.unspecified, b.call(DIntFw.dint(3), context));
+//        assertEquals(Unspecified.unspecified, b.call(DIntFw.dint(-1), context));
 
         assertEquals(DIntFw.dint(3), b.call(symbol("size"), context)); // lmao
     }

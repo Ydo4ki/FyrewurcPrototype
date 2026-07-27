@@ -3,6 +3,7 @@ package org.fw.core.state.obj;
 import org.fw.core.base.Context;
 import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
+import org.fw.core.state.operation.Operation;
 
 public interface Obj {
 
@@ -22,7 +23,7 @@ public interface Obj {
 
         public Val read(Context context) {
             if (owner() != context.state())
-                return Unspecified.unspecified; // c'mon at least use exceptions you're getting too far with this
+                return Operation.unit; // c'mon at least use exceptions you're getting too far with this
             return value;
         }
 

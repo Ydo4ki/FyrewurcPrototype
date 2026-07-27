@@ -54,19 +54,19 @@ public final class ModuleFw {
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Module.constructor", (arg1, c) -> {
                 if (!arg1.type().equals(DVecFw.dVec))
-                    return Unspecified.unspecified;
+                    return null;
 
                 Val[] values = arg1._unpack(); // Ok I don't even care at this point
                 for (Val value : values) {
                     if (!value.type().equals(DeclaredFw.declared))
-                        return Unspecified.unspecified;
+                        return null;
                 }
 
                 return Val.of(ModuleFw.module, new Module(values));
             });
         } else if (arg.equals(symbol("contains-key"))) {
             return FW.telephonist("Module.contains-key", (arg1, context1) -> {
-                if (!arg1.type().equals(ModuleFw.module)) return Unspecified.unspecified;
+                if (!arg1.type().equals(ModuleFw.module)) return null;
                 Module mod = arg1._unpack();
                 return FW.telephonist(() -> "(Module.contains-key " + arg1.toExpr(context1) + ")", (key, context2) -> {
                     return mod.containsKey(key, context2) ? BoolFw._true : BoolFw._false;
@@ -74,7 +74,7 @@ public final class ModuleFw {
             });
         }
 
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static Val module(Val... values) {
@@ -154,10 +154,10 @@ public final class ModuleFw {
                             return VitFw.wrap(Vit.val(value));
                         }
                     }
-                    return Unspecified.unspecified;
+                    return null;
                 }
             }
-            return Unspecified.unspecified;
+            return null;
         }).asType();
 
         public static Val compEnv(Val module) {

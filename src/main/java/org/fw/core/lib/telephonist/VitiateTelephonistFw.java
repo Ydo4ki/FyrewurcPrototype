@@ -25,7 +25,7 @@ public final class VitiateTelephonistFw {
 
     private static final Val builder = FW.telephonist("(get VitiateTelephonist builder)", (arg0, ctx) -> {
         if (!VitFw.isVit(arg0.type()))
-            return Unspecified.unspecified;
+            return null;
 
         Vit vit = arg0._unpack();
 
@@ -126,7 +126,7 @@ public final class VitiateTelephonistFw {
                 if (arg1.equals(symbol("unpacker"))) {
                     return UnpackerFw.mkUnpacker(instance.asType(), instance, "unpacker");
                 }
-                return Unspecified.unspecified;
+                return null;
             });
 
             Val env = FW.telephonist("vitiate-telephonist-runtime-env", (arg1, context1) -> {
@@ -172,7 +172,7 @@ public final class VitiateTelephonistFw {
         // well actually we might expose source in toExpr
         // at least for now
 
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static Val vitiate(Vit src, Val varKey, Context context) {

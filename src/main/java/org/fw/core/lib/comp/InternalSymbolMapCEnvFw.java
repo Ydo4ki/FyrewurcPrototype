@@ -38,22 +38,26 @@ public final class InternalSymbolMapCEnvFw {
 
     public static final Val valsCenv = symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
         if (!arg1.type().equals(ExprFw.symbol))
-            return Unspecified.unspecified;
+            return null;
         String string = arg1._unpack().toString();
         Val ret = valsMap.get(string);
         if (ret != null)
             return VitFw.wrap(val(ret));
-        return Unspecified.unspecified;
+        return null;
     })));
 
     public static Val symbolMapVitEnv(Vit telemap) {
         Vit arg = var(symbol("arg"));
         Vit argExpr = arg.call(symbol("expr"));
         Vit parseArg = telemap.call(argExpr);
-        return VitiateTelephonistFw.vitiate(
-                FW.vIf(val(eq).call(parseArg).call(Unspecified.unspecified).call(symbol("not")),
-                        parseArg,
-                        val(Unspecified.unspecified)
-                ), symbol("arg"), InternalSystemContext.context);
+        return FW.telephonist((arg1, context) -> {
+            if (Unspecified.isUnspecified(arg1)) return null;
+            else return parseArg.eval(context);
+        });
+//        return VitiateTelephonistFw.vitiate(
+//                FW.vIf(val(eq).call(parseArg).call(null).call(symbol("not")),
+//                        parseArg,
+//                        val(null)
+//                ), symbol("arg"), InternalSystemContext.context);
     }
 }

@@ -16,6 +16,8 @@ import org.fw.core.vit.VitVal;
 
 public abstract class Operation {
     // a Val symbolizing successful completion of the operation
+    // basically the same as the old 'unspecified'
+    // just without negative connotation
     public static final Val unit = FW.telephonist("unit", (arg, context) -> Operation.unit);
 
     public abstract Val execute(Context context);

@@ -25,14 +25,14 @@ public final class DoFw {
             arg = Call.getArg(arg, context);
             return Val.of(DoFw.unaryStoreType, arg);
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static final Val usLast = FW.telephonist((arg, context) -> {
         if (arg.type().equals(DoFw.unaryStoreType)) {
             return arg._unpack();
         }
-        return Unspecified.unspecified;
+        return null;
     });
 
     public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg, context) -> {
@@ -54,11 +54,11 @@ public final class DoFw {
                 }
             }
         }
-        return Unspecified.unspecified;
+        return null;
     }));
 
     private static Vit compileDo(Val exprVal, int start, int isize, Val compEnv, Context context) throws VitCompilationException {
-        Vit execution = Vit.val(Val.of(DoFw.unaryStoreType, Unspecified.unspecified));
+        Vit execution = Vit.val(Val.of(DoFw.unaryStoreType, null));
         for (int i = start; i < isize - 1; i++) {
             Expr line = exprVal.call(DIntFw.dint(i + 1), context)._unpack();
             if (line instanceof ExprList && ((ExprList) line).size() == 3 && ((ExprList) line).get(0).toString().equals(":")) {
@@ -66,7 +66,7 @@ public final class DoFw {
 
                 Expr nameE = ((ExprList) line).get(1);
                 if (!(nameE instanceof Symbol))
-                    throw new VitCompilationException(Unspecified.unspecified); // syntax error: symbol expected
+                    throw new VitCompilationException(null); // syntax error: symbol expected
                 String name = ((Symbol) nameE).getValue();
                 Expr valueE = ((ExprList) line).get(2);
                 Vit valueV = Vit.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv)), context)));
@@ -91,7 +91,7 @@ public final class DoFw {
                             return VitFw.wrap(Vit.var.call(symbol(name)));
                         }
                     }
-                    return Unspecified.unspecified;
+                    return null;
                 }));
 
                 Vit rest = compileDo(exprVal, i + 1, isize, newCompEnv, context);
@@ -111,7 +111,7 @@ public final class DoFw {
 
     public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                    DeclaredFw.declared(symbol("unary-store"), Val.of(DoFw.unaryStoreType, Unspecified.unspecified)),
+                    DeclaredFw.declared(symbol("unary-store"), Val.of(DoFw.unaryStoreType, null)),
                     DeclaredFw.declared(symbol("unary-store-last"), DoFw.usLast)
             )),
             DoFw.directivesCenv.asVal()

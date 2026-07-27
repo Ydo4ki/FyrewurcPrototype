@@ -30,13 +30,13 @@ public final class ExprFw {
             if (symbol.equals("value")) {
                 return Val.of(StrFw.str, sym);
             }
-            return Unspecified.unspecified; // unknown property
+            return null; // unknown property
         }, (arg, context) -> {
             if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
                 Val size = arg.call(symbol("size"), context);
                 Val cEnv = arg.call(symbol("comp-env"), context);
                 int isize = size._unpack(BigInteger.class).intValue();
-                if (isize != 1) return Unspecified.unspecified;
+                if (isize != 1) return null;
 
                 Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
                 if (!VitFw.isVit(retVit.type()))
@@ -55,17 +55,17 @@ public final class ExprFw {
             } else if (arg.equals(symbol("constructor"))) {
                 return telephonist("Symbol.constructor", (arg1, context1) -> {
                     if (!arg1.type().equals(StrFw.str))
-                        return Unspecified.unspecified;
+                        return null;
 
                     String value = arg1._unpack();
                     Expr expr = FwUtils.parse(value).getExpr();
                     if (expr instanceof Symbol)
                         return ExprFw.wrap(expr);
 
-                    return Unspecified.unspecified;
+                    return null;
                 });
             }
-            return Unspecified.unspecified;
+            return null;
         });
     }).asType();
 
@@ -79,17 +79,17 @@ public final class ExprFw {
                 BracketsType bt = list.getBracketsType();
                 return StrFw.str(bt.toString());
             }
-            return Unspecified.unspecified; // unknown property
+            return null; // unknown property
         }, (instance, arg1) -> {
             BigInteger i = DIntFw.unwrap(arg1);
-            if (i == null) return Unspecified.unspecified;
+            if (i == null) return null;
             if (i.bitLength() > 32)
-                return Unspecified.unspecified; // out of range
+                return null; // out of range
 
             ExprList list = instance._unpack();
             int index = i.intValue();
             if (index >= list.size() || index < 0)
-                return Unspecified.unspecified; // out of range
+                return null; // out of range
 
             return ExprFw.wrap(list.get(index));
         }, (arg, context) -> {
@@ -117,14 +117,14 @@ public final class ExprFw {
             } else if (arg.equals(symbol("constructor"))) {
                 return FW.telephonist("ExprList.constructor", (arg1, c) -> {
                     if (!arg1.type().equals(DVecFw.dVec))
-                        return Unspecified.unspecified;
+                        return null;
 
                     Val[] values = arg1._unpack();
                     Expr[] actualValues = new Expr[values.length];
                     for (int i = 0; i < values.length; i++) {
                         Val value = values[i];
                         if (!isExpr(value))
-                            return Unspecified.unspecified;
+                            return null;
 
                         actualValues[i] = value._unpack();
                     }
@@ -133,7 +133,7 @@ public final class ExprFw {
                     return ExprFw.wrap(result);
                 });
             }
-            return Unspecified.unspecified;
+            return null;
         });
     }).asType(); // bruh
 
@@ -159,11 +159,11 @@ public final class ExprFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1)
-                return Unspecified.unspecified;
+                return null;
 
             return VitFw.wrap(Vit.val(arg.call(DIntFw.dint(0), context)));
         }
-        return Unspecified.unspecified;
+        return null;
     });
 
     public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg, context) -> {
@@ -176,7 +176,7 @@ public final class ExprFw {
                 int isize = ((ExprList) expr).size();
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
                     case "symbol": {
-                        if (isize != 2) return Unspecified.unspecified;
+                        if (isize != 2) return null;
 
                         Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
                         if (!VitFw.isVit(retVit.type()))
@@ -205,7 +205,7 @@ public final class ExprFw {
                 }
             }
         }
-        return Unspecified.unspecified;
+        return null;
     }));
 
     public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,

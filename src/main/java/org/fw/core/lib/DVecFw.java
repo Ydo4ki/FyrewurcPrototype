@@ -40,16 +40,16 @@ public final class DVecFw {
                 // except for duplicating range checks
                 // todo
                 if (v.bitLength() > 32)
-                    return Unspecified.unspecified; // out of range
+                    return null; // out of range
                 int i = v.intValue();
                 if (i < 0 || i >= vec.length)
-                    return Unspecified.unspecified; // out of range
+                    return null; // out of range
                 return vec[i];
             }
         } else if (arg.equals(symbol("builder"))) {
             return DVecFw.emptyBuilder;
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static final Type dVecBuilder = telephonist("DVecBuilder", (arg, context) -> {
@@ -60,14 +60,14 @@ public final class DVecFw {
 
             return Val.of(DVecFw.dVecBuilder, arAppended(value, cArg));
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static final Val dvecbf = telephonist("dvecbf", (arg, context) -> {
         if (arg.type() == dVecBuilder) {
             return Val.of(dVec, arg._unpack());
         }
-        return Unspecified.unspecified;
+        return null;
     });
 
     public static final Val emptyBuilder = Val.of(DVecFw.dVecBuilder, new Val[0]);
@@ -125,7 +125,7 @@ public final class DVecFw {
                     return VitFw.wrap(ctor);
                 }
             }
-            return Unspecified.unspecified;
+            return null;
         });
     }
 

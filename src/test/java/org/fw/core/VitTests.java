@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VitTests {
     private static final Context context = new Context(RtEnv.unspecified, State.eternal());
-    private static final Val v1 = FW.telephonist("v1", (arg, context1) -> Unspecified.unspecified);
-    private static final Val v2 = FW.telephonist("v2", (arg, context1) -> Unspecified.unspecified);
+    private static final Val v1 = FW.telephonist("v1", (arg, context1) -> null);
+    private static final Val v2 = FW.telephonist("v2", (arg, context1) -> null);
 
     @Test
     void apiVal() {

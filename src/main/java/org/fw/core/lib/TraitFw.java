@@ -51,7 +51,7 @@ public final class TraitFw {
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
-                return Unspecified.unspecified;
+                return null;
             }
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -62,16 +62,16 @@ public final class TraitFw {
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Trait.constructor", (payload, context1) -> {
                 if (!payload.type().equals(DVecFw.dVec))
-                    return Unspecified.unspecified;
+                    return null;
                 Val[] fields = payload._unpack();
                 for (Val field : fields) {
                     if (!field.type().equals(DeclarationFw.declaration))
-                        return Unspecified.unspecified; // some day I'll add proper errors
+                        return null; // some day I'll add proper errors
                 }
                 return Val.of(TraitFw.trait, new Trait(fields, context));
             });
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static Val trait(Val... fields) {

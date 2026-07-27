@@ -28,7 +28,7 @@ public final class ExprGetFw {
                 String fullQualifier = sym.getValue();
                 int dotIndex = fullQualifier.lastIndexOf('.');
                 if (dotIndex == -1)
-                    return Unspecified.unspecified;
+                    return null;
                 String origin = fullQualifier.substring(0, dotIndex);
                 String property = fullQualifier.substring(dotIndex + 1);
 
@@ -36,7 +36,7 @@ public final class ExprGetFw {
                 try {
                     first = CompEnv.of(compEnv).compile(FW.symbol(origin), context);
                 } catch (VitCompilationException e) {
-                    return Unspecified.unspecified;
+                    return null;
                 }
 
                 return VitFw.wrap(first.call(symbol(property)));
@@ -47,7 +47,7 @@ public final class ExprGetFw {
                 int isize = ((ExprList) expr).size();
                 if (f instanceof Symbol) if (((Symbol) f).getValue().equals("get")) {
                     if (isize == 1) {
-                        return Unspecified.unspecified;
+                        return null;
                     }
 
                     Val retVitV = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
@@ -58,7 +58,7 @@ public final class ExprGetFw {
                     for (int i = 1; i < (isize - 1); i++) {
                         Val property = exprVal.call(DIntFw.dint(i + 1), context);
                         if (!property.type().equals(ExprFw.symbol))
-                            return Unspecified.unspecified; // not a compile error idk (actually it still is)
+                            return null; // not a compile error idk (actually it still is)
 
                         retVit = retVit.call(Vit.val(property));
                     }
@@ -67,6 +67,6 @@ public final class ExprGetFw {
                 }
             }
         }
-        return Unspecified.unspecified;
+        return null;
     });
 }

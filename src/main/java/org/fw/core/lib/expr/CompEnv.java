@@ -49,7 +49,7 @@ public final class CompEnv extends AbstractValAdapted {
 
             if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
                 Val ret = instance.resolver().call(cArg, context);
-                if (ret == Unspecified.unspecified)
+                if (Unspecified.isUnspecified(ret))
                     return instance.parentCEnv().call(cArg, context);
                 return ret;
             }
@@ -61,7 +61,7 @@ public final class CompEnv extends AbstractValAdapted {
             });
         }
 
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static Val compEnv(Val resolver, Val parentCEnv, Context context) {

@@ -25,7 +25,7 @@ public final class BoxFw {
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
-                return Unspecified.unspecified;
+                return null;
             }
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -43,16 +43,17 @@ public final class BoxFw {
                 return Val.of(BoxFw.boxType, arg1);
             });
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
+    @Deprecated
     private static Val handleBoxTypeCall(Type type, Val arg, Context context) {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
-                return Unspecified.unspecified;
+                return null;
             }
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -83,7 +84,7 @@ public final class BoxFw {
                         return Val.of(type, arg1);
                     });
         }
-        return Unspecified.unspecified;
+        return null;
     }
 
     // the only operation that doesn't need context xd

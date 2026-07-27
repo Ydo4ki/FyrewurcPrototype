@@ -24,7 +24,7 @@ public final class AccumulatorsExprFw {
                 return operator;
             }
             if (!arg.type().equals(ExprCallOpFw.exprCallOp)) {
-                return Unspecified.unspecified;
+                return null;
             }
 
             Val size = arg.call(symbol("size"), context);
@@ -34,7 +34,7 @@ public final class AccumulatorsExprFw {
 
             Vit ret = null;
             if (isize == 0)
-                return Unspecified.unspecified;
+                return null;
 
             for (int i = 0; i < isize; i++) {
                 Val argNVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -53,7 +53,7 @@ public final class AccumulatorsExprFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1)
-                return Unspecified.unspecified;
+                return null;
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(retVit.type()))
@@ -66,6 +66,6 @@ public final class AccumulatorsExprFw {
                 return Val.of(AccumulatorsExprFw.exprAccumulator, argument);
             });
         }
-        return Unspecified.unspecified;
+        return null;
     })).asType();
 }

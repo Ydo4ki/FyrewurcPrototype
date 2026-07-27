@@ -14,11 +14,17 @@ public final class TelephonistType extends Type {
     }
 
     @Override
-    public Val callInstance(Val instance, Val arg, Context context) throws Exception {
-        Val ret = instance._unpack(Telephonist.class).function().call(arg, context);
-        if (ret == null)
-            throw new NullPointerException("INVALID RESULT OF EXTERN T: " + instance + "(" + arg + ") -> null");
-        return ret;
+    Val callInstance(Val instance, Val arg, Context context) {
+        try {
+            Val v = instance._unpack(Telephonist.class).function().call(arg, context);
+            if (v == null)
+                return Unspecified.unspecified(instance, arg);
+            return v;
+        } catch (Exception e) {
+            System.out.println("UNEXPECTED EXCEPTION, AAAAA:");
+            e.printStackTrace(System.out);
+            return Unspecified.unspecified(instance, arg);
+        }
     }
 
     @Override

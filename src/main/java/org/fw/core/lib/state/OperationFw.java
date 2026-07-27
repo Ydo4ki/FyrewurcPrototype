@@ -13,12 +13,12 @@ import static org.fw.core.FW.telephonist;
 public final class OperationFw {
 
     public static final Type operation = FW.telephonist("Operation", (arg, context) -> {
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static final Val _VitOperation = FW.telephonist((arg, context1) -> {
         if (!VitFw.isVit(arg.type()))
-            return Unspecified.unspecified;
+            return null;
 
         Vit vit = arg._unpack();
 
@@ -26,11 +26,11 @@ public final class OperationFw {
     });
     public static final Val _WriteOperation = telephonist((arg, context1) -> {
         if (arg.type() != LaserPointerFw.laserPointer)
-            return Unspecified.unspecified;
+            return null;
 
         Obj obj = arg._unpack();
         if (!(obj instanceof Obj.ValObj))
-            return Unspecified.unspecified;
+            return null;
 
         return telephonist((arg1, context2) -> {
             return Operation.write((Obj.ValObj) obj, arg1).asVal();
@@ -38,11 +38,11 @@ public final class OperationFw {
     });
     public static final Val _ReadOperation = telephonist((arg, context1) -> {
         if (arg.type() != LaserPointerFw.laserPointer)
-            return Unspecified.unspecified;
+            return null;
 
         Obj obj = arg._unpack();
         if (!(obj instanceof Obj.ValObj))
-            return Unspecified.unspecified;
+            return null;
 
         return Operation.read((Obj.ValObj) obj).asVal();
     });
@@ -51,7 +51,7 @@ public final class OperationFw {
     });
 
     public static Val wrap(Operation operation) {
-        if (operation == null) return Unspecified.unspecified;
+        if (operation == null) return null;
         return operation.asVal();
     }
 

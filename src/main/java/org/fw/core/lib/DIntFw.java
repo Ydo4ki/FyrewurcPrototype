@@ -50,13 +50,13 @@ public final class DIntFw {
                         BigInteger i = new BigInteger(string);
                         return dint(i);
                     } catch (NumberFormatException e) {
-                        return Unspecified.unspecified;
+                        return null;
                     }
                 }
-                return Unspecified.unspecified;
+                return null;
             });
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     private static Val bop(String name, Val instance, Context context, FwUtils.BigBinaryOperator operator) {
@@ -67,7 +67,7 @@ public final class DIntFw {
                 BigInteger v2 = unwrap(arg1);
                 return dint(operator.apply(value, v2));
             }
-            return Unspecified.unspecified;
+            return null;
         });
     }
 

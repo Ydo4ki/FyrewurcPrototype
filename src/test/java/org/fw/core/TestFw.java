@@ -47,7 +47,7 @@ public final class TestFw {
                 });
             }
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static final Val testToExpr = FW.telephonist((arg, context) -> {
@@ -61,7 +61,7 @@ public final class TestFw {
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, exprs));
         }
-        return Unspecified.unspecified;
+        return null;
     });
 
     static final class TestRecord {

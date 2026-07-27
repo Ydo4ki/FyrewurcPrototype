@@ -37,11 +37,11 @@ public final class ExprCallOpFw {
             } else if (cArg.type().equals(DIntFw.dint)) {
                 BigInteger index = DIntFw.unwrap0(cArg);
                 if (index.bitLength() > 31)
-                    return Unspecified.unspecified; // out of bounds
+                    return null; // out of bounds
 
                 int i = index.intValue();
                 if (i < 0 || i >= payload.args.length)
-                    return Unspecified.unspecified; // out of bounds
+                    return null; // out of bounds
 
                 return ExprFw.wrap(payload.args[i]);
             }
@@ -57,11 +57,11 @@ public final class ExprCallOpFw {
                         return Val.of(ExprCallOpFw.exprCallOp, new ExprCallOp(args, CompEnv.of(cEnv)));
                     });
                 } else {
-                    return Unspecified.unspecified;
+                    return null;
                 }
             });
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     @Deprecated

@@ -28,11 +28,11 @@ public final class DeclarationFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
-                return Unspecified.unspecified;
+                return null;
 
             Val name = arg.call(DIntFw.dint(0), context);
             if (!name.type().equals(ExprFw.symbol))
-                return Unspecified.unspecified; // symbol expected
+                return null; // symbol expected
 
             Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(value.type())) return value; // error idk
@@ -40,7 +40,7 @@ public final class DeclarationFw {
             return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(name)
                     .call(Vit.call(ConstraintFw.to_constraint, VitFw.unwrap0(value))));
         }
-        return Unspecified.unspecified;
+        return null;
     });
 
     // I hope it will be possible to make it a struct later
@@ -62,7 +62,7 @@ public final class DeclarationFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
-                return Unspecified.unspecified;
+                return null;
 
             Val name = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(name.type()))
@@ -76,12 +76,12 @@ public final class DeclarationFw {
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Declaration.builder", (key, context1) -> {
                 return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint, context2) -> {
-                    if (!ConstraintFw.isConstraint(constraint)) return Unspecified.unspecified;
+                    if (!ConstraintFw.isConstraint(constraint)) return null;
                     return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
                 });
             });
         }
-        return Unspecified.unspecified;
+        return null;
     }).asType();
 
     public static Val getKey(Val declaration, Context context) {

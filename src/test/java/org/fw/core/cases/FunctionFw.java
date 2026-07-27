@@ -42,14 +42,14 @@ public class FunctionFw {
                         return FW.telephonist((arg1, context1) -> {
                             boolean qualifies = constraint.call(symbol("check"), context1).call(arg1, context) == BoolFw._true;
                             if (!qualifies) {
-                                return Unspecified.unspecified;
+                                return null;
                             }
 
                             // this is questionable
                             Val oldRtEnv = value.call(symbol("rt-env"), context);
                             Val newRtEnv = FW.telephonist((arg2, context2) -> {
                                 Val ret0 = arg1.call(arg2, context2);
-                                if (ret0 == Unspecified.unspecified) return oldRtEnv.call(arg2, context2);
+                                if (Unspecified.isUnspecified(ret0)) return oldRtEnv.call(arg2, context2);
                                 return ret0;
                             });
                             return OperationFw._VitOperation
@@ -75,7 +75,7 @@ public class FunctionFw {
             if (ret.type().equals(builder.type()))
                 return builderWrapper(ret);
             if (ret.type() != function_struct)
-                return Unspecified.unspecified;
+                return null;
             return Val.of(function, ret); // wrap
         });
     }

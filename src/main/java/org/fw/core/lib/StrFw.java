@@ -64,24 +64,24 @@ public final class StrFw {
         public static Val symbolMapEnv(Vit telemap) {
             Vit parseArg = telemap.call(argExpr);
             return VitiateTelephonistFw.vitiate(
-                    FW.vIf(val(eq).call(parseArg).call(Unspecified.unspecified).call(symbol("not")),
+                    FW.vIf(val(Unspecified.isUnspecified).call(parseArg).call(symbol("not")),
                             Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))
                                     .call(parseArg),
-                            val(Unspecified.unspecified)
+                            parseArg
                     ), symbol("arg"), context);
         }
 
         public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {
             Val str = arg1.call(symbol("value"), context1);
             if (!str.type().equals(StrFw.str))
-                return Unspecified.unspecified;
+                return null;
 
             String s = str._unpack();
             s = s.replace("\\n", "\n");
             if (s.length() >= 2 && s.startsWith("\"") && s.endsWith("\"")) {
                 return str(s.substring(1, s.length() - 1)); // uh okay
             }
-            return Unspecified.unspecified;
+            return null;
         })));
     }
 
@@ -92,7 +92,7 @@ public final class StrFw {
                         if (ExprFw.isExpr(arg)) {
                             return StrFw.str(arg._unpack().toString());
                         }
-                        return Unspecified.unspecified;
+                        return null;
                     }))
             )),
             ParseStrCEnvFw.parseStrCenv
