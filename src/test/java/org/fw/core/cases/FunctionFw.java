@@ -10,6 +10,7 @@ import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.lib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
@@ -49,9 +50,16 @@ public class FunctionFw {
                                 return Val.unspecified;
                             }
 
-                            return VitFw.evalVit
+//                            Val oldRtEnv = value.call(symbol("rt-env"), context);
+//                            Val newRtEnv = FW.telephonist((arg2, context2) -> {
+//                                Val ret0 = arg1.call(arg2, context2);
+//                                if (ret0 == Val.unspecified) return oldRtEnv.call(arg2, context2);
+//                                return ret0;
+//                            });
+                            return OperationFw.vitOperation
                                     .call(VitFw.wrap(body), context)
                                     .call(arg1, context);
+//                                    .call(newRtEnv, context);
                         });
                 }
             }

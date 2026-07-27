@@ -23,6 +23,8 @@ import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.fw.core.FW.symbol;
@@ -56,30 +58,30 @@ public class Main {
                         DeclaredFw.declared(symbol("_PrintHelloWorld"), new SystemOperation.PrintOperation(System.out, "Hello World!\n").asVal()),
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
-                        DeclaredFw.declared(symbol("_Print"), FW.telephonist((arg, context1) -> {
+                        DeclaredFw.declared(symbol("_Print"), telephonist((arg, context1) -> {
                             return new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal();
                         })),
-                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist((arg, context1) -> {
+                        DeclaredFw.declared(symbol("_Sleep"), telephonist((arg, context1) -> {
                             if (arg.type() != DIntFw.dint)
                                 return Val.unspecified;
 
                             return new SystemOperation.ThreadSleepOperation(DIntFw.unwrap(arg).longValue()).asVal();
                         })),
-                        DeclaredFw.declared(symbol("_While"), FW.telephonist((condition, context1) -> {
+                        DeclaredFw.declared(symbol("_While"), telephonist((condition, context1) -> {
                             if (condition.type() != OperationFw.operation)
                                 return Val.unspecified;
 
-                            return FW.telephonist((body, context2) -> {
+                            return telephonist((body, context2) -> {
                                 if (body.type() != OperationFw.operation)
                                     return Val.unspecified;
 
                                 return new WhileOperation(condition._unpack(), body._unpack()).asVal();
                             });
                         })),
-                        DeclaredFw.declared(symbol("_CreateNewObjectOperation"), FW.telephonist((arg, context1) -> {
+                        DeclaredFw.declared(symbol("_CreateNewObjectOperation"), telephonist((arg, context1) -> {
                             return new CreateObjectOperation(arg).asVal();
                         })),
-                        DeclaredFw.declared(symbol("_ReadOperation"), FW.telephonist((arg, context1) -> {
+                        DeclaredFw.declared(symbol("_ReadOperation"), telephonist((arg, context1) -> {
                             if (arg.type() != LaserPointerFw.laserPointer)
                                 return Val.unspecified;
 
@@ -89,7 +91,7 @@ public class Main {
 
                             return Operation.read((Obj.ValObj) obj).asVal();
                         })),
-                        DeclaredFw.declared(symbol("_WriteOperation"), FW.telephonist((arg, context1) -> {
+                        DeclaredFw.declared(symbol("_WriteOperation"), telephonist((arg, context1) -> {
                             if (arg.type() != LaserPointerFw.laserPointer)
                                 return Val.unspecified;
 
@@ -97,7 +99,7 @@ public class Main {
                             if (!(obj instanceof Obj.ValObj))
                                 return Val.unspecified;
 
-                            return FW.telephonist((arg1, context2) -> {
+                            return telephonist((arg1, context2) -> {
                                 return Operation.write((Obj.ValObj) obj, arg1).asVal();
                             });
                         })),
@@ -147,6 +149,88 @@ public class Main {
                                 compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
                         ));
                     }
+                    case "fn": {
+                        if (isize != 4)
+                            return Val.unspecified;
+                        Expr arrow = exprVal.call(DIntFw.dint(2), context)._unpack();
+                        boolean pure;
+                        if (arrow instanceof Symbol) {
+                            if (((Symbol) arrow).getValue().equals("!>")) pure = false;
+                            else if (((Symbol) arrow).getValue().equals("->")) pure = true;
+                            else return Val.unspecified;
+                        } else return Val.unspecified;
+
+                        Expr paramsE = exprVal.call(DIntFw.dint(1), context)._unpack();
+                        if (!(paramsE instanceof ExprList) || ((ExprList) paramsE).getBracketsType() != BracketsTypes.square) {
+                            return Val.unspecified;
+                        }
+                        ExprList params = ((ExprList) paramsE);
+                        List<FnParam> paramsList = new ArrayList<>();
+                        for (Expr param : params) {
+                            if (!(param instanceof ExprList) || !((ExprList) param).get(0).toString().equals("="))
+                                return Val.unspecified;
+                            if (((ExprList) param).size() != 2)
+                                return Val.unspecified;
+
+                            Expr name = ((ExprList) param).get(1);
+                            if (!(name instanceof Symbol))
+                                return Val.unspecified;
+
+                            paramsList.add(new FnParam(((Symbol) name), null));
+                        }
+
+                        Val constraint = ConstraintFw.constraint(
+                                Vit.var.call(symbol("size")),
+                                Vit.val(DIntFw.dint(paramsList.size()))
+                        );
+
+                        Expr bodyE = exprVal.call(DIntFw.dint(3), context)._unpack();
+
+                        Val newCompEnv = CompEnv.compEnv(context, compEnv, FW.telephonist((arg0, context1) -> {
+                            if (arg0.type().equals(SyntaxResolveFw.syntaxResolve)) {
+                                Val exprVal0 = arg0.call(symbol("expr"), context);
+                                Expr expr0 = exprVal0._unpack();
+                                if (expr0 instanceof Symbol) {
+                                    for (FnParam param : paramsList) {
+                                        Symbol name = param.name;
+                                        if (((Symbol) expr0).getValue().equals(name.getValue())) {
+                                            return VitFw.wrap(Vit.var.call(ExprFw.wrap(name)));
+                                        }
+                                    }
+                                }
+                            }
+                            return Val.unspecified;
+                        }));
+
+                        Val body = newCompEnv.call(CompEnv.syntaxResolve(bodyE, CompEnv.of(newCompEnv)), context);
+
+                        Vit varValuesV = Vit.val(DVecFw.emptyBuilder);
+                        for (int i = 0; i < paramsList.size(); i++) {
+                            varValuesV = varValuesV.call(Vit.var.call(DIntFw.dint(i)));
+                        }
+                        varValuesV = Vit.val(DVecFw.dvecbf).call(varValuesV);
+
+                        Val newRtGetter = FW.telephonist((oldRt, context1) -> FW.telephonist((varValues, context3) -> {
+                            return FW.telephonist((argSym, context2) -> {
+                                for (int i = 0; i < paramsList.size(); i++) {
+                                    FnParam param = paramsList.get(i);
+                                    Symbol name = param.name;
+                                    if (argSym.type().equals(ExprFw.symbol) && argSym._unpack(Symbol.class).getValue().equals(name.getValue())) {
+                                        return varValues.call(DIntFw.dint(i), context2);
+                                    }
+                                }
+                                return oldRt.call(argSym, context2);
+                            });
+                        }));
+
+                        body = VitFw.wrap(Vit.invoke(Vit.val(OperationFw.vitOperation).call(body).call(Vit.val(newRtGetter).call(Vit.var).call(varValuesV))));
+
+//                        System.out.println(body.toExpr(context));
+                        return VitFw.wrap(Vit.val(FunctionFw.function.asVal()).call(symbol("builder"))
+                                .call(constraint)
+                                .call(body)
+                                .call(Vit.var));
+                    }
                     case "operation": {
                         if (isize != 2)
                             return Val.unspecified;
@@ -167,4 +251,13 @@ public class Main {
         return Val.unspecified;
     }));
 
+    static class FnParam {
+        final Symbol name;
+        final Val constraint;
+
+        FnParam(Symbol name, Val constraint) {
+            this.name = name;
+            this.constraint = constraint;
+        }
+    }
 }
