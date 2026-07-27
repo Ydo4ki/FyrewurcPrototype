@@ -50,16 +50,17 @@ public class FunctionFw {
                                 return Val.unspecified;
                             }
 
-//                            Val oldRtEnv = value.call(symbol("rt-env"), context);
-//                            Val newRtEnv = FW.telephonist((arg2, context2) -> {
-//                                Val ret0 = arg1.call(arg2, context2);
-//                                if (ret0 == Val.unspecified) return oldRtEnv.call(arg2, context2);
-//                                return ret0;
-//                            });
+                            // this is questionable
+                            Val oldRtEnv = value.call(symbol("rt-env"), context);
+                            Val newRtEnv = FW.telephonist((arg2, context2) -> {
+                                Val ret0 = arg1.call(arg2, context2);
+                                if (ret0 == Val.unspecified) return oldRtEnv.call(arg2, context2);
+                                return ret0;
+                            });
                             return OperationFw.vitOperation
                                     .call(VitFw.wrap(body), context)
-                                    .call(arg1, context);
-//                                    .call(newRtEnv, context);
+//                                    .call(arg1, context);
+                                    .call(newRtEnv, context);
                         });
                 }
             }
