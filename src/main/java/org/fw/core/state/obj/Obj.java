@@ -1,13 +1,12 @@
 package org.fw.core.state.obj;
 
-import org.fw.core.base.Context;
-import org.fw.core.base.Unspecified;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.state.operation.Operation;
 
 public interface Obj {
 
-    State owner();
+    State state();
 
     default void shmert() {
 
@@ -22,13 +21,13 @@ public interface Obj {
         }
 
         public Val read(Context context) {
-            if (owner() != context.state())
+            if (state() != context.state())
                 return Operation.unit; // c'mon at least use exceptions you're getting too far with this
             return value;
         }
 
         public void write(Context context, Val x) {
-            if (owner() != context.state())
+            if (state() != context.state())
                 return;
             value = x;
         }
@@ -53,7 +52,7 @@ public interface Obj {
  ]) payload.x payload.y))
 )
 
-
+what the hell is this
 
 
 

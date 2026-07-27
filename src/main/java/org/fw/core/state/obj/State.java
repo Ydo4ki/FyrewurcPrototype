@@ -1,8 +1,7 @@
 package org.fw.core.state.obj;
 
-import org.fw.core.base.Context;
 import org.fw.core.base.Val;
-import org.fw.core.lib.state.LaserPointerFw;
+import org.fw.core.state.operation.LaserPointerFw;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -35,7 +34,7 @@ public final class State implements Obj {
     }
 
     @Override
-    public State owner() {
+    public State state() {
         return this;
     }
 

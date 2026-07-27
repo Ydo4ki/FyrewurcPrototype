@@ -3,11 +3,11 @@ package org.fw.core.cases;
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.ExprFw;
-import org.fw.core.lib.state.OperationFw;
+import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
@@ -22,7 +22,7 @@ public class FunctionFw {
 
     public static final Type function = FW.telephonist((arg, context) -> {
         Val ret = function_struct.asVal().call(arg, context);
-        if (arg.type().equals(ExprFw.symbol)) {
+        if (arg.type().equals(SymbolFw.symbol)) {
             String value = arg._unpack(Symbol.class).getValue();
             switch (value) {
                 case "builder":
@@ -34,7 +34,7 @@ public class FunctionFw {
             Val cArg = Call.getArg(arg, context);
 
             Val value = instance._unpack();
-            if (cArg.type().equals(ExprFw.symbol)) {
+            if (cArg.type().equals(SymbolFw.symbol)) {
                 switch (cArg._unpack(Symbol.class).getValue()) {
                     case "fn-call":
                         Val constraint = value.call(symbol("arg-constraint"), context);

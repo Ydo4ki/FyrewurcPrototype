@@ -2,6 +2,7 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -10,7 +11,6 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
-import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
@@ -163,7 +163,7 @@ public final class DeclaredFw {
                             return null;
 
                         Val name = exprVal.call(DIntFw.dint(1), context);
-                        if (!name.type().equals(ExprFw.symbol))
+                        if (!name.type().equals(SymbolFw.symbol))
                             return null; // symbol expected
 
                         Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(compEnv)), context);

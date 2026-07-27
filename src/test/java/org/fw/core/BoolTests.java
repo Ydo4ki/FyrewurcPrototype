@@ -1,6 +1,6 @@
 package org.fw.core;
 
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.state.obj.State;

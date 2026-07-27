@@ -1,7 +1,7 @@
 package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
-import org.fw.core.base.Unspecified;
+import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
@@ -23,7 +23,7 @@ public final class TelephonistConstructorFw {
                 return null;
 
             Val varKey = arg.call(DIntFw.dint(0), context);
-            if (!varKey.type().equals(ExprFw.symbol)) {
+            if (!varKey.type().equals(SymbolFw.symbol)) {
                 return null;
             }
 

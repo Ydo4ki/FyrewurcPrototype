@@ -1,13 +1,7 @@
 package org.fw.core.vit;
 
-import org.fw.core.util.FwUtils;
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
-import org.fw.core.state.obj.Obj;
-import org.fw.core.lib.state.OperationFw;
-
-import java.util.Objects;
-import java.util.Set;
 
 // no side effects for now
 public abstract class Vit {

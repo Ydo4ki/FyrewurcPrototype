@@ -2,7 +2,7 @@ package org.fw.core.state.operation;
 
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 
 // but I have no idea how would you use it
@@ -30,7 +30,7 @@ public final class GetLocalStateOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure() {
+    protected boolean isPure0() {
         return false;
     }
 }

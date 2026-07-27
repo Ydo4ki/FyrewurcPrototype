@@ -1,9 +1,7 @@
-package org.fw.core.vit;
+package org.fw.core.base.context;
 
 import org.fw.core.FW;
 import org.fw.core.adapter.AbstractValAdapted;
-import org.fw.core.base.Context;
-import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 
 public final class RtEnv extends AbstractValAdapted {

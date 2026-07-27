@@ -1,18 +1,18 @@
 package org.fw.core.lib;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.lib.ValsFw.eq;
 import static org.fw.core.vit.Vit.val;
 import static org.fw.core.vit.Vit.var;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
@@ -72,7 +72,7 @@ public final class StrFw {
         }
 
         public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {
-            Val str = arg1.call(symbol("value"), context1);
+            Val str = ExprFw.symbolToString.call(arg1, context1);
             if (!str.type().equals(StrFw.str))
                 return null;
 

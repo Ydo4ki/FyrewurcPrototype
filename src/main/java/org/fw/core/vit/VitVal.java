@@ -1,6 +1,6 @@
 package org.fw.core.vit;
 
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 
 import java.util.Objects;

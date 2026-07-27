@@ -2,6 +2,7 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -51,7 +52,7 @@ public final class EnumFw {
                 Val[] values = new Val[keys.length];
                 Type resultingType = Val.of(EnumFw.enumeration, new Enum(values)).asType();
                 for (int i = 0; i < keys.length; i++) {
-                    if (!keys[i].type().equals(ExprFw.symbol))
+                    if (!keys[i].type().equals(SymbolFw.symbol))
                         return null;
 
                     values[i] = Val.of(resultingType, keys[i]);

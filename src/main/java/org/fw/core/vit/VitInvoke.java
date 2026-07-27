@@ -1,11 +1,10 @@
 package org.fw.core.vit;
 
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
-import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.lib.state.OperationFw;
+import org.fw.core.state.operation.OperationFw;
 
 import java.util.Objects;
 

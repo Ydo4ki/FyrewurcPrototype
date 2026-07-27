@@ -1,7 +1,6 @@
-package org.fw.core.base;
+package org.fw.core.base.context;
 
 import org.fw.core.state.obj.State;
-import org.fw.core.vit.RtEnv;
 
 // do we really need this class in a first place?
 public final class Context {

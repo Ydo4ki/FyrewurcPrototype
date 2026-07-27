@@ -2,6 +2,7 @@ package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -29,7 +30,7 @@ public final class SyntaxResolveFw {
             }
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("SyntaxResolve.builder", (expr, context1) -> {
-                if (!expr.type().equals(ExprFw.symbol) && !expr.type().equals(ExprFw.exprList)) {
+                if (!expr.type().equals(SymbolFw.symbol) && !expr.type().equals(ExprFw.exprList)) {
                     return null;
                 }
                 return FW.telephonist(() -> "(SyntaxResolve.builder " + expr.toExpr(context1) + ")", (callerEnv, context2) -> {

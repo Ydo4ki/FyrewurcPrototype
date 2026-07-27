@@ -1,13 +1,8 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.VitFw;
-import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.ExprCallOpFw;
-import org.fw.core.vit.Vit;
+import org.fw.core.base.context.Context;
 
-import java.math.BigInteger;
 import java.util.Objects;
 
 import static org.fw.core.FW.symbol;

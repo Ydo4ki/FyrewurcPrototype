@@ -2,6 +2,7 @@ package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.*;
@@ -14,37 +15,24 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class ExprFw {
-    // actually its pretty easy to make it NOT depend on strings directly
-    // just make all strings related function external
-    // like
-    // string-value(symbol) instead of symbol.value
-    // во всё точно это гениально
-    // они будут просто сопоставлены со строками 1 к 1
-    // I should've thought about it like 5 months ago
-    public static final Type symbol = telephonist("Symbol", (arg0, context0) -> {
-        return FwUtils.handleSymbols(arg0, ExprFw.symbol, context0, (instance, symbol) -> {
-            String sym = ((Symbol) instance._unpack()).getValue();
-            if (symbol.equals("value")) {
-                return Val.of(StrFw.str, sym);
-            }
-            return null; // unknown property
-        }, (arg, context) -> {
-            if (arg.equals(symbol("constructor"))) {
-                return telephonist("Symbol.constructor", (arg1, context1) -> {
-                    if (!arg1.type().equals(StrFw.str))
-                        return null;
-
-                    String value = arg1._unpack();
-                    Expr expr = FwUtils.parse(value).getExpr();
-                    if (expr instanceof Symbol)
-                        return ExprFw.wrap(expr);
-
-                    return null;
-                });
-            }
+    public static final Val symbolConstructor = telephonist("stringToSymbol", (arg1, context1) -> {
+        if (!arg1.type().equals(StrFw.str))
             return null;
-        });
-    }).asType();
+
+        String value = arg1._unpack();
+        Expr expr = FwUtils.parse(value).getExpr();
+        if (expr instanceof Symbol)
+            return Val.of(SymbolFw.symbol, expr);
+
+        return null;
+    });
+
+    public static final Val symbolToString = telephonist("symbolToString", (arg, context) -> {
+        if (arg.type() == SymbolFw.symbol) {
+            return StrFw.str(arg._unpack(Symbol.class).getValue());
+        }
+        return null;
+    });
 
     public static final Type exprList = telephonist("ExprList", (arg0, context0) -> {
         return FwUtils.handleSymbols(arg0, ExprFw.exprList, context0, (instance, symbol) -> {
@@ -103,14 +91,14 @@ public final class ExprFw {
             Val instance = Call.getVal(arg, context);
             arg = Call.getArg(arg, context);
             BracketsType bt = instance._unpack();
-            if (arg.type() == symbol) switch (arg._unpack(Symbol.class).getValue()) {
+            if (arg.type() == SymbolFw.symbol) switch (arg._unpack(Symbol.class).getValue()) {
                 case "open":
                     return StrFw.str(String.valueOf(bt.open()));
                 case "close":
                     return StrFw.str(String.valueOf(bt.close()));
             }
         } else {
-            if (arg.type() == symbol) switch (arg._unpack(Symbol.class).getValue()) {
+            if (arg.type() == SymbolFw.symbol) switch (arg._unpack(Symbol.class).getValue()) {
                 case "round":
                     return ExprFw.roundBrackets;
                 case "square":
@@ -132,13 +120,13 @@ public final class ExprFw {
             return Val.of(exprList, expr);
         }
         if (expr instanceof Symbol) {
-            return Val.of(symbol, expr);
+            return Val.of(SymbolFw.symbol, expr);
         }
         throw new IllegalStateException("This should never happen: " + expr);
     }
 
     public static boolean isExpr(Val val) {
-        return val.type().equals(exprList) || val.type().equals(symbol);
+        return val.type().equals(exprList) || val.type().equals(SymbolFw.symbol);
     }
 
     @Deprecated
@@ -172,7 +160,7 @@ public final class ExprFw {
                         if (!VitFw.isVit(retVit.type()))
                             return retVit; // compile error idk
 
-                        return VitFw.wrap(Vit.val(ExprFw.symbol.asVal()).call(symbol("constructor")).call(retVit._unpack(Vit.class)));
+                        return VitFw.wrap(Vit.val(ExprFw.symbolConstructor).call(retVit._unpack(Vit.class)));
                     }
                     case "expr-list": {
                         Vit ctor = Vit.val(DVecFw.emptyBuilder);
@@ -200,7 +188,7 @@ public final class ExprFw {
 
     public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                    DeclaredFw.declared(symbol("Symbol"), symbol.asVal()),
+                    DeclaredFw.declared(symbol("Symbol"), SymbolFw.symbol.asVal()),
                     DeclaredFw.declared(symbol("ExprList"), exprList.asVal()),
                     DeclaredFw.declared(symbol("BracketsType"), bracketsType.asVal())
             )),

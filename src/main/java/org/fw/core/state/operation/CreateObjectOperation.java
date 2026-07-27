@@ -1,11 +1,10 @@
 package org.fw.core.state.operation;
 
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
-import org.fw.core.lib.state.LaserPointerFw;
 import org.fw.core.state.obj.Obj;
 
-public class CreateObjectOperation extends Operation {
+public final class CreateObjectOperation extends Operation {
 
     private final Val initialValue;
 
@@ -20,7 +19,7 @@ public class CreateObjectOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure() {
+    protected boolean isPure0() {
         return false;
     }
 }

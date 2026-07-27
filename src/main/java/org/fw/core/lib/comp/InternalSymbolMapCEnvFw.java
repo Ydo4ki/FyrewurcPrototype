@@ -1,19 +1,17 @@
 package org.fw.core.lib.comp;
 
 import org.fw.core.FW;
+import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
-import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.j.JValConstGetter;
-import org.fw.core.lib.telephonist.VitiateTelephonistFw;
 import org.fw.core.vit.Vit;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.lib.ValsFw.eq;
 import static org.fw.core.vit.Vit.val;
 import static org.fw.core.vit.Vit.var;
 
@@ -37,7 +35,7 @@ public final class InternalSymbolMapCEnvFw {
 
 
     public static final Val valsCenv = symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
-        if (!arg1.type().equals(ExprFw.symbol))
+        if (!arg1.type().equals(SymbolFw.symbol))
             return null;
         String string = arg1._unpack().toString();
         Val ret = valsMap.get(string);

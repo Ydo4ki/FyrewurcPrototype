@@ -5,7 +5,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Unspecified;
+import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
@@ -57,7 +57,7 @@ public final class ExprGetFw {
 
                     for (int i = 1; i < (isize - 1); i++) {
                         Val property = exprVal.call(DIntFw.dint(i + 1), context);
-                        if (!property.type().equals(ExprFw.symbol))
+                        if (!property.type().equals(SymbolFw.symbol))
                             return null; // not a compile error idk (actually it still is)
 
                         retVit = retVit.call(Vit.val(property));

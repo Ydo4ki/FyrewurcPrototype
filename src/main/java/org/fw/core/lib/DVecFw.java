@@ -5,6 +5,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
@@ -25,7 +26,7 @@ public final class DVecFw {
             Val cArg = Call.getArg(arg, context);
             Val[] vec = instance._unpack();
 
-            if (cArg.type().equals(ExprFw.symbol)) {
+            if (cArg.type().equals(SymbolFw.symbol)) {
                 String text = cArg._unpack().toString();
                 switch (text) {
                     case "size":

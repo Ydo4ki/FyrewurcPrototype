@@ -2,6 +2,7 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
@@ -11,7 +12,6 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
-import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
@@ -31,7 +31,7 @@ public final class DeclarationFw {
                 return null;
 
             Val name = arg.call(DIntFw.dint(0), context);
-            if (!name.type().equals(ExprFw.symbol))
+            if (!name.type().equals(SymbolFw.symbol))
                 return null; // symbol expected
 
             Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);

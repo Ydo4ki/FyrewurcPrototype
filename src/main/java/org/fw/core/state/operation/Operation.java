@@ -4,12 +4,10 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
-import org.fw.core.lib.BoolFw;
-import org.fw.core.lib.state.OperationFw;
 import org.fw.core.state.obj.Obj;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
 import org.fw.core.vit.VitVal;
@@ -60,11 +58,11 @@ public abstract class Operation {
         return asVal;
     }
 
-    protected abstract boolean isPure();
+    protected abstract boolean isPure0();
 
     public final boolean operationAreYouPureQuestionMark() {
         if (isPure == null) {
-            isPure = isPure();
+            isPure = isPure0();
         }
         return isPure;
     }

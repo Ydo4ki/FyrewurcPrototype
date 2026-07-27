@@ -1,11 +1,10 @@
-package org.fw.core.lib.state;
+package org.fw.core.state.operation;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.lib.VitFw;
 import org.fw.core.state.obj.Obj;
-import org.fw.core.state.operation.*;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import static org.fw.core.FW.telephonist;

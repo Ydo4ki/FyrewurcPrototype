@@ -1,5 +1,7 @@
 package org.fw.core.base;
 
+import org.fw.core.base.context.Context;
+
 public abstract class Type {
 
     public static Type of(Val.Box val) {
@@ -20,12 +22,7 @@ public abstract class Type {
 
         @Override
         public Val callInstance(Val instance, Val arg, Context context) {
-            Val ret = asVal.call(Call.fwCall(instance, arg), context);
-
-            // if (ret == Val.unspecified)
-            //     return UnspecifiedCallFw.unspecifiedCall(instance, arg);
-
-            return ret;
+            return asVal.call(Call.fwCall(instance, arg), context);
         }
 
         @Override

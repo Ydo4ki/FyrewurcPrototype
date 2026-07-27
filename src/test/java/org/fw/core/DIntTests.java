@@ -1,11 +1,11 @@
 package org.fw.core;
 
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.StrFw;
 import org.fw.core.state.obj.State;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.base.context.RtEnv;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;

@@ -2,15 +2,15 @@ package org.fw.core.lib.constraint;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.Symbol;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
-import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.state.obj.State;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
@@ -87,7 +87,7 @@ public final class ConstraintFw {
         if (FwUtils.isTypeApiCall(arg, ConstraintFw.constraint, context)) {
             Val instance = Call.getVal(arg, context);
             return handleInstanceCall(instance, instance._unpack(), Call.getArg(arg, context), context);
-        } else if (arg.type().equals(ExprFw.symbol)) {
+        } else if (arg.type().equals(SymbolFw.symbol)) {
             String value = arg._unpack(Symbol.class).getValue();
             if (value.equals("builder")) {
                 return constraintBuilder;
@@ -97,7 +97,7 @@ public final class ConstraintFw {
     }).asType();
 
     private static Val handleInstanceCall(Val instance, Constraint payload, Val arg, Context context) {
-        if (arg.type().equals(ExprFw.symbol)) {
+        if (arg.type().equals(SymbolFw.symbol)) {
             String val = arg._unpack(Symbol.class).getValue();
             switch (val) {
                 case "check":

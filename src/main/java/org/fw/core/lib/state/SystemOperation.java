@@ -1,8 +1,8 @@
-package org.fw.core.state.operation;
+package org.fw.core.lib.state;
 
-import org.fw.core.base.Context;
-import org.fw.core.base.Unspecified;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.state.operation.Operation;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.StrFw;
 import org.fw.core.state.obj.State;
@@ -30,7 +30,7 @@ public abstract class SystemOperation extends Operation {
     protected abstract Val execute0();
 
     @Override
-    protected boolean isPure() {
+    protected boolean isPure0() {
         return false;
     }
 

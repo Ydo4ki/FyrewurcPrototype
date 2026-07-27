@@ -1,18 +1,11 @@
 package org.fw.core.state.operation;
 
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.ExprList;
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
-import org.fw.core.lib.VitFw;
-import org.fw.core.lib.state.OperationFw;
-import org.fw.core.state.obj.Obj;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.util.Objects;
-import java.util.Set;
 
 public final class VitOperation extends Operation {
     private final Vit vit;
@@ -29,7 +22,7 @@ public final class VitOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure() {
+    protected boolean isPure0() {
         return vit.isPure();
     }
 

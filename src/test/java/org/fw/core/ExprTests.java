@@ -4,8 +4,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
-import org.fw.core.base.Context;
-import org.fw.core.base.Unspecified;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -22,7 +21,7 @@ public class ExprTests {
     @Test
     void apiSymbol() {
         Val expr = ExprFw.wrap(Symbol.of("abalabamara"));
-        assertEquals(StrFw.str("abalabamara"), expr.call(symbol("value"), context));
+        assertEquals(StrFw.str("abalabamara"), ExprFw.symbolToString.call(expr, context));
     }
 
     @Test

@@ -2,9 +2,9 @@ package org.fw.core;
 
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
+import org.fw.core.base.SymbolFw;
 import org.fw.core.base.TelephonistType;
 import org.fw.core.base.Val;
-import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.util.LazyObj;
 import org.fw.core.vit.Vit;
@@ -38,7 +38,7 @@ public final class FW {
     }
 
     public static Val symbol(String value) {
-        return Val.of(ExprFw.symbol, Symbol.of(value));
+        return Val.of(SymbolFw.symbol, Symbol.of(value));
     }
 
     public static Vit vIf(Vit condition, Vit ifTrue, Vit ifFalse) {

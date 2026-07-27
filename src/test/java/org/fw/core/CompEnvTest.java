@@ -6,8 +6,8 @@ import org.fw.core.ast.LocatedExpr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
-import org.fw.core.base.Context;
-import org.fw.core.base.Unspecified;
+import org.fw.core.base.context.Context;
+import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DIntFw;
@@ -17,8 +17,7 @@ import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.comp.InternalSystemContext;
 import org.fw.core.lib.expr.AccumulatorsExprFw;
 import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.ExprFw;
-import org.fw.core.lib.state.LaserPointerFw;
+import org.fw.core.state.operation.LaserPointerFw;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.vit.Vit;
@@ -68,7 +67,7 @@ class CompEnvTest {
     }
 
     public static final Val testValsCenv = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
-        if (!arg1.type().equals(ExprFw.symbol))
+        if (!arg1.type().equals(SymbolFw.symbol))
             return null;
         String string = arg1._unpack().toString();
         Val ret = testValsMap.get(string);
@@ -158,7 +157,7 @@ class CompEnvTest {
         Map<String, Val> defineds = new HashMap<>();
 
         final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
-            if (!arg1.type().equals(ExprFw.symbol))
+            if (!arg1.type().equals(SymbolFw.symbol))
                 return null;
             String string = arg1._unpack().toString();
             Val ret = defineds.get(string);
@@ -200,7 +199,7 @@ class CompEnvTest {
                 } else if (result.type().equals(DeclaredFw.declared)) {
                     Val key = DeclaredFw.getKey(result, context);
                     Val value = DeclaredFw.getValue(result, context);
-                    if (key.type().equals(ExprFw.symbol)) {
+                    if (key.type().equals(SymbolFw.symbol)) {
                         defineds.put(key._unpack(Symbol.class).getValue(), value);
                     }
                 } else {

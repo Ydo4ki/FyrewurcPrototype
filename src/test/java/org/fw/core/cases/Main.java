@@ -3,17 +3,17 @@ package org.fw.core.cases;
 import org.fw.core.FW;
 import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
-import org.fw.core.base.Context;
-import org.fw.core.base.Unspecified;
+import org.fw.core.base.context.Context;
+import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.*;
-import org.fw.core.lib.state.OperationFw;
+import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
-import org.fw.core.state.operation.SystemOperation;
-import org.fw.core.state.operation.WhileOperation;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.lib.state.SystemOperation;
+import org.fw.core.lib.state.WhileOperation;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
@@ -97,6 +97,7 @@ public class Main {
             try {
                 vit = compEnv.compile(expression, context);
             } catch (VitCompilationException e) {
+                System.err.println(expression);
                 throw new RuntimeException(e);
             }
             Val val = vit.eval(context);
@@ -213,7 +214,7 @@ public class Main {
                                 for (int i = 0; i < paramsList.size(); i++) {
                                     FnParam param = paramsList.get(i);
                                     Symbol name = param.name;
-                                    if (argSym.type().equals(ExprFw.symbol) && argSym._unpack(Symbol.class).getValue().equals(name.getValue())) {
+                                    if (argSym.type().equals(SymbolFw.symbol) && argSym._unpack(Symbol.class).getValue().equals(name.getValue())) {
                                         return varValues.call(DIntFw.dint(i), context2);
                                     }
                                 }

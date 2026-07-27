@@ -2,7 +2,9 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
+import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -94,7 +96,7 @@ public final class DIntFw {
 
     public static final class ParseDIntCEnvFw {
         public static final Val parseNumCenv = StrFw.ParseStrCEnvFw.symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {
-            return Vit.val(dint.asVal()).call(symbol("parse")).call(arg1.call(symbol("value"), context1))
+            return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1, context1))
                     .eval(context1);
         })));
     }

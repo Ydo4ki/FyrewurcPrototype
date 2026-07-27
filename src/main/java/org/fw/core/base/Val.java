@@ -1,11 +1,11 @@
 package org.fw.core.base;
 
+import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.lib.expr.ExprFw;
 
 import java.util.*;
 
@@ -34,7 +34,7 @@ public abstract class Val {
         ); // huh
         Val function = context.rtEnv().get(symbol("to-expr"), context);
         Val result = function.call(this, context);
-        if (ExprFw.isExpr(result))
+        if (result._unpack() instanceof Expr)
             return result._unpack();
 
         return ExprList.of(BracketsTypes.braces);
@@ -110,6 +110,7 @@ public abstract class Val {
         public String toString() {
             if (type == Val.ofTelephonist(0).asType()) {
                 TelephonistType.Telephonist value = this._unpack();
+                if (value.representation() == null || value.representation().get() == null) return "*";
                 return value.representation().get().toString();
             }
             return "Val[" +

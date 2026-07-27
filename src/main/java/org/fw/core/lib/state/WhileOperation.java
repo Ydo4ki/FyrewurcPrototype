@@ -1,7 +1,8 @@
-package org.fw.core.state.operation;
+package org.fw.core.lib.state;
 
-import org.fw.core.base.Context;
+import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.state.operation.Operation;
 import org.fw.core.lib.BoolFw;
 
 public final class WhileOperation extends Operation {
@@ -23,7 +24,7 @@ public final class WhileOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure() {
-        return condition.isPure() && body.isPure(); // I don't know why would you use while in this case, but still
+    protected boolean isPure0() {
+        return condition.operationAreYouPureQuestionMark() && body.operationAreYouPureQuestionMark(); // I don't know why would you use while in this case, but still
     }
 }

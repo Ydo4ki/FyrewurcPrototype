@@ -8,15 +8,15 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.vit.RtEnv;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
@@ -44,7 +44,7 @@ public final class FwUtils {
         if (isTypeApiCall(arg, type, context)) {
             Val instance = Call.getVal(arg, context);
             Val callArg = Call.getArg(arg, context);
-            if (!callArg.type().equals(ExprFw.symbol)) {
+            if (!callArg.type().equals(SymbolFw.symbol)) {
                 return nonSymbolicHandler.handle(instance, callArg);
             }
             String symbol = callArg._unpack(Symbol.class).getValue();
@@ -89,7 +89,7 @@ public final class FwUtils {
         Map<String, Val> defineds = new HashMap<>();
 
         final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, с) -> {
-            if (!arg1.type().equals(ExprFw.symbol))
+            if (!arg1.type().equals(SymbolFw.symbol))
                 return null;
             String string = arg1._unpack().toString();
             Val ret = defineds.get(string);
@@ -113,7 +113,7 @@ public final class FwUtils {
             if (result.type().equals(DeclaredFw.declared)) {
                 Val key = DeclaredFw.getKey(result, context);
                 Val value = DeclaredFw.getValue(result, context);
-                if (key.type().equals(ExprFw.symbol)) {
+                if (key.type().equals(SymbolFw.symbol)) {
                     defineds.put(key._unpack(Symbol.class).getValue(), value);
                 }
             }

@@ -5,6 +5,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
+import org.fw.core.base.SymbolFw;
 import org.fw.core.base.TelephonistType;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
@@ -55,7 +56,7 @@ public class ToExprFn {
                 content.add(ExprFw.wrap(expr).toExpr(context));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, content));
-        } else if (type.equals(ExprFw.symbol)) {
+        } else if (type.equals(SymbolFw.symbol)) {
             String str = arg._unpack().toString();
             str = str.replace("\"", "\\\"");
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, Symbol.of("Symbol"), Symbol.of('"' + str + '"')));

@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.lib.BoolFw;
 import org.fw.core.util.FwUtils;
 
 import java.util.Objects;
@@ -65,9 +64,7 @@ public class Unspecified {
 
         @Override
         public String toString() {
-            return "UnspecifiedRecord[" +
-                    "val=" + val + ", " +
-                    "arg=" + arg + ']';
+            return "UnspecifiedRecord[" + val + ", " + arg + ']';
         }
     }
 }

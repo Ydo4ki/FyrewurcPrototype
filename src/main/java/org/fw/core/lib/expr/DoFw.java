@@ -6,11 +6,12 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.lib.ModuleFw;
 import org.fw.core.lib.VitFw;
-import org.fw.core.lib.state.OperationFw;
+import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -74,7 +75,7 @@ public final class DoFw {
                 // OK FINE
                 Val newRtGetter = FW.telephonist((oldRt, context1) -> FW.telephonist((varValue, context3) -> {
                     return FW.telephonist((arg, context2) -> {
-                        if (arg.type().equals(ExprFw.symbol) && arg._unpack(Symbol.class).getValue().equals(name)) {
+                        if (arg.type().equals(SymbolFw.symbol) && arg._unpack(Symbol.class).getValue().equals(name)) {
                             return varValue;
                         }
                         return oldRt.call(arg, context2);
