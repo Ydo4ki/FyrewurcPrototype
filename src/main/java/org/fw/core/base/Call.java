@@ -14,6 +14,10 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 // Remember local runtimes
+// what
+// what is local runtimes
+// what do i need to remember
+// aaioasopdiou when was this even written
 public final class Call {
     public static final Type call_t = telephonist("Call", (arg, context) -> {
         if (arg.type().equals(Call.call_t)) {

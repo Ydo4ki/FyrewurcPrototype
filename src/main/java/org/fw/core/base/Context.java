@@ -3,6 +3,7 @@ package org.fw.core.base;
 import org.fw.core.state.obj.State;
 import org.fw.core.vit.RtEnv;
 
+// do we really need this class in a first place?
 public final class Context {
     private final RtEnv rtEnv; // for VitVar
     private final State state; // for VitInvoke

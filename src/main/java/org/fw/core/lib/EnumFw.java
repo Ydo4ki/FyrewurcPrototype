@@ -62,6 +62,15 @@ public final class EnumFw {
         return null;
     }).asType();
 
+    public static Type enumeration(String... keys) {
+        Val[] valuesV = new Val[keys.length];
+        Type resultingType = Val.of(EnumFw.enumeration, new Enum(valuesV)).asType();
+        for (int i = 0; i < keys.length; i++) {
+            valuesV[i] = Val.of(resultingType, symbol(keys[i]));
+        }
+        return resultingType;
+    }
+
     public static Val toExpr(Val arg, Context context) {
         EnumFw.Enum value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
