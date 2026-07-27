@@ -29,6 +29,10 @@ public abstract class SystemOperation extends Operation {
 
     protected abstract Val execute0();
 
+    @Override
+    protected boolean isPure() {
+        return false;
+    }
 
     public static class PrintOperation extends SystemOperation {
         private final PrintStream out;

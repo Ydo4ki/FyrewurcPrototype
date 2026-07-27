@@ -28,4 +28,9 @@ public final class GetLocalStateOperation extends Operation {
     public Expr toExpr(Context context) {
         return Symbol.of("GetLocalStateOperation");
     }
+
+    @Override
+    protected boolean isPure() {
+        return false;
+    }
 }

@@ -21,4 +21,9 @@ public final class WhileOperation extends Operation {
         }
         return ret;
     }
+
+    @Override
+    protected boolean isPure() {
+        return condition.isPure() && body.isPure(); // I don't know why would you use while in this case, but still
+    }
 }

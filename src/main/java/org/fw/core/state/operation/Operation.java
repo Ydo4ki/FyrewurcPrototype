@@ -23,6 +23,7 @@ public abstract class Operation {
     public abstract Val execute(Context context);
 
     private final Val asVal;
+    private Boolean isPure = null;
 
     protected Operation() {
         this.asVal = Val.of(OperationFw.operation, this);
@@ -59,5 +60,13 @@ public abstract class Operation {
         return asVal;
     }
 
+    protected abstract boolean isPure();
+
+    public final boolean operationAreYouPureQuestionMark() {
+        if (isPure == null) {
+            isPure = isPure();
+        }
+        return isPure;
+    }
 }
 

@@ -26,7 +26,7 @@ public final class Call {
             if (cArg.equals(symbol("val"))) return meCall.val();
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Call.builder",
-                    (func, context1) -> FW.telephonist(() -> "(Call.builder " + func.toExpr(context1) + ")",
+                    (func, context1) -> FW.telephonist(() -> "(call Call.builder " + func.toExpr(context1) + ")",
                             (argument, context2) -> fwCall(func, argument)));
         }
         return null;

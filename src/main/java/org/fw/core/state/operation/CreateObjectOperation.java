@@ -18,4 +18,9 @@ public class CreateObjectOperation extends Operation {
         Obj.ValObj obj = new Obj.ValObj(initialValue, context.state());
         return Val.of(LaserPointerFw.laserPointer, obj);
     }
+
+    @Override
+    protected boolean isPure() {
+        return false;
+    }
 }

@@ -38,7 +38,6 @@ public abstract class Val {
             return result._unpack();
 
         return ExprList.of(BracketsTypes.braces);
-//        return type().instanceToExpr(this, context);
     }
 
     public static Val of(Type type, Object value) {

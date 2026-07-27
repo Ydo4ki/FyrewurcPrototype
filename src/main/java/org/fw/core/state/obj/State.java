@@ -15,9 +15,7 @@ public final class State implements Obj {
         return new State();
     }
 
-    private State() {
-
-    }
+    private State() { }
 
     public static <T> T performAndDie(Function<State, T> function) {
         State state = new State();
@@ -34,10 +32,6 @@ public final class State implements Obj {
 
     void add(Obj obj) {
         objects.put(obj, obj);
-    }
-
-    void remove(Obj obj) {
-        objects.remove(obj);
     }
 
     @Override

@@ -26,4 +26,9 @@ public final class WriteOperation extends Operation {
         obj.write(context, x);
         return Operation.unit;
     }
+
+    @Override
+    protected boolean isPure() {
+        return false;
+    }
 }

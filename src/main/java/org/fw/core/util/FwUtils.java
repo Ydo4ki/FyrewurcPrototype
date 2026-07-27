@@ -8,6 +8,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.*;
+import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static org.fw.core.vit.Vit.val;
 
@@ -125,6 +127,10 @@ public final class FwUtils {
         Set<T> set = new HashSet<>(a);
         set.addAll(b);
         return set;
+    }
+
+    public static Val valify(Predicate<Val> tester) {
+        return FW.telephonist((arg, context) -> BoolFw.wrap(tester.test(arg)));
     }
 
     @FunctionalInterface

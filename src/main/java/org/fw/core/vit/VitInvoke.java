@@ -11,11 +11,10 @@ import java.util.Objects;
 
 public final class VitInvoke extends Vit {
 
-    private final Vit operation;
+    private Vit operation;
 
     public VitInvoke(Vit operation) {
         this.operation = Objects.requireNonNull(operation);
-//        this.operation = Vit.simplify(operation, null);
     }
 
     public Vit operation() {
@@ -45,6 +44,14 @@ public final class VitInvoke extends Vit {
         // I dunno operation are you pure?
 //        return operation.isPure();
         // WAIT
+        operation = Vit.simplify(operation);
+        if (operation instanceof VitVal) {
+            Val val = ((VitVal) operation).val();
+            if (val.type() == OperationFw.operation) {
+                Operation op = val._unpack();
+                return op.operationAreYouPureQuestionMark();
+            }
+        }
         return false;
     }
 

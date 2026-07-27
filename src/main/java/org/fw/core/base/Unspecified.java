@@ -22,9 +22,7 @@ public class Unspecified {
         return null;
     }).asType();
 
-    public static final Val isUnspecified = FW.telephonist((arg, context) -> {
-        return BoolFw.wrap(isUnspecified(arg));
-    });
+    public static final Val isUnspecified = FwUtils.valify(Unspecified::isUnspecified);
 
     public static Val unspecified(Val val, Val arg) {
         return Val.of(unspecified_type, new UnspecifiedRecord(val, arg));

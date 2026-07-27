@@ -19,4 +19,9 @@ public final class ReadOperation extends Operation {
     public Val execute(Context context) {
         return obj.read(context);
     }
+
+    @Override
+    protected boolean isPure() {
+        return false;
+    }
 }
