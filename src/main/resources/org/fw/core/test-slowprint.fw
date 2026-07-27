@@ -41,6 +41,6 @@
  (invoke! (call _Sleep 500))
  (invoke! (call slowprint!.fn-call ["This is slowprint test.\n"]))
  (invoke! (call _Sleep 500))
- (invoke! (call slowprint.fn-call ["Feel free to join.\n"]))
+ (slowprint! "Feel free to join.\n")
 )
 
