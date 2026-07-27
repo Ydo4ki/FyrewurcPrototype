@@ -1,10 +1,7 @@
 package org.fw.core.cases;
 
 import org.fw.core.FW;
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.ExprList;
-import org.fw.core.ast.Symbol;
+import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.Context;
 import org.fw.core.base.Val;
@@ -37,7 +34,7 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-        Iterable<Expr> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-slowprint.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-slowprint.fw"));
 
         State state = SystemOperation.systemState;
         Context context = new Context(rtEnv, state);
@@ -121,7 +118,8 @@ public class Main {
                 ))
         ));
 
-        for (Expr expression : expressions) {
+        for (LocatedExpr<? extends Expr> locatedExpression : expressions) {
+            Expr expression = locatedExpression.getExpr();
             Vit vit;
             try {
                 vit = compEnv.compile(expression, context);

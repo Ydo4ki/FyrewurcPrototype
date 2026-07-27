@@ -17,7 +17,7 @@ import static org.fw.core.vit.Vit.val;
 public final class FW {
     // I changed my mind (partially)
     public static Val telephonist(String name, TelephonistType.CallFunction call) {
-        return telephonistE(() -> FwUtils.parse(name), call);
+        return telephonistE(() -> FwUtils.parse(name).getExpr(), call);
     }
 
     public static Val telephonist(TelephonistType.CallFunction call) {
@@ -25,7 +25,7 @@ public final class FW {
     }
 
     public static Val telephonist(Supplier<String> name, TelephonistType.CallFunction call) {
-        return telephonistE(() -> FwUtils.parse(name.get()), call);
+        return telephonistE(() -> FwUtils.parse(name.get()).getExpr(), call);
     }
 
     public static Val telephonist(Expr representation, TelephonistType.CallFunction call) {

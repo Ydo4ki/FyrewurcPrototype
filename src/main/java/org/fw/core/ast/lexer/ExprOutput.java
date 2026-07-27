@@ -2,20 +2,16 @@ package org.fw.core.ast.lexer;
 
 import org.fw.core.ast.*;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Sulphuris
  * @since 4/16/2025 7:50 PM
  */
-public final class ExprOutput implements Iterable<Expr> {
+public final class ExprOutput implements Iterable<LocatedExpr<? extends Expr>> {
 
 	public static ExprOutput valueOf(InputStream in) {
 		return new ExprOutput(TokenOutput.valueOf(in));
@@ -38,12 +34,12 @@ public final class ExprOutput implements Iterable<Expr> {
 	}
 	
 	@Override
-    public Iterator<Expr> iterator() {
+    public Iterator<LocatedExpr<? extends Expr>> iterator() {
         return new ExprIterator();
     }
 
-    private class ExprIterator implements Iterator<Expr> {
-		private Expr next;
+    private class ExprIterator implements Iterator<LocatedExpr<? extends Expr>> {
+		private LocatedExpr<? extends Expr> next;
 		
 		private Token currentToken;
 		private final Iterator<Token> tokenIterator;
@@ -60,8 +56,8 @@ public final class ExprOutput implements Iterable<Expr> {
         }
         
         @Override
-        public Expr next() {
-            Expr token = next;
+        public LocatedExpr<? extends Expr> next() {
+			LocatedExpr<? extends Expr> token = next;
             next = parseExpr(null);
             return token;
         }
@@ -93,31 +89,31 @@ public final class ExprOutput implements Iterable<Expr> {
 			currentToken = null;
 		}
 		
-		private Symbol parseSymbol() {
+		private LocatedSymbol parseSymbol() {
 			if (isEOF()) return null;
 			Token token = currentToken;
 			nextToken();
-			return new Symbol(token.location, token.text);
+			return Symbol.of(token.location, token.text);
 		}
 		
-		private ExprList parseDList(BracketsType bracketsType) {
+		private LocatedExprList parseDList(BracketsType bracketsType) {
 			Token startToken = currentToken;
-			List<Expr> elements = new ArrayList<>();
+			List<LocatedExpr<? extends Expr>> elements = new ArrayList<>();
 			nextToken(); // eat opening bracket
 			
 			while (!isEOF() && !isMatchingCloseBracket(bracketsType)) {
-				Expr next = parseExpr(bracketsType);
+				LocatedExpr<? extends Expr> next = parseExpr(bracketsType);
 				if (next == null) break;
 				elements.add(next);
 			}
 			
-			ExprList exprList = ExprList.of(Location.between(startToken.location, currentToken.location), bracketsType, elements);
+			LocatedExprList exprList = ExprList.of(Location.between(startToken.location, currentToken.location), bracketsType, elements);
 			
 			nextToken(); // eat closing bracket
 			return exprList;
 		}
 		
-		private Expr parseExpr(BracketsType brackets) {
+		private LocatedExpr<? extends Expr> parseExpr(BracketsType brackets) {
 			if (isEOF()) return null;
 			if (brackets != null && isMatchingCloseBracket(brackets)) return null;
 			

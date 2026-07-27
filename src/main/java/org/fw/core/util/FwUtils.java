@@ -3,6 +3,7 @@ package org.fw.core.util;
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
+import org.fw.core.ast.LocatedExpr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
@@ -49,7 +50,7 @@ public final class FwUtils {
         return orStatic.call(arg, context);
     }
 
-    public static Expr parse(String name) {
+    public static LocatedExpr<? extends Expr> parse(String name) {
         return new ExprOutput(new TokenOutput(name, null, BracketsTypes.bracketsTypes)).iterator().next();
     }
 
@@ -78,7 +79,7 @@ public final class FwUtils {
     }
 
     public static Val getValueFromFile(File file, CompEnv compEnv, Context context) throws IOException {
-        Iterable<Expr> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
+        Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
         Val result = Val.unspecified;
 
 
@@ -97,7 +98,8 @@ public final class FwUtils {
 
         CompEnv env = CompEnv.of(CompEnv.compEnv(context, compEnv.asVal(), defined));
 
-        for (Expr expr : expressions) {
+        for (LocatedExpr<? extends Expr> lExpr : expressions) {
+            Expr expr = lExpr.getExpr();
             Vit vit = null;
             try {
                 vit = env.compile(expr, context);

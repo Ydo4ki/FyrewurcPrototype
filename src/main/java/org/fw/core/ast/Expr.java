@@ -10,15 +10,8 @@ import java.util.stream.Collectors;
  */
 public abstract class Expr {
 
-    private final Location location;
-
     // sealed
-    Expr(Location location) {
-        this.location = location;
-    }
-
-    public final Location getLocation() {
-        return location;
+    Expr() {
     }
 
     public abstract Collection<? extends Expr> split(String... separateLines);
@@ -34,7 +27,7 @@ public abstract class Expr {
             if (sym.getValue().equals(symbol.getValue())) return newValue;
             else return sym;
         }, list
-                -> ExprList.of(list.getLocation(), list.getBracketsType(), list.getElements().stream()
+                -> ExprList.of(list.getBracketsType(), list.getElements().stream()
                 .map(e -> e.replace(symbol, newValue)).collect(Collectors.toList())));
     }
 }

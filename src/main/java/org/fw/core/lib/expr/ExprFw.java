@@ -59,7 +59,7 @@ public final class ExprFw {
                         return Val.unspecified;
 
                     String value = arg1._unpack();
-                    Expr expr = FwUtils.parse(value);
+                    Expr expr = FwUtils.parse(value).getExpr();
                     if (expr instanceof Symbol)
                         return ExprFw.wrap(expr);
 

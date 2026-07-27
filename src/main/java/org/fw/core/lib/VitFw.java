@@ -116,7 +116,7 @@ public final class VitFw {
         return Val.unspecified;
     })).asType();
 
-    private static final Expr repr = FwUtils.parse("(get VitCall builder)");
+    private static final Expr repr = FwUtils.parse("(get VitCall builder)").getExpr();
     public static final Type vitCall = telephonist("VitCall", (arg0, context0)
             -> FwUtils.handleSymbols(arg0, VitFw.vitCall, context0, (instance, symbol) -> {
         switch (symbol) {

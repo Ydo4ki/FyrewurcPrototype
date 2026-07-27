@@ -2,6 +2,7 @@ package org.fw.core;
 
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
+import org.fw.core.ast.LocatedExpr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
@@ -78,7 +79,7 @@ class CompEnvTest {
     void testNumbers() {
         String source = "5";
 
-        Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next();
+        Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
 
         CompEnv env = CompEnv.of(CompEnv.compEnv(DIntFw.ParseDIntCEnvFw.parseNumCenv, Val.unspecified, context));
         Vit vit = null;
@@ -98,7 +99,7 @@ class CompEnvTest {
     void testVals() throws VitCompilationException {
         String source = ":";
 
-        Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next();
+        Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
 
         CompEnv env = CompEnv.of(CompEnv.compEnv(InternalSymbolMapCEnvFw.valsCenv, Val.unspecified, context));
         Vit vit = env.compile(expr, context);
@@ -177,10 +178,11 @@ class CompEnvTest {
                 continue;
 
             System.out.println("========================================= " + file.getName() + " =========================================");
-            Iterable<Expr> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
+            Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
 
             List<TestFw.TestRecord> tests = new ArrayList<>();
-            for (Expr expr : expressions) {
+            for (LocatedExpr<? extends Expr> lExpr : expressions) {
+                Expr expr = lExpr.getExpr();
                 Val vitVal = env.compileV(expr, context);
                 Vit vit = VitFw.unwrap0(vitVal);
                 if (vit == null) {

@@ -10,16 +10,15 @@ import java.util.stream.Collectors;
 public final class Symbol extends Expr {
 	private final String value;
 	
-	public Symbol(Location location, String value) {
-		super(location);
+	public Symbol(String value) {
 		this.value = value;
 	}
 	
 	public static Symbol of(String value) {
-		return new Symbol(Location.unknown(null, ""), value);
+		return new Symbol(value);
 	}
-	public static Symbol of(Location location, String value) {
-		return new Symbol(location, value);
+	public static LocatedSymbol of(Location location, String value) {
+		return Symbol.of(value).located(location);
 	}
 	
 	public String getValue() {
@@ -49,27 +48,14 @@ public final class Symbol extends Expr {
 				if (line.startsWith(sep, current)) {
 					if (sep.length() > maxLen) {
 						maxLen = sep.length();
-						foundSep = new Symbol(new Location(
-								getLocation().getStartPos() + start,
-								getLocation().getStartPos() + current,
-								getLocation().getStartLine(),
-								getLocation().getEndLine(),
-								getLocation().getSourceFile()
-						), sep);
+						foundSep = Symbol.of(sep);
 					}
 				}
 			}
 			
 			if (foundSep != null) {
 				if (current > start) {
-					result.add(new Symbol(new Location(
-									getLocation().getStartPos() + start,
-									getLocation().getStartPos() + current,
-									getLocation().getStartLine(),
-									getLocation().getEndLine(),
-									getLocation().getSourceFile()
-							), line.substring(start, current))
-					);
+					result.add(Symbol.of(line.substring(start, current)));
 				}
 				result.add(foundSep);
 				start = current + foundSep.value.length();
@@ -80,13 +66,7 @@ public final class Symbol extends Expr {
 		}
 		
 		if (start < lineLength) {
-			result.add(new Symbol(new Location(
-					getLocation().getStartPos() + start,
-					getLocation().getStartPos() + (line.length() - start),
-					getLocation().getStartLine(),
-					getLocation().getEndLine(),
-					getLocation().getSourceFile()
-			), line.substring(start)));
+			result.add(Symbol.of(line.substring(start)));
 		}
 		
 		return result;
@@ -107,5 +87,9 @@ public final class Symbol extends Expr {
 	@Override
 	public int hashCode() {
 		return Objects.hash(value);
+	}
+
+	public LocatedSymbol located(Location location) {
+		return new LocatedSymbol(this, location);
 	}
 }

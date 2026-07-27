@@ -2,6 +2,7 @@ package org.fw.core;
 
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
+import org.fw.core.ast.LocatedExpr;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.Call;
@@ -85,8 +86,9 @@ public class Main {
         CompEnv env = publicCompEnv;
 
         try {
-            Iterable<Expr> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
-            for (Expr expr : expressions) {
+            Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
+            for (LocatedExpr<? extends Expr> lExpr : expressions) {
+                Expr expr = lExpr.getExpr();
                 Vit vit = null;
                 try {
                     vit = env.compile(expr, context);

@@ -12,8 +12,7 @@ public final class ExprList extends Expr implements Iterable<Expr> {
 	private final BracketsType bracketsType;
 	private final List<? extends Expr> elements;
 	
-	ExprList(Location location, BracketsType bracketsType, List<? extends Expr> elements) {
-		super(location);
+	ExprList(BracketsType bracketsType, List<? extends Expr> elements) {
 		this.bracketsType = bracketsType;
 		this.elements = Collections.unmodifiableList(elements);
 	}
@@ -22,13 +21,14 @@ public final class ExprList extends Expr implements Iterable<Expr> {
 		return bracketsType;
 	}
 	
-	public static ExprList of(Location location, BracketsType bracketsType, List<? extends Expr> elements) {
-		if (bracketsType == null) throw new NullPointerException("bracketsType is null");
-		return new ExprList(location, bracketsType, elements);
+	public static LocatedExprList of(Location location, BracketsType bracketsType, List<LocatedExpr<? extends Expr>> elements) {
+		ExprList list = of(bracketsType, elements.stream().map(LocatedExpr::getExpr).collect(Collectors.toList()));
+		return new LocatedExprList(list, location, elements);
 	}
 	
 	public static ExprList of(BracketsType bracketsType, List<? extends Expr> elements) {
-		return of(Location.unknown(null, ""), bracketsType, elements);
+		if (bracketsType == null) throw new NullPointerException("bracketsType is null");
+		return new ExprList(bracketsType, elements);
 	}
 	public static ExprList of(BracketsType bracketsType, Expr... elements) {
 		return of(bracketsType, Arrays.asList(elements));
@@ -40,7 +40,7 @@ public final class ExprList extends Expr implements Iterable<Expr> {
 	}
 	
 	public ExprList splitList(String... separateLines) {
-		return new ExprList(getLocation(), bracketsType,
+		return new ExprList(bracketsType,
 				getElements().stream()
 						.flatMap(e -> e.split(separateLines).stream())
 						.collect(Collectors.toList()));
