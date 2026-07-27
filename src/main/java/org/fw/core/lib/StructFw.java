@@ -1,15 +1,12 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -35,14 +32,14 @@ public final class StructFw {
                 arg = Call.getArg(arg, context);
                 Val[] values = strInstance._unpack();
                 int index = struct.indexOf(arg, context);
-                if (index == -1) return Val.unspecified;
+                if (index == -1) return Unspecified.unspecified;
                 return values[index];
             } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
                 Val size = arg.call(symbol("size"), context);
                 Val cEnv = arg.call(symbol("comp-env"), context);
                 int isize = size._unpack(BigInteger.class).intValue();
                 if (isize != struct.fields.length) {
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 }
 
                 Vit ctor = Vit.val(instance).call(symbol("builder"));
@@ -67,7 +64,7 @@ public final class StructFw {
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
-                return Val.unspecified;
+                return Unspecified.unspecified;
             }
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -82,16 +79,16 @@ public final class StructFw {
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Struct.constructor", (payload, context1) -> {
                 if (!payload.type().equals(DVecFw.dVec))
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 Val[] fields = payload._unpack();
                 for (Val field : fields) {
                     if (!field.type().equals(DeclarationFw.declaration))
-                        return Val.unspecified; // some day I'll add proper errors
+                        return Unspecified.unspecified; // some day I'll add proper errors
                 }
                 return Val.of(StructFw.struct, new Struct(fields));
             });
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val toExpr(Val arg, Context context) {
@@ -173,7 +170,7 @@ public final class StructFw {
             }
             return Val.of(StructFw.structBuilder, new StructBuilder(payload.struct, payload.sameStructButItsAVal, values));
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 }
 // wow it actually worked from the first try

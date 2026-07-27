@@ -3,10 +3,7 @@ package org.fw.core;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.core.base.*;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
@@ -50,7 +47,7 @@ public final class TestFw {
                 });
             }
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static final Val testToExpr = FW.telephonist((arg, context) -> {
@@ -64,7 +61,7 @@ public final class TestFw {
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, exprs));
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     });
 
     static final class TestRecord {

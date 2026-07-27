@@ -1,6 +1,7 @@
 package org.fw.core;
 
 import org.fw.core.base.Context;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.state.obj.State;
@@ -13,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VitTests {
     private static final Context context = new Context(RtEnv.unspecified, State.eternal());
-    private static final Val v1 = FW.telephonist("v1", (arg, context1) -> Val.unspecified);
-    private static final Val v2 = FW.telephonist("v2", (arg, context1) -> Val.unspecified);
+    private static final Val v1 = FW.telephonist("v1", (arg, context1) -> Unspecified.unspecified);
+    private static final Val v2 = FW.telephonist("v2", (arg, context1) -> Unspecified.unspecified);
 
     @Test
     void apiVal() {

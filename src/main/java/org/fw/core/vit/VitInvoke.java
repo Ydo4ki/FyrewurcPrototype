@@ -41,6 +41,10 @@ public final class VitInvoke extends Vit {
 
     @Override
     public boolean isPure() {
+        // uhhh
+        // I dunno operation are you pure?
+//        return operation.isPure();
+        // WAIT
         return false;
     }
 

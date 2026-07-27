@@ -1,16 +1,13 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
@@ -31,11 +28,11 @@ public final class DeclarationFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
-                return Val.unspecified;
+                return Unspecified.unspecified;
 
             Val name = arg.call(DIntFw.dint(0), context);
             if (!name.type().equals(ExprFw.symbol))
-                return Val.unspecified; // symbol expected
+                return Unspecified.unspecified; // symbol expected
 
             Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(value.type())) return value; // error idk
@@ -43,7 +40,7 @@ public final class DeclarationFw {
             return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(name)
                     .call(Vit.call(ConstraintFw.to_constraint, VitFw.unwrap0(value))));
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     });
 
     // I hope it will be possible to make it a struct later
@@ -65,7 +62,7 @@ public final class DeclarationFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
-                return Val.unspecified;
+                return Unspecified.unspecified;
 
             Val name = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(name.type()))
@@ -79,12 +76,12 @@ public final class DeclarationFw {
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Declaration.builder", (key, context1) -> {
                 return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint, context2) -> {
-                    if (!ConstraintFw.isConstraint(constraint)) return Val.unspecified;
+                    if (!ConstraintFw.isConstraint(constraint)) return Unspecified.unspecified;
                     return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
                 });
             });
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val getKey(Val declaration, Context context) {

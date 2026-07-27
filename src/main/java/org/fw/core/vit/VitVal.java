@@ -10,7 +10,7 @@ public final class VitVal extends Vit {
     private final Val val;
 
     public VitVal(Val val) {
-        this.val = val;
+        this.val = Objects.requireNonNull(val);
     }
 
     public Val val() {

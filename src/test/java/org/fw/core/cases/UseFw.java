@@ -4,6 +4,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.ModuleFw;
@@ -28,15 +29,15 @@ public class UseFw {
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
                     case "usem": {
                         if (isize != 3)
-                            return Val.unspecified;
+                            return Unspecified.unspecified;
 
                         Val moduleVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
                         if (!VitFw.isVit(moduleVit.type()))
-                            return Val.unspecified; // could not compile module
+                            return Unspecified.unspecified; // could not compile module
 
                         Vit vit = Vit.simplify(moduleVit._unpack(Vit.class), context);
                         if (!(vit instanceof VitVal))
-                            return Val.unspecified; // this is meant to be known at compile-time
+                            return Unspecified.unspecified; // this is meant to be known at compile-time
 
                         Val newCompEnv = CompEnv.compEnv(context,
                                 compEnv,
@@ -51,15 +52,15 @@ public class UseFw {
                     }
                     case "usec": {
                         if (isize != 3)
-                            return Val.unspecified;
+                            return Unspecified.unspecified;
 
                         Val cEnvVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
                         if (!VitFw.isVit(cEnvVit.type()))
-                            return Val.unspecified; // could not compile cenv
+                            return Unspecified.unspecified; // could not compile cenv
 
                         Vit vit = Vit.simplify(cEnvVit._unpack(Vit.class), context);
                         if (!(vit instanceof VitVal))
-                            return Val.unspecified; // this is meant to be known at compile-time
+                            return Unspecified.unspecified; // this is meant to be known at compile-time
 
                         Val newCompEnv = CompEnv.compEnv(context,
                                 compEnv,
@@ -75,6 +76,6 @@ public class UseFw {
                 }
             }
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }));
 }

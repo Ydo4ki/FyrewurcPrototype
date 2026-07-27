@@ -1,15 +1,12 @@
 package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
@@ -33,7 +30,7 @@ public final class SyntaxResolveFw {
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("SyntaxResolve.builder", (expr, context1) -> {
                 if (!expr.type().equals(ExprFw.symbol) && !expr.type().equals(ExprFw.exprList)) {
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 }
                 return FW.telephonist(() -> "(SyntaxResolve.builder " + expr.toExpr(context1) + ")", (callerEnv, context2) -> {
                     return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolve(expr._unpack(), CompEnv.of(callerEnv)));
@@ -43,7 +40,7 @@ public final class SyntaxResolveFw {
             Val size = arg.call(symbol("size"), context);
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
-            if (isize != 2) return Val.unspecified;
+            if (isize != 2) return Unspecified.unspecified;
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(retVit.type()))
@@ -59,7 +56,7 @@ public final class SyntaxResolveFw {
 
             return VitFw.wrap(vit);
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     static final class SyntaxResolve {

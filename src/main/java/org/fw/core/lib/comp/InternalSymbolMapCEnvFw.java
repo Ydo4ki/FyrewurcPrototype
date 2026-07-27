@@ -1,6 +1,7 @@
 package org.fw.core.lib.comp;
 
 import org.fw.core.FW;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -16,6 +17,7 @@ import static org.fw.core.lib.ValsFw.eq;
 import static org.fw.core.vit.Vit.val;
 import static org.fw.core.vit.Vit.var;
 
+@Deprecated
 public final class InternalSymbolMapCEnvFw {
 
     private static final Map<String, Val> valsMap = new HashMap<>();
@@ -36,12 +38,12 @@ public final class InternalSymbolMapCEnvFw {
 
     public static final Val valsCenv = symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
         if (!arg1.type().equals(ExprFw.symbol))
-            return Val.unspecified;
+            return Unspecified.unspecified;
         String string = arg1._unpack().toString();
         Val ret = valsMap.get(string);
         if (ret != null)
             return VitFw.wrap(val(ret));
-        return Val.unspecified;
+        return Unspecified.unspecified;
     })));
 
     public static Val symbolMapVitEnv(Vit telemap) {
@@ -49,9 +51,9 @@ public final class InternalSymbolMapCEnvFw {
         Vit argExpr = arg.call(symbol("expr"));
         Vit parseArg = telemap.call(argExpr);
         return VitiateTelephonistFw.vitiate(
-                FW.vIf(val(eq).call(parseArg).call(Val.unspecified).call(symbol("not")),
+                FW.vIf(val(eq).call(parseArg).call(Unspecified.unspecified).call(symbol("not")),
                         parseArg,
-                        val(Val.unspecified)
+                        val(Unspecified.unspecified)
                 ), symbol("arg"), InternalSystemContext.context);
     }
 }

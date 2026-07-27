@@ -13,8 +13,6 @@ public final class VitVar extends Vit {
     @Override
     public Val eval(Context context) {
         return context.rtEnv().asVal();
-//        if (key == null)
-//        return context.rtEnv().get(key, context);
     }
 
     @Override

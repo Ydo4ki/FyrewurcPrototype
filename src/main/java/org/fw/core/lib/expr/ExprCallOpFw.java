@@ -1,14 +1,11 @@
 package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 
 import java.math.BigInteger;
@@ -19,7 +16,14 @@ import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
+// ExprCallOpFw
+// you're so deprecated
+// you're the deprecatiest class I've ever seen
+// how on the earth are you still here
+// even your freaking toString is deprecated
+@Deprecated
 public final class ExprCallOpFw {
+    @Deprecated
     public static final Type exprCallOp = FW.telephonist("ExprCallOp", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, ExprCallOpFw.exprCallOp, context)) {
             Val val = Call.getVal(arg, context);
@@ -33,11 +37,11 @@ public final class ExprCallOpFw {
             } else if (cArg.type().equals(DIntFw.dint)) {
                 BigInteger index = DIntFw.unwrap0(cArg);
                 if (index.bitLength() > 31)
-                    return Val.unspecified; // out of bounds
+                    return Unspecified.unspecified; // out of bounds
 
                 int i = index.intValue();
                 if (i < 0 || i >= payload.args.length)
-                    return Val.unspecified; // out of bounds
+                    return Unspecified.unspecified; // out of bounds
 
                 return ExprFw.wrap(payload.args[i]);
             }
@@ -53,13 +57,14 @@ public final class ExprCallOpFw {
                         return Val.of(ExprCallOpFw.exprCallOp, new ExprCallOp(args, CompEnv.of(cEnv)));
                     });
                 } else {
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 }
             });
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
+    @Deprecated
     public static Val toExpr(Val arg, Context context) {
         ExprCallOpFw.ExprCallOp vec = arg._unpack(ExprCallOpFw.ExprCallOp.class);
         List<Expr> elements = new ArrayList<>();
@@ -70,23 +75,30 @@ public final class ExprCallOpFw {
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
     }
 
+    @Deprecated
     private static final class ExprCallOp {
+        @Deprecated
         private final Expr[] args;
+        @Deprecated
         private final CompEnv compEnv;
 
+        @Deprecated
         private ExprCallOp(Expr[] args, CompEnv compEnv) {
             this.args = args;
             this.compEnv = compEnv;
         }
 
+        @Deprecated
         public Expr[] args() {
             return args;
         }
 
+        @Deprecated
         public CompEnv compEnv() {
             return compEnv;
         }
 
+        @Deprecated
         @Override
         public boolean equals(Object obj) {
             if (obj == this) return true;
@@ -96,11 +108,13 @@ public final class ExprCallOpFw {
                     Objects.equals(this.compEnv, that.compEnv);
         }
 
+        @Deprecated
         @Override
         public int hashCode() {
             return Objects.hash(Arrays.hashCode(args), compEnv);
         }
 
+        @Deprecated
         @Override
         public String toString() {
             return "ExprCallOp[" +

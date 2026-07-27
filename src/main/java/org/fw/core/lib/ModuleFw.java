@@ -2,15 +2,12 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
+import org.fw.core.base.*;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -57,19 +54,19 @@ public final class ModuleFw {
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Module.constructor", (arg1, c) -> {
                 if (!arg1.type().equals(DVecFw.dVec))
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
 
                 Val[] values = arg1._unpack(); // Ok I don't even care at this point
                 for (Val value : values) {
                     if (!value.type().equals(DeclaredFw.declared))
-                        return Val.unspecified;
+                        return Unspecified.unspecified;
                 }
 
                 return Val.of(ModuleFw.module, new Module(values));
             });
         } else if (arg.equals(symbol("contains-key"))) {
             return FW.telephonist("Module.contains-key", (arg1, context1) -> {
-                if (!arg1.type().equals(ModuleFw.module)) return Val.unspecified;
+                if (!arg1.type().equals(ModuleFw.module)) return Unspecified.unspecified;
                 Module mod = arg1._unpack();
                 return FW.telephonist(() -> "(Module.contains-key " + arg1.toExpr(context1) + ")", (key, context2) -> {
                     return mod.containsKey(key, context2) ? BoolFw._true : BoolFw._false;
@@ -77,7 +74,7 @@ public final class ModuleFw {
             });
         }
 
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val module(Val... values) {
@@ -157,10 +154,10 @@ public final class ModuleFw {
                             return VitFw.wrap(Vit.val(value));
                         }
                     }
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 }
             }
-            return Val.unspecified;
+            return Unspecified.unspecified;
         }).asType();
 
         public static Val compEnv(Val module) {

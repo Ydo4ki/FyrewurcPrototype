@@ -1,5 +1,6 @@
 package org.fw.core.lib.comp;
 
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
@@ -17,6 +18,6 @@ public final class CurrentCompEnvCEnvFw {
                 return VitFw.wrap(Vit.val(compEnv));
             }
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     });
 }

@@ -5,13 +5,12 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
-
-import java.math.BigInteger;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -29,7 +28,7 @@ public final class ExprGetFw {
                 String fullQualifier = sym.getValue();
                 int dotIndex = fullQualifier.lastIndexOf('.');
                 if (dotIndex == -1)
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 String origin = fullQualifier.substring(0, dotIndex);
                 String property = fullQualifier.substring(dotIndex + 1);
 
@@ -37,7 +36,7 @@ public final class ExprGetFw {
                 try {
                     first = CompEnv.of(compEnv).compile(FW.symbol(origin), context);
                 } catch (VitCompilationException e) {
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 }
 
                 return VitFw.wrap(first.call(symbol(property)));
@@ -48,25 +47,26 @@ public final class ExprGetFw {
                 int isize = ((ExprList) expr).size();
                 if (f instanceof Symbol) if (((Symbol) f).getValue().equals("get")) {
                     if (isize == 1) {
-                        return Val.unspecified;
+                        return Unspecified.unspecified;
                     }
 
-                    Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
-                    if (!VitFw.isVit(retVit.type()))
-                        return retVit; // compile error idk
+                    Val retVitV = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                    if (!VitFw.isVit(retVitV.type()))
+                        return retVitV; // compile error idk
+                    Vit retVit = retVitV._unpack();
 
                     for (int i = 1; i < (isize - 1); i++) {
                         Val property = exprVal.call(DIntFw.dint(i + 1), context);
                         if (!property.type().equals(ExprFw.symbol))
-                            return Val.unspecified; // not a compile error idk (actually it still is)
+                            return Unspecified.unspecified; // not a compile error idk (actually it still is)
 
-                        retVit = VitFw.wrap(VitFw.unwrap0(retVit).call(Vit.val(property)));
+                        retVit = retVit.call(Vit.val(property));
                     }
 
-                    return retVit;
+                    return VitFw.wrap(retVit);
                 }
             }
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     });
 }

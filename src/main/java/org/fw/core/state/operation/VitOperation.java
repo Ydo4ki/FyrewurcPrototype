@@ -18,8 +18,6 @@ public final class VitOperation extends Operation {
     private final RtEnv rtEnv;
 
     VitOperation(Vit vit, RtEnv rtEnv) {
-//        if (vit instanceof VitVal val && val.val().toExpr(new Context(RtEnv.unspecified, Scope.eternal())).equals(Symbol.of("vitiate-telephonist-runtime-env")))
-//            throw new Error();
         this.vit = vit;
         this.rtEnv = rtEnv;
     }

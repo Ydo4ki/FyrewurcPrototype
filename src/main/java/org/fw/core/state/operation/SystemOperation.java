@@ -1,6 +1,7 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.base.Context;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.StrFw;
@@ -21,7 +22,7 @@ public abstract class SystemOperation extends Operation {
         // and it's not like it will be much useful later
         // I should probably create a random instance and call it a system context
         if (context.state() != systemState) {
-            return Val.unspecified;
+            return Unspecified.unspecified;
         }
         return execute0();
     }
@@ -84,7 +85,7 @@ public abstract class SystemOperation extends Operation {
             try {
                 Thread.sleep(millis, 0);
             } catch (InterruptedException e) {
-                return Val.unspecified;
+                return Unspecified.unspecified;
             }
             return Operation.unit;
         }

@@ -1,14 +1,11 @@
 package org.fw.core.lib.constraint;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -52,6 +49,7 @@ public final class ConstraintFw {
     }
 
     @Insightful
+    @Deprecated
     public static final Val at = FW.telephonist("@", (arg, context) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
@@ -71,15 +69,15 @@ public final class ConstraintFw {
                 );
             }
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     });
 
     public static final Val constraintBuilder = FW.telephonist("Constraint.builder", (arg1, context1) -> {
         if (!VitFw.isVit(arg1.type()))
-            return Val.unspecified;
+            return Unspecified.unspecified;
         return FW.telephonist((arg2, context2) -> {
             if (!VitFw.isVit(arg2.type()))
-                return Val.unspecified;
+                return Unspecified.unspecified;
             return Val.of(ConstraintFw.constraint, new Constraint(arg1._unpack(), arg2._unpack(), arg1.equals(arg2)));
         });
     });
@@ -95,7 +93,7 @@ public final class ConstraintFw {
                 return constraintBuilder;
             }
         }
-        return Val.unspecified(ConstraintFw.constraint.asVal(), arg);
+        return Unspecified.unspecified(ConstraintFw.constraint.asVal(), arg);
     }).asType();
 
     private static Val handleInstanceCall(Val instance, Constraint payload, Val arg, Context context) {
@@ -125,7 +123,7 @@ public final class ConstraintFw {
                     return VitFw.wrap(payload.b());
             }
         }
-        return Val.unspecified(instance, arg);
+        return Unspecified.unspecified(instance, arg);
     }
 
     private static final class Constraint {

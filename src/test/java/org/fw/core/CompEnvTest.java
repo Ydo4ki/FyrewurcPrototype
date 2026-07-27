@@ -7,6 +7,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.Context;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DIntFw;
@@ -67,12 +68,12 @@ class CompEnvTest {
 
     public static final Val testValsCenv = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
         if (!arg1.type().equals(ExprFw.symbol))
-            return Val.unspecified;
+            return Unspecified.unspecified;
         String string = arg1._unpack().toString();
         Val ret = testValsMap.get(string);
         if (ret != null)
             return VitFw.wrap(val(ret));
-        return Val.unspecified;
+        return Unspecified.unspecified;
     })));
 
     @Test
@@ -81,7 +82,7 @@ class CompEnvTest {
 
         Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
 
-        CompEnv env = CompEnv.of(CompEnv.compEnv(DIntFw.ParseDIntCEnvFw.parseNumCenv, Val.unspecified, context));
+        CompEnv env = CompEnv.of(CompEnv.compEnv(DIntFw.ParseDIntCEnvFw.parseNumCenv, Unspecified.unspecified, context));
         Vit vit = null;
         try {
             vit = env.compile(expr, context);
@@ -101,7 +102,7 @@ class CompEnvTest {
 
         Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
 
-        CompEnv env = CompEnv.of(CompEnv.compEnv(InternalSymbolMapCEnvFw.valsCenv, Val.unspecified, context));
+        CompEnv env = CompEnv.of(CompEnv.compEnv(InternalSymbolMapCEnvFw.valsCenv, Unspecified.unspecified, context));
         Vit vit = env.compile(expr, context);
         Val vv = VitFw.wrap(vit);
 //        System.out.println(vv.toExpr(context));
@@ -157,12 +158,12 @@ class CompEnvTest {
 
         final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
             if (!arg1.type().equals(ExprFw.symbol))
-                return Val.unspecified;
+                return Unspecified.unspecified;
             String string = arg1._unpack().toString();
             Val ret = defineds.get(string);
             if (ret != null)
                 return VitFw.wrap(val(ret));
-            return Val.unspecified;
+            return Unspecified.unspecified;
         })));
 
 

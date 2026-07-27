@@ -33,7 +33,7 @@ public final class FwUtils {
 
     @Deprecated
     public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, TelephonistType.CallFunction orStatic) throws Exception {
-        return handleSymbols(arg, type, context, handler, (instance, arg1) -> Val.unspecified, orStatic);
+        return handleSymbols(arg, type, context, handler, (instance, arg1) -> Unspecified.unspecified, orStatic);
     }
 
     @Deprecated
@@ -80,19 +80,19 @@ public final class FwUtils {
 
     public static Val getValueFromFile(File file, CompEnv compEnv, Context context) throws IOException {
         Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
-        Val result = Val.unspecified;
+        Val result = Unspecified.unspecified;
 
 
         Map<String, Val> defineds = new HashMap<>();
 
         final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, с) -> {
             if (!arg1.type().equals(ExprFw.symbol))
-                return Val.unspecified;
+                return null;
             String string = arg1._unpack().toString();
             Val ret = defineds.get(string);
             if (ret != null)
                 return VitFw.wrap(val(ret));
-            return Val.unspecified;
+            return null;
         })));
 
 

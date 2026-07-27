@@ -22,6 +22,7 @@ import static org.fw.core.FW.symbol;
 public class ToExprFn {
     // wait did I really write all of this instead of using hashmap or some custom overengineered condition table?
     // wow
+    // todo: include as a part of exports
     public static final Val toExpr = FW.telephonist((arg, context) -> {
         Type type = arg.type();
         if (type.equals(Val.ofTelephonist(0).asType())) {
@@ -99,10 +100,6 @@ public class ToExprFn {
 
         if (type.equals(BoolFw.bool)) {
             return symbol(arg._unpack().toString());
-        }
-
-        if (type.equals(ExprCallOpFw.exprCallOp)) {
-            return ExprCallOpFw.toExpr(arg, context);
         }
 
         if (type.equals(EnumFw.enumeration)) {

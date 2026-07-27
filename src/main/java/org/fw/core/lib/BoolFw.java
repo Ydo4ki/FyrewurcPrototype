@@ -1,17 +1,13 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
 import org.fw.core.vit.Vit;
 
@@ -68,7 +64,7 @@ public final class BoolFw {
                 });
             }*/
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     private static Val bop(String name, Val instance, Context context, FwUtils.BoolBinaryOperator operator) {
@@ -78,7 +74,7 @@ public final class BoolFw {
                 boolean v2 = arg1._unpack(Boolean.class);
                 return wrap(operator.apply(value, v2));
             }
-            return Val.unspecified;
+            return Unspecified.unspecified;
         });
     }
 

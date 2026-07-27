@@ -1,13 +1,10 @@
 package org.fw.core.lib.telephonist;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.RtEnv;
 import org.fw.core.vit.Vit;
@@ -17,6 +14,7 @@ import java.util.Objects;
 import static org.fw.core.FW.symbol;
 
 // sorry this is the best name I could come up with
+@Deprecated
 public final class VitiateTelephonistFw {
 
     // I think we're gonna replace this with regular telephonist
@@ -27,7 +25,7 @@ public final class VitiateTelephonistFw {
 
     private static final Val builder = FW.telephonist("(get VitiateTelephonist builder)", (arg0, ctx) -> {
         if (!VitFw.isVit(arg0.type()))
-            return Val.unspecified;
+            return Unspecified.unspecified;
 
         Vit vit = arg0._unpack();
 
@@ -128,7 +126,7 @@ public final class VitiateTelephonistFw {
                 if (arg1.equals(symbol("unpacker"))) {
                     return UnpackerFw.mkUnpacker(instance.asType(), instance, "unpacker");
                 }
-                return Val.unspecified;
+                return Unspecified.unspecified;
             });
 
             Val env = FW.telephonist("vitiate-telephonist-runtime-env", (arg1, context1) -> {
@@ -174,7 +172,7 @@ public final class VitiateTelephonistFw {
         // well actually we might expose source in toExpr
         // at least for now
 
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val vitiate(Vit src, Val varKey, Context context) {

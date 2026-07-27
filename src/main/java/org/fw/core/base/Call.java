@@ -24,34 +24,12 @@ public final class Call {
             Call.CallRecord meCall = me._unpack();
             if (cArg.equals(symbol("arg"))) return meCall.arg();
             if (cArg.equals(symbol("val"))) return meCall.val();
-        } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
-            int isize = size._unpack(BigInteger.class).intValue();
-            if (isize != 2) {
-                return Val.unspecified;
-            }
-            Vit retVit = Vit.val(Call.call_t.asVal()).call(symbol("builder"));
-
-            Val arg0Vit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
-            if (!VitFw.isVit(arg0Vit.type()))
-                return arg0Vit; // compile error idk
-
-            retVit = retVit.call(VitFw.unwrap0(arg0Vit));
-
-            Val arg1Vit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
-            if (!VitFw.isVit(arg1Vit.type()))
-                return arg1Vit; // compile error idk
-
-            retVit = retVit.call(VitFw.unwrap0(arg1Vit));
-
-            return VitFw.wrap(retVit);
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Call.builder",
                     (func, context1) -> FW.telephonist(() -> "(Call.builder " + func.toExpr(context1) + ")",
                             (argument, context2) -> fwCall(func, argument)));
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val fwCall(Val instance, Val arg) {

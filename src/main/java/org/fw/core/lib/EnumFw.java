@@ -1,14 +1,11 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -31,14 +28,14 @@ public final class EnumFw {
             for (Val value : anEnum.values) {
                 if (value._unpack(Val.class).equals(arg)) return value;
             }
-            return Val.unspecified;
+            return null;
         }
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
-                return Val.unspecified;
+                return null;
             }
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -49,20 +46,20 @@ public final class EnumFw {
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Enum.constructor", (payload, context1) -> {
                 if (!payload.type().equals(DVecFw.dVec))
-                    return Val.unspecified;
+                    return null;
                 Val[] keys = payload._unpack();
                 Val[] values = new Val[keys.length];
                 Type resultingType = Val.of(EnumFw.enumeration, new Enum(values)).asType();
                 for (int i = 0; i < keys.length; i++) {
                     if (!keys[i].type().equals(ExprFw.symbol))
-                        return Val.unspecified;
+                        return null;
 
                     values[i] = Val.of(resultingType, keys[i]);
                 }
                 return resultingType.asVal();
             });
         }
-        return Val.unspecified;
+        return null;
     }).asType();
 
     public static Val toExpr(Val arg, Context context) {

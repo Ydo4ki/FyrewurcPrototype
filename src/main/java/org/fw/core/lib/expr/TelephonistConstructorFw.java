@@ -1,6 +1,7 @@
 package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
@@ -19,11 +20,11 @@ public final class TelephonistConstructorFw {
             int isize = size._unpack(BigInteger.class).intValue();
 
             if (isize != 2)
-                return Val.unspecified;
+                return Unspecified.unspecified;
 
             Val varKey = arg.call(DIntFw.dint(0), context);
             if (!varKey.type().equals(ExprFw.symbol)) {
-                return Val.unspecified;
+                return Unspecified.unspecified;
             }
 
             Val argCEnv = FW.telephonist("arg-comp-env", (arg1, context1) -> {
@@ -32,7 +33,7 @@ public final class TelephonistConstructorFw {
                     if (exprVal.equals(varKey))
                         return VitFw.wrap(Vit.var(varKey));
                 }
-                return Val.unspecified;
+                return Unspecified.unspecified;
             });
 
             cEnv = CompEnv.compEnv(context, cEnv, argCEnv);
@@ -45,6 +46,6 @@ public final class TelephonistConstructorFw {
 
             return VitFw.wrap(Vit.val(VitiateTelephonistFw.vitiateTelephonist.asVal()).call(symbol("builder")).call(bodyVit).call(varKey).call(Vit.var));
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     });
 }

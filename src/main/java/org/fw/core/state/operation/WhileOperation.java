@@ -4,7 +4,7 @@ import org.fw.core.base.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.BoolFw;
 
-public class WhileOperation extends Operation {
+public final class WhileOperation extends Operation {
     private final Operation condition;
     private final Operation body;
 

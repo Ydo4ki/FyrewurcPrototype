@@ -6,13 +6,7 @@ import static org.fw.core.vit.Vit.val;
 import static org.fw.core.vit.Vit.var;
 
 import org.fw.core.FW;
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.ExprList;
-import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.core.base.*;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.telephonist.VitiateTelephonistFw;
@@ -34,18 +28,18 @@ public final class StrFw {
             if (cArg.equals(symbol("sub"))) {
                 return FW.telephonist((start, context1) -> {
                     if (start.type() != DIntFw.dint)
-                        return Val.unspecified;
+                        return null;
                     int s = start._unpack(BigInteger.class).intValue();
 
                     return FW.telephonist((end, context2) -> {
                         if (end.type() != DIntFw.dint)
-                            return Val.unspecified;
+                            return null;
                         int e = end._unpack(BigInteger.class).intValue();
 
                         try {
                             return str(value.substring(s, e));
                         } catch (StringIndexOutOfBoundsException ee) {
-                            return Val.unspecified;
+                            return null;
                         }
                     });
                 });
@@ -53,7 +47,7 @@ public final class StrFw {
                 return DIntFw.dint(value.length());
             }
         }
-        return Val.unspecified;
+        return null;
     }).asType();
 
     public static Val str(String string) {
@@ -70,24 +64,24 @@ public final class StrFw {
         public static Val symbolMapEnv(Vit telemap) {
             Vit parseArg = telemap.call(argExpr);
             return VitiateTelephonistFw.vitiate(
-                    FW.vIf(val(eq).call(parseArg).call(Val.unspecified).call(symbol("not")),
+                    FW.vIf(val(eq).call(parseArg).call(Unspecified.unspecified).call(symbol("not")),
                             Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))
                                     .call(parseArg),
-                            val(Val.unspecified)
+                            val(Unspecified.unspecified)
                     ), symbol("arg"), context);
         }
 
         public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {
             Val str = arg1.call(symbol("value"), context1);
             if (!str.type().equals(StrFw.str))
-                return Val.unspecified;
+                return Unspecified.unspecified;
 
             String s = str._unpack();
             s = s.replace("\\n", "\n");
             if (s.length() >= 2 && s.startsWith("\"") && s.endsWith("\"")) {
                 return str(s.substring(1, s.length() - 1)); // uh okay
             }
-            return Val.unspecified;
+            return Unspecified.unspecified;
         })));
     }
 
@@ -98,7 +92,7 @@ public final class StrFw {
                         if (ExprFw.isExpr(arg)) {
                             return StrFw.str(arg._unpack().toString());
                         }
-                        return Val.unspecified;
+                        return Unspecified.unspecified;
                     }))
             )),
             ParseStrCEnvFw.parseStrCenv

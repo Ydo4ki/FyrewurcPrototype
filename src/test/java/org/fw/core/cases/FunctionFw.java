@@ -2,10 +2,7 @@ package org.fw.core.cases;
 
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.core.base.*;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.CompEnv;
@@ -45,14 +42,14 @@ public class FunctionFw {
                         return FW.telephonist((arg1, context1) -> {
                             boolean qualifies = constraint.call(symbol("check"), context1).call(arg1, context) == BoolFw._true;
                             if (!qualifies) {
-                                return Val.unspecified;
+                                return Unspecified.unspecified;
                             }
 
                             // this is questionable
                             Val oldRtEnv = value.call(symbol("rt-env"), context);
                             Val newRtEnv = FW.telephonist((arg2, context2) -> {
                                 Val ret0 = arg1.call(arg2, context2);
-                                if (ret0 == Val.unspecified) return oldRtEnv.call(arg2, context2);
+                                if (ret0 == Unspecified.unspecified) return oldRtEnv.call(arg2, context2);
                                 return ret0;
                             });
                             return OperationFw._VitOperation
@@ -78,7 +75,7 @@ public class FunctionFw {
             if (ret.type().equals(builder.type()))
                 return builderWrapper(ret);
             if (ret.type() != function_struct)
-                return Val.unspecified;
+                return Unspecified.unspecified;
             return Val.of(function, ret); // wrap
         });
     }

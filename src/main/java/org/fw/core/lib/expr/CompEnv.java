@@ -1,13 +1,10 @@
 package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.adapter.AbstractValAdapted;
 import org.fw.core.ast.Expr;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -52,7 +49,7 @@ public final class CompEnv extends AbstractValAdapted {
 
             if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
                 Val ret = instance.resolver().call(cArg, context);
-                if (ret == Val.unspecified)
+                if (ret == Unspecified.unspecified)
                     return instance.parentCEnv().call(cArg, context);
                 return ret;
             }
@@ -64,7 +61,7 @@ public final class CompEnv extends AbstractValAdapted {
             });
         }
 
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val compEnv(Val resolver, Val parentCEnv, Context context) {

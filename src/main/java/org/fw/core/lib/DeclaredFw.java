@@ -1,16 +1,13 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -68,7 +65,7 @@ public final class DeclaredFw {
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
-                return Val.unspecified;
+                return Unspecified.unspecified;
 
             Val name = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
             if (!VitFw.isVit(name.type()))
@@ -89,7 +86,7 @@ public final class DeclaredFw {
                 });
             });
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val getKey(Val declared, Context context) {
@@ -163,11 +160,11 @@ public final class DeclaredFw {
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
                     case ":": {
                         if (isize != 3)
-                            return Val.unspecified;
+                            return Unspecified.unspecified;
 
                         Val name = exprVal.call(DIntFw.dint(1), context);
                         if (!name.type().equals(ExprFw.symbol))
-                            return Val.unspecified; // symbol expected
+                            return Unspecified.unspecified; // symbol expected
 
                         Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(compEnv)), context);
                         if (!VitFw.isVit(value.type()))
@@ -178,7 +175,7 @@ public final class DeclaredFw {
                 }
             }
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }));
 
     public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,

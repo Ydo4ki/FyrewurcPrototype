@@ -2,6 +2,7 @@ package org.fw.core;
 
 import org.fw.core.base.Call;
 import org.fw.core.base.Context;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.StrFw;
@@ -52,7 +53,7 @@ public class VitiateTelephonistTests {
         Vit src = Vit.var(symbol("this"));
         Val vt = VitiateTelephonistFw.vitiateTelephonist.asVal().call(symbol("builder"), context).call(VitFw.wrap(src), context)
                 .call(symbol("arg"), context).call(context.rtEnv().asVal(), context);
-        assertEquals(vt, vt.call(Val.unspecified, context));
+        assertEquals(vt, vt.call(Unspecified.unspecified, context));
     }
 
     @Test
@@ -60,7 +61,7 @@ public class VitiateTelephonistTests {
         Vit src = Vit.var(symbol("private"));
         Val vt = VitiateTelephonistFw.vitiateTelephonist.asVal().call(symbol("builder"), context).call(VitFw.wrap(src), context)
                 .call(symbol("arg"), context).call(context.rtEnv().asVal(), context);
-        assertNotEquals(Val.unspecified, vt.call(Val.unspecified, context));
+        assertNotEquals(Unspecified.unspecified, vt.call(Unspecified.unspecified, context));
     }
 
     @Test
@@ -69,7 +70,7 @@ public class VitiateTelephonistTests {
         Val vt = VitiateTelephonistFw.vitiateTelephonist.asVal().call(symbol("builder"), context).call(VitFw.wrap(src), context)
                 .call(symbol("arg"), context).call(context.rtEnv().asVal(), context);
 //        System.out.println(vt.call(Val.unspecified, context).call(symbol("instancer"), context).toExpr(context));
-        Val instance = vt.call(Val.unspecified, context).call(symbol("instancer"), context).call(StrFw.str("Private Value"), context);
+        Val instance = vt.call(Unspecified.unspecified, context).call(symbol("instancer"), context).call(StrFw.str("Private Value"), context);
         assertEquals(vt, instance.type().asVal());
     }
 
@@ -77,12 +78,12 @@ public class VitiateTelephonistTests {
     void apiTestPrivateUnpacker() {
         Vit src = Vit.var(symbol("private"));
         Val vt = VitiateTelephonistFw.vitiateTelephonist.asVal().call(symbol("builder"), context).call(VitFw.wrap(src), context)
-                .call(Val.unspecified, context).call(context.rtEnv().asVal(), context);
+                .call(Unspecified.unspecified, context).call(context.rtEnv().asVal(), context);
 
         Val valToBox = StrFw.str("Private Value");
 
-        Val instance = vt.call(Val.unspecified, context).call(symbol("instancer"), context).call(valToBox, context);
-        assertEquals(valToBox, vt.call(Val.unspecified, context).call(symbol("unpacker"), context).call(instance, context));
+        Val instance = vt.call(Unspecified.unspecified, context).call(symbol("instancer"), context).call(valToBox, context);
+        assertEquals(valToBox, vt.call(Unspecified.unspecified, context).call(symbol("unpacker"), context).call(instance, context));
     }
 
     @Test

@@ -1,16 +1,13 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
@@ -53,13 +50,13 @@ public final class DIntFw {
                         BigInteger i = new BigInteger(string);
                         return dint(i);
                     } catch (NumberFormatException e) {
-                        return Val.unspecified;
+                        return Unspecified.unspecified;
                     }
                 }
-                return Val.unspecified;
+                return Unspecified.unspecified;
             });
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     private static Val bop(String name, Val instance, Context context, FwUtils.BigBinaryOperator operator) {
@@ -70,7 +67,7 @@ public final class DIntFw {
                 BigInteger v2 = unwrap(arg1);
                 return dint(operator.apply(value, v2));
             }
-            return Val.unspecified;
+            return Unspecified.unspecified;
         });
     }
 

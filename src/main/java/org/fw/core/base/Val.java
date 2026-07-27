@@ -27,11 +27,14 @@ public abstract class Val {
 //        return Scope.performAndDie(context.scope(), scope
 //                -> type().callInstance(this, arg, new Context(context.rtEnv(), scope)));
         try {
-            return type().callInstance(this, arg, context);
+            Val v = type().callInstance(this, arg, context);
+            if (v == null)
+                return Unspecified.unspecified(this, arg);
+            return v;
         } catch (Exception e) {
             System.out.println("UNEXPECTED EXCEPTION, AAAAA:");
             e.printStackTrace(System.out);
-            return Val.unspecified(this, arg);
+            return Unspecified.unspecified(this, arg);
         }
     }
 
@@ -49,15 +52,6 @@ public abstract class Val {
 
         return ExprList.of(BracketsTypes.braces);
 //        return type().instanceToExpr(this, context);
-    }
-
-    @Deprecated
-    public static final
-    Val unspecified = Val.of(Val.ofTelephonist(0).asType(),
-            new TelephonistType.Telephonist(() -> Symbol.of("unspecified"), (val, c) -> Val.unspecified));
-
-    public static Val unspecified(Val val, Val arg) {
-        return unspecified;
     }
 
     public static Val of(Type type, Object value) {
@@ -163,7 +157,7 @@ public abstract class Val {
 
                     return instance.call(cArg, context); // so here we're going in the opposite direction
                 }
-                return Val.unspecified; // idk
+                return Unspecified.unspecified; // idk
             });
             return value;
         }

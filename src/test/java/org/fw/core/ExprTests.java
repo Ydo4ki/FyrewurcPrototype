@@ -5,6 +5,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.Context;
+import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.expr.ExprFw;
@@ -31,7 +32,7 @@ public class ExprTests {
         assertEquals(symbol("5"), expr.call(DIntFw.dint(1), context));
         assertEquals(symbol("4"), expr.call(DIntFw.dint(2), context));
 
-        assertEquals(Val.unspecified, expr.call(DIntFw.dint(55), context));
+        assertEquals(Unspecified.unspecified, expr.call(DIntFw.dint(55), context));
 
         assertEquals(DIntFw.dint(3), expr.call(symbol("size"), context));
 

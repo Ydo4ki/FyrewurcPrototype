@@ -1,15 +1,12 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.Call;
-import org.fw.core.base.Context;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
@@ -54,7 +51,7 @@ public final class TraitFw {
             Val cEnv = arg.call(symbol("comp-env"), context);
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
-                return Val.unspecified;
+                return Unspecified.unspecified;
             }
 
             Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
@@ -65,16 +62,16 @@ public final class TraitFw {
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Trait.constructor", (payload, context1) -> {
                 if (!payload.type().equals(DVecFw.dVec))
-                    return Val.unspecified;
+                    return Unspecified.unspecified;
                 Val[] fields = payload._unpack();
                 for (Val field : fields) {
                     if (!field.type().equals(DeclarationFw.declaration))
-                        return Val.unspecified; // some day I'll add proper errors
+                        return Unspecified.unspecified; // some day I'll add proper errors
                 }
                 return Val.of(TraitFw.trait, new Trait(fields, context));
             });
         }
-        return Val.unspecified;
+        return Unspecified.unspecified;
     }).asType();
 
     public static Val trait(Val... fields) {
