@@ -11,6 +11,7 @@ import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DeclaredFw;
+import org.fw.core.base.ValsFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.expr.CompEnv;
@@ -131,6 +132,10 @@ public final class FwUtils {
 
     public static Val valify(Predicate<Val> tester) {
         return FW.telephonist((arg, context) -> BoolFw.wrap(tester.test(arg)));
+    }
+
+    public static Vit equals(Vit a, Vit b) {
+        return val(ValsFw.eq).call(a).call(b);
     }
 
     @FunctionalInterface

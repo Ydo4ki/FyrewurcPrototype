@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
-public class Unspecified {
+public final class Unspecified {
     public static final Type unspecified_type = FW.telephonist((arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, Unspecified.unspecified_type, context)) {
             Val instance = Call.getVal(arg, context);

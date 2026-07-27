@@ -4,6 +4,8 @@ import org.fw.core.base.context.Context;
 
 public abstract class Type {
 
+    Type() {}
+
     public static Type of(Val.Box val) {
         return new ValType(val);
     }

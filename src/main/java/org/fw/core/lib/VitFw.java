@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
+import org.fw.core.base.ValsFw;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
@@ -224,21 +225,21 @@ public final class VitFw {
 
     public static final Val constraint = ConstraintFw.constraint(
             Vit.val(BoolFw._true),
-            ValsFw.equals(
+            FwUtils.equals(
                     Vit.val(ValsFw.typeGet).call(Vit.var),
                     Vit.val(VitFw.vitVal.asVal())
             ).call(symbol("or")).call(
-                    ValsFw.equals(
+                    FwUtils.equals(
                             Vit.val(ValsFw.typeGet).call(Vit.var),
                             Vit.val(VitFw.vitVar.asVal())
                     )
             ).call(symbol("or")).call(
-                    ValsFw.equals(
+                    FwUtils.equals(
                             Vit.val(ValsFw.typeGet).call(Vit.var),
                             Vit.val(VitFw.vitCall.asVal())
                     )
             ).call(symbol("or")).call(
-                    ValsFw.equals(
+                    FwUtils.equals(
                             Vit.val(ValsFw.typeGet).call(Vit.var),
                             Vit.val(VitFw.vitInvoke.asVal())
                     )

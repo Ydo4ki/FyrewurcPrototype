@@ -11,7 +11,7 @@ import org.fw.core.vit.Vit;
 
 import java.util.function.Supplier;
 
-import static org.fw.core.lib.ValsFw.eq;
+import static org.fw.core.base.ValsFw.eq;
 import static org.fw.core.vit.Vit.val;
 
 public final class FW {

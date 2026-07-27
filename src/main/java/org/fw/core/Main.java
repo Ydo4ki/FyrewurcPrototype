@@ -6,6 +6,7 @@ import org.fw.core.ast.LocatedExpr;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.Call;
+import org.fw.core.base.ValsFw;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.*;
@@ -25,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.lib.ValsFw.eq;
+import static org.fw.core.base.ValsFw.eq;
 import static org.fw.core.vit.Vit.*;
 
 @Deprecated

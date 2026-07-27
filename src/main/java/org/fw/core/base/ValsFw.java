@@ -1,26 +1,21 @@
-package org.fw.core.lib;
+package org.fw.core.base;
 
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.context.Context;
-import org.fw.core.base.Val;
-import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.vit.Vit;
-
-import static org.fw.core.FW.symbol;
+import org.fw.core.lib.BoolFw;
 
 public final class ValsFw {
     // basic stuff
 
     public static final Val typeGet = FW.telephonist(
-            () -> "type-get",
+            Symbol.of("type-get"),
             (arg, c) -> arg.type().asVal()
     );
 
     public static final Val eq = FW.telephonist(
-            () -> "eq",
+            Symbol.of("eq"),
             (arg, context) -> {
                 return FW.telephonistE(() -> ExprList.of(BracketsTypes.round,
                         Symbol.of("call"),
@@ -31,16 +26,4 @@ public final class ValsFw {
                 });
             }
     );
-
-    public static Vit equals(Vit a, Vit b) {
-        return Vit.val(eq).call(a).call(b);
-    }
-
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                    DeclaredFw.declared(symbol("eq"), eq),
-                    DeclaredFw.declared(symbol("type-get"), typeGet)
-            ))
-    ));
 }
-// still looks kinda weird
