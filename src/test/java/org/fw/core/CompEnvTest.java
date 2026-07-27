@@ -17,8 +17,8 @@ import org.fw.core.lib.comp.InternalSystemContext;
 import org.fw.core.lib.expr.AccumulatorsExprFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.lib.state.LaserPointerFw;
 import org.fw.core.state.obj.Obj;
-import org.fw.core.lib.state.StateHoleFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 import org.junit.jupiter.api.Assertions;
@@ -61,7 +61,7 @@ class CompEnvTest {
     static {
         testValsMap.put("Test", TestFw.test.asVal());
         testValsMap.put("+", Val.of(AccumulatorsExprFw.exprAccumulator, symbol("+")));
-        testValsMap.put("test-obj", Val.of(StateHoleFw.statehole, new Obj.ValObj(DIntFw.dint(14), context.state())));
+        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, new Obj.ValObj(DIntFw.dint(14), context.state())));
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 

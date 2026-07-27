@@ -32,12 +32,4 @@ public final class VitOperation extends Operation {
     public Vit vit() {
         return vit;
     }
-
-    @Override
-    public Expr toExpr(Context context) {
-        return ExprList.of(BracketsTypes.round,
-                OperationFw.vitOperation_old.asVal().toExpr(context),
-                VitFw.wrap(vit).toExpr(context)
-        );
-    }
 }

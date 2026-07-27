@@ -14,8 +14,6 @@ import org.fw.core.lib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
-import java.math.BigInteger;
-
 import static org.fw.core.FW.symbol;
 
 public class FunctionFw {
@@ -57,7 +55,7 @@ public class FunctionFw {
                                 if (ret0 == Val.unspecified) return oldRtEnv.call(arg2, context2);
                                 return ret0;
                             });
-                            return OperationFw.vitOperation
+                            return OperationFw._VitOperation
                                     .call(VitFw.wrap(body), context)
 //                                    .call(arg1, context);
                                     .call(newRtEnv, context);

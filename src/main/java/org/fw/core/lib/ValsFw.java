@@ -39,7 +39,7 @@ public final class ValsFw {
     public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                     DeclaredFw.declared(symbol("eq"), eq),
-                    DeclaredFw.declared(symbol("typeGet"), typeGet)
+                    DeclaredFw.declared(symbol("type-get"), typeGet)
             ))
     ));
 }

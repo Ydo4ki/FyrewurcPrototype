@@ -1,0 +1,47 @@
+(do
+ (: sleep! (fn [(= millis)] !>
+  (invoke! (call _Sleep millis))))
+ (: print! (fn [(= str)] !>
+  (invoke! (call _Print str))))
+ (: readline! (fn [] !>
+  (invoke! _ReadLine)))
+ (: new! (fn [(= x)] !>
+  (invoke! (call _CreateNewObjectOperation x))))
+ (: read! (fn [(= o)] !>
+  (invoke! (call _ReadOperation o))))
+ (: write! (fn [(= o) (= x)] !>
+  (invoke! (call _WriteOperation o x))))
+ (: to-expr (fn [(= x)] ->
+  (call (var) (symbol "to-expr") x)))
+ (: < (fn [(= a) (= b)] ->
+  (call eq (call a (symbol "<=>") b) -1)))
+
+ (: slowprint! (fn [(= string)] !> (do
+      (: i (new! 0))
+
+      (invoke! (call _While (operation (< (read! i) string.size)) (operation (do
+       (: s (read! i))
+       (: e (call s (symbol "+") 1))
+
+       (print! (call string.sub s e))
+       (sleep! 50)
+       (write! i (call (read! i) (symbol "+") 1))
+      ))))
+ )))
+
+ (: read-digits! (fn [] !> (do
+  (: digits (new! (call DInt.parse (readline!))))
+  (: valid (new! (call eq (call type-get (read! digits)) DInt)))
+  (invoke! (call _While (operation (get (read! valid) not)) (operation (do
+   (slowprint! "Invalid input :( Try again:\n")
+   (write! digits (call DInt.parse (readline!)))
+   (write! valid (call eq (call type-get (read! digits)) DInt))
+  ))))
+  digits
+ )))
+
+ (slowprint! "Welcome! Enter amount of digits to guess:\n")
+
+ (: digits (read-digits!))
+ (slowprint! (call expr2str (to-expr digits)))
+)

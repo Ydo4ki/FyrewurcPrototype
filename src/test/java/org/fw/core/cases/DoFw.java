@@ -102,7 +102,7 @@ public class DoFw {
 
                 Vit rest = compileDo(exprVal, i + 1, isize, newCompEnv, context);
 
-                Vit evalRest = Vit.invoke(Vit.val(OperationFw.vitOperation).call(VitFw.wrap(rest)).call(Vit.call(newRtGetter, Vit.var).call(valueV)));
+                Vit evalRest = Vit.invoke(Vit.val(OperationFw._VitOperation).call(VitFw.wrap(rest)).call(Vit.call(newRtGetter, Vit.var).call(valueV)));
 
                 execution = execution.call(evalRest);
                 break;

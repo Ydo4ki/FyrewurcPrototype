@@ -36,7 +36,7 @@ public abstract class Operation {
 
     public static Operation vit(Vit vit, RtEnv rtEnv) {
         if (vit instanceof VitInvoke && ((VitInvoke) vit).operation() instanceof VitVal)
-            return OperationFw.unwrap_old(((VitVal) ((VitInvoke) vit).operation()).val());
+            return OperationFw.unwrap(((VitVal) ((VitInvoke) vit).operation()).val());
         return new VitOperation(vit, rtEnv);
     }
 

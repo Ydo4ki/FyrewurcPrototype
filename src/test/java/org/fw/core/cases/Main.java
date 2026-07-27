@@ -34,7 +34,7 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-slowprint.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
 
         State state = SystemOperation.systemState;
         Context context = new Context(rtEnv, state);
@@ -53,12 +53,10 @@ public class Main {
                         DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
                 )),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                        DeclaredFw.declared(symbol("_PrintHelloWorld"), new SystemOperation.PrintOperation(System.out, "Hello World!\n").asVal()),
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
-                        DeclaredFw.declared(symbol("_Print"), telephonist((arg, context1) -> {
-                            return new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal();
-                        })),
+                        DeclaredFw.declared(symbol("_Print"), telephonist((arg, context1)
+                                -> new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal())),
                         DeclaredFw.declared(symbol("_Sleep"), telephonist((arg, context1) -> {
                             if (arg.type() != DIntFw.dint)
                                 return Val.unspecified;
@@ -76,32 +74,10 @@ public class Main {
                                 return new WhileOperation(condition._unpack(), body._unpack()).asVal();
                             });
                         })),
-                        DeclaredFw.declared(symbol("_CreateNewObjectOperation"), telephonist((arg, context1) -> {
-                            return new CreateObjectOperation(arg).asVal();
-                        })),
-                        DeclaredFw.declared(symbol("_ReadOperation"), telephonist((arg, context1) -> {
-                            if (arg.type() != LaserPointerFw.laserPointer)
-                                return Val.unspecified;
-
-                            Obj obj = arg._unpack();
-                            if (!(obj instanceof Obj.ValObj))
-                                return Val.unspecified;
-
-                            return Operation.read((Obj.ValObj) obj).asVal();
-                        })),
-                        DeclaredFw.declared(symbol("_WriteOperation"), telephonist((arg, context1) -> {
-                            if (arg.type() != LaserPointerFw.laserPointer)
-                                return Val.unspecified;
-
-                            Obj obj = arg._unpack();
-                            if (!(obj instanceof Obj.ValObj))
-                                return Val.unspecified;
-
-                            return telephonist((arg1, context2) -> {
-                                return Operation.write((Obj.ValObj) obj, arg1).asVal();
-                            });
-                        })),
-                        DeclaredFw.declared(symbol("_VitOperation"), OperationFw.vitOperation)
+                        DeclaredFw.declared(symbol("_CreateNewObjectOperation"), OperationFw._CreateNewObjectOperation),
+                        DeclaredFw.declared(symbol("_ReadOperation"), OperationFw._ReadOperation),
+                        DeclaredFw.declared(symbol("_WriteOperation"), OperationFw._WriteOperation),
+                        DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation)
                 )),
                 ModuleFw.exports.asVal(),
                 FunctionFw.exports.asVal(),
@@ -248,7 +224,7 @@ public class Main {
                             });
                         }));
 
-                        body = VitFw.wrap(Vit.invoke(Vit.val(OperationFw.vitOperation).call(body).call(Vit.val(newRtGetter).call(Vit.var).call(varValuesV))));
+                        body = VitFw.wrap(Vit.invoke(Vit.val(OperationFw._VitOperation).call(body).call(Vit.val(newRtGetter).call(Vit.var).call(varValuesV))));
 
 //                        System.out.println(body.toExpr(context));
                         return VitFw.wrap(Vit.val(FunctionFw.function.asVal()).call(symbol("builder"))
@@ -265,7 +241,7 @@ public class Main {
                         if (!VitFw.isVit(val.type()))
                             return Val.unspecified;
 
-                        return VitFw.wrap(Vit.val(OperationFw.vitOperation).call(val).call(Vit.var));
+                        return VitFw.wrap(Vit.val(OperationFw._VitOperation).call(val).call(Vit.var));
 //                        Vit vit = VitFw.unwrap(
 //                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
 //                        );
