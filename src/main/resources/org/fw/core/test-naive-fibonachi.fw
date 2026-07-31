@@ -1,0 +1,13 @@
+(do
+ (: print! (fn [(= str)] !>
+  (invoke! (call _Print str))))
+ (: == (fn [(= a)(= b)] ->
+  (call eq a b)))
+
+ (: fib (fn [(= n)]
+  -> (if (call (== n 0) (symbol "or") (== n 1)) n
+      else (call ((get (var) %self%) (call (call n (symbol "-") 1))) (symbol "+") ((get (var) %self%) (call (call n (symbol "-") 2)))))
+ ))
+
+ (print! (fib 15))
+)

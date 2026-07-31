@@ -5,12 +5,6 @@
   (invoke! (call _Print str))))
  (: readline! (fn [] !>
   (invoke! _ReadLine)))
-// (: new! (fn [(= x)] !>
-//  (invoke! (call _CreateNewObjectOperation x))))
-// (: read! (fn [(= o)] !>
-//  (invoke! (call _ReadOperation o))))
-// (: write! (fn [(= o) (= x)] !>
-//  (invoke! (call _WriteOperation o x))))
  (: to-expr (fn [(= x)] ->
   (call (var) (symbol "to-expr") x)))
  (: < (fn [(= a) (= b)] ->

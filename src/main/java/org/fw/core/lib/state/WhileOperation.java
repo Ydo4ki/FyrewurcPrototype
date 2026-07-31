@@ -28,3 +28,4 @@ public final class WhileOperation extends Operation {
         return condition.operationAreYouPureQuestionMark() && body.operationAreYouPureQuestionMark(); // I don't know why would you use while in this case, but still
     }
 }
+

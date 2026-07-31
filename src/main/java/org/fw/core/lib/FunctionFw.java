@@ -62,6 +62,7 @@ public final class FunctionFw {
 //                            });
                             Val newRtEnv = FW.telephonist((arg2, context2) -> {
                                 if (arg2.equals(symbol("%"))) return arg1;
+                                if (arg2.equals(symbol("%self%"))) return instance;
                                 else return oldRtEnv.call(arg2, context2);
                             });
                             return OperationFw._VitOperation

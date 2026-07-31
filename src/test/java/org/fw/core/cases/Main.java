@@ -7,6 +7,7 @@ import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.*;
 import org.fw.core.lib.expr.*;
+import org.fw.core.lib.state.IfOperation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.lib.state.SystemOperation;
@@ -41,8 +42,26 @@ public class Main {
         });
     });
 
+    private static final Val _If = telephonist((condition, context1) -> {
+        if (condition.type() != OperationFw.operation)
+            return null;
+
+        return telephonist((ifTrue, context2) -> {
+            if (ifTrue.type() != OperationFw.operation)
+                return null;
+
+            return telephonist((ifFalse, context3) -> {
+                if (ifFalse.type() != OperationFw.operation)
+                    return null;
+
+                return new IfOperation(condition._unpack(), ifTrue._unpack(), ifFalse._unpack()).asVal();
+            });
+        });
+    });
+
     public static void main(String[] args) {
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
 
         State state = SystemOperation.systemState;
         Context context = new Context(rtEnv, state);
@@ -173,6 +192,25 @@ public class Main {
                         Vit ret = Vit.invoke(Vit.val(_While)
                                 .call(Vit.call(_VitOperation, condition).call(Vit.var))
                                 .call(Vit.call(_VitOperation, body).call(Vit.var))
+                        );
+                        return VitFw.wrap(ret);
+                    }
+                    case "if": {
+                        if (isize != 5)
+                            return null;
+
+                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Val ifTrue = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Expr ELSE = exprVal.call(DIntFw.dint(3), context)._unpack();
+                        if (!ELSE.toString().equals("else"))
+                            return null;
+
+                        Val ifFalse = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(4), context)._unpack(), CompEnv.of(compEnv)), context);
+
+                        Vit ret = Vit.invoke(Vit.val(_If)
+                                .call(Vit.call(_VitOperation, condition).call(Vit.var))
+                                .call(Vit.call(_VitOperation, ifTrue).call(Vit.var))
+                                .call(Vit.call(_VitOperation, ifFalse).call(Vit.var))
                         );
                         return VitFw.wrap(ret);
                     }

@@ -8,7 +8,7 @@ import org.fw.core.lib.expr.ToExprFn;
 
 import static org.fw.core.FW.symbol;
 
-public class BoolLib {
+public final class BoolLib {
     public static final Val boolToExpr = FW.telephonist((arg, context) -> {
         Type type = arg.type();
         if (type.equals(BoolFw.bool)) {
