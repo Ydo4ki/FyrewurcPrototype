@@ -13,6 +13,8 @@ import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 
+import java.util.Objects;
+
 import static org.fw.core.FW.symbol;
 
 // for things like CompEnv
@@ -64,6 +66,18 @@ public final class ChainLinkFw {
         public ChainLinkTypeRecord(Val constraint) {
             this.constraint = constraint;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            ChainLinkTypeRecord that = (ChainLinkTypeRecord) o;
+            return Objects.equals(constraint, that.constraint);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(constraint);
+        }
     }
 
     public static final class ChainLinkRecord {
@@ -85,6 +99,18 @@ public final class ChainLinkFw {
 
         public Expr toExpr(Context context) {
             return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), primary.toExpr(context), parent.toExpr(context));
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            ChainLinkRecord that = (ChainLinkRecord) o;
+            return Objects.equals(primary, that.primary) && Objects.equals(parent, that.parent);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(primary, parent);
         }
     }
 }
