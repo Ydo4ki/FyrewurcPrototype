@@ -21,12 +21,25 @@ import java.util.Scanner;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
+import static org.fw.core.state.operation.OperationFw._VitOperation;
 
 public class Main {
 
     public static final RtEnv rtEnv = RtEnv.of(ModuleFw.module(
             DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExpr)
     ));
+
+    private static final Val _While = telephonist((condition, context1) -> {
+        if (condition.type() != OperationFw.operation)
+            return null;
+
+        return telephonist((body, context2) -> {
+            if (body.type() != OperationFw.operation)
+                return null;
+
+            return new WhileOperation(condition._unpack(), body._unpack()).asVal();
+        });
+    });
 
     public static void main(String[] args) {
         Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
@@ -58,21 +71,11 @@ public class Main {
 
                             return new SystemOperation.ThreadSleepOperation(DIntFw.unwrap(arg).longValue()).asVal();
                         })),
-                        DeclaredFw.declared(symbol("_While"), telephonist((condition, context1) -> {
-                            if (condition.type() != OperationFw.operation)
-                                return null;
-
-                            return telephonist((body, context2) -> {
-                                if (body.type() != OperationFw.operation)
-                                    return null;
-
-                                return new WhileOperation(condition._unpack(), body._unpack()).asVal();
-                            });
-                        })),
+                        DeclaredFw.declared(symbol("_While"), _While),
                         DeclaredFw.declared(symbol("_CreateNewObjectOperation"), OperationFw._CreateNewObjectOperation),
                         DeclaredFw.declared(symbol("_ReadOperation"), OperationFw._ReadOperation),
                         DeclaredFw.declared(symbol("_WriteOperation"), OperationFw._WriteOperation),
-                        DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation)
+                        DeclaredFw.declared(symbol("_VitOperation"), _VitOperation)
                 )),
                 ModuleFw.exports.asVal(),
                 FunctionFw.exports.asVal(),
@@ -142,7 +145,7 @@ public class Main {
                         if (!VitFw.isVit(val.type()))
                             return null;
 
-                        return VitFw.wrap(Vit.val(OperationFw._VitOperation).call(val).call(Vit.var));
+                        return VitFw.wrap(Vit.val(_VitOperation).call(val).call(Vit.var));
 //                        Vit vit = VitFw.unwrap(
 //                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
 //                        );
@@ -150,17 +153,28 @@ public class Main {
                     case "module": {
                         Vit builder = Vit.val(DVecFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                            Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(compEnv)), context);
                             if (!VitFw.isVit(val.type()))
                                 return null;
-                            builder = builder.call(val);
+
+                            builder = builder.call(val._unpack(Vit.class));
                         }
                         builder = Vit.call(DVecFw.dvecbf, builder);
 
-                        return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("builder")).call(builder));
-//                        Vit vit = VitFw.unwrap(
-//                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
-//                        );
+                        return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(builder));
+                    }
+                    case "while": {
+                        if (isize != 3)
+                            return null;
+
+                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Val body = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(compEnv)), context);
+
+                        Vit ret = Vit.invoke(Vit.val(_While)
+                                .call(Vit.call(_VitOperation, condition).call(Vit.var))
+                                .call(Vit.call(_VitOperation, body).call(Vit.var))
+                        );
+                        return VitFw.wrap(ret);
                     }
                 }
             }

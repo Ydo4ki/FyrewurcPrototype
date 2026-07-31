@@ -5,12 +5,12 @@
   (invoke! (call _Print str))))
  (: readline! (fn [] !>
   (invoke! _ReadLine)))
- (: new! (fn [(= x)] !>
-  (invoke! (call _CreateNewObjectOperation x))))
- (: read! (fn [(= o)] !>
-  (invoke! (call _ReadOperation o))))
- (: write! (fn [(= o) (= x)] !>
-  (invoke! (call _WriteOperation o x))))
+// (: new! (fn [(= x)] !>
+//  (invoke! (call _CreateNewObjectOperation x))))
+// (: read! (fn [(= o)] !>
+//  (invoke! (call _ReadOperation o))))
+// (: write! (fn [(= o) (= x)] !>
+//  (invoke! (call _WriteOperation o x))))
  (: to-expr (fn [(= x)] ->
   (call (var) (symbol "to-expr") x)))
  (: < (fn [(= a) (= b)] ->
@@ -32,11 +32,11 @@
  (: read-digits! (fn [] !> (do
   (: digits (new! (call DInt.parse (readline!))))
   (: valid (new! (call eq (call type-get (read! digits)) DInt)))
-  (invoke! (call _While (operation (get (read! valid) not)) (operation (do
+  (while (get (read! valid) not) (do
    (slowprint! "Invalid input :( Try again:\n")
    (write! digits (call DInt.parse (readline!)))
    (write! valid (call eq (call type-get (read! digits)) DInt))
-  ))))
+  ))
   digits
  )))
 
