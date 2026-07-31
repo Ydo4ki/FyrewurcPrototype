@@ -15,8 +15,8 @@ final class UnpackerFw {
             Val instance = Call.getVal(arg, context);
             Val cArg = Call.getArg(arg, context);
 
-            Unpacker unpkg = instance._unpack();
-            if (!cArg.type().equals(unpkg.type()) || !(cArg._unpack() instanceof Val)) {
+            Type targetType = instance._unpack();
+            if (!cArg.type().equals(targetType) || !(cArg._unpack() instanceof Val)) {
                 return null; // wrong unpacker / unsupported value / consider using boxes
             }
             return cArg._unpack(Val.class);
@@ -24,31 +24,7 @@ final class UnpackerFw {
         return null;
     }).asType();
 
-    private static final class Unpacker {
-        private final Type type;
-        private final Val source;
-        private final String name;
-
-        private Unpacker(Type type, Val source, String name) {
-            this.type = type;
-            this.source = source;
-            this.name = name;
-        }
-
-        Type type() {
-            return type;
-        }
-
-        Expr toExpr(Context context) {
-            return ExprList.of(BracketsTypes.round,
-                    Symbol.of("get"),
-                    source.toExpr(context),
-                    Symbol.of(name)
-            );
-        }
-    }
-
-    public static Val mkUnpacker(Type type, Val source, String name) {
-        return Val.of(unpacker, new Unpacker(type, source, name));
+    public static Val mkUnpacker(Type type) {
+        return Val.of(unpacker, type);
     }
 }

@@ -15,37 +15,13 @@ final class InstancerFw {
             Val instance = Call.getVal(arg, context);
             Val cArg = Call.getArg(arg, context);
 
-            Instancer ctor = instance._unpack();
-            return Val.of(ctor.type(), cArg);
+            Type targetType = instance._unpack();
+            return Val.of(targetType, cArg);
         }
         return null;
     }).asType();
 
-    private static final class Instancer {
-        private final Type type;
-        private final Val source;
-        private final String name;
-
-        private Instancer(Type type, Val source, String name) {
-            this.type = type;
-            this.source = source;
-            this.name = name;
-        }
-
-        Type type() {
-            return type;
-        }
-
-        Expr toExpr(Context context) {
-            return ExprList.of(BracketsTypes.round,
-                    Symbol.of("get"),
-                    source.toExpr(context),
-                    Symbol.of(name)
-            );
-        }
-    }
-
-    public static Val mkInstancer(Type type, Val source, String name) {
-        return Val.of(instancer, new Instancer(type, source, name));
+    public static Val mkInstancer(Type type) {
+        return Val.of(instancer, type);
     }
 }
