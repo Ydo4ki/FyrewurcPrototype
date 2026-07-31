@@ -114,7 +114,7 @@ public final class VitFw {
     })).asType();
     public static final Val vitToExpr = telephonist((arg) -> {
         Type type = arg.type();
-        Context context = Context.outOf; // todo: resolve structure
+        RtEnv context = RtEnv.unspecified; // todo: resolve structure
         if (type.equals(vitVal)) {
             VitVal vitVal = arg._unpack();
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), vitVal.val().toExpr(context)));

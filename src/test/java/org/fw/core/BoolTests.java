@@ -12,12 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // best tests ever
 public class BoolTests {
-    private static final Context context = new Context(Main.rtEnv, State.eternal());
     private static final Val b = BoolFw._true;
 
     @Test
     void exprBool() {
-        assertEquals("true", b.toExpr(context).toString());
+        assertEquals("true", b.toExpr(Main.rtEnv).toString());
     }
 
     @Test

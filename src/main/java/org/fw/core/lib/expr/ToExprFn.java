@@ -6,6 +6,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.*;
 
 import java.util.function.Supplier;
@@ -44,20 +45,20 @@ public class ToExprFn {
 
         if (type.equals(OperatorExprFw.exprOperator) || type.equals(SenderExprFw.exprSender)) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    type.asVal().toExpr(Context.outOf),
-                    arg.call(symbol("operator")).toExpr(Context.outOf)
+                    type.asVal().toExpr(RtEnv.unspecified),
+                    arg.call(symbol("operator")).toExpr(RtEnv.unspecified)
             ));
         }
 
         if (type.equals(AccumulatorsExprFw.exprAccumulator)) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(Context.outOf),
-                    arg.call(symbol("operator")).toExpr(Context.outOf)
+                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(RtEnv.unspecified),
+                    arg.call(symbol("operator")).toExpr(RtEnv.unspecified)
             ));
         }
 
         if (type.equals(EnumFw.enumeration)) {
-            return EnumFw.toExpr(arg, Context.outOf);
+            return EnumFw.toExpr(arg, RtEnv.unspecified);
         } else if (type.asVal().type().equals(EnumFw.enumeration)) {
             return arg._unpack(); // it was supposed to be a symbol
         }

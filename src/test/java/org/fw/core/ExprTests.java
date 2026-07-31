@@ -17,7 +17,6 @@ import static org.fw.core.FW.symbol;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExprTests {
-    private static final Context context = new Context(Main.rtEnv, State.eternal());
 
     @Test
     void apiSymbol() {
@@ -42,9 +41,9 @@ public class ExprTests {
     @Test
     void exprExpr() {
         Val expr = ExprFw.wrap(new ExprOutput(new TokenOutput("(+ 5 4)", null, BracketsTypes.bracketsTypes)).iterator().next().getExpr());
-        assertEquals("(ExprList (Symbol \"+\") (Symbol \"5\") (Symbol \"4\"))", expr.toExpr(context).toString());
+        assertEquals("(ExprList (Symbol \"+\") (Symbol \"5\") (Symbol \"4\"))", expr.toExpr(Main.rtEnv).toString());
 
         expr = symbol("aaaaa????");
-        assertEquals("(Symbol \"aaaaa????\")", expr.toExpr(context).toString());
+        assertEquals("(Symbol \"aaaaa????\")", expr.toExpr(Main.rtEnv).toString());
     }
 }

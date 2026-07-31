@@ -39,13 +39,13 @@ public final class TestFw {
 
                 vits[i] = Vit.simplify(argNVit._unpack(Vit.class));
             }
-            return VitFw.wrap(Vit.val(Val.of(TestFw.test, new TestRecord(vits, null))).call(symbol("complete")).call(Vit.var)); // nah
+            return VitFw.wrap(Vit.val(Val.of(TestFw.test, new TestRecord(vits))).call(symbol("complete")).call(Vit.var)); // nah
         } else if (FwUtils.isTypeApiCall(arg, TestFw.test)) {
             TestRecord instance = Call.getVal(arg)._unpack();
             arg = Call.getArg(arg);
             if (arg.equals(symbol("complete"))) {
                 return FW.telephonist("completion", (arg1) -> {
-                    return State.performAndDie(state -> Val.of(TestFw.test, new TestRecord(instance.statements(), new Context(RtEnv.of(arg1), state))));
+                    return State.performAndDie(state -> Val.of(TestFw.test, new TestRecord(instance.statements())));
                 });
             }
         }
@@ -57,9 +57,9 @@ public final class TestFw {
             TestRecord test = arg._unpack();
 
             List<Expr> exprs = new ArrayList<>();
-            exprs.add(TestFw.test.asVal().toExpr(Context.outOf));
+            exprs.add(TestFw.test.asVal().toExpr(RtEnv.unspecified));
             for (Vit statement : test.statements()) {
-                exprs.add(VitFw.wrap(statement).toExpr(Context.outOf));
+                exprs.add(VitFw.wrap(statement).toExpr(RtEnv.unspecified));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, exprs));
         }
@@ -68,19 +68,13 @@ public final class TestFw {
 
     static final class TestRecord {
         private final Vit[] statements;
-        private final Context context;
 
-        TestRecord(Vit[] statements, Context context) {
+        TestRecord(Vit[] statements) {
             this.statements = statements;
-            this.context = context;
         }
 
         public Vit[] statements() {
             return statements;
-        }
-
-        public Context context() {
-            return context;
         }
 
         @Override
@@ -88,20 +82,18 @@ public final class TestFw {
             if (obj == this) return true;
             if (obj == null || obj.getClass() != this.getClass()) return false;
             TestRecord that = (TestRecord) obj;
-            return Arrays.equals(this.statements, that.statements) &&
-                    Objects.equals(this.context, that.context);
+            return Arrays.equals(this.statements, that.statements);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(Arrays.hashCode(statements), context);
+            return Objects.hash(Arrays.hashCode(statements));
         }
 
         @Override
         public String toString() {
             return "TestRecord[" +
-                    "statements=" + Arrays.toString(statements) + ", " +
-                    "context=" + context + ']';
+                    "statements=" + Arrays.toString(statements);
         }
     }
 }

@@ -3,6 +3,7 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -72,13 +73,13 @@ public final class EnumFw {
         return resultingType;
     }
 
-    public static Val toExpr(Val arg, Context context) {
+    public static Val toExpr(Val arg, RtEnv rtEnv) {
         EnumFw.Enum value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(EnumFw.enumeration.asVal().toExpr(context));
+        finElements.add(EnumFw.enumeration.asVal().toExpr(rtEnv));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.values()) {
-            elements.add(val._unpack(Val.class).toExpr(context));
+            elements.add(val._unpack(Val.class).toExpr(rtEnv));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));

@@ -27,7 +27,7 @@ public final class VitInvoke extends Vit {
         Operation op = OperationFw.unwrap(operationVal(rtEnv, state));
         if (op == null) {
             // temp
-            throw new IllegalStateException(operation.eval(rtEnv, state).toExpr(new Context(rtEnv, state)).toString() + " from " + VitFw.wrap(operation).toExpr(new Context(rtEnv, state)));
+            throw new IllegalStateException(operation.eval(rtEnv, state).toExpr(rtEnv).toString() + " from " + VitFw.wrap(operation).toExpr(rtEnv));
         }
 //        if (!Operation.isLocal(op, context.scope(), context))
 //            return Val.unspecified;

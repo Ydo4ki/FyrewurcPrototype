@@ -3,6 +3,7 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -92,31 +93,31 @@ public final class StructFw {
     public static final Val structToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(struct)) {
-            return toExpr(arg, Context.outOf);
+            return toExpr(arg, RtEnv.unspecified);
         } else if (type.asVal().type().equals(struct)) {
-            return instanceToExpr(arg, Context.outOf);
+            return instanceToExpr(arg, RtEnv.unspecified);
         }
         return null;
     });
 
-    public static Val toExpr(Val arg, Context context) {
+    public static Val toExpr(Val arg, RtEnv rtEnv) {
         StructFw.Struct value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(StructFw.struct.asVal().toExpr(context));
+        finElements.add(StructFw.struct.asVal().toExpr(rtEnv));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.fields) {
-            elements.add(val.toExpr(context));
+            elements.add(val.toExpr(rtEnv));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
     }
 
-    public static Val instanceToExpr(Val arg, Context context) {
+    public static Val instanceToExpr(Val arg, RtEnv rtEnv) {
         Val[] value = arg._unpack();
         List<Expr> elements = new ArrayList<>();
-        elements.add(arg.type().asVal().toExpr(context));
+        elements.add(arg.type().asVal().toExpr(rtEnv));
         for (Val val : value) {
-            elements.add(val.toExpr(context));
+            elements.add(val.toExpr(rtEnv));
         }
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
     }

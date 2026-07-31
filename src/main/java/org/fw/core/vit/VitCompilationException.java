@@ -3,6 +3,7 @@ package org.fw.core.vit;
 import org.fw.core.FyrewurcException;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.RtEnv;
 
 public class VitCompilationException extends FyrewurcException {
     private final Val value;
@@ -12,8 +13,8 @@ public class VitCompilationException extends FyrewurcException {
         this.value = value;
     }
 
-    public VitCompilationException(Val value, Context context) {
-        super(value.toExpr(context).toString());
+    public VitCompilationException(Val value, RtEnv rtEnv) {
+        super(value.toExpr(rtEnv).toString());
         this.value = value;
     }
 

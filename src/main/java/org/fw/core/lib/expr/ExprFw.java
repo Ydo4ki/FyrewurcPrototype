@@ -3,6 +3,7 @@ package org.fw.core.lib.expr;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.*;
@@ -91,10 +92,10 @@ public final class ExprFw {
         Type type = arg.type();
         if (type.equals(exprList)) {
             List<Expr> content = new ArrayList<>();
-            content.add(type.asVal().toExpr(Context.outOf));
+            content.add(type.asVal().toExpr(RtEnv.unspecified));
             ExprList el = arg._unpack();
             for (Expr expr : el) {
-                content.add(wrap(expr).toExpr(Context.outOf));
+                content.add(wrap(expr).toExpr(RtEnv.unspecified));
             }
             return wrap(ExprList.of(BracketsTypes.round, content));
         } else if (type.equals(SymbolFw.symbol)) {

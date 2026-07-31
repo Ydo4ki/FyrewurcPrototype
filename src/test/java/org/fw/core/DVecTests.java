@@ -14,18 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DVecTests {
 
-    private static final Context context = new Context(Main.rtEnv, State.eternal());
-
     @Test
     void apiDVecExpr() {
         Val b = DVecFw.emptyBuilder;
-        assertEquals("(DVecBuilder)", b.toExpr(context).toString());
+        assertEquals("(DVecBuilder)", b.toExpr(Main.rtEnv).toString());
         b = b.call(DIntFw.dint(50));
-        assertEquals("(DVecBuilder 50)", b.toExpr(context).toString());
+        assertEquals("(DVecBuilder 50)", b.toExpr(Main.rtEnv).toString());
         b = b.call(DIntFw.dint(60));
         b = b.call(StrFw.str("content"));
         b = DVecFw.dvecbf.call(b);
-        assertEquals("[50 60 \"content\"]", b.toExpr(context).toString());
+        assertEquals("[50 60 \"content\"]", b.toExpr(Main.rtEnv).toString());
     }
 
     @Test

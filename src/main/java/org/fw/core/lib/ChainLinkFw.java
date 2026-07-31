@@ -9,6 +9,7 @@ import org.fw.core.base.Call;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
@@ -64,7 +65,7 @@ public final class ChainLinkFw {
         Type type = arg.type();
         if (type.asVal().type().equals(chainLinkType)) {
             ChainLinkRecord env = arg._unpack();
-            return ExprFw.wrap(env.toExpr(Context.outOf));
+            return ExprFw.wrap(env.toExpr(RtEnv.unspecified));
         }
         return null;
     });
@@ -120,8 +121,8 @@ public final class ChainLinkFw {
             return parent;
         }
 
-        public Expr toExpr(Context context) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), primary.toExpr(context), parent.toExpr(context));
+        public Expr toExpr(RtEnv rtEnv) {
+            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), primary.toExpr(rtEnv), parent.toExpr(rtEnv));
         }
 
         @Override

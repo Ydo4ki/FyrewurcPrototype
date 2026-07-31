@@ -6,6 +6,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
@@ -71,15 +72,15 @@ public final class DVecFw {
             Val[] vec = arg._unpack();
             List<Expr> elements = new ArrayList<>();
             for (Val val : vec) {
-                elements.add(val.toExpr(Context.outOf));
+                elements.add(val.toExpr(RtEnv.unspecified));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.square, elements));
         } else if (type.equals(dVecBuilder)) {
             Val[] vec = arg._unpack();
             List<Expr> elements = new ArrayList<>();
-            elements.add(type.asVal().toExpr(Context.outOf));
+            elements.add(type.asVal().toExpr(RtEnv.unspecified));
             for (Val val : vec) {
-                elements.add(val.toExpr(Context.outOf));
+                elements.add(val.toExpr(RtEnv.unspecified));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
         }

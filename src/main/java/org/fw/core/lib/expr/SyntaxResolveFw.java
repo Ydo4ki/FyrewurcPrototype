@@ -3,6 +3,7 @@ package org.fw.core.lib.expr;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -62,7 +63,7 @@ public final class SyntaxResolveFw {
     public static final Val syntaxResolveToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(syntaxResolve)) {
-            return ExprFw.wrap(arg._unpack(SyntaxResolve.class).toExpr(Context.outOf));
+            return ExprFw.wrap(arg._unpack(SyntaxResolve.class).toExpr(RtEnv.unspecified));
         }
         return null;
     });
@@ -84,11 +85,11 @@ public final class SyntaxResolveFw {
             return env;
         }
 
-        public Expr toExpr(Context context) {
+        public Expr toExpr(RtEnv rtEnv) {
             return ExprList.of(BracketsTypes.round,
-                    SyntaxResolveFw.syntaxResolve.asVal().toExpr(context),
-                    ExprList.of(BracketsTypes.round, ExprFw.expr.toExpr(context), expr),
-                    env.asVal().toExpr(context)
+                    SyntaxResolveFw.syntaxResolve.asVal().toExpr(rtEnv),
+                    ExprList.of(BracketsTypes.round, ExprFw.expr.toExpr(rtEnv), expr),
+                    env.asVal().toExpr(rtEnv)
             );
         }
     }

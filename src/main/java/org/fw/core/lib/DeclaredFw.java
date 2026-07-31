@@ -3,6 +3,7 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
@@ -92,7 +93,7 @@ public final class DeclaredFw {
     public static final Val declaredToExpr = telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(declared)) {
-            Expr expr = toExpr(arg, Context.outOf);
+            Expr expr = toExpr(arg, RtEnv.unspecified);
             return ExprFw.wrap(expr);
         }
         return null;
@@ -111,8 +112,8 @@ public final class DeclaredFw {
         return Val.of(DeclaredFw.declared, new Declared(key, value));
     }
 
-    public static Expr toExpr(Val arg, Context context) {
-        return arg._unpack(DeclaredFw.Declared.class).toExpr(context);
+    public static Expr toExpr(Val arg, RtEnv rtEnv) {
+        return arg._unpack(DeclaredFw.Declared.class).toExpr(rtEnv);
     }
 
     private static final class Declared {
@@ -124,8 +125,8 @@ public final class DeclaredFw {
             this.value = value;
         }
 
-        public Expr toExpr(Context context) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr(context), value.toExpr(context));
+        public Expr toExpr(RtEnv rtEnv) {
+            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr(rtEnv), value.toExpr(rtEnv));
         }
 
         public Val key() {

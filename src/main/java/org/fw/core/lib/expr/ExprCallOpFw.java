@@ -66,17 +66,6 @@ public final class ExprCallOpFw {
     }).asType();
 
     @Deprecated
-    public static Val toExpr(Val arg, Context context) {
-        ExprCallOpFw.ExprCallOp vec = arg._unpack(ExprCallOpFw.ExprCallOp.class);
-        List<Expr> elements = new ArrayList<>();
-        elements.add(ExprCallOpFw.exprCallOp.asVal().toExpr(context));
-        for (Expr val : vec.args) {
-            elements.add(ExprFw.wrap(val).toExpr(context));
-        }
-        return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
-    }
-
-    @Deprecated
     private static final class ExprCallOp {
         @Deprecated
         private final Expr[] args;

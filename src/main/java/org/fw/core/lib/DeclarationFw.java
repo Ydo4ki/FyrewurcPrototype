@@ -3,6 +3,7 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -85,7 +86,7 @@ public final class DeclarationFw {
     public static final Val declarationToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(declaration)) {
-            Expr expr = toExpr(arg, Context.outOf); // todo
+            Expr expr = toExpr(arg, RtEnv.unspecified); // todo
             return ExprFw.wrap(expr);
         }
         return null;
@@ -105,8 +106,8 @@ public final class DeclarationFw {
         return Val.of(declaration, new Declaration(key, constraint));
     }
 
-    public static Expr toExpr(Val arg, Context context) {
-        return arg._unpack(DeclarationFw.Declaration.class).toExpr(context);
+    public static Expr toExpr(Val arg, RtEnv rtEnv) {
+        return arg._unpack(DeclarationFw.Declaration.class).toExpr(rtEnv);
     }
 
     private static final class Declaration {
@@ -118,8 +119,8 @@ public final class DeclarationFw {
             this.constraint = constraint;
         }
 
-        public Expr toExpr(Context context) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(context), constraint.toExpr(context));
+        public Expr toExpr(RtEnv rtEnv) {
+            return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(rtEnv), constraint.toExpr(rtEnv));
         }
 
         public Val key() {

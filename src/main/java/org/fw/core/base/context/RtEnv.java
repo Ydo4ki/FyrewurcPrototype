@@ -16,7 +16,7 @@ public final class RtEnv extends AbstractValAdapted {
         return new RtEnv(val);
     }
 
-    public Val get(Val key, Context context) {
+    public Val get(Val key) {
         return asVal().call(key);
     }
 }

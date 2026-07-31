@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -80,7 +81,7 @@ public final class ModuleFw {
     public static final Val moduleToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(module)) {
-            return toExpr(arg, Context.outOf);
+            return toExpr(arg, RtEnv.unspecified);
         }
         return null;
     });
@@ -93,8 +94,8 @@ public final class ModuleFw {
         return Val.of(ModuleFw.module, new Module(values));
     }
 
-    public static Val toExpr(Val arg, Context context) {
-        return ExprFw.wrap(arg._unpack(ModuleFw.Module.class).toExpr(context));
+    public static Val toExpr(Val arg, RtEnv rtEnv) {
+        return ExprFw.wrap(arg._unpack(ModuleFw.Module.class).toExpr(rtEnv));
     }
 
     // todo: replace with map, order shouldn't matter
@@ -109,11 +110,11 @@ public final class ModuleFw {
             return declareds;
         }
 
-        public Expr toExpr(Context context) {
+        public Expr toExpr(RtEnv rtEnv) {
             List<Expr> elements = new ArrayList<>();
-            elements.add(ModuleFw.module.asVal().toExpr(context));
+            elements.add(ModuleFw.module.asVal().toExpr(rtEnv));
             for (Val declared : declareds) {
-                elements.add(declared.toExpr(context));
+                elements.add(declared.toExpr(rtEnv));
             }
             return ExprList.of(BracketsTypes.round, elements);
         }

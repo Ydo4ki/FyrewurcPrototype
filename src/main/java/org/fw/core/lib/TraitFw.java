@@ -3,6 +3,7 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -75,7 +76,7 @@ public final class TraitFw {
     public static final Val traitToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(trait)) {
-            return toExpr(arg, Context.outOf);
+            return toExpr(arg, RtEnv.unspecified);
         }
         return null;
     });
@@ -88,13 +89,13 @@ public final class TraitFw {
         return Val.of(TraitFw.trait, new Trait(fields));
     }
 
-    public static Val toExpr(Val arg, Context context) {
+    public static Val toExpr(Val arg, RtEnv rtEnv) {
         TraitFw.Trait value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(TraitFw.trait.asVal().toExpr(context));
+        finElements.add(TraitFw.trait.asVal().toExpr(rtEnv));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.fields) {
-            elements.add(val.toExpr(context));
+            elements.add(val.toExpr(rtEnv));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));

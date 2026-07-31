@@ -28,14 +28,14 @@ public final class VitCall extends Vit {
         return "(VitCall " + func + " " + arg + ")";
     }
 
-    public Collection<? extends Expr> exprs(Context context) {
+    public Collection<? extends Expr> exprs(RtEnv rtEnv) {
         List<Expr> elements = new ArrayList<>();
         if (func() instanceof VitCall) {
-            elements.addAll(((VitCall) func()).exprs(context));
+            elements.addAll(((VitCall) func()).exprs(rtEnv));
         } else {
-            elements.add(VitFw.wrap(func()).toExpr(context));
+            elements.add(VitFw.wrap(func()).toExpr(rtEnv));
         }
-        elements.add(VitFw.wrap(arg()).toExpr(context));
+        elements.add(VitFw.wrap(arg()).toExpr(rtEnv));
         return elements;
     }
 
