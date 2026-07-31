@@ -12,6 +12,12 @@ import org.fw.core.vit.VitCompilationException;
 import static org.fw.core.FW.symbol;
 
 public final class CompEnv extends AbstractValAdapted {
+
+    public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
+            .call(symbol("constructor"), Context.outOf)
+            .call(Unspecified.isNot, Context.outOf)
+            .asType();
+
     private CompEnv(Val val) {
         super(val);
     }
@@ -41,20 +47,11 @@ public final class CompEnv extends AbstractValAdapted {
         return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolveFw.SyntaxResolve(expr, env));
     }
 
-    public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
-            .call(symbol("constructor"), Context.outOf)
-            .call(Unspecified.isNot, Context.outOf)
-            .asType();
-
     public static Val compEnv(Val resolver, Val parentCEnv, Context context) {
-        return compEnv.asVal().call(symbol("builder"), context).call(resolver, context).call(parentCEnv, context);
+        return ChainLinkFw.chain(compEnv, resolver, parentCEnv, context);
     }
 
     public static Val compEnv(Context context, Val... resolvers) {
-        Val actual = resolvers[0];
-        for (int i = 1; i < resolvers.length; i++) {
-            actual = compEnv(actual, resolvers[i], context);
-        }
-        return actual;
+        return ChainLinkFw.chain(compEnv, context, resolvers);
     }
 }

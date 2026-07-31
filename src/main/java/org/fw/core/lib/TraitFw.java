@@ -72,6 +72,13 @@ public final class TraitFw {
         }
         return null;
     }).asType();
+    public static final Val traitToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(trait)) {
+            return toExpr(arg, context);
+        }
+        return null;
+    });
 
     public static Val trait(Val... fields) {
         for (Val field : fields) {

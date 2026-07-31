@@ -14,7 +14,9 @@ import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.fw.core.FW.*;
 
@@ -63,6 +65,26 @@ public final class DVecFw {
         }
         return null;
     }).asType();
+    public static final Val dvecToExpr = telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(dVec)) {
+            Val[] vec = arg._unpack();
+            List<Expr> elements = new ArrayList<>();
+            for (Val val : vec) {
+                elements.add(val.toExpr(context));
+            }
+            return ExprFw.wrap(ExprList.of(BracketsTypes.square, elements));
+        } else if (type.equals(dVecBuilder)) {
+            Val[] vec = arg._unpack();
+            List<Expr> elements = new ArrayList<>();
+            elements.add(type.asVal().toExpr(context));
+            for (Val val : vec) {
+                elements.add(val.toExpr(context));
+            }
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
+        }
+        return null;
+    });
 
     public static final Val dvecbf = telephonist("dvecbf", (arg, context) -> {
         if (arg.type() == dVecBuilder) {

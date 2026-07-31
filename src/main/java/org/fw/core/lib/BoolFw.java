@@ -3,7 +3,6 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
-import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -88,10 +87,4 @@ public final class BoolFw {
         return x ? _true : _false;
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                    DeclaredFw.declared(symbol("true"), _true),
-                    DeclaredFw.declared(symbol("false"), _false)
-            ))
-    ));
 }

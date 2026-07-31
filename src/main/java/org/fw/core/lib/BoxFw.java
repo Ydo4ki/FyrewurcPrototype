@@ -3,6 +3,7 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
@@ -28,6 +29,15 @@ public final class BoxFw {
         }
         return null;
     }).asType();
+    public static final Val boxToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(boxType)) {
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(context), unbox(arg).toExpr(context)));
+        } else if (type.asVal().type().equals(boxType)) {
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), unbox(arg).toExpr(context)));
+        }
+        return null;
+    });
 
     @Deprecated
     private static Val handleBoxTypeCall(Type type, Val arg, Context context) {

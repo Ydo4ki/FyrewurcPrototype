@@ -3,6 +3,7 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
+import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -81,6 +82,14 @@ public final class DeclarationFw {
         }
         return null;
     }).asType();
+    public static final Val declarationToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(declaration)) {
+            Expr expr = toExpr(arg, context);
+            return ExprFw.wrap(expr);
+        }
+        return null;
+    });
 
     public static Val getKey(Val declaration, Context context) {
         return declaration.call(symbol("key"), context);

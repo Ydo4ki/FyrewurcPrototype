@@ -10,6 +10,8 @@ import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -85,6 +87,23 @@ public final class ExprFw {
             return null;
         });
     }).asType(); // bruh
+    public static final Val esastToExpr = telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(exprList)) {
+            List<Expr> content = new ArrayList<>();
+            content.add(type.asVal().toExpr(context));
+            ExprList el = arg._unpack();
+            for (Expr expr : el) {
+                content.add(wrap(expr).toExpr(context));
+            }
+            return wrap(ExprList.of(BracketsTypes.round, content));
+        } else if (type.equals(SymbolFw.symbol)) {
+            String str = arg._unpack().toString();
+            str = str.replace("\"", "\\\"");
+            return wrap(ExprList.of(BracketsTypes.round, Symbol.of("Symbol"), Symbol.of('"' + str + '"')));
+        }
+        return null;
+    });
 
     public static final Type bracketsType = telephonist("BracketsType", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, ExprFw.bracketsType, context)) {

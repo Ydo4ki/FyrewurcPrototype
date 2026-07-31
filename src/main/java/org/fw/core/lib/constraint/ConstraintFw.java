@@ -177,9 +177,4 @@ public final class ConstraintFw {
         return Val.of(ConstraintFw.constraint, new Constraint(a, b, a.equals(b)));
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                    DeclaredFw.declared(symbol("Constraint"), constraint.asVal())
-            ))
-    ));
 }

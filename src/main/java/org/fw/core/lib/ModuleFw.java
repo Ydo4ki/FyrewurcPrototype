@@ -77,6 +77,13 @@ public final class ModuleFw {
 
         return null;
     }).asType();
+    public static final Val moduleToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(module)) {
+            return toExpr(arg, context);
+        }
+        return null;
+    });
 
     public static Val module(Val... values) {
         for (Val value : values) {

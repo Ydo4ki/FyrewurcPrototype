@@ -60,6 +60,13 @@ public final class DIntFw {
         }
         return null;
     }).asType();
+    public static final Val dintToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(dint)) {
+            return symbol(arg._unpack().toString());
+        }
+        return null;
+    });
 
     private static Val bop(String name, Val instance, Context context, FwUtils.BigBinaryOperator operator) {
         BigInteger value = unwrap(instance);

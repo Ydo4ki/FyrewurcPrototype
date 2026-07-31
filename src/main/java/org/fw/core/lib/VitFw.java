@@ -7,6 +7,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.ValsFw;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.constraint.ConstraintFw;
+import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
@@ -18,6 +19,9 @@ import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.vit.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -110,6 +114,26 @@ public final class VitFw {
         }
         return null;
     })).asType();
+    public static final Val vitToExpr = telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(vitVal)) {
+            VitVal vitVal = arg._unpack();
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), vitVal.val().toExpr(context)));
+        } else if (type.equals(vitVar)) {
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context)));
+        } else if (type.equals(vitCall)) {
+            VitCall vitVal = arg._unpack();
+            List<Expr> elements = new ArrayList<>();
+            elements.add(type.asVal().toExpr(context));
+            elements.addAll(vitVal.exprs(context));
+
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
+        } else if (type.equals(vitInvoke)) {
+            VitInvoke vitInvoke = arg._unpack();
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), wrap(vitInvoke.operation()).toExpr(context)));
+        }
+        return null;
+    });
 
     @Deprecated // this just converts it to operation, it does not evaluate anything (which leaves no room for local evaluations)
     public static final Val eval = telephonist("eval", (arg, context) -> {

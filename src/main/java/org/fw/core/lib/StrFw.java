@@ -49,6 +49,13 @@ public final class StrFw {
         }
         return null;
     }).asType();
+    public static final Val strToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(str)) {
+            return symbol('"' + arg._unpack(String.class) + '"');
+        }
+        return null;
+    });
 
     public static Val str(String string) {
         return Val.of(str, string);

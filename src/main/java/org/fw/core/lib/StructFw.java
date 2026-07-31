@@ -89,6 +89,15 @@ public final class StructFw {
         }
         return null;
     }).asType();
+    public static final Val structToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(struct)) {
+            return toExpr(arg, context);
+        } else if (type.asVal().type().equals(struct)) {
+            return instanceToExpr(arg, context);
+        }
+        return null;
+    });
 
     public static Val toExpr(Val arg, Context context) {
         StructFw.Struct value = arg._unpack();

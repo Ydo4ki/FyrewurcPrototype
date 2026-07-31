@@ -10,6 +10,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.Context;
 import org.fw.core.lib.constraint.ConstraintFw;
+import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 
@@ -38,15 +39,16 @@ public final class ChainLinkFw {
                 ChainLinkFw.ChainLinkRecord instance = Call.getVal(arg, context)._unpack();
                 Val cArg = Call.getArg(arg, context);
 
-                if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-                    Val ret = instance.resolver().call(cArg, context);
+                Val ret = instance.resolver().call(cArg, context);
 
 //                    if (Unspecified.isUnspecified(ret))
-                    if (typeInfo.constraint.call(symbol("check"), context).call(ret, context) != BoolFw._true)
-                        return instance.parentCEnv().call(cArg, context);
+                if (typeInfo.constraint.call(symbol("check"), context).call(ret, context) != BoolFw._true)
+                    return instance.parentCEnv().call(cArg, context);
 
-                    return ret;
-                }
+                return ret;
+//                if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+//
+//                }
             } else if (arg.equals(symbol("builder"))) {
                 return FW.telephonist("*.builder", (resolver, context1) -> {
                     return FW.telephonist(() -> "(call *.builder " + resolver.toExpr(context1) + ")", (parentCEnv, c) -> {
@@ -59,6 +61,28 @@ public final class ChainLinkFw {
         }
         return null;
     }).asType();
+    public static final Val chainLinkToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.asVal().type().equals(chainLinkType)) {
+            ChainLinkRecord env = arg._unpack();
+            return ExprFw.wrap(env.toExpr(context));
+        }
+        return null;
+    });
+
+
+    public static Val chain(Type type, Val primary, Val parent, Context context) {
+        return type.asVal().call(symbol("builder"), context).call(primary, context).call(parent, context);
+    }
+
+
+    public static Val chain(Type type, Context context, Val... links) {
+        Val actual = links[0];
+        for (int i = 1; i < links.length; i++) {
+            actual = chain(type, actual, links[i], context);
+        }
+        return actual;
+    }
 
     public static final class ChainLinkTypeRecord {
         private final Val constraint;

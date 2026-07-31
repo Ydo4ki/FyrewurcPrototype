@@ -6,7 +6,6 @@ import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.lib.*;
-import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.*;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
@@ -44,7 +43,7 @@ public class Main {
                 ExprFw.exports.asVal(),
                 StrFw.exports.asVal(),
                 DVecFw.exports.asVal(),
-                BoolFw.exports.asVal(),
+                BoolLib.lib.exports(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0))
                 )),
@@ -78,7 +77,7 @@ public class Main {
                 ModuleFw.exports.asVal(),
                 FunctionFw.exports.asVal(),
                 DeclaredFw.exports.asVal(),
-                ConstraintFw.exports.asVal(),
+                CompEnvLib.exports.asVal(),
                 DoFw.exports.asVal(),
                 UseFw.useDirectivesCenv.asVal(),
                 directivesCenv.asVal(),
@@ -121,7 +120,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
             Val val = vit.eval(context);
-//            System.out.println(val.toExpr(context));
+            System.out.println(val.toExpr(context));
         }
     }
 

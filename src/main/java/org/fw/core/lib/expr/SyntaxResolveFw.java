@@ -15,6 +15,7 @@ import java.math.BigInteger;
 
 import static org.fw.core.FW.symbol;
 
+// todo: replace with more general ChainResolve
 public final class SyntaxResolveFw {
     public static final Type syntaxResolve = FW.telephonist("SyntaxResolve", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, SyntaxResolveFw.syntaxResolve, context)) {
@@ -58,6 +59,13 @@ public final class SyntaxResolveFw {
         }
         return null;
     }).asType();
+    public static final Val syntaxResolveToExpr = FW.telephonist((arg, context) -> {
+        Type type = arg.type();
+        if (type.equals(syntaxResolve)) {
+            return ExprFw.wrap(arg._unpack(SyntaxResolve.class).toExpr(context));
+        }
+        return null;
+    });
 
     static final class SyntaxResolve {
         private final Expr expr;
