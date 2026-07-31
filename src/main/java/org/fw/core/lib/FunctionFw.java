@@ -21,7 +21,7 @@ import java.util.List;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
-public class FunctionFw {
+public final class FunctionFw {
     public static final Type function_struct = StructFw.struct(
             DeclarationFw.declaration(symbol("arg-constraint"), ConstraintFw.toConstraint(ConstraintFw.constraint)),
             DeclarationFw.declaration(symbol("body"), VitFw.constraint),
@@ -55,10 +55,14 @@ public class FunctionFw {
 
                             // this is questionable
                             Val oldRtEnv = value.call(symbol("rt-env"), context);
+//                            Val newRtEnv = FW.telephonist((arg2, context2) -> {
+//                                Val ret0 = arg1.call(arg2, context2);
+//                                if (Unspecified.isUnspecified(ret0)) return oldRtEnv.call(arg2, context2);
+//                                return ret0;
+//                            });
                             Val newRtEnv = FW.telephonist((arg2, context2) -> {
-                                Val ret0 = arg1.call(arg2, context2);
-                                if (Unspecified.isUnspecified(ret0)) return oldRtEnv.call(arg2, context2);
-                                return ret0;
+                                if (arg2.equals(symbol("%"))) return arg1;
+                                else return oldRtEnv.call(arg2, context2);
                             });
                             return OperationFw._VitOperation
                                     .call(VitFw.wrap(body), context)
@@ -70,32 +74,6 @@ public class FunctionFw {
         }
         return ret;
     }).asType();
-    public static final CompEnv fnCallCenv = CompEnv.of(telephonist((arg, context) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"), context);
-            Val compEnv = arg.call(symbol("comp-env"), context);
-            Expr expr = exprVal._unpack();
-            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
-                Expr f = ((ExprList) expr).get(0);
-                int isize = ((ExprList) expr).size();
-
-                Val fvv = compEnv.call(CompEnv.syntaxResolve(f, CompEnv.of(compEnv)), context);
-                if (!VitFw.isVit(fvv.type()))
-                    return null;
-                Vit fv = VitFw.unwrap(fvv);
-
-                Vit varValuesV = Vit.val(DVecFw.emptyBuilder);
-                for (int i = 1; i < isize; i++) {
-                    varValuesV = varValuesV.call(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(compEnv)), context)));
-                }
-                varValuesV = Vit.val(DVecFw.dvecbf).call(varValuesV);
-
-                return VitFw.wrap(Vit.invoke(fv.call(symbol("fn-call")).call(varValuesV)));
-            }
-        }
-        return null;
-    }));
-
 
     public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg, context) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
@@ -161,11 +139,7 @@ public class FunctionFw {
 
                         Val body = newCompEnv.call(CompEnv.syntaxResolve(bodyE, CompEnv.of(newCompEnv)), context);
 
-                        Vit varValuesV = Vit.val(DVecFw.emptyBuilder);
-                        for (int i = 0; i < paramsList.size(); i++) {
-                            varValuesV = varValuesV.call(Vit.var.call(DIntFw.dint(i)));
-                        }
-                        varValuesV = Vit.val(DVecFw.dvecbf).call(varValuesV);
+                        Vit varValuesV = Vit.var.call(symbol("%"));
 
                         Val newRtGetter = FW.telephonist((oldRt, context1) -> FW.telephonist((varValues, context3) -> {
                             return FW.telephonist((argSym, context2) -> {

@@ -36,7 +36,7 @@ public class Main {
         CompEnv compEnv;
         compEnv = CompEnv.of(CompEnv.compEnv(context,
                 BaseFw.exports.asVal(),
-                FunctionFw.fnCallCenv.asVal(),
+                FnCallFw.fnCallCenv.asVal(),
                 VitFw.exports.asVal(),
                 ExprGetFw.getterCEnv,
                 DIntFw.exports.asVal(),
@@ -120,7 +120,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
             Val val = vit.eval(context);
-            System.out.println(val.toExpr(context));
+//            System.out.println(val.toExpr(context));
         }
     }
 
@@ -143,6 +143,21 @@ public class Main {
                             return null;
 
                         return VitFw.wrap(Vit.val(OperationFw._VitOperation).call(val).call(Vit.var));
+//                        Vit vit = VitFw.unwrap(
+//                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
+//                        );
+                    }
+                    case "module": {
+                        Vit builder = Vit.val(DVecFw.emptyBuilder);
+                        for (int i = 1; i < isize; i++) {
+                            Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                            if (!VitFw.isVit(val.type()))
+                                return null;
+                            builder = builder.call(val);
+                        }
+                        builder = Vit.call(DVecFw.dvecbf, builder);
+
+                        return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("builder")).call(builder));
 //                        Vit vit = VitFw.unwrap(
 //                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context)
 //                        );

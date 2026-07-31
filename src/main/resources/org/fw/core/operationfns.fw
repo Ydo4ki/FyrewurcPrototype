@@ -1,8 +1,8 @@
-(call Module.constructor [
+(module
  (: new! (fn [(= x)] !>
   (invoke! (call _CreateNewObjectOperation x))))
  (: read! (fn [(= o)] !>
   (invoke! (call _ReadOperation o))))
  (: write! (fn [(= o) (= x)] !>
   (invoke! (call _WriteOperation o x))))
-])
+)

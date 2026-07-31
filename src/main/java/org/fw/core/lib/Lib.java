@@ -54,4 +54,8 @@ public final class Lib {
     public Val extraCEnv() {
         return extraCEnv;
     }
+
+    public Function<Val, Val> getRtEnvAdjuster() {
+        return rtEnvAdjuster;
+    }
 }
