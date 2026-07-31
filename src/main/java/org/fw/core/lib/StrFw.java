@@ -9,8 +9,6 @@ import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
-import org.fw.core.lib.telephonist.VitiateTelephonistFw;
-import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
@@ -62,9 +60,7 @@ public final class StrFw {
     }
 
     public static final class ParseStrCEnvFw {
-        private static final Context context = new Context(RtEnv.unspecified, State.eternal());
-
-        private static final Vit arg = var(symbol("arg"));
+        private static final Vit arg = var.call(symbol("arg"));
         private static final Vit argExpr = arg.call(symbol("expr"));
         private static final Vit argCEnv = arg.call(symbol("comp-env"));
 
@@ -73,12 +69,15 @@ public final class StrFw {
             // what the heck is this
             // how's it suppose to work
             // WHY IT WORKS
-            return VitiateTelephonistFw.vitiate(
-                    FW.vIf(val(Unspecified.isUnspecified).call(parseArg).call(symbol("not")),
-                            Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))
-                                    .call(parseArg),
-                            parseArg
-                    ), symbol("arg"), context);
+            Vit body = FW.vIf(val(Unspecified.isUnspecified).call(parseArg).call(symbol("not")),
+                    Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))
+                            .call(parseArg),
+                    parseArg
+            );
+            return FW.telephonist((arg1, context1) -> body.eval(new Context(RtEnv.of(FW.telephonist((arg2, context2) -> {
+                if (arg2.equals(symbol("arg"))) return arg1;
+                return context1.rtEnv().get(arg2, context1);
+            })), context1.state())));
         }
 
         public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {

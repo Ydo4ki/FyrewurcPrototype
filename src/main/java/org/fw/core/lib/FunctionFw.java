@@ -13,7 +13,7 @@ import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
-import org.fw.core.vit.Vit;
+import org.fw.core.vit.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import static org.fw.core.FW.telephonist;
 public final class FunctionFw {
     public static final Type function_struct = StructFw.struct(
             DeclarationFw.declaration(symbol("arg-constraint"), ConstraintFw.toConstraint(ConstraintFw.constraint)),
-            DeclarationFw.declaration(symbol("body"), VitFw.constraint),
+            DeclarationFw.declaration(symbol("body"), VitFw.isVit),
             DeclarationFw.declaration(symbol("rt-env"), ConstraintFw.free)
     );
 

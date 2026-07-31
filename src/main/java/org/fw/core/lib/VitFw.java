@@ -174,7 +174,7 @@ public final class VitFw {
         return null;
     });
 
-    public static final Val constraint = ConstraintFw.constraint(
+    public static final Val isVit = ConstraintFw.constraint(
             Vit.val(BoolFw._true),
             FwUtils.equals(
                     Vit.val(ValsFw.typeGet).call(Vit.var),

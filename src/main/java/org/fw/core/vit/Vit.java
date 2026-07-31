@@ -3,6 +3,8 @@ package org.fw.core.vit;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 
+import java.util.function.Function;
+
 // no side effects for now
 public abstract class Vit {
 
@@ -98,6 +100,7 @@ public abstract class Vit {
         return new VitVal(val);
     }
 
+    @Deprecated
     public static Vit var(Val key) {
         return var.call(key);
     }

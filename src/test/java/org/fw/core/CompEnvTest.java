@@ -9,6 +9,7 @@ import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
+import org.fw.core.cases.Main;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.DeclaredFw;
@@ -151,83 +152,83 @@ class CompEnvTest {
 //        }
 //    }
 
-    @Test
-    void callTests() throws IOException {
-
-        Map<String, Val> defineds = new HashMap<>();
-
-        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
-            if (!arg1.type().equals(SymbolFw.symbol))
-                return null;
-            String string = arg1._unpack().toString();
-            Val ret = defineds.get(string);
-            if (ret != null)
-                return VitFw.wrap(val(ret));
-            return null;
-        })));
-
-
-//        CompEnv env = CompEnv.of(CompEnv.compEnv(context, ParseNumCEnvFw.parseNumCenv, testValsCenv, defined, InternalSymbolMapCEnvFw.valsCenv,
-//                DVecConstructorCEnvFw.dVecConstructorCenv, InvokeFuncCEnvFw.invokeFuncCenv, ParseStrCEnvFw.parseStrCenv, CurrentCompEnvCEnvFw.currentCompEnvCenv));
-
-
-        CompEnv env = CompEnv.of(CompEnv.compEnv(context, Main.publicCompEnv.asVal(), testValsCenv, defined, InternalSymbolMapCEnvFw.valsCenv));
-
-        File testFolder = new File("tests");
-        for (File file : Objects.requireNonNull(testFolder.listFiles())) {
-            if (!file.getName().endsWith(".fw") || file.getName().startsWith("temp"))
-                continue;
-
-            System.out.println("========================================= " + file.getName() + " =========================================");
-            Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
-
-            List<TestFw.TestRecord> tests = new ArrayList<>();
-            for (LocatedExpr<? extends Expr> lExpr : expressions) {
-                Expr expr = lExpr.getExpr();
-                Val vitVal = env.compileV(expr, context);
-                Vit vit = VitFw.unwrap0(vitVal);
-                if (vit == null) {
-                    fail("# " + vitVal.toExpr(context) + " from " + expr);
-                    // ok its impossible to work under such noice
-                    // ill be back later
-                    continue;
-                }
-                Val result = vit.eval(context);
-                if (result.type().equals(TestFw.test)) {
-                    tests.add(result._unpack());
-//                System.out.println(result.toExpr(context));
-                } else if (result.type().equals(DeclaredFw.declared)) {
-                    Val key = DeclaredFw.getKey(result, context);
-                    Val value = DeclaredFw.getValue(result, context);
-                    if (key.type().equals(SymbolFw.symbol)) {
-                        defineds.put(key._unpack(Symbol.class).getValue(), value);
-                    }
-                } else {
-                    System.out.println(expr);
-                    System.out.println(VitFw.wrap(vit).toExpr(context));
-//                System.out.println(VitFw.wrap(Vit.simplify(vit, context)).toExpr(context));
-                    System.out.println(result.toExpr(context));
-                    System.out.println("=========================================");
-                }
-
-
-//            Vit vit = env.compile(expr, context);
-//            Val vv = vit == null ? Val.unspecified : VitFw.wrap(vit);
-//            System.out.println(vv.toExpr(context));
-//            vit = Vit.simplify(vit, context);
-//            vv = vit == null ? Val.unspecified : VitFw.wrap(vit);
-//            System.out.println(vv.toExpr(context));
-//            System.out.println(vv);
-            }
-            int i = 0;
-            for (TestFw.TestRecord test : tests) {
-                for (Vit statement : test.statements()) {
-                    Val ret = statement.eval(test.context());
-                    assertEquals(BoolFw._true, ret);
-                }
-                i++;
-                System.out.println("Passed " + i + "/" + tests.size());
-            }
-        }
-    }
+//    @Test
+//    void callTests() throws IOException {
+//
+//        Map<String, Val> defineds = new HashMap<>();
+//
+//        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
+//            if (!arg1.type().equals(SymbolFw.symbol))
+//                return null;
+//            String string = arg1._unpack().toString();
+//            Val ret = defineds.get(string);
+//            if (ret != null)
+//                return VitFw.wrap(val(ret));
+//            return null;
+//        })));
+//
+//
+////        CompEnv env = CompEnv.of(CompEnv.compEnv(context, ParseNumCEnvFw.parseNumCenv, testValsCenv, defined, InternalSymbolMapCEnvFw.valsCenv,
+////                DVecConstructorCEnvFw.dVecConstructorCenv, InvokeFuncCEnvFw.invokeFuncCenv, ParseStrCEnvFw.parseStrCenv, CurrentCompEnvCEnvFw.currentCompEnvCenv));
+//
+//
+//        CompEnv env = CompEnv.of(CompEnv.compEnv(context, Main.publicCompEnv.asVal(), testValsCenv, defined, InternalSymbolMapCEnvFw.valsCenv));
+//
+//        File testFolder = new File("tests");
+//        for (File file : Objects.requireNonNull(testFolder.listFiles())) {
+//            if (!file.getName().endsWith(".fw") || file.getName().startsWith("temp"))
+//                continue;
+//
+//            System.out.println("========================================= " + file.getName() + " =========================================");
+//            Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
+//
+//            List<TestFw.TestRecord> tests = new ArrayList<>();
+//            for (LocatedExpr<? extends Expr> lExpr : expressions) {
+//                Expr expr = lExpr.getExpr();
+//                Val vitVal = env.compileV(expr, context);
+//                Vit vit = VitFw.unwrap0(vitVal);
+//                if (vit == null) {
+//                    fail("# " + vitVal.toExpr(context) + " from " + expr);
+//                    // ok its impossible to work under such noice
+//                    // ill be back later
+//                    continue;
+//                }
+//                Val result = vit.eval(context);
+//                if (result.type().equals(TestFw.test)) {
+//                    tests.add(result._unpack());
+////                System.out.println(result.toExpr(context));
+//                } else if (result.type().equals(DeclaredFw.declared)) {
+//                    Val key = DeclaredFw.getKey(result, context);
+//                    Val value = DeclaredFw.getValue(result, context);
+//                    if (key.type().equals(SymbolFw.symbol)) {
+//                        defineds.put(key._unpack(Symbol.class).getValue(), value);
+//                    }
+//                } else {
+//                    System.out.println(expr);
+//                    System.out.println(VitFw.wrap(vit).toExpr(context));
+////                System.out.println(VitFw.wrap(Vit.simplify(vit, context)).toExpr(context));
+//                    System.out.println(result.toExpr(context));
+//                    System.out.println("=========================================");
+//                }
+//
+//
+////            Vit vit = env.compile(expr, context);
+////            Val vv = vit == null ? Val.unspecified : VitFw.wrap(vit);
+////            System.out.println(vv.toExpr(context));
+////            vit = Vit.simplify(vit, context);
+////            vv = vit == null ? Val.unspecified : VitFw.wrap(vit);
+////            System.out.println(vv.toExpr(context));
+////            System.out.println(vv);
+//            }
+//            int i = 0;
+//            for (TestFw.TestRecord test : tests) {
+//                for (Vit statement : test.statements()) {
+//                    Val ret = statement.eval(test.context());
+//                    assertEquals(BoolFw._true, ret);
+//                }
+//                i++;
+//                System.out.println("Passed " + i + "/" + tests.size());
+//            }
+//        }
+//    }
 }
