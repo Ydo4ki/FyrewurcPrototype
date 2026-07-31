@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
-import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -24,7 +23,6 @@ import static org.fw.core.FW.symbol;
 
 public final class TraitFw {
 
-    @Insightful
     public static final Type trait = FW.telephonist("Trait", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, TraitFw.trait, context)) {
             Val instance = Call.getVal(arg, context);

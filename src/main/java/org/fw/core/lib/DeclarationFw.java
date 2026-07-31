@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
-import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -20,7 +19,7 @@ import java.util.Objects;
 import static org.fw.core.FW.symbol;
 
 public final class DeclarationFw {
-    @Insightful
+    @Deprecated
     public static final Val field = FW.telephonist("=", (arg, context) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);
@@ -44,7 +43,6 @@ public final class DeclarationFw {
     });
 
     // I hope it will be possible to make it a struct later
-    @Insightful
     public static final Type declaration = FW.telephonist("Declaration", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, DeclarationFw.declaration, context)) {
             Val instance = Call.getVal(arg, context);

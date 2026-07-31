@@ -1,8 +1,6 @@
 package org.fw.core.lib.expr;
 
-import org.fw.core.base.Unspecified;
 import org.fw.core.util.FwUtils;
-import org.fw.core.annotation.Insightful;
 import org.fw.core.base.Call;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
@@ -17,7 +15,6 @@ import static org.fw.core.FW.telephonist;
 
 public final class SenderExprFw {
 
-    @Insightful
     public static final Type exprSender = telephonist("ExprSender", ((arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, SenderExprFw.exprSender, context)) {
             Val instance = Call.getVal(arg, context);

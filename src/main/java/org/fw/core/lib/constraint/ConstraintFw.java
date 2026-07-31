@@ -5,7 +5,6 @@ import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
-import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.Symbol;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
@@ -19,11 +18,12 @@ import java.util.WeakHashMap;
 
 import static org.fw.core.FW.symbol;
 
+// I'll add normal form
+// when I think it up
 public final class ConstraintFw {
 
     private static final WeakHashMap<Val, Val> typeConstraints = new WeakHashMap<>();
 
-    @Insightful
     public static final Val to_constraint = FW.telephonist("to-constraint", (arg, context) -> {
         if (arg.type().equals(ConstraintFw.constraint))
             return arg;
@@ -48,7 +48,6 @@ public final class ConstraintFw {
         return to_constraint.call(type.asVal(), Context.outOf);
     }
 
-    @Insightful
     @Deprecated
     public static final Val at = FW.telephonist("@", (arg, context) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
@@ -82,7 +81,6 @@ public final class ConstraintFw {
         });
     });
 
-    @Insightful
     public static final Type constraint = FW.telephonist("Constraint", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, ConstraintFw.constraint, context)) {
             Val instance = Call.getVal(arg, context);
@@ -108,25 +106,21 @@ public final class ConstraintFw {
                         RtEnv rtEnv = RtEnv.of(arg1);
 
                         // we might as well do it in parallel
-                        Val a = State.performAndDie(scope -> {
-                            return payload.a().eval(new Context(rtEnv, scope));
-                        });
-                        Val b = State.performAndDie(scope -> {
-                            return payload.b().eval(new Context(rtEnv, scope));
-                        });
+                        Val a = State.performAndDie(scope -> payload.a().eval(new Context(rtEnv, scope)));
+                        Val b = State.performAndDie(scope -> payload.b().eval(new Context(rtEnv, scope)));
 
                         return BoolFw.wrap(a.equals(b));
                     });
-                case "a":
-                    return VitFw.wrap(payload.a());
-                case "b":
-                    return VitFw.wrap(payload.b());
+//                case "a":
+//                    return VitFw.wrap(payload.a());
+//                case "b":
+//                    return VitFw.wrap(payload.b());
             }
         }
         return null;
     }
 
-    private static final class Constraint {
+    protected static final class Constraint {
         private final Vit a;
         private final Vit b;
         private final boolean alwaysTrue;

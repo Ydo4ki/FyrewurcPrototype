@@ -5,7 +5,6 @@ import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
-import org.fw.core.annotation.Insightful;
 import org.fw.core.lib.VitFw;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
@@ -108,7 +107,6 @@ public final class VitiateTelephonistFw {
      * }
      *
      * */
-    @Insightful
     public static final Type vitiateTelephonist = FW.telephonist("VitiateTelephonist", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, VitiateTelephonistFw.vitiateTelephonist, context)) {
             Val instance = Call.getVal(arg, context);

@@ -95,7 +95,7 @@ public class ToExprFn {
             return ExprFw.wrap(arg._unpack(SyntaxResolveFw.SyntaxResolve.class).toExpr(context));
         }
         if (type.equals(CompEnv.compEnv)) {
-            SyntaxResolveFw.CompEnvRecord env = arg._unpack();
+            ChainLinkFw.ChainLinkRecord env = arg._unpack();
             return ExprFw.wrap(env.toExpr(context));
         }
 

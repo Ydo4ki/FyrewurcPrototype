@@ -1,9 +1,8 @@
 package org.fw.core.lib.expr;
 
-import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
-import org.fw.core.util.FwUtils;
+import org.fw.core.lib.ChainLinkFw;
 import org.fw.core.adapter.AbstractValAdapted;
 import org.fw.core.ast.Expr;
 import org.fw.core.lib.VitFw;
@@ -30,8 +29,7 @@ public final class CompEnv extends AbstractValAdapted {
     }
 
     public Val compileV(Val expr, Context context) {
-        Val v = asVal().call(syntaxResolve(expr._unpack(), this), context);
-        return v;
+        return asVal().call(syntaxResolve(expr._unpack(), this), context);
     }
 
     public Vit compile(Val expr, Context context) throws VitCompilationException {
@@ -43,27 +41,10 @@ public final class CompEnv extends AbstractValAdapted {
         return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolveFw.SyntaxResolve(expr, env));
     }
 
-    public static final Type compEnv = FW.telephonist("CompEnv", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, CompEnv.compEnv, context)) {
-            SyntaxResolveFw.CompEnvRecord instance = Call.getVal(arg, context)._unpack();
-            Val cArg = Call.getArg(arg, context);
-
-            if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-                Val ret = instance.resolver().call(cArg, context);
-                if (Unspecified.isUnspecified(ret))
-                    return instance.parentCEnv().call(cArg, context);
-                return ret;
-            }
-        } else if (arg.equals(symbol("builder"))) {
-            return FW.telephonist("CompEnv.builder", (resolver, context1) -> {
-                return FW.telephonist(() -> "(call CompEnv.builder " + resolver.toExpr(context1) + ")", (parentCEnv, c) -> {
-                    return Val.of(CompEnv.compEnv, new SyntaxResolveFw.CompEnvRecord(resolver, parentCEnv));
-                });
-            });
-        }
-
-        return null;
-    }).asType();
+    public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
+            .call(symbol("constructor"), Context.outOf)
+            .call(Unspecified.isNot, Context.outOf)
+            .asType();
 
     public static Val compEnv(Val resolver, Val parentCEnv, Context context) {
         return compEnv.asVal().call(symbol("builder"), context).call(resolver, context).call(parentCEnv, context);
@@ -76,5 +57,4 @@ public final class CompEnv extends AbstractValAdapted {
         }
         return actual;
     }
-
 }

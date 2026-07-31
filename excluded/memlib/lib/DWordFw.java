@@ -6,7 +6,6 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 
 public final class DWordFw {
-    @Insightful
     public static final Type dword = FW.telephonist("dword", (arg, context) -> {
         return Val.unspecified;
     }).asType();

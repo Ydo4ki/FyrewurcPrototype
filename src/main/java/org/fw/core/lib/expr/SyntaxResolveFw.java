@@ -7,7 +7,6 @@ import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.ast.Symbol;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
@@ -86,25 +85,4 @@ public final class SyntaxResolveFw {
         }
     }
 
-    static final class CompEnvRecord {
-        private final Val resolver;
-        private final Val parentCEnv;
-
-        CompEnvRecord(Val resolver, Val parentCEnv) {
-            this.resolver = resolver;
-            this.parentCEnv = parentCEnv;
-        }
-
-        public Val resolver() {
-            return resolver;
-        }
-
-        public Val parentCEnv() {
-            return parentCEnv;
-        }
-
-        public Expr toExpr(Context context) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("comp-env"), resolver.toExpr(context), parentCEnv.toExpr(context));
-        }
-    }
 }

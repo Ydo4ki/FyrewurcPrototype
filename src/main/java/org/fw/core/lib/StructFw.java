@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
-import org.fw.core.annotation.Insightful;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -22,7 +21,6 @@ import static org.fw.core.FW.symbol;
 
 // so should the order of fields matter or not?
 public final class StructFw {
-    @Insightful
     public static final Type struct = FW.telephonist("Struct", (arg, context) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.struct, context)) {
             Val instance = Call.getVal(arg, context);

@@ -7,7 +7,6 @@ import org.fw.core.base.Val;
 
 public final class ZWordFw {
     /* 64 bytes (512 bits) */
-    @Insightful
     public static final Type zword = FW.telephonist("zword", (arg, context) -> {
         return Val.unspecified;
     }).asType();
