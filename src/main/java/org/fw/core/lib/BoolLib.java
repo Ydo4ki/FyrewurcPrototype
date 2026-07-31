@@ -3,7 +3,6 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.ToExprFn;
 
 import static org.fw.core.FW.symbol;
@@ -22,12 +21,9 @@ public final class BoolLib {
                     DeclaredFw.declared(symbol("true"), BoolFw._true),
                     DeclaredFw.declared(symbol("false"), BoolFw._false)
             ),
-            var -> {
-                Context c = Context.outOf;
-                return ChainLinkFw.chain(ToExprFn.exprififier,
-                        boolToExpr,
-                        var.call(symbol("to-expr"))
-                );
-            }
+            var -> ChainLinkFw.chain(ToExprFn.exprififier,
+                    boolToExpr,
+                    var.call(symbol("to-expr"))
+            )
     );
 }

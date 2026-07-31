@@ -4,16 +4,15 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
-import org.fw.core.lib.comp.InternalSystemContext;
 import org.fw.core.lib.expr.AccumulatorsExprFw;
 import org.fw.core.lib.expr.CompEnv;
+import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.state.operation.LaserPointerFw;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.operation.Operation;
@@ -30,7 +29,6 @@ import static org.fw.core.vit.Vit.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CompEnvTest {
-    private static final Context context = new Context(Main.rtEnv, InternalSystemContext.context.state());
 
     //            VitiateTelephonistFw.vitiate(
 //            FW.vIf(FW.vEq(val(ValsFw.typeGet).call(argExpr), val(ExprFw.exprList.asVal())),
@@ -57,7 +55,7 @@ class CompEnvTest {
     static {
         testValsMap.put("Test", TestFw.test.asVal());
         testValsMap.put("+", Val.of(AccumulatorsExprFw.exprAccumulator, symbol("+")));
-        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, new Obj.ValObj(DIntFw.dint(14), context.state())));
+        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, new Obj.ValObj(DIntFw.dint(14), SystemOperation.systemState)));
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 
@@ -87,7 +85,7 @@ class CompEnvTest {
         Val vv = VitFw.wrap(vit);
 //        System.out.println(vv.toExpr(context));
 //        System.out.println(vv);
-        assertEquals(vit.eval(context.rtEnv(), context.state()), DIntFw.dint(5));
+        assertEquals(vit.eval(Main.rtEnv, SystemOperation.systemState), DIntFw.dint(5));
         assertEquals(vv, VitFw.wrap(val(DIntFw.dint(5))));
     }
 

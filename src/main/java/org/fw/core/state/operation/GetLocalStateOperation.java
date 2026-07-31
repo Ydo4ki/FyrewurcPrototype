@@ -2,7 +2,6 @@ package org.fw.core.state.operation;
 
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.State;
 
@@ -26,7 +25,7 @@ public final class GetLocalStateOperation extends Operation {
     }
 
     @Override
-    public Expr toExpr(Context context) {
+    public Expr toExpr() {
         return Symbol.of("GetLocalStateOperation");
     }
 

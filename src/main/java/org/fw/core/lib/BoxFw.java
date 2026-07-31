@@ -2,13 +2,11 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
-import org.fw.core.ast.Symbol;
 
 import static org.fw.core.FW.symbol;
 
@@ -60,7 +58,7 @@ public final class BoxFw {
         return arg._unpack();
     }
 
-    public static Type newBoxType(Val key, Context context) {
+    public static Type newBoxType(Val key) {
         return boxType.asVal().call(symbol("constructor")).call(key).asType();
     }
 }

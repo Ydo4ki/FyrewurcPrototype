@@ -12,7 +12,6 @@ import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;

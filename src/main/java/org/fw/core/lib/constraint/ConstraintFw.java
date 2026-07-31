@@ -2,13 +2,11 @@ package org.fw.core.lib.constraint;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Symbol;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
-import org.fw.core.state.obj.State;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 

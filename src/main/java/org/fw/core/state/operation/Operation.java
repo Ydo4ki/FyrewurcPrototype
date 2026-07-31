@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.base.context.RtEnv;
@@ -42,16 +41,11 @@ public abstract class Operation {
         return new VitOperation(vit, rtEnv);
     }
 
-    @Deprecated
-    public static Operation vit(Vit vit, RtEnv rtEnv, Context context) {
-        return vit(Vit.simplify(vit), rtEnv);
-    }
-
     public static Operation pure(Val val) {
         return new VitOperation(Vit.val(val), RtEnv.unspecified);
     }
 
-    public Expr toExpr(Context context) {
+    public Expr toExpr() {
         return ExprList.of(BracketsTypes.braces);
     }
 

@@ -2,7 +2,6 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
@@ -82,11 +81,9 @@ public final class DeclaredFw {
                 throw new RuntimeException(e);
             }
         } else if (arg.equals(symbol("builder"))) {
-            return FW.telephonist("Declared.builder", (name) -> {
-                return FW.telephonist((value) -> {
-                    return declared(name, value);
-                });
-            });
+            return FW.telephonist("Declared.builder",
+                    (name) -> FW.telephonist(
+                            (value) -> declared(name, value)));
         }
         return null;
     }).asType();

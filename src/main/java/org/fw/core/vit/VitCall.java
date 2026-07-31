@@ -1,7 +1,6 @@
 package org.fw.core.vit;
 
 import org.fw.core.ast.Expr;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.VitFw;

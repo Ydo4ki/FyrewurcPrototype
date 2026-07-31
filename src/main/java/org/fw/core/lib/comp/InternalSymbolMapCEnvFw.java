@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.j.JValConstGetter;
 import org.fw.core.vit.Vit;

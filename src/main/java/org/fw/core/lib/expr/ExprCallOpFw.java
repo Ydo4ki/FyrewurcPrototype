@@ -2,17 +2,13 @@ package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.util.FwUtils;
-import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.lib.DIntFw;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static org.fw.core.FW.symbol;

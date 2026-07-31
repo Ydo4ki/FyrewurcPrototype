@@ -1,6 +1,5 @@
 package org.fw.core.state.operation;
 
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;

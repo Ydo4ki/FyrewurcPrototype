@@ -5,7 +5,6 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.SyntaxResolveFw;
@@ -105,16 +104,6 @@ public final class DVecFw {
 
     public static Val vec(Val... value) {
         return Val.of(dVec, value);
-    }
-
-    // bruh
-    @Deprecated
-    public static Val newvec(Val[] vals, Context context) {
-        Val b = DVecFw.emptyBuilder;
-        for (Val val : vals) {
-            b = b.call(val);
-        }
-        return DVecFw.dvecbf.call(b);
     }
 
     public static final class DVecConstructorCEnvFw {

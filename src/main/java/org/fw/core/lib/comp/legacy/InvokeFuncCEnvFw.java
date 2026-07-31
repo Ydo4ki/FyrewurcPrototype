@@ -4,7 +4,6 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
@@ -66,7 +65,7 @@ public final class InvokeFuncCEnvFw {
                 }
 
 //                Vit resultingCode = Vit.val(VitFw.eval).call(vit).call(Vit.var);
-                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(eval).call(vit).call(Vit.var), Context.outOf.rtEnv())))); // ._.
+                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(eval).call(vit).call(Vit.var), RtEnv.unspecified)))); // ._.
 
                 return VitFw.wrap(resultingCode);
             }

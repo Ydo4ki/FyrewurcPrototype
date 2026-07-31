@@ -1,10 +1,9 @@
 package org.fw.core;
 
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.cases.Main;
 import org.fw.core.lib.VitFw;
-import org.fw.core.state.obj.State;
-import org.fw.core.base.context.RtEnv;
+import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.vit.Vit;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,6 @@ import static org.fw.core.FW.symbol;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VitTests {
-    private static final Context context = new Context(RtEnv.unspecified, State.eternal());
     private static final Val v1 = FW.telephonist("v1", (arg) -> null);
     private static final Val v2 = FW.telephonist("v2", (arg) -> null);
 
@@ -60,7 +58,7 @@ public class VitTests {
                         .call(symbol("constructor"))
                         .call(v2));
 
-        Val vit = codeThatCreatesVit.eval(context.rtEnv(), context.state());
+        Val vit = codeThatCreatesVit.eval(Main.rtEnv, SystemOperation.systemState);
 
         assertEquals(v1, vit.call(symbol("func")).call(symbol("val")));
         assertEquals(v2, vit.call(symbol("arg")).call(symbol("val")));

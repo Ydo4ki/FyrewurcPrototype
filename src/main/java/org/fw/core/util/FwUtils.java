@@ -8,7 +8,6 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.base.ValsFw;
@@ -69,7 +68,7 @@ public final class FwUtils {
     public static Val getValueFromFile(File file, CompEnv compEnv) throws IOException {
         return State.performAndDie(s -> {
             try {
-                return getValueFromFile(file, compEnv, new Context(RtEnv.unspecified, s));
+                return getValueFromFile(file, compEnv, RtEnv.unspecified, s);
             } catch (IOException e) {
                 sneakyThrow(e);
                 return null;
@@ -82,7 +81,7 @@ public final class FwUtils {
         throw (T) t;
     }
 
-    public static Val getValueFromFile(File file, CompEnv compEnv, Context context) throws IOException {
+    public static Val getValueFromFile(File file, CompEnv compEnv, RtEnv rtEnv, State state) throws IOException {
         Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
         Val result = Operation.unit; // this will be returned if the file is empty
 
@@ -110,7 +109,7 @@ public final class FwUtils {
             } catch (VitCompilationException e) {
                 throw new RuntimeException("Cannot compile: " + expr, e);
             }
-            result = vit.eval(context.rtEnv(), context.state());
+            result = vit.eval(rtEnv, state);
             if (result.type().equals(DeclaredFw.declared)) {
                 Val key = DeclaredFw.getKey(result);
                 Val value = DeclaredFw.getValue(result);

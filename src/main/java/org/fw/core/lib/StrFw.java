@@ -6,7 +6,6 @@ import static org.fw.core.vit.Vit.var;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.state.obj.State;

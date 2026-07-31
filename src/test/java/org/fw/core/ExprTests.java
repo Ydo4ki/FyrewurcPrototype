@@ -4,13 +4,11 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.StrFw;
-import org.fw.core.state.obj.State;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;
