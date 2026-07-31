@@ -29,38 +29,15 @@ public final class BoolFw {
             } else if (cArg.equals(symbol("if"))) {
                 return FW.telephonistE(() -> callReprs("if", instance, context), (arg1, context1) -> { // probably one of the weirdest if implementations ever
                     if (value)
-//                        return VitiateTelephonistFw.vitiate(Vit.val(arg1), symbol("arg"), context1);
                         return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("if"), arg1.toExpr(context)), (arg2, context2) -> {
                             return arg1;
                         });
                     else
-//                        return VitiateTelephonistFw.vitiate(Vit.var(symbol("arg")), symbol("arg"), context1);
                         return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("if"), arg1.toExpr(context)), (arg2, context2) -> {
                             return arg2;
                         });
                 });
-            }/* else if (cArg.equals(symbol("lif"))) {
-                return FW.telephonistE(() -> callReprs("lif", instance, context), (arg1, context1) -> { // probably one of the weirdest if implementations ever
-                    if (value)
-                        return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("lif"), arg1.toExpr(context)), (arg2, context2) -> {
-                            if (!VitFw.isVit(arg1.type()))
-                                return Val.unspecified;
-                            Vit vit = VitFw.unwrap(arg1);
-                            return FW.telephonist("sdklfljsldf", (arg3, context3) -> {
-                                return vit.eval(new Context(RtEnv.of(arg3), context3.scope()));
-                            });
-                        });
-                    else
-                        return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("lif"), arg1.toExpr(context)), (arg2, context2) -> {
-                            if (!VitFw.isVit(arg2.type()))
-                                return Val.unspecified;
-                            Vit vit = VitFw.unwrap(arg2);
-                            return FW.telephonist("sdklfljsldf", (arg3, context3) -> {
-                                return vit.eval(new Context(RtEnv.of(arg3), context3.scope()));
-                            });
-                        });
-                });
-            }*/
+            }
         }
         return null;
     }).asType();
