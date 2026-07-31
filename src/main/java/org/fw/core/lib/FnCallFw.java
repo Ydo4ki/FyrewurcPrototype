@@ -12,23 +12,23 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public class FnCallFw {
-    public static final CompEnv fnCallCenv = CompEnv.of(telephonist((arg, context) -> {
+    public static final CompEnv fnCallCenv = CompEnv.of(telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"), context);
-            Val compEnv = arg.call(symbol("comp-env"), context);
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
 
-                Val fvv = compEnv.call(CompEnv.syntaxResolve(f, CompEnv.of(compEnv)), context);
+                Val fvv = compEnv.call(CompEnv.syntaxResolve(f, CompEnv.of(compEnv)));
                 if (!VitFw.isVit(fvv.type()))
                     return null;
                 Vit fv = VitFw.unwrap(fvv);
 
                 Vit varValuesV = Vit.val(DVecFw.emptyBuilder);
                 for (int i = 1; i < isize; i++) {
-                    varValuesV = varValuesV.call(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(compEnv)), context)));
+                    varValuesV = varValuesV.call(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)))));
                 }
                 varValuesV = Vit.val(DVecFw.dvecbf).call(varValuesV);
 

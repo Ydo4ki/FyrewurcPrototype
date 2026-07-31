@@ -21,20 +21,20 @@ import static org.fw.core.FW.symbol;
 
 public final class DeclarationFw {
     @Deprecated
-    public static final Val field = FW.telephonist("=", (arg, context) -> {
+    public static final Val field = FW.telephonist("=", (arg) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
                 return null;
 
-            Val name = arg.call(DIntFw.dint(0), context);
+            Val name = arg.call(DIntFw.dint(0));
             if (!name.type().equals(SymbolFw.symbol))
                 return null; // symbol expected
 
-            Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(value.type())) return value; // error idk
 
             return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(name)
@@ -44,10 +44,10 @@ public final class DeclarationFw {
     });
 
     // I hope it will be possible to make it a struct later
-    public static final Type declaration = FW.telephonist("Declaration", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, DeclarationFw.declaration, context)) {
-            Val instance = Call.getVal(arg, context);
-            arg = Call.getArg(arg, context);
+    public static final Type declaration = FW.telephonist("Declaration", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, DeclarationFw.declaration)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
 
             Declaration decl = instance._unpack();
             if (arg.equals(symbol("key"))) {
@@ -56,25 +56,25 @@ public final class DeclarationFw {
                 return decl.constraint();
             }
         } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
 
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2)
                 return null;
 
-            Val name = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val name = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(name.type()))
                 return name; // error idk
 
-            Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(value.type()))
                 return value; // error idk
 
             return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(VitFw.unwrap0(name)).call(VitFw.unwrap0(value)));
         } else if (arg.equals(symbol("builder"))) {
-            return FW.telephonist("Declaration.builder", (key, context1) -> {
-                return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint, context2) -> {
+            return FW.telephonist("Declaration.builder", (key) -> {
+                return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint) -> {
                     if (!ConstraintFw.isConstraint(constraint)) return null;
                     return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
                 });
@@ -82,21 +82,21 @@ public final class DeclarationFw {
         }
         return null;
     }).asType();
-    public static final Val declarationToExpr = FW.telephonist((arg, context) -> {
+    public static final Val declarationToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(declaration)) {
-            Expr expr = toExpr(arg, context);
+            Expr expr = toExpr(arg, Context.outOf); // todo
             return ExprFw.wrap(expr);
         }
         return null;
     });
 
-    public static Val getKey(Val declaration, Context context) {
-        return declaration.call(symbol("key"), context);
+    public static Val getKey(Val declaration) {
+        return declaration.call(symbol("key"));
     }
 
-    public static Val getConstraint(Val declaration, Context context) {
-        return declaration.call(symbol("constraint"), context);
+    public static Val getConstraint(Val declaration) {
+        return declaration.call(symbol("constraint"));
     }
 
     public static Val declaration(Val key, Val constraint) {

@@ -18,7 +18,7 @@ public final class VitCall extends Vit {
 
     @Override
     public Val eval(Context context) {
-        return func.eval(context).call(arg.eval(context), context);
+        return func.eval(context).call(arg.eval(context));
     }
 
     @Override

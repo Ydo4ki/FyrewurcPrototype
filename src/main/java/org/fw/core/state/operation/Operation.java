@@ -16,7 +16,7 @@ public abstract class Operation {
     // a Val symbolizing successful completion of the operation
     // basically the same as the old 'unspecified'
     // just without negative connotation
-    public static final Val unit = FW.telephonist("unit", (arg, context) -> Operation.unit);
+    public static final Val unit = FW.telephonist("unit", (arg) -> Operation.unit);
 
     public abstract Val execute(Context context);
 
@@ -43,7 +43,7 @@ public abstract class Operation {
 
     @Deprecated
     public static Operation vit(Vit vit, RtEnv rtEnv, Context context) {
-        return vit(Vit.simplify(vit, context), rtEnv);
+        return vit(Vit.simplify(vit), rtEnv);
     }
 
     public static Operation pure(Val val) {

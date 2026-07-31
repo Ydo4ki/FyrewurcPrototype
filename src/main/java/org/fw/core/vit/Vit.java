@@ -3,8 +3,6 @@ package org.fw.core.vit;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 
-import java.util.function.Function;
-
 // no side effects for now
 public abstract class Vit {
 
@@ -12,15 +10,10 @@ public abstract class Vit {
     // but we'll need to do some cleanup
 
     public static Vit simplify(Vit vit) {
-        return simplify0(vit, Context.outOf);
+        return simplify0(vit);
     }
 
-    @Deprecated // but test if everything actually works without it before removing, I might have forgotten something
-    public static Vit simplify(Vit vit, Context context) {
-        return simplify0(vit, context);
-    }
-
-    private static Vit simplify0(Vit vit, Context context) {
+    private static Vit simplify0(Vit vit) {
         if (vit instanceof VitVal || vit instanceof VitVar) {
             return vit;
         }
@@ -28,13 +21,13 @@ public abstract class Vit {
         if (vit instanceof VitCall) {
             VitCall call = (VitCall) vit;
 
-            Vit func = simplify(call.func(), context);
-            Vit arg = simplify(call.arg(), context);
+            Vit func = simplify(call.func());
+            Vit arg = simplify(call.arg());
 
             if (func instanceof VitVal && arg instanceof VitVal) {
                 Val f = ((VitVal) func).val();
                 Val a = ((VitVal) arg).val();
-                return val(f.call(a, context));
+                return val(f.call(a));
             }
 
             return new VitCall(func, arg);
@@ -66,7 +59,7 @@ public abstract class Vit {
             if (func instanceof VitVal && arg instanceof VitVal) {
                 Val f = ((VitVal) func).val();
                 Val a = ((VitVal) arg).val();
-                return val(f.call(a, context));
+                return val(f.call(a));
             }
 
             return new VitCall(func, arg);

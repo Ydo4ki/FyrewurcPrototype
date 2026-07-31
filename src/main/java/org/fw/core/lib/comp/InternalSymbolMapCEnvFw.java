@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.j.JValConstGetter;
 import org.fw.core.vit.Vit;
@@ -34,7 +35,7 @@ public final class InternalSymbolMapCEnvFw {
     }
 
 
-    public static final Val valsCenv = symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
+    public static final Val valsCenv = symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
         if (!arg1.type().equals(SymbolFw.symbol))
             return null;
         String string = arg1._unpack().toString();
@@ -48,9 +49,9 @@ public final class InternalSymbolMapCEnvFw {
         Vit arg = var(symbol("arg"));
         Vit argExpr = arg.call(symbol("expr"));
         Vit parseArg = telemap.call(argExpr);
-        return FW.telephonist((arg1, context) -> {
+        return FW.telephonist((arg1) -> {
             if (Unspecified.isUnspecified(arg1)) return null;
-            else return parseArg.eval(context);
+            else return parseArg.eval(Context.outOf);
         });
 //        return VitiateTelephonistFw.vitiate(
 //                FW.vIf(val(eq).call(parseArg).call(null).call(symbol("not")),

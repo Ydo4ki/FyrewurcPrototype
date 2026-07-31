@@ -25,10 +25,10 @@ import static org.fw.core.FW.symbol;
 @Deprecated
 public final class ExprCallOpFw {
     @Deprecated
-    public static final Type exprCallOp = FW.telephonist("ExprCallOp", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, ExprCallOpFw.exprCallOp, context)) {
-            Val val = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
+    public static final Type exprCallOp = FW.telephonist("ExprCallOp", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, ExprCallOpFw.exprCallOp)) {
+            Val val = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
 
             ExprCallOp payload = val._unpack();
             if (cArg.equals(symbol("comp-env"))) {
@@ -47,14 +47,14 @@ public final class ExprCallOpFw {
                 return ExprFw.wrap(payload.args[i]);
             }
         } else if (arg.equals(symbol("of-expr-list"))) {
-            return FW.telephonist("ExprCallOp.of-expr-list", (arg1, context1) -> {
+            return FW.telephonist("ExprCallOp.of-expr-list", (arg1) -> {
                 if (arg1.type().equals(ExprFw.exprList)) {
                     ExprList list = arg1._unpack();
                     Expr[] args = new Expr[list.size()-1];
                     for (int i = 0; i < args.length; i++) {
                         args[i] = list.get(i + 1);
                     }
-                    return FW.telephonist("(ExprCallOp.of-expr-list " + arg1.toExpr(context1) + ")", (cEnv, c) -> {
+                    return FW.telephonist((cEnv) -> {
                         return Val.of(ExprCallOpFw.exprCallOp, new ExprCallOp(args, CompEnv.of(cEnv)));
                     });
                 } else {

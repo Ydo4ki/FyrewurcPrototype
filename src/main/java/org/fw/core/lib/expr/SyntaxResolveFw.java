@@ -17,10 +17,10 @@ import static org.fw.core.FW.symbol;
 
 // todo: replace with more general ChainResolve
 public final class SyntaxResolveFw {
-    public static final Type syntaxResolve = FW.telephonist("SyntaxResolve", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, SyntaxResolveFw.syntaxResolve, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
+    public static final Type syntaxResolve = FW.telephonist("SyntaxResolve", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, SyntaxResolveFw.syntaxResolve)) {
+            Val instance = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
 
             SyntaxResolve sr = instance._unpack();
             if (cArg.equals(symbol("expr"))) {
@@ -29,25 +29,25 @@ public final class SyntaxResolveFw {
                 return sr.env().asVal();
             }
         } else if (arg.equals(symbol("builder"))) {
-            return FW.telephonist("SyntaxResolve.builder", (expr, context1) -> {
+            return FW.telephonist("SyntaxResolve.builder", (expr) -> {
                 if (!expr.type().equals(SymbolFw.symbol) && !expr.type().equals(ExprFw.exprList)) {
                     return null;
                 }
-                return FW.telephonist(() -> "(SyntaxResolve.builder " + expr.toExpr(context1) + ")", (callerEnv, context2) -> {
+                return FW.telephonist((callerEnv) -> {
                     return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolve(expr._unpack(), CompEnv.of(callerEnv)));
                 });
             });
         } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2) return null;
 
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Val retVit2 = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val retVit2 = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(retVit2.type()))
                 return retVit2; // compile error idk
 
@@ -59,10 +59,10 @@ public final class SyntaxResolveFw {
         }
         return null;
     }).asType();
-    public static final Val syntaxResolveToExpr = FW.telephonist((arg, context) -> {
+    public static final Val syntaxResolveToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(syntaxResolve)) {
-            return ExprFw.wrap(arg._unpack(SyntaxResolve.class).toExpr(context));
+            return ExprFw.wrap(arg._unpack(SyntaxResolve.class).toExpr(Context.outOf));
         }
         return null;
     });

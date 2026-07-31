@@ -22,10 +22,10 @@ import static org.fw.core.FW.*;
 
 public final class DVecFw {
     // this already looks oldfashioned wtf
-    public static final Type dVec = FW.telephonist("DVec", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, DVecFw.dVec, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
+    public static final Type dVec = FW.telephonist("DVec", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, DVecFw.dVec)) {
+            Val instance = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
             Val[] vec = instance._unpack();
 
             if (cArg.type().equals(SymbolFw.symbol)) {
@@ -55,38 +55,38 @@ public final class DVecFw {
         return null;
     }).asType();
 
-    public static final Type dVecBuilder = telephonist("DVecBuilder", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, DVecFw.dVecBuilder, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
+    public static final Type dVecBuilder = telephonist("DVecBuilder", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, DVecFw.dVecBuilder)) {
+            Val instance = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
             Val[] value = instance._unpack();
 
             return Val.of(DVecFw.dVecBuilder, arAppended(value, cArg));
         }
         return null;
     }).asType();
-    public static final Val dvecToExpr = telephonist((arg, context) -> {
+    public static final Val dvecToExpr = telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(dVec)) {
             Val[] vec = arg._unpack();
             List<Expr> elements = new ArrayList<>();
             for (Val val : vec) {
-                elements.add(val.toExpr(context));
+                elements.add(val.toExpr(Context.outOf));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.square, elements));
         } else if (type.equals(dVecBuilder)) {
             Val[] vec = arg._unpack();
             List<Expr> elements = new ArrayList<>();
-            elements.add(type.asVal().toExpr(context));
+            elements.add(type.asVal().toExpr(Context.outOf));
             for (Val val : vec) {
-                elements.add(val.toExpr(context));
+                elements.add(val.toExpr(Context.outOf));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
         }
         return null;
     });
 
-    public static final Val dvecbf = telephonist("dvecbf", (arg, context) -> {
+    public static final Val dvecbf = telephonist("dvecbf", (arg) -> {
         if (arg.type() == dVecBuilder) {
             return Val.of(dVec, arg._unpack());
         }
@@ -111,26 +111,26 @@ public final class DVecFw {
     public static Val newvec(Val[] vals, Context context) {
         Val b = DVecFw.emptyBuilder;
         for (Val val : vals) {
-            b = b.call(val, context);
+            b = b.call(val);
         }
-        return DVecFw.dvecbf.call(b, context);
+        return DVecFw.dvecbf.call(b);
     }
 
     public static final class DVecConstructorCEnvFw {
-        public static final Val dVecConstructorCenv = telephonist(() -> "dVecConstructorCenv", (arg, context) -> {
+        public static final Val dVecConstructorCenv = telephonist(() -> "dVecConstructorCenv", (arg) -> {
             if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-                Val exprVal = arg.call(symbol("expr"), context);
-                Val compEnv = arg.call(symbol("comp-env"), context);
+                Val exprVal = arg.call(symbol("expr"));
+                Val compEnv = arg.call(symbol("comp-env"));
                 Expr expr = exprVal._unpack();
                 if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.square)) {
                     ExprList list = (ExprList) expr;
                     if (list.size() == 0)
-                        return VitFw.wrap(Vit.val(dvecbf.call(emptyBuilder, context)));
+                        return VitFw.wrap(Vit.val(dvecbf.call(emptyBuilder)));
 
                     Vit ctor = Vit.val(emptyBuilder);
                     for (int i = 0; i < list.size(); i++) {
                         Expr f = list.get(i);
-                        Val elVitVal = CompEnv.of(compEnv).compileV(ExprFw.wrap(f), context);
+                        Val elVitVal = CompEnv.of(compEnv).compileV(ExprFw.wrap(f));
                         if (!VitFw.isVit(elVitVal.type()))
                             return elVitVal;
 
@@ -140,7 +140,7 @@ public final class DVecFw {
                         } catch (VitCompilationException e) {
                             throw new RuntimeException(e);
                         }
-                        ctor = ctor.call(Vit.simplify(vit, context));
+                        ctor = ctor.call(Vit.simplify(vit));
                     }
 
                     ctor = Vit.val(dvecbf).call(ctor);
@@ -152,7 +152,7 @@ public final class DVecFw {
         });
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                     DeclaredFw.declared(symbol("DVec"), DVecFw.dVec.asVal()),
                     DeclaredFw.declared(symbol("DVecBuilder"), DVecFw.dVecBuilder.asVal()),

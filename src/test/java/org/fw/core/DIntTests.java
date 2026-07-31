@@ -18,16 +18,16 @@ public class DIntTests {
     @Test
     void test() {
         Val n = DIntFw.dint(20);
-        assertEquals(DIntFw.dint(70), n.call(symbol("+"), context).call(DIntFw.dint(50), context));
-        assertEquals(DIntFw.dint(10), n.call(symbol("-"), context).call(DIntFw.dint(10), context));
-        assertEquals(DIntFw.dint(1000), n.call(symbol("*"), context).call(DIntFw.dint(50), context));
-        assertEquals(DIntFw.dint(6), n.call(symbol("/"), context).call(DIntFw.dint(3), context));
-        assertEquals(DIntFw.dint(-20), n.call(symbol("neg"), context));
+        assertEquals(DIntFw.dint(70), n.call(symbol("+")).call(DIntFw.dint(50)));
+        assertEquals(DIntFw.dint(10), n.call(symbol("-")).call(DIntFw.dint(10)));
+        assertEquals(DIntFw.dint(1000), n.call(symbol("*")).call(DIntFw.dint(50)));
+        assertEquals(DIntFw.dint(6), n.call(symbol("/")).call(DIntFw.dint(3)));
+        assertEquals(DIntFw.dint(-20), n.call(symbol("neg")));
     }
 
     @Test
     void testParse() {
         Val str = StrFw.str("553");
-        assertEquals(DIntFw.dint(553), DIntFw.dint.asVal().call(symbol("parse"), context).call(str, context));
+        assertEquals(DIntFw.dint(553), DIntFw.dint.asVal().call(symbol("parse")).call(str));
     }
 }

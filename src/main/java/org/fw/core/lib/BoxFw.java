@@ -12,38 +12,32 @@ import org.fw.core.ast.Symbol;
 import static org.fw.core.FW.symbol;
 
 public final class BoxFw {
-    public static final Type boxType = FW.telephonist("BoxType", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, BoxFw.boxType, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
-            return handleBoxTypeCall(instance.asType(), cArg, context);
+    public static final Type boxType = FW.telephonist("BoxType", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, BoxFw.boxType)) {
+            Val instance = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
+            return handleBoxTypeCall(instance.asType(), cArg);
         } else if (arg.equals(symbol("constructor"))) {
 //            return InstancerFw.mkInstancer(BoxFw.boxType, BoxFw.boxType.asVal(), "constructor");
-            return FW.telephonist(ExprList.of(BracketsTypes.round,
-                    Symbol.of("get"),
-                    BoxFw.boxType.asVal().toExpr(context),
-                    Symbol.of("constructor")
-            ), (arg1, c) -> {
-                return Val.of(BoxFw.boxType, arg1);
-            });
+            return FW.telephonist(arg1 -> Val.of(BoxFw.boxType, arg1));
         }
         return null;
     }).asType();
-    public static final Val boxToExpr = FW.telephonist((arg, context) -> {
+    public static final Val boxToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(boxType)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(context), unbox(arg).toExpr(context)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(Context.outOf), unbox(arg).toExpr(Context.outOf)));
         } else if (type.asVal().type().equals(boxType)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), unbox(arg).toExpr(context)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(Context.outOf), unbox(arg).toExpr(Context.outOf)));
         }
         return null;
     });
 
     @Deprecated
-    private static Val handleBoxTypeCall(Type type, Val arg, Context context) {
-        if (FwUtils.isTypeApiCall(arg, type, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
+    private static Val handleBoxTypeCall(Type type, Val arg) {
+        if (FwUtils.isTypeApiCall(arg, type)) {
+            Val instance = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
             if (cArg.equals(symbol("unbox"))) {
                 return unbox(instance);
             }
@@ -55,12 +49,7 @@ public final class BoxFw {
 //            else
         } else if (arg.equals(symbol("constructor"))) {
 //            return InstancerFw.mkInstancer(type, type.asVal(), "constructor");
-            return FW.telephonist(
-                    ExprList.of(BracketsTypes.round,
-                            Symbol.of("get"),
-                            type.asVal().toExpr(context),
-                            Symbol.of("constructor")
-                    ), (arg1, context1) -> Val.of(type, arg1));
+            return FW.telephonist((arg1) -> Val.of(type, arg1));
         }
         return null;
     }
@@ -71,6 +60,6 @@ public final class BoxFw {
     }
 
     public static Type newBoxType(Val key, Context context) {
-        return boxType.asVal().call(symbol("constructor"), context).call(key, context).asType();
+        return boxType.asVal().call(symbol("constructor")).call(key).asType();
     }
 }

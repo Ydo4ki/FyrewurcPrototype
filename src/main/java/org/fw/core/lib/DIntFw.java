@@ -6,10 +6,6 @@ import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.util.FwUtils;
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.ExprList;
-import org.fw.core.ast.Symbol;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
@@ -18,34 +14,34 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.vit.Vit.val;
 
 public final class DIntFw {
-    public static final Type dint = FW.telephonist("DInt", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, DIntFw.dint, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
+    public static final Type dint = FW.telephonist("DInt", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, DIntFw.dint)) {
+            Val instance = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
 
             BigInteger value = unwrap(instance);
             assert value != null;
             if (cArg.equals(symbol("neg"))) {
                 return dint(value.negate());
             } else if (cArg.equals(symbol("+"))) {
-                return bop("+", instance, context, BigInteger::add);
+                return bop(instance, BigInteger::add);
             } else if (cArg.equals(symbol("-"))) {
-                return bop("-", instance, context, BigInteger::subtract);
+                return bop(instance, BigInteger::subtract);
             } else if (cArg.equals(symbol("*"))) {
-                return bop("*", instance, context, BigInteger::multiply);
+                return bop(instance, BigInteger::multiply);
             } else if (cArg.equals(symbol("/"))) {
-                return bop("/", instance, context, BigInteger::divide);
+                return bop(instance, BigInteger::divide);
             } else if (cArg.equals(symbol("%"))) {
-                return bop("%", instance, context, BigInteger::mod);
+                return bop(instance, BigInteger::mod);
             } else if (cArg.equals(symbol("<<"))) {
-                return bop("<<", instance, context, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftLeft(b.intValue()));
+                return bop(instance, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftLeft(b.intValue()));
             } else if (cArg.equals(symbol(">>"))) {
-                return bop(">>", instance, context, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftRight(b.intValue()));
+                return bop(instance, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftRight(b.intValue()));
             } else if (cArg.equals(symbol("<=>"))) {
-                return bop("<=>", instance, context, (a, b) -> BigInteger.valueOf(a.compareTo(b)));
+                return bop(instance, (a, b) -> BigInteger.valueOf(a.compareTo(b)));
             }
         } else if (arg.equals(symbol("parse"))) {
-            return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("get"), DIntFw.dint.asVal().toExpr(context), Symbol.of("parse")), (arg1, context1) -> {
+            return FW.telephonist((arg1) -> {
                 if (arg1.type().equals(StrFw.str)) {
                     String string = arg1._unpack();
                     try {
@@ -60,7 +56,7 @@ public final class DIntFw {
         }
         return null;
     }).asType();
-    public static final Val dintToExpr = FW.telephonist((arg, context) -> {
+    public static final Val dintToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(dint)) {
             return symbol(arg._unpack().toString());
@@ -68,20 +64,16 @@ public final class DIntFw {
         return null;
     });
 
-    private static Val bop(String name, Val instance, Context context, FwUtils.BigBinaryOperator operator) {
+    private static Val bop(Val instance, FwUtils.BigBinaryOperator operator) {
         BigInteger value = unwrap(instance);
         assert value != null;
-        return FW.telephonist(callReprs(name, instance, context), (arg1, context1) -> {
+        return FW.telephonist((arg1) -> {
             if (arg1.type().equals(DIntFw.dint)) {
                 BigInteger v2 = unwrap(arg1);
                 return dint(operator.apply(value, v2));
             }
             return null;
         });
-    }
-
-    private static Expr callReprs(String op, Val instance, Context context) {
-        return ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of(op));
     }
 
     public static Val dint(long value) {
@@ -102,13 +94,13 @@ public final class DIntFw {
     }
 
     public static final class ParseDIntCEnvFw {
-        public static final Val parseNumCenv = StrFw.ParseStrCEnvFw.symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {
-            return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1, context1))
-                    .eval(context1);
+        public static final Val parseNumCenv = StrFw.ParseStrCEnvFw.symbolMapEnv(val(FW.telephonist("parseNum", (arg1) -> {
+            return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1))
+                    .eval(Context.outOf);
         })));
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                     DeclaredFw.declared(symbol("DInt"), DIntFw.dint.asVal()),
                     DeclaredFw.declared(symbol("parseDIntCEnv"), ParseDIntCEnvFw.parseNumCenv)

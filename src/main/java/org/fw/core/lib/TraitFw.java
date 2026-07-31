@@ -23,10 +23,10 @@ import static org.fw.core.FW.symbol;
 
 public final class TraitFw {
 
-    public static final Type trait = FW.telephonist("Trait", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, TraitFw.trait, context)) {
-            Val instance = Call.getVal(arg, context);
-            arg = Call.getArg(arg, context);
+    public static final Type trait = FW.telephonist("Trait", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, TraitFw.trait)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
             Trait trait = instance._unpack();
             if (arg.equals(symbol("to-constraint"))) {
                 return trait.constraint();
@@ -46,20 +46,20 @@ public final class TraitFw {
 //            }
         }
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
                 return null;
             }
 
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
             return VitFw.wrap(Vit.val(TraitFw.trait.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit)));
         } else if (arg.equals(symbol("constructor"))) {
-            return FW.telephonist("Trait.constructor", (payload, context1) -> {
+            return FW.telephonist("Trait.constructor", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;
                 Val[] fields = payload._unpack();
@@ -67,15 +67,15 @@ public final class TraitFw {
                     if (!field.type().equals(DeclarationFw.declaration))
                         return null; // some day I'll add proper errors
                 }
-                return Val.of(TraitFw.trait, new Trait(fields, context));
+                return Val.of(TraitFw.trait, new Trait(fields));
             });
         }
         return null;
     }).asType();
-    public static final Val traitToExpr = FW.telephonist((arg, context) -> {
+    public static final Val traitToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(trait)) {
-            return toExpr(arg, context);
+            return toExpr(arg, Context.outOf);
         }
         return null;
     });
@@ -85,7 +85,7 @@ public final class TraitFw {
             if (!field.type().equals(DeclarationFw.declaration))
                 throw new IllegalArgumentException("Declaration expected");
         }
-        return Val.of(TraitFw.trait, new Trait(fields, Context.outOf));
+        return Val.of(TraitFw.trait, new Trait(fields));
     }
 
     public static Val toExpr(Val arg, Context context) {
@@ -104,29 +104,29 @@ public final class TraitFw {
         private final Val[] fields;
         private final Val constraint;
 
-        private Trait(Val[] fields, Context context) {
+        private Trait(Val[] fields) {
             this.fields = fields;
-            this.constraint = toConstraint(this, context);
+            this.constraint = toConstraint(this);
         }
 
-        private static Val toConstraint(Trait trait, Context context) {
+        private static Val toConstraint(Trait trait) {
             Vit a = Vit.val(BoolFw._true);
             for (Val field : trait.fields) {
-                Val key = DeclarationFw.getKey(field, context);
-                Val constraint = DeclarationFw.getConstraint(field, context);
+                Val key = DeclarationFw.getKey(field);
+                Val constraint = DeclarationFw.getConstraint(field);
                 Vit fieldChecker = Vit.call(constraint, symbol("check")).call(Vit.call(Vit.var, key));
                 a = a.call(symbol("and")).call(fieldChecker);
             }
             Vit b = Vit.val(BoolFw._true);
             return ConstraintFw.constraintBuilder
-                    .call(VitFw.wrap(a), context)
-                    .call(VitFw.wrap(b), context);
+                    .call(VitFw.wrap(a))
+                    .call(VitFw.wrap(b));
         }
 
-        public int indexOf(Val key, Context context) {
+        public int indexOf(Val key) {
             for (int i = 0; i < fields.length; i++) {
                 Val field = fields[i];
-                if (DeclarationFw.getKey(field, context).equals(key))
+                if (DeclarationFw.getKey(field).equals(key))
                     return i;
             }
             return -1;

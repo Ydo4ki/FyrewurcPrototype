@@ -1,8 +1,8 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.BoolFw;
-import org.fw.core.lib.VitFw;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
@@ -12,15 +12,14 @@ import java.util.Objects;
 import static org.fw.core.FW.symbol;
 
 public final class Unspecified {
-    private static final Type unspecified_type = FW.telephonist((arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, Unspecified.unspecified_type, context)) {
-            Val instance = Call.getVal(arg, context);
-            arg = Call.getArg(arg, context);
+    private static final Type unspecified_type = FW.telephonist((arg) -> {
+        if (FwUtils.isTypeApiCall(arg, Unspecified.unspecified_type)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
             return unspecified(instance, arg); // accumulate
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Unspecified.builder",
-                    (func, context1) -> FW.telephonist(() -> "(Unspecified.builder " + func.toExpr(context1) + ")",
-                            (argument, context2) -> unspecified(func, argument)));
+                    (func) -> FW.telephonist((argument) -> unspecified(func, argument)));
         }
         return null;
     }).asType();

@@ -10,7 +10,7 @@ public abstract class Type {
         return new ValType(val);
     }
 
-    abstract Val callInstance(Val instance, Val arg, Context context);
+    abstract Val callInstance(Val instance, Val arg);
 
     public abstract Val asVal();
 
@@ -23,8 +23,8 @@ public abstract class Type {
         }
 
         @Override
-        public Val callInstance(Val instance, Val arg, Context context) {
-            return asVal.call(Call.fwCall(instance, arg), context);
+        public Val callInstance(Val instance, Val arg) {
+            return asVal.call(Call.fwCall(instance, arg));
         }
 
         @Override

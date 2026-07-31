@@ -17,10 +17,10 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public class UseFw {
-    public static final CompEnv useDirectivesCenv = CompEnv.of(telephonist((arg, context) -> {
+    public static final CompEnv useDirectivesCenv = CompEnv.of(telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"), context);
-            Val compEnv = arg.call(symbol("comp-env"), context);
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -30,7 +30,7 @@ public class UseFw {
                         if (isize != 3)
                             return null;
 
-                        Val moduleVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Val moduleVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(moduleVit.type()))
                             return null; // could not compile module
 
@@ -38,12 +38,12 @@ public class UseFw {
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
-                        Val newCompEnv = CompEnv.compEnv(context,
+                        Val newCompEnv = CompEnv.compEnv(
                                 compEnv,
                                 ModuleFw.ModuleCEnvFw.compEnv(((VitVal) vit).val())
                         );
 
-                        Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(newCompEnv)), context);
+                        Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(value.type()))
                             return value; // error idk
 
@@ -53,7 +53,7 @@ public class UseFw {
                         if (isize != 3)
                             return null;
 
-                        Val cEnvVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Val cEnvVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(cEnvVit.type()))
                             return null; // could not compile cenv
 
@@ -61,12 +61,12 @@ public class UseFw {
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
-                        Val newCompEnv = CompEnv.compEnv(context,
+                        Val newCompEnv = CompEnv.compEnv(
                                 compEnv,
                                 ((VitVal) vit).val()
                         );
 
-                        Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(newCompEnv)), context);
+                        Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(value.type()))
                             return value; // error idk
 

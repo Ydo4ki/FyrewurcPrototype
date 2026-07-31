@@ -16,10 +16,10 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class ExprGetFw {
-    public static final Val getterCEnv = telephonist("dot-getters-cenv-fw", (arg, context) -> {
+    public static final Val getterCEnv = telephonist("dot-getters-cenv-fw", (arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"), context);
-            Val compEnv = arg.call(symbol("comp-env"), context);
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
             if (expr instanceof Symbol) {
                 // handling value.x
@@ -34,7 +34,7 @@ public final class ExprGetFw {
 
                 Vit first = null;
                 try {
-                    first = CompEnv.of(compEnv).compile(FW.symbol(origin), context);
+                    first = CompEnv.of(compEnv).compile(FW.symbol(origin));
                 } catch (VitCompilationException e) {
                     return null;
                 }
@@ -50,13 +50,13 @@ public final class ExprGetFw {
                         return null;
                     }
 
-                    Val retVitV = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                    Val retVitV = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(retVitV.type()))
                         return retVitV; // compile error idk
                     Vit retVit = retVitV._unpack();
 
                     for (int i = 1; i < (isize - 1); i++) {
-                        Val property = exprVal.call(DIntFw.dint(i + 1), context);
+                        Val property = exprVal.call(DIntFw.dint(i + 1));
                         if (!property.type().equals(SymbolFw.symbol))
                             return null; // not a compile error idk (actually it still is)
 

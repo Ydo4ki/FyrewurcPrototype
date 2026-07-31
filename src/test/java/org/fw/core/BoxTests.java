@@ -18,11 +18,11 @@ public class BoxTests {
     @Test
     void apiBox() {
         Val toBox = symbol("+");
-        Val boxedOp = opBox.asVal().call(symbol("constructor"), context).call(toBox, context);
+        Val boxedOp = opBox.asVal().call(symbol("constructor")).call(toBox);
 
         // System.out.println(opBox.asVal().call(symbol("constructor"), context));
         // System.out.println(boxedOp.toExpr(context));
 
-        assertEquals(toBox, boxedOp.call(symbol("unbox"), context));
+        assertEquals(toBox, boxedOp.call(symbol("unbox")));
     }
 }

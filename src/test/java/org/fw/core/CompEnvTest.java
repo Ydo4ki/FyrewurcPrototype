@@ -2,17 +2,13 @@ package org.fw.core;
 
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
-import org.fw.core.ast.LocatedExpr;
-import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
-import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.DeclaredFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.comp.InternalSystemContext;
@@ -26,8 +22,6 @@ import org.fw.core.vit.VitCompilationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 import static org.fw.core.FW.symbol;
@@ -67,7 +61,7 @@ class CompEnvTest {
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 
-    public static final Val testValsCenv = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, c) -> {
+    public static final Val testValsCenv = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
         if (!arg1.type().equals(SymbolFw.symbol))
             return null;
         String string = arg1._unpack().toString();
@@ -83,10 +77,10 @@ class CompEnvTest {
 
         Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
 
-        CompEnv env = CompEnv.of(CompEnv.compEnv(DIntFw.ParseDIntCEnvFw.parseNumCenv, null, context));
+        CompEnv env = CompEnv.of(CompEnv.compEnv(DIntFw.ParseDIntCEnvFw.parseNumCenv, null));
         Vit vit = null;
         try {
-            vit = env.compile(expr, context);
+            vit = env.compile(expr);
         } catch (VitCompilationException e) {
             throw new RuntimeException(e);
         }
@@ -103,8 +97,8 @@ class CompEnvTest {
 
         Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
 
-        CompEnv env = CompEnv.of(CompEnv.compEnv(InternalSymbolMapCEnvFw.valsCenv, Operation.unit, context));
-        Vit vit = env.compile(expr, context);
+        CompEnv env = CompEnv.of(CompEnv.compEnv(InternalSymbolMapCEnvFw.valsCenv, Operation.unit));
+        Vit vit = env.compile(expr);
         Val vv = VitFw.wrap(vit);
 //        System.out.println(vv.toExpr(context));
 //        System.out.println(vv);

@@ -36,31 +36,31 @@ public final class FwUtils {
 
 
     @Deprecated
-    public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, TelephonistType.CallFunction orStatic) throws Exception {
-        return handleSymbols(arg, type, context, handler, (instance, arg1) -> null, orStatic);
+    public static Val handleSymbols(Val arg, Type type, SHandler handler, TelephonistType.CallFunction orStatic) throws Exception {
+        return handleSymbols(arg, type, handler, (instance, arg1) -> null, orStatic);
     }
 
     @Deprecated
-    public static Val handleSymbols(Val arg, Type type, Context context, SHandler handler, NSHandler nonSymbolicHandler, TelephonistType.CallFunction orStatic) throws Exception {
-        if (isTypeApiCall(arg, type, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val callArg = Call.getArg(arg, context);
+    public static Val handleSymbols(Val arg, Type type, SHandler handler, NSHandler nonSymbolicHandler, TelephonistType.CallFunction orStatic) throws Exception {
+        if (isTypeApiCall(arg, type)) {
+            Val instance = Call.getVal(arg);
+            Val callArg = Call.getArg(arg);
             if (!callArg.type().equals(SymbolFw.symbol)) {
                 return nonSymbolicHandler.handle(instance, callArg);
             }
             String symbol = callArg._unpack(Symbol.class).getValue();
             return handler.handle(instance, symbol);
         }
-        return orStatic.call(arg, context);
+        return orStatic.call(arg);
     }
 
     public static LocatedExpr<? extends Expr> parse(String name) {
         return new ExprOutput(new TokenOutput(name, null, BracketsTypes.bracketsTypes)).iterator().next();
     }
 
-    public static boolean isTypeApiCall(Val call, Type type, Context context) {
+    public static boolean isTypeApiCall(Val call, Type type) {
         if (call.type().equals(Call.call_t)) {
-            Val val = Call.getVal(call, context);
+            Val val = Call.getVal(call);
             return val.type().equals(type);
         }
         return false;
@@ -89,7 +89,7 @@ public final class FwUtils {
 
         Map<String, Val> defineds = new HashMap<>();
 
-        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1, с) -> {
+        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
             if (!arg1.type().equals(SymbolFw.symbol))
                 return null;
             String string = arg1._unpack().toString();
@@ -100,20 +100,20 @@ public final class FwUtils {
         })));
 
 
-        CompEnv env = CompEnv.of(CompEnv.compEnv(context, compEnv.asVal(), defined));
+        CompEnv env = CompEnv.of(CompEnv.compEnv(compEnv.asVal(), defined));
 
         for (LocatedExpr<? extends Expr> lExpr : expressions) {
             Expr expr = lExpr.getExpr();
             Vit vit = null;
             try {
-                vit = env.compile(expr, context);
+                vit = env.compile(expr);
             } catch (VitCompilationException e) {
                 throw new RuntimeException("Cannot compile: " + expr, e);
             }
             result = vit.eval(context);
             if (result.type().equals(DeclaredFw.declared)) {
-                Val key = DeclaredFw.getKey(result, context);
-                Val value = DeclaredFw.getValue(result, context);
+                Val key = DeclaredFw.getKey(result);
+                Val value = DeclaredFw.getValue(result);
                 if (key.type().equals(SymbolFw.symbol)) {
                     defineds.put(key._unpack(Symbol.class).getValue(), value);
                 }
@@ -131,7 +131,7 @@ public final class FwUtils {
     }
 
     public static Val valify(Predicate<Val> tester) {
-        return FW.telephonist((arg, context) -> BoolFw.wrap(tester.test(arg)));
+        return FW.telephonist((arg) -> BoolFw.wrap(tester.test(arg)));
     }
 
     public static Vit equals(Vit a, Vit b) {

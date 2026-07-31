@@ -23,20 +23,20 @@ import static org.fw.core.FW.symbol;
 
 // no I literally just made a telemap XD
 public final class ModuleFw {
-    public static final Type module = FW.telephonist("Module", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, ModuleFw.module, context)) {
-            Val instance = Call.getVal(arg, context);
-            arg = Call.getArg(arg, context);
+    public static final Type module = FW.telephonist("Module", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, ModuleFw.module)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
 
             Module module = instance._unpack();
             for (Val declared : module.declareds()) {
-                if (DeclaredFw.getKey(declared, context).equals(arg)) {
-                    return DeclaredFw.getValue(declared, context);
+                if (DeclaredFw.getKey(declared).equals(arg)) {
+                    return DeclaredFw.getValue(declared);
                 }
             }
         } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
 
             final int isize = size._unpack(BigInteger.class).intValue();
 //            Val[] entries = new Val[isize];
@@ -44,7 +44,7 @@ public final class ModuleFw {
             Vit ctor = Vit.val(DVecFw.emptyBuilder);
 
             for (int i = 0; i < isize; i++) {
-                Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(cEnv)), context);
+                Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i))._unpack(), CompEnv.of(cEnv)));
                 if (!VitFw.isVit(value.type()))
                     return value; // error idk
                 ctor = ctor.call(VitFw.unwrap0(value));
@@ -53,7 +53,7 @@ public final class ModuleFw {
             ctor = Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(ctor); // ok nice
             return VitFw.wrap(ctor);
         } else if (arg.equals(symbol("constructor"))) {
-            return FW.telephonist("Module.constructor", (arg1, c) -> {
+            return FW.telephonist("Module.constructor", (arg1) -> {
                 if (!arg1.type().equals(DVecFw.dVec))
                     return null;
 
@@ -66,21 +66,21 @@ public final class ModuleFw {
                 return Val.of(ModuleFw.module, new Module(values));
             });
         } else if (arg.equals(symbol("contains-key"))) {
-            return FW.telephonist("Module.contains-key", (arg1, context1) -> {
+            return FW.telephonist("Module.contains-key", (arg1) -> {
                 if (!arg1.type().equals(ModuleFw.module)) return null;
                 Module mod = arg1._unpack();
-                return FW.telephonist(() -> "(Module.contains-key " + arg1.toExpr(context1) + ")", (key, context2) -> {
-                    return mod.containsKey(key, context2) ? BoolFw._true : BoolFw._false;
+                return FW.telephonist((key) -> {
+                    return mod.containsKey(key) ? BoolFw._true : BoolFw._false;
                 });
             });
         }
 
         return null;
     }).asType();
-    public static final Val moduleToExpr = FW.telephonist((arg, context) -> {
+    public static final Val moduleToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(module)) {
-            return toExpr(arg, context);
+            return toExpr(arg, Context.outOf);
         }
         return null;
     });
@@ -118,9 +118,9 @@ public final class ModuleFw {
             return ExprList.of(BracketsTypes.round, elements);
         }
 
-        public boolean containsKey(Val key, Context context) {
+        public boolean containsKey(Val key) {
             for (Val declared : declareds) {
-                if (DeclaredFw.getKey(declared, context).equals(key)) return true;
+                if (DeclaredFw.getKey(declared).equals(key)) return true;
             }
             return false;
         }
@@ -144,21 +144,21 @@ public final class ModuleFw {
     }
 
     public static final class ModuleCEnvFw {
-        public static final Type moduleCompEnv = FW.telephonist("ModuleCEnvFn", (arg, context) -> {
+        public static final Type moduleCompEnv = FW.telephonist("ModuleCEnvFn", (arg) -> {
             if (arg.equals(symbol("constructor"))) {
-                return FW.telephonist((module, context1) -> compEnv(module));
+                return FW.telephonist((module) -> compEnv(module));
             }
-            if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv, context)) {
-                Val instance = Call.getVal(arg, context);
-                arg = Call.getArg(arg, context);
+            if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv)) {
+                Val instance = Call.getVal(arg);
+                arg = Call.getArg(arg);
                 Val payload = instance._unpack(Val.class);
                 if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-                    Val exprVal = arg.call(symbol("expr"), context);
-                    Val compEnv = arg.call(symbol("comp-env"), context);
+                    Val exprVal = arg.call(symbol("expr"));
+                    Val compEnv = arg.call(symbol("comp-env"));
                     Expr expr = exprVal._unpack();
                     if (expr instanceof Symbol) {
-                        if (module.asVal().call(symbol("contains-key"), context).call(payload, context).call(exprVal, context) == BoolFw._true) {
-                            Val value = payload.call(exprVal, context);
+                        if (module.asVal().call(symbol("contains-key")).call(payload).call(exprVal) == BoolFw._true) {
+                            Val value = payload.call(exprVal);
                             return VitFw.wrap(Vit.val(value));
                         }
                     }
@@ -173,7 +173,7 @@ public final class ModuleFw {
         }
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                     DeclaredFw.declared(symbol("Module"), ModuleFw.module.asVal()),
                     DeclaredFw.declared(symbol("ModuleCompEnv"), ModuleFw.ModuleCEnvFw.moduleCompEnv.asVal())

@@ -4,6 +4,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
@@ -23,27 +24,27 @@ import static org.fw.core.FW.telephonist;
 public final class InvokeFuncCEnvFw {
 
     @Deprecated
-    public static final Val invokeFuncCenv = telephonist("invokeFuncCenv", (arg, context) -> {
+    public static final Val invokeFuncCenv = telephonist("invokeFuncCenv", (arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"), context);
-            Val compEnv = arg.call(symbol("comp-env"), context);
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 Vit func = null;
                 try {
-                    func = CompEnv.of(compEnv).compile(ExprFw.wrap(f), context);
+                    func = CompEnv.of(compEnv).compile(ExprFw.wrap(f));
                 } catch (VitCompilationException e) {
                     return null;
                 }
 
-                func = Vit.simplify(func, context);
+                func = Vit.simplify(func);
 
-                Val exprCallOp = ExprCallOpFw.exprCallOp.asVal().call(symbol("of-expr-list"), context).call(exprVal, context).call(compEnv, context);
+                Val exprCallOp = ExprCallOpFw.exprCallOp.asVal().call(symbol("of-expr-list")).call(exprVal).call(compEnv);
                 Vit vit = func.call(exprCallOp);
 
                 if (func instanceof VitVal) {
-                    Val codeToWhichFunctionJustCompiled = vit.eval(context);
+                    Val codeToWhichFunctionJustCompiled = vit.eval(Context.outOf);
                     if (!VitFw.isVit(codeToWhichFunctionJustCompiled.type())) {
                         return codeToWhichFunctionJustCompiled;
                     }
@@ -51,7 +52,7 @@ public final class InvokeFuncCEnvFw {
                 }
 
 //                Vit resultingCode = Vit.val(VitFw.eval).call(vit).call(Vit.var);
-                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(VitFw.eval).call(vit).call(Vit.var), context.rtEnv())))); // ._.
+                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(VitFw.eval).call(vit).call(Vit.var), Context.outOf.rtEnv())))); // ._.
 
                 return VitFw.wrap(resultingCode);
             }

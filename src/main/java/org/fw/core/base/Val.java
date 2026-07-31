@@ -20,20 +20,19 @@ public abstract class Val {
 
     public abstract Type asType();
 
-    public Val call(Val arg, @Deprecated Context context) {
-        Objects.requireNonNull(context);
-        return type().callInstance(this, arg, context);
+    public Val call(Val arg) {
+        return type().callInstance(this, arg);
     }
 
     public Expr toExpr(Context context) {
         if (type().equals(Call.call_t)) return ExprList.of(
                 BracketsTypes.round,
                 Symbol.of("Call"),
-                Call.getVal(this, context).toExpr(context),
-                Call.getArg(this, context).toExpr(context)
+                Call.getVal(this).toExpr(context),
+                Call.getArg(this).toExpr(context)
         ); // huh
         Val function = context.rtEnv().get(symbol("to-expr"), context);
-        Val result = function.call(this, context);
+        Val result = function.call(this);
         if (result._unpack() instanceof Expr)
             return result._unpack();
 
@@ -137,12 +136,12 @@ public abstract class Val {
 
         @Override
         public Object value() {
-            if (value == null) value = new TelephonistType.Telephonist(() -> Symbol.of(this.toString()), (arg, context) -> {
-                if (FwUtils.isTypeApiCall(arg, asType(), context)) {
-                    Val instance = Call.getVal(arg, context);
-                    Val cArg = Call.getArg(arg, context);
+            if (value == null) value = new TelephonistType.Telephonist(() -> Symbol.of(this.toString()), (arg) -> {
+                if (FwUtils.isTypeApiCall(arg, asType())) {
+                    Val instance = Call.getVal(arg);
+                    Val cArg = Call.getArg(arg);
 
-                    return instance.call(cArg, context); // so here we're going in the opposite direction
+                    return instance.call(cArg); // so here we're going in the opposite direction
                 }
                 throw new RuntimeException("I have no idea when is this suppose to happen so if you see this message now you know");
 //                return Unspecified.unspecified; // idk

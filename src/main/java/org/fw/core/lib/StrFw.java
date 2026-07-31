@@ -9,6 +9,7 @@ import org.fw.core.base.*;
 import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
@@ -16,20 +17,20 @@ import org.fw.core.vit.Vit;
 import java.math.BigInteger;
 
 public final class StrFw {
-    public static final Type str = FW.telephonist("Str", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, StrFw.str, context)) {
-            Val instance = Call.getVal(arg, context);
-            Val cArg = Call.getArg(arg, context);
+    public static final Type str = FW.telephonist("Str", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, StrFw.str)) {
+            Val instance = Call.getVal(arg);
+            Val cArg = Call.getArg(arg);
 
             String value = instance._unpack();
             assert value != null;
             if (cArg.equals(symbol("sub"))) {
-                return FW.telephonist((start, context1) -> {
+                return FW.telephonist((start) -> {
                     if (start.type() != DIntFw.dint)
                         return null;
                     int s = start._unpack(BigInteger.class).intValue();
 
-                    return FW.telephonist((end, context2) -> {
+                    return FW.telephonist((end) -> {
                         if (end.type() != DIntFw.dint)
                             return null;
                         int e = end._unpack(BigInteger.class).intValue();
@@ -47,7 +48,7 @@ public final class StrFw {
         }
         return null;
     }).asType();
-    public static final Val strToExpr = FW.telephonist((arg, context) -> {
+    public static final Val strToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(str)) {
             return symbol('"' + arg._unpack(String.class) + '"');
@@ -74,14 +75,14 @@ public final class StrFw {
                             .call(parseArg),
                     parseArg
             );
-            return FW.telephonist((arg1, context1) -> body.eval(new Context(RtEnv.of(FW.telephonist((arg2, context2) -> {
+            return State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(new Context(RtEnv.of(FW.telephonist((arg2) -> {
                 if (arg2.equals(symbol("arg"))) return arg1;
-                return context1.rtEnv().get(arg2, context1);
-            })), context1.state())));
+                return null;
+            })), state))));
         }
 
-        public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1, context1) -> {
-            Val str = ExprFw.symbolToString.call(arg1, context1);
+        public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1) -> {
+            Val str = ExprFw.symbolToString.call(arg1);
             if (!str.type().equals(StrFw.str))
                 return null;
 
@@ -94,10 +95,10 @@ public final class StrFw {
         })));
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                     DeclaredFw.declared(symbol("Str"), StrFw.str.asVal()),
-                    DeclaredFw.declared(symbol("expr2str"), FW.telephonist((arg, context) -> {
+                    DeclaredFw.declared(symbol("expr2str"), FW.telephonist((arg) -> {
                         if (ExprFw.isExpr(arg)) {
                             return StrFw.str(arg._unpack().toString());
                         }

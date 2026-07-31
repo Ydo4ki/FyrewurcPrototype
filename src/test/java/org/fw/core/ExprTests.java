@@ -22,21 +22,21 @@ public class ExprTests {
     @Test
     void apiSymbol() {
         Val expr = ExprFw.wrap(Symbol.of("abalabamara"));
-        assertEquals(StrFw.str("abalabamara"), ExprFw.symbolToString.call(expr, context));
+        assertEquals(StrFw.str("abalabamara"), ExprFw.symbolToString.call(expr));
     }
 
     @Test
     void apiExprList() {
         Val expr = ExprFw.wrap(new ExprOutput(new TokenOutput("(+ 5 4)", null, BracketsTypes.bracketsTypes)).iterator().next().getExpr());
-        assertEquals(symbol("+"), expr.call(DIntFw.dint(0), context));
-        assertEquals(symbol("5"), expr.call(DIntFw.dint(1), context));
-        assertEquals(symbol("4"), expr.call(DIntFw.dint(2), context));
+        assertEquals(symbol("+"), expr.call(DIntFw.dint(0)));
+        assertEquals(symbol("5"), expr.call(DIntFw.dint(1)));
+        assertEquals(symbol("4"), expr.call(DIntFw.dint(2)));
 
 //        assertEquals(Unspecified.unspecified, expr.call(DIntFw.dint(55), context));
 
-        assertEquals(DIntFw.dint(3), expr.call(symbol("size"), context));
+        assertEquals(DIntFw.dint(3), expr.call(symbol("size")));
 
-        assertEquals(StrFw.str("()"), expr.call(symbol("brackets-type"), context));
+        assertEquals(StrFw.str("()"), expr.call(symbol("brackets-type")));
     }
 
     @Test

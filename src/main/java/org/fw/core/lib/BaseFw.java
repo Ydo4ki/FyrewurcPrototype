@@ -1,14 +1,13 @@
 package org.fw.core.lib;
 
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 
 import static org.fw.core.FW.symbol;
 
 public final class BaseFw {
 
-    public static final CompEnv exports = CompEnv.of(CompEnv.compEnv(Context.outOf,
+    public static final CompEnv exports = CompEnv.of(CompEnv.compEnv(
             ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                     DeclaredFw.declared(symbol("Call"), Call.call_t.asVal()),
                     DeclaredFw.declared(symbol("Telephonist"), Val.ofTelephonist(0)),

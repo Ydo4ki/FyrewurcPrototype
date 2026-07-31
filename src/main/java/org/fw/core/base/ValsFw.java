@@ -11,19 +11,11 @@ public final class ValsFw {
 
     public static final Val typeGet = FW.telephonist(
             Symbol.of("type-get"),
-            (arg, c) -> arg.type().asVal()
+            (arg) -> arg.type().asVal()
     );
 
     public static final Val eq = FW.telephonist(
             Symbol.of("eq"),
-            (arg, context) -> {
-                return FW.telephonistE(() -> ExprList.of(BracketsTypes.round,
-                        Symbol.of("call"),
-                        Symbol.of("eq"),
-                        arg.toExpr(context)
-                        ), (arg1, c) -> {
-                    return BoolFw.wrap(arg.equals(arg1));
-                });
-            }
+            (arg) -> FW.telephonist((arg1) -> BoolFw.wrap(arg.equals(arg1)))
     );
 }

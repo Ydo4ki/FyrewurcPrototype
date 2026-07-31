@@ -6,7 +6,7 @@ import org.fw.core.base.Val;
 
 public final class RtEnv extends AbstractValAdapted {
 
-    public static final RtEnv unspecified = new RtEnv(FW.telephonist((arg, context) -> null));
+    public static final RtEnv unspecified = new RtEnv(FW.telephonist((arg) -> null));
 
     private RtEnv(Val val) {
         super(val);
@@ -17,6 +17,6 @@ public final class RtEnv extends AbstractValAdapted {
     }
 
     public Val get(Val key, Context context) {
-        return asVal().call(key, context);
+        return asVal().call(key);
     }
 }

@@ -16,8 +16,8 @@ public class ToExprFn {
 
 
     public static final Type exprififier = ChainLinkFw.chainLinkType.asVal()
-            .call(symbol("constructor"), Context.outOf)
-            .call(Unspecified.isNot, Context.outOf)
+            .call(symbol("constructor"))
+            .call(Unspecified.isNot)
             .asType();
 
 
@@ -33,7 +33,7 @@ public class ToExprFn {
 
     // wait did I really write all of this instead of using hashmap or some custom overengineered condition table?
     // wow
-    public static final Val toExprRest = FW.telephonist((arg, context) -> {
+    public static final Val toExprRest = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(Val.ofTelephonist(0).asType())) {
             TelephonistType.Telephonist tele = arg._unpack();
@@ -44,20 +44,20 @@ public class ToExprFn {
 
         if (type.equals(OperatorExprFw.exprOperator) || type.equals(SenderExprFw.exprSender)) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    type.asVal().toExpr(context),
-                    arg.call(symbol("operator"), context).toExpr(context)
+                    type.asVal().toExpr(Context.outOf),
+                    arg.call(symbol("operator")).toExpr(Context.outOf)
             ));
         }
 
         if (type.equals(AccumulatorsExprFw.exprAccumulator)) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(context),
-                    arg.call(symbol("operator"), context).toExpr(context)
+                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(Context.outOf),
+                    arg.call(symbol("operator")).toExpr(Context.outOf)
             ));
         }
 
         if (type.equals(EnumFw.enumeration)) {
-            return EnumFw.toExpr(arg, context);
+            return EnumFw.toExpr(arg, Context.outOf);
         } else if (type.asVal().type().equals(EnumFw.enumeration)) {
             return arg._unpack(); // it was supposed to be a symbol
         }
@@ -68,7 +68,7 @@ public class ToExprFn {
         return null;
     });
 
-    public static final Val toExpr = ChainLinkFw.chain(exprififier, Context.outOf,
+    public static final Val toExpr = ChainLinkFw.chain(exprififier,
             VitFw.vitToExpr,
             ExprFw.esastToExpr,
             ModuleFw.moduleToExpr,

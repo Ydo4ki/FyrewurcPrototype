@@ -13,16 +13,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VitTests {
     private static final Context context = new Context(RtEnv.unspecified, State.eternal());
-    private static final Val v1 = FW.telephonist("v1", (arg, context1) -> null);
-    private static final Val v2 = FW.telephonist("v2", (arg, context1) -> null);
+    private static final Val v1 = FW.telephonist("v1", (arg) -> null);
+    private static final Val v2 = FW.telephonist("v2", (arg) -> null);
 
     @Test
     void apiVal() {
         Val vit = VitFw.vitVal.asVal()
-                .call(symbol("constructor"), context)
-                .call(v1, context);
+                .call(symbol("constructor"))
+                .call(v1);
 
-        assertEquals(v1, vit.call(symbol("val"), context));
+        assertEquals(v1, vit.call(symbol("val")));
     }
 
 //    @Test
@@ -37,16 +37,16 @@ public class VitTests {
     @Test
     void apiCall() {
         Val vit = VitFw.vitCall.asVal()
-                .call(symbol("builder"), context)
+                .call(symbol("builder"))
                 .call(VitFw.vitVal.asVal()
-                        .call(symbol("constructor"), context)
-                        .call(v1, context), context)
+                        .call(symbol("constructor"))
+                        .call(v1))
                 .call(VitFw.vitVal.asVal()
-                        .call(symbol("constructor"), context)
-                        .call(v2, context), context);
+                        .call(symbol("constructor"))
+                        .call(v2));
 
-        assertEquals(v1, vit.call(symbol("func"), context).call(symbol("val"), context));
-        assertEquals(v2, vit.call(symbol("arg"), context).call(symbol("val"), context));
+        assertEquals(v1, vit.call(symbol("func")).call(symbol("val")));
+        assertEquals(v2, vit.call(symbol("arg")).call(symbol("val")));
     }
 
     @Test
@@ -62,8 +62,8 @@ public class VitTests {
 
         Val vit = codeThatCreatesVit.eval(context);
 
-        assertEquals(v1, vit.call(symbol("func"), context).call(symbol("val"), context));
-        assertEquals(v2, vit.call(symbol("arg"), context).call(symbol("val"), context));
+        assertEquals(v1, vit.call(symbol("func")).call(symbol("val")));
+        assertEquals(v2, vit.call(symbol("arg")).call(symbol("val")));
     }
 
     // apiInvoke?

@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.ast.Expr;
-import org.fw.core.base.context.Context;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -15,9 +14,9 @@ public final class TelephonistType extends Type {
     }
 
     @Override
-    Val callInstance(Val instance, Val arg, Context context) {
+    Val callInstance(Val instance, Val arg) {
         try {
-            Val v = instance._unpack(Telephonist.class).function().call(arg, context);
+            Val v = instance._unpack(Telephonist.class).function().call(arg);
             if (v == null)
                 return Unspecified.unspecified(instance, arg);
             return v;
@@ -44,7 +43,7 @@ public final class TelephonistType extends Type {
     }
 
     public interface CallFunction {
-        Val call(Val arg, Context context) throws Exception;
+        Val call(Val arg) throws Exception;
     }
 
     public static final class Telephonist {

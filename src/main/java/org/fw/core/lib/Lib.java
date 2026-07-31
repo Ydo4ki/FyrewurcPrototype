@@ -1,7 +1,6 @@
 package org.fw.core.lib;
 
 import org.fw.core.base.Val;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.expr.CompEnv;
 
 import java.util.function.Function;
@@ -36,7 +35,7 @@ public final class Lib {
         if (extraCEnv == null) {
             exports = ModuleFw.ModuleCEnvFw.compEnv(module);
         } else {
-            exports = CompEnv.compEnv(Context.outOf,
+            exports = CompEnv.compEnv(
                     ModuleFw.ModuleCEnvFw.compEnv(module),
                     extraCEnv
             );

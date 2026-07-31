@@ -20,28 +20,28 @@ public class DVecTests {
     void apiDVecExpr() {
         Val b = DVecFw.emptyBuilder;
         assertEquals("(DVecBuilder)", b.toExpr(context).toString());
-        b = b.call(DIntFw.dint(50), context);
+        b = b.call(DIntFw.dint(50));
         assertEquals("(DVecBuilder 50)", b.toExpr(context).toString());
-        b = b.call(DIntFw.dint(60), context);
-        b = b.call(StrFw.str("content"), context);
-        b = DVecFw.dvecbf.call(b, context);
+        b = b.call(DIntFw.dint(60));
+        b = b.call(StrFw.str("content"));
+        b = DVecFw.dvecbf.call(b);
         assertEquals("[50 60 \"content\"]", b.toExpr(context).toString());
     }
 
     @Test
     void apiDVec() {
         Val b = DVecFw.emptyBuilder
-                .call(DIntFw.dint(50), context)
-                .call(DIntFw.dint(60), context)
-                .call(StrFw.str("content"), context);
-        b = DVecFw.dvecbf.call(b, context);
+                .call(DIntFw.dint(50))
+                .call(DIntFw.dint(60))
+                .call(StrFw.str("content"));
+        b = DVecFw.dvecbf.call(b);
 
-        assertEquals(DIntFw.dint(50), b.call(DIntFw.dint(0), context));
-        assertEquals(DIntFw.dint(60), b.call(DIntFw.dint(1), context));
-        assertEquals(StrFw.str("content"), b.call(DIntFw.dint(2), context));
+        assertEquals(DIntFw.dint(50), b.call(DIntFw.dint(0)));
+        assertEquals(DIntFw.dint(60), b.call(DIntFw.dint(1)));
+        assertEquals(StrFw.str("content"), b.call(DIntFw.dint(2)));
 //        assertEquals(Unspecified.unspecified, b.call(DIntFw.dint(3), context));
 //        assertEquals(Unspecified.unspecified, b.call(DIntFw.dint(-1), context));
 
-        assertEquals(DIntFw.dint(3), b.call(symbol("size"), context)); // lmao
+        assertEquals(DIntFw.dint(3), b.call(symbol("size"))); // lmao
     }
 }

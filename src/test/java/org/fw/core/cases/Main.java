@@ -30,11 +30,11 @@ public class Main {
             DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExpr)
     ));
 
-    private static final Val _While = telephonist((condition, context1) -> {
+    private static final Val _While = telephonist((condition) -> {
         if (condition.type() != OperationFw.operation)
             return null;
 
-        return telephonist((body, context2) -> {
+        return telephonist((body) -> {
             if (body.type() != OperationFw.operation)
                 return null;
 
@@ -42,15 +42,15 @@ public class Main {
         });
     });
 
-    private static final Val _If = telephonist((condition, context1) -> {
+    private static final Val _If = telephonist((condition) -> {
         if (condition.type() != OperationFw.operation)
             return null;
 
-        return telephonist((ifTrue, context2) -> {
+        return telephonist((ifTrue) -> {
             if (ifTrue.type() != OperationFw.operation)
                 return null;
 
-            return telephonist((ifFalse, context3) -> {
+            return telephonist((ifFalse) -> {
                 if (ifFalse.type() != OperationFw.operation)
                     return null;
 
@@ -66,7 +66,7 @@ public class Main {
         State state = SystemOperation.systemState;
         Context context = new Context(rtEnv, state);
         CompEnv compEnv;
-        compEnv = CompEnv.of(CompEnv.compEnv(context,
+        compEnv = CompEnv.of(CompEnv.compEnv(
                 BaseFw.exports.asVal(),
                 FnCallFw.fnCallCenv.asVal(),
                 VitFw.exports.asVal(),
@@ -82,9 +82,9 @@ public class Main {
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
-                        DeclaredFw.declared(symbol("_Print"), telephonist((arg, context1)
+                        DeclaredFw.declared(symbol("_Print"), telephonist((arg)
                                 -> new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal())),
-                        DeclaredFw.declared(symbol("_Sleep"), telephonist((arg, context1) -> {
+                        DeclaredFw.declared(symbol("_Sleep"), telephonist((arg) -> {
                             if (arg.type() != DIntFw.dint)
                                 return null;
 
@@ -119,13 +119,13 @@ public class Main {
                 Expr expression = locatedExpression.getExpr();
                 Vit vit;
                 try {
-                    vit = compEnv.compile(expression, context);
+                    vit = compEnv.compile(expression);
                 } catch (VitCompilationException e) {
                     System.err.println(expression);
                     throw new RuntimeException(e);
                 }
                 Val val = vit.eval(context);
-                compEnv = CompEnv.of(CompEnv.compEnv(context,
+                compEnv = CompEnv.of(CompEnv.compEnv(
                         compEnv.asVal(),
                         ModuleFw.ModuleCEnvFw.compEnv(val)
                 ));
@@ -136,7 +136,7 @@ public class Main {
             Expr expression = locatedExpression.getExpr();
             Vit vit;
             try {
-                vit = compEnv.compile(expression, context);
+                vit = compEnv.compile(expression);
             } catch (VitCompilationException e) {
                 System.err.println(expression);
                 throw new RuntimeException(e);
@@ -146,10 +146,10 @@ public class Main {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg, context) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"), context);
-            Val compEnv = arg.call(symbol("comp-env"), context);
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -160,7 +160,7 @@ public class Main {
                             return null;
 
 
-                        Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(val.type()))
                             return null;
 
@@ -172,7 +172,7 @@ public class Main {
                     case "module": {
                         Vit builder = Vit.val(DVecFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(compEnv)), context);
+                            Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.type()))
                                 return null;
 
@@ -186,8 +186,8 @@ public class Main {
                         if (isize != 3)
                             return null;
 
-                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
-                        Val body = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        Val body = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
 
                         Vit ret = Vit.invoke(Vit.val(_While)
                                 .call(Vit.call(_VitOperation, condition).call(Vit.var))
@@ -199,13 +199,13 @@ public class Main {
                         if (isize != 5)
                             return null;
 
-                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(compEnv)), context);
-                        Val ifTrue = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2), context)._unpack(), CompEnv.of(compEnv)), context);
-                        Expr ELSE = exprVal.call(DIntFw.dint(3), context)._unpack();
+                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        Val ifTrue = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
+                        Expr ELSE = exprVal.call(DIntFw.dint(3))._unpack();
                         if (!ELSE.toString().equals("else"))
                             return null;
 
-                        Val ifFalse = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(4), context)._unpack(), CompEnv.of(compEnv)), context);
+                        Val ifFalse = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(4))._unpack(), CompEnv.of(compEnv)));
 
                         Vit ret = Vit.invoke(Vit.val(_If)
                                 .call(Vit.call(_VitOperation, condition).call(Vit.var))

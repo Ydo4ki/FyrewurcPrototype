@@ -21,21 +21,21 @@ import static org.fw.core.FW.symbol;
 
 // so should the order of fields matter or not?
 public final class StructFw {
-    public static final Type struct = FW.telephonist("Struct", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, StructFw.struct, context)) {
-            Val instance = Call.getVal(arg, context);
-            arg = Call.getArg(arg, context);
+    public static final Type struct = FW.telephonist("Struct", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, StructFw.struct)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
             Struct struct = instance._unpack();
-            if (FwUtils.isTypeApiCall(arg, instance.asType(), context)) {
-                Val strInstance = Call.getVal(arg, context);
-                arg = Call.getArg(arg, context);
+            if (FwUtils.isTypeApiCall(arg, instance.asType())) {
+                Val strInstance = Call.getVal(arg);
+                arg = Call.getArg(arg);
                 Val[] values = strInstance._unpack();
-                int index = struct.indexOf(arg, context);
+                int index = struct.indexOf(arg);
                 if (index == -1) return null;
                 return values[index];
             } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-                Val size = arg.call(symbol("size"), context);
-                Val cEnv = arg.call(symbol("comp-env"), context);
+                Val size = arg.call(symbol("size"));
+                Val cEnv = arg.call(symbol("comp-env"));
                 int isize = size._unpack(BigInteger.class).intValue();
                 if (isize != struct.fields.length) {
                     return null;
@@ -43,7 +43,7 @@ public final class StructFw {
 
                 Vit ctor = Vit.val(instance).call(symbol("builder"));
                 for (int i = 0; i < isize; i++) {
-                    Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i), context)._unpack(), CompEnv.of(cEnv)), context);
+                    Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i))._unpack(), CompEnv.of(cEnv)));
                     if (!VitFw.isVit(retVit.type()))
                         return retVit; // compile error idk
 
@@ -59,14 +59,14 @@ public final class StructFw {
                 return structBuilder(struct, instance);
             }
         } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
                 return null;
             }
 
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
@@ -76,7 +76,7 @@ public final class StructFw {
                 throw new RuntimeException(e);
             }
         } else if (arg.equals(symbol("constructor"))) {
-            return FW.telephonist("Struct.constructor", (payload, context1) -> {
+            return FW.telephonist("Struct.constructor", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;
                 Val[] fields = payload._unpack();
@@ -89,12 +89,12 @@ public final class StructFw {
         }
         return null;
     }).asType();
-    public static final Val structToExpr = FW.telephonist((arg, context) -> {
+    public static final Val structToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(struct)) {
-            return toExpr(arg, context);
+            return toExpr(arg, Context.outOf);
         } else if (type.asVal().type().equals(struct)) {
-            return instanceToExpr(arg, context);
+            return instanceToExpr(arg, Context.outOf);
         }
         return null;
     });
@@ -140,10 +140,10 @@ public final class StructFw {
             this.fields = fields;
         }
 
-        public int indexOf(Val key, Context context) {
+        public int indexOf(Val key) {
             for (int i = 0; i < fields.length; i++) {
                 Val field = fields[i];
-                if (DeclarationFw.getKey(field, context).equals(key))
+                if (DeclarationFw.getKey(field).equals(key))
                     return i;
             }
             return -1;
@@ -167,10 +167,10 @@ public final class StructFw {
         return Val.of(structBuilder, new StructBuilder(struct, sameStructButItsAVal, new Val[0]));
     }
 
-    private static final Type structBuilder = FW.telephonist("StructBuilder", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, StructFw.structBuilder, context)) {
-            Val instance = Call.getVal(arg, context);
-            arg = Call.getArg(arg, context);
+    private static final Type structBuilder = FW.telephonist("StructBuilder", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, StructFw.structBuilder)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
             StructBuilder payload = instance._unpack();
             Val[] values = DVecFw.arAppended(payload.progress, arg);
             if (values.length == payload.struct.fields.length) {

@@ -1,7 +1,6 @@
 package org.fw.core.lib.expr;
 
 import org.fw.core.base.*;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.ChainLinkFw;
 import org.fw.core.adapter.AbstractValAdapted;
 import org.fw.core.ast.Expr;
@@ -14,8 +13,8 @@ import static org.fw.core.FW.symbol;
 public final class CompEnv extends AbstractValAdapted {
 
     public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
-            .call(symbol("constructor"), Context.outOf)
-            .call(Unspecified.isNot, Context.outOf)
+            .call(symbol("constructor"))
+            .call(Unspecified.isNot)
             .asType();
 
     private CompEnv(Val val) {
@@ -26,20 +25,20 @@ public final class CompEnv extends AbstractValAdapted {
         return new CompEnv(val);
     }
 
-    public Val compileV(Expr expr, Context context) {
-        return compileV(ExprFw.wrap(expr), context);
+    public Val compileV(Expr expr) {
+        return compileV(ExprFw.wrap(expr));
     }
 
-    public Vit compile(Expr expr, Context context) throws VitCompilationException {
-        return compile(ExprFw.wrap(expr), context);
+    public Vit compile(Expr expr) throws VitCompilationException {
+        return compile(ExprFw.wrap(expr));
     }
 
-    public Val compileV(Val expr, Context context) {
-        return asVal().call(syntaxResolve(expr._unpack(), this), context);
+    public Val compileV(Val expr) {
+        return asVal().call(syntaxResolve(expr._unpack(), this));
     }
 
-    public Vit compile(Val expr, Context context) throws VitCompilationException {
-        Val v = asVal().call(syntaxResolve(expr._unpack(), this), context);
+    public Vit compile(Val expr) throws VitCompilationException {
+        Val v = asVal().call(syntaxResolve(expr._unpack(), this));
         return VitFw.unwrap(v);
     }
 
@@ -47,11 +46,11 @@ public final class CompEnv extends AbstractValAdapted {
         return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolveFw.SyntaxResolve(expr, env));
     }
 
-    public static Val compEnv(Val resolver, Val parentCEnv, Context context) {
-        return ChainLinkFw.chain(compEnv, resolver, parentCEnv, context);
+    public static Val compEnv(Val resolver, Val parentCEnv) {
+        return ChainLinkFw.chain(compEnv, resolver, parentCEnv);
     }
 
-    public static Val compEnv(Context context, Val... resolvers) {
-        return ChainLinkFw.chain(compEnv, context, resolvers);
+    public static Val compEnv(Val... resolvers) {
+        return ChainLinkFw.chain(compEnv, resolvers);
     }
 }

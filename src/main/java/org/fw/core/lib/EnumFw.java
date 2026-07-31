@@ -21,10 +21,10 @@ import java.util.Objects;
 import static org.fw.core.FW.symbol;
 
 public final class EnumFw {
-    public static final Type enumeration = FW.telephonist("Enum", (arg, context) -> {
-        if (FwUtils.isTypeApiCall(arg, EnumFw.enumeration, context)) {
-            Val instance = Call.getVal(arg, context);
-            arg = Call.getArg(arg, context);
+    public static final Type enumeration = FW.telephonist("Enum", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, EnumFw.enumeration)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
             Enum anEnum = instance._unpack();
             for (Val value : anEnum.values) {
                 if (value._unpack(Val.class).equals(arg)) return value;
@@ -32,20 +32,20 @@ public final class EnumFw {
             return null;
         }
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 1) {
                 return null;
             }
 
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
             return VitFw.wrap(Vit.val(EnumFw.enumeration.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit)));
         } else if (arg.equals(symbol("constructor"))) {
-            return FW.telephonist("Enum.constructor", (payload, context1) -> {
+            return FW.telephonist("Enum.constructor", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;
                 Val[] keys = payload._unpack();

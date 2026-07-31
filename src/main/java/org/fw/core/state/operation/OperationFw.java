@@ -11,19 +11,19 @@ import static org.fw.core.FW.telephonist;
 
 public final class OperationFw {
 
-    public static final Type operation = FW.telephonist("Operation", (arg, context) -> {
+    public static final Type operation = FW.telephonist("Operation", (arg) -> {
         return null;
     }).asType();
 
-    public static final Val _VitOperation = FW.telephonist((arg, context1) -> {
+    public static final Val _VitOperation = FW.telephonist((arg) -> {
         if (!VitFw.isVit(arg.type()))
             return null;
 
         Vit vit = arg._unpack();
 
-        return FW.telephonist((rtEnv, context) -> Operation.vit(vit, RtEnv.of(rtEnv)).asVal());
+        return FW.telephonist((rtEnv) -> Operation.vit(vit, RtEnv.of(rtEnv)).asVal());
     });
-    public static final Val _WriteOperation = telephonist((arg, context1) -> {
+    public static final Val _WriteOperation = telephonist((arg) -> {
         if (arg.type() != LaserPointerFw.laserPointer)
             return null;
 
@@ -31,11 +31,11 @@ public final class OperationFw {
         if (!(obj instanceof Obj.ValObj))
             return null;
 
-        return telephonist((arg1, context2) -> {
+        return telephonist((arg1) -> {
             return Operation.write((Obj.ValObj) obj, arg1).asVal();
         });
     });
-    public static final Val _ReadOperation = telephonist((arg, context1) -> {
+    public static final Val _ReadOperation = telephonist((arg) -> {
         if (arg.type() != LaserPointerFw.laserPointer)
             return null;
 
@@ -45,7 +45,7 @@ public final class OperationFw {
 
         return Operation.read((Obj.ValObj) obj).asVal();
     });
-    public static final Val _CreateNewObjectOperation = telephonist((arg, context1) -> {
+    public static final Val _CreateNewObjectOperation = telephonist((arg) -> {
         return new CreateObjectOperation(arg).asVal();
     });
 

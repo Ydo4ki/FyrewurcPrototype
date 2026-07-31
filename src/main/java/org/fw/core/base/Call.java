@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.base.context.Context;
 
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ import static org.fw.core.FW.telephonist;
 // what do i need to remember
 // aaioasopdiou when was this even written
 public final class Call {
-    public static final Type call_t = telephonist("Call", (arg, context) -> {
+    public static final Type call_t = telephonist("Call", (arg) -> {
         if (arg.type().equals(Call.call_t)) {
             // native
             Call.CallRecord call = arg._unpack();
@@ -24,9 +23,7 @@ public final class Call {
             if (cArg.equals(symbol("arg"))) return meCall.arg();
             if (cArg.equals(symbol("val"))) return meCall.val();
         } else if (arg.equals(symbol("builder"))) {
-            return FW.telephonist("Call.builder",
-                    (func, context1) -> FW.telephonist(() -> "(call Call.builder " + func.toExpr(context1) + ")",
-                            (argument, context2) -> fwCall(func, argument)));
+            return FW.telephonist("Call.builder", (func) -> FW.telephonist((argument) -> fwCall(func, argument)));
         }
         return null;
     }).asType();
@@ -35,12 +32,12 @@ public final class Call {
         return Val.of(call_t, new CallRecord(instance, arg));
     }
 
-    public static Val getVal(Val call, Context ctx) {
-        return call.call(symbol("val"), ctx);
+    public static Val getVal(Val call) {
+        return call.call(symbol("val"));
     }
 
-    public static Val getArg(Val call, Context ctx) {
-        return call.call(symbol("arg"), ctx);
+    public static Val getArg(Val call) {
+        return call.call(symbol("arg"));
     }
 
     private static final class CallRecord {

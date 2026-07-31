@@ -22,21 +22,21 @@ public class BoolTests {
 
     @Test
     void notBool() {
-        assertEquals(BoolFw._false, b.call(symbol("not"), context));
+        assertEquals(BoolFw._false, b.call(symbol("not")));
     }
 
     @Test
     void andBool() {
-        assertEquals(BoolFw._false, b.call(symbol("and"), context).call(BoolFw._false, context));
+        assertEquals(BoolFw._false, b.call(symbol("and")).call(BoolFw._false));
     }
 
     @Test
     void orBool() {
-        assertEquals(BoolFw._true, b.call(symbol("or"), context).call(BoolFw._false, context));
+        assertEquals(BoolFw._true, b.call(symbol("or")).call(BoolFw._false));
     }
 
     @Test
     void xorBool() {
-        assertEquals(BoolFw._true, b.call(symbol("xor"), context).call(BoolFw._false, context));
+        assertEquals(BoolFw._true, b.call(symbol("xor")).call(BoolFw._false));
     }
 }

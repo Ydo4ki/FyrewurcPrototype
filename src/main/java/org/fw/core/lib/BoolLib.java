@@ -9,7 +9,7 @@ import org.fw.core.lib.expr.ToExprFn;
 import static org.fw.core.FW.symbol;
 
 public final class BoolLib {
-    public static final Val boolToExpr = FW.telephonist((arg, context) -> {
+    public static final Val boolToExpr = FW.telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(BoolFw.bool)) {
             return symbol(arg._unpack().toString());
@@ -26,8 +26,7 @@ public final class BoolLib {
                 Context c = Context.outOf;
                 return ChainLinkFw.chain(ToExprFn.exprififier,
                         boolToExpr,
-                        var.call(symbol("to-expr"), c),
-                        c
+                        var.call(symbol("to-expr"))
                 );
             }
     );

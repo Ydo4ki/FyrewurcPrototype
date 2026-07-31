@@ -3,6 +3,7 @@ package org.fw.core.base.context;
 import org.fw.core.state.obj.State;
 
 // do we really need this class in a first place?
+@Deprecated
 public final class Context {
     private final RtEnv rtEnv; // for VitVar
     private final State state; // for VitInvoke

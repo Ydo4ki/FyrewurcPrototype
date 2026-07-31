@@ -2,8 +2,8 @@ package org.fw.core.lib.expr.j;
 
 import org.fw.core.FW;
 import org.fw.core.base.Type;
-import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.Context;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.StrFw;
 import org.fw.core.lib.VitFw;
@@ -17,36 +17,36 @@ import java.math.BigInteger;
 import static org.fw.core.FW.symbol;
 
 public final class JValConstGetter {
-    public static final Val jval = FW.telephonist("jval", (arg, context) -> {
+    public static final Val jval = FW.telephonist("jval", (arg) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"), context);
-            Val cEnv = arg.call(symbol("comp-env"), context);
+            Val size = arg.call(symbol("size"));
+            Val cEnv = arg.call(symbol("comp-env"));
             int isize = size._unpack(BigInteger.class).intValue();
             if (isize != 2) {
                 return null;
             }
 
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
             Vit nameVit = VitFw.unwrap0(retVit);
             assert nameVit != null;
 
-            Val nameVal = nameVit.eval(context);
+            Val nameVal = nameVit.eval(Context.outOf);
             if (!nameVal.type().equals(StrFw.str))
                 return null;
 
             String name = nameVal._unpack();
 
-            Val fretVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1), context)._unpack(), CompEnv.of(cEnv)), context);
+            Val fretVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1))._unpack(), CompEnv.of(cEnv)));
             if (!VitFw.isVit(fretVit.type()))
                 return fretVit; // compile error idk
 
             Vit fnameVit = VitFw.unwrap0(fretVit);
             assert fnameVit != null;
 
-            Val fnameVal = fnameVit.eval(context);
+            Val fnameVal = fnameVit.eval(Context.outOf);
             if (!fnameVal.type().equals(StrFw.str))
                 return null;
 
