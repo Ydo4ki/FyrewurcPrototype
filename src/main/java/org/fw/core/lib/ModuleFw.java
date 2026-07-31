@@ -34,24 +34,6 @@ public final class ModuleFw {
                     return DeclaredFw.getValue(declared);
                 }
             }
-        } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"));
-            Val cEnv = arg.call(symbol("comp-env"));
-
-            final int isize = size._unpack(BigInteger.class).intValue();
-//            Val[] entries = new Val[isize];
-//            Vit ctor = Vit.val(ModuleFw.module.asVal()).call(symbol("builder"));
-            Vit ctor = Vit.val(DVecFw.emptyBuilder);
-
-            for (int i = 0; i < isize; i++) {
-                Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i))._unpack(), CompEnv.of(cEnv)));
-                if (!VitFw.isVit(value.type()))
-                    return value; // error idk
-                ctor = ctor.call(VitFw.unwrap0(value));
-            }
-            ctor = Vit.val(DVecFw.dvecbf).call(ctor);
-            ctor = Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(ctor); // ok nice
-            return VitFw.wrap(ctor);
         } else if (arg.equals(symbol("constructor"))) {
             return FW.telephonist("Module.constructor", (arg1) -> {
                 if (!arg1.type().equals(DVecFw.dVec))
@@ -69,9 +51,7 @@ public final class ModuleFw {
             return FW.telephonist("Module.contains-key", (arg1) -> {
                 if (!arg1.type().equals(ModuleFw.module)) return null;
                 Module mod = arg1._unpack();
-                return FW.telephonist((key) -> {
-                    return mod.containsKey(key) ? BoolFw._true : BoolFw._false;
-                });
+                return FW.telephonist((key) -> mod.containsKey(key) ? BoolFw._true : BoolFw._false);
             });
         }
 

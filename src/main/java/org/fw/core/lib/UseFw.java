@@ -1,13 +1,10 @@
-package org.fw.core.cases;
+package org.fw.core.lib;
 
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Val;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.ModuleFw;
-import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.vit.Vit;
