@@ -24,14 +24,14 @@ public final class VitiateTelephonistFw {
     // yeah we need to fix Vit constructors
     // so vitiate telephonist won't be needed at all as we can just call these trees
 
-    private static final Val builder = FW.telephonist("(get VitiateTelephonist builder)", (arg0, ctx) -> {
+    private static final Val builder = FW.telephonist("VitiateTelephonist.builder", (arg0, ctx) -> {
         if (!VitFw.isVit(arg0.type()))
             return null;
 
         Vit vit = arg0._unpack();
 
-        return FW.telephonist("(call (get VitiateTelephonist builder) " + VitFw.wrap(vit).toExpr(ctx) + ")", (arg, context) -> {
-            return FW.telephonist("(call (get VitiateTelephonist builder) " + VitFw.wrap(vit).toExpr(ctx) + " " + arg.toExpr(context) + ")", (parentRtEnv, context1) -> {
+        return FW.telephonist("(call VitiateTelephonist.builder " + VitFw.wrap(vit).toExpr(ctx) + ")", (arg, context) -> {
+            return FW.telephonist("(call VitiateTelephonist.builder " + VitFw.wrap(vit).toExpr(ctx) + " " + arg.toExpr(context) + ")", (parentRtEnv, context1) -> {
                 return Val.of(VitiateTelephonistFw.vitiateTelephonist, new VitiateTelephonist(vit, arg, RtEnv.of(parentRtEnv), context1.state()));
             });
         });

@@ -12,7 +12,9 @@ import java.math.BigInteger;
 
 import static org.fw.core.FW.symbol;
 
+@Deprecated
 public final class TelephonistConstructorFw {
+    @Deprecated
     public static final Val telephonist = FW.telephonist("telephonist", (arg, context) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"), context);

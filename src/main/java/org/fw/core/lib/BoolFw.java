@@ -9,8 +9,6 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.lib.telephonist.VitiateTelephonistFw;
-import org.fw.core.vit.Vit;
 
 import static org.fw.core.FW.symbol;
 
@@ -32,15 +30,15 @@ public final class BoolFw {
             } else if (cArg.equals(symbol("if"))) {
                 return FW.telephonistE(() -> callReprs("if", instance, context), (arg1, context1) -> { // probably one of the weirdest if implementations ever
                     if (value)
-                        return VitiateTelephonistFw.vitiate(Vit.val(arg1), symbol("arg"), context1);
-//                        return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("if"), arg1.toExpr(context)), (arg2, context2) -> {
-//                            return arg1;
-//                        });
+//                        return VitiateTelephonistFw.vitiate(Vit.val(arg1), symbol("arg"), context1);
+                        return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("if"), arg1.toExpr(context)), (arg2, context2) -> {
+                            return arg1;
+                        });
                     else
-                        return VitiateTelephonistFw.vitiate(Vit.var(symbol("arg")), symbol("arg"), context1);
-//                        return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("if"), arg1.toExpr(context)), (arg2, context2) -> {
-//                            return arg2;
-//                        });
+//                        return VitiateTelephonistFw.vitiate(Vit.var(symbol("arg")), symbol("arg"), context1);
+                        return FW.telephonist(ExprList.of(BracketsTypes.round, Symbol.of("call"), instance.toExpr(context), Symbol.of("if"), arg1.toExpr(context)), (arg2, context2) -> {
+                            return arg2;
+                        });
                 });
             }/* else if (cArg.equals(symbol("lif"))) {
                 return FW.telephonistE(() -> callReprs("lif", instance, context), (arg1, context1) -> { // probably one of the weirdest if implementations ever

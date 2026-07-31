@@ -3,12 +3,6 @@
   (invoke! (call _Sleep millis))))
  (: print! (fn [(= str)] !>
   (invoke! (call _Print str))))
- (: new! (fn [(= x)] !>
-  (invoke! (call _CreateNewObjectOperation x))))
- (: read! (fn [(= o)] !>
-  (invoke! (call _ReadOperation o))))
- (: write! (fn [(= o) (= x)] !>
-  (invoke! (call _WriteOperation o x))))
 
  (: slowprint! (fn [(= string)] !> (do
       (: i (new! 0))

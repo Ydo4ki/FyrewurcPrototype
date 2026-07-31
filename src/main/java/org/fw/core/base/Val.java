@@ -20,7 +20,7 @@ public abstract class Val {
 
     public abstract Type asType();
 
-    public Val call(Val arg, Context context) {
+    public Val call(Val arg, @Deprecated Context context) {
         Objects.requireNonNull(context);
         return type().callInstance(this, arg, context);
     }

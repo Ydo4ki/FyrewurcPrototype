@@ -63,6 +63,9 @@ public final class StrFw {
 
         public static Val symbolMapEnv(Vit telemap) {
             Vit parseArg = telemap.call(argExpr);
+            // what the heck is this
+            // how's it suppose to work
+            // WHY IT WORKS
             return VitiateTelephonistFw.vitiate(
                     FW.vIf(val(Unspecified.isUnspecified).call(parseArg).call(symbol("not")),
                             Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))

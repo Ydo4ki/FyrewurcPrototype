@@ -4,7 +4,6 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Unspecified;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.ModuleFw;
@@ -35,7 +34,7 @@ public class UseFw {
                         if (!VitFw.isVit(moduleVit.type()))
                             return null; // could not compile module
 
-                        Vit vit = Vit.simplify(moduleVit._unpack(Vit.class), context);
+                        Vit vit = Vit.simplify(moduleVit._unpack(Vit.class));
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
@@ -58,7 +57,7 @@ public class UseFw {
                         if (!VitFw.isVit(cEnvVit.type()))
                             return null; // could not compile cenv
 
-                        Vit vit = Vit.simplify(cEnvVit._unpack(Vit.class), context);
+                        Vit vit = Vit.simplify(cEnvVit._unpack(Vit.class));
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
