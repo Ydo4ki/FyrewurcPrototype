@@ -20,14 +20,14 @@ public interface Obj {
             this.value = value;
         }
 
-        public Val read(Context context) {
-            if (state() != context.state())
+        public Val read(State state) {
+            if (state() != state)
                 return Operation.unit; // c'mon at least use exceptions you're getting too far with this
             return value;
         }
 
-        public void write(Context context, Val x) {
-            if (state() != context.state())
+        public void write(State state, Val x) {
+            if (state() != state)
                 return;
             value = x;
         }

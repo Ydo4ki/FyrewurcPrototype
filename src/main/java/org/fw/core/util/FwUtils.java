@@ -110,7 +110,7 @@ public final class FwUtils {
             } catch (VitCompilationException e) {
                 throw new RuntimeException("Cannot compile: " + expr, e);
             }
-            result = vit.eval(context);
+            result = vit.eval(context.rtEnv(), context.state());
             if (result.type().equals(DeclaredFw.declared)) {
                 Val key = DeclaredFw.getKey(result);
                 Val value = DeclaredFw.getValue(result);

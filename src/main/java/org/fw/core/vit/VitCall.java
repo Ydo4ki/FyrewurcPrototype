@@ -3,7 +3,9 @@ package org.fw.core.vit;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.VitFw;
+import org.fw.core.state.obj.State;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,8 +19,8 @@ public final class VitCall extends Vit {
     }
 
     @Override
-    public Val eval(Context context) {
-        return func.eval(context).call(arg.eval(context));
+    public Val eval(RtEnv rtEnv, State state) {
+        return func.eval(rtEnv, state).call(arg.eval(rtEnv, state));
     }
 
     @Override

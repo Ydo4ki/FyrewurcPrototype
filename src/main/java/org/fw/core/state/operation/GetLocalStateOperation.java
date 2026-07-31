@@ -4,6 +4,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.state.obj.State;
 
 // but I have no idea how would you use it
 public final class GetLocalStateOperation extends Operation {
@@ -20,8 +21,8 @@ public final class GetLocalStateOperation extends Operation {
     }
 
     @Override
-    public Val execute(Context context) {
-        return context.state().asVal();
+    public Val execute(State state) {
+        return state.asVal();
     }
 
     @Override

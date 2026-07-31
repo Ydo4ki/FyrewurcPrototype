@@ -1,7 +1,5 @@
 package org.fw.core.base;
 
-import org.fw.core.base.context.Context;
-
 public abstract class Type {
 
     Type() {}

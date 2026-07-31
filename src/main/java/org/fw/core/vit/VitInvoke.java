@@ -2,7 +2,9 @@ package org.fw.core.vit;
 
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.VitFw;
+import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 
@@ -21,15 +23,15 @@ public final class VitInvoke extends Vit {
     }
 
     @Override
-    public Val eval(Context context) {
-        Operation op = OperationFw.unwrap(operationVal(context));
+    public Val eval(RtEnv rtEnv, State state) {
+        Operation op = OperationFw.unwrap(operationVal(rtEnv, state));
         if (op == null) {
             // temp
-            throw new IllegalStateException(operation.eval(context).toExpr(context).toString() + " from " + VitFw.wrap(operation).toExpr(context));
+            throw new IllegalStateException(operation.eval(rtEnv, state).toExpr(new Context(rtEnv, state)).toString() + " from " + VitFw.wrap(operation).toExpr(new Context(rtEnv, state)));
         }
 //        if (!Operation.isLocal(op, context.scope(), context))
 //            return Val.unspecified;
-        return op.execute(context);
+        return op.execute(state);
     }
 
     @Override
@@ -54,8 +56,8 @@ public final class VitInvoke extends Vit {
         return false;
     }
 
-    public Val operationVal(Context context) {
-        return operation.eval(context);
+    public Val operationVal(RtEnv rtEnv, State state) {
+        return operation.eval(rtEnv, state);
     }
 
     @Override

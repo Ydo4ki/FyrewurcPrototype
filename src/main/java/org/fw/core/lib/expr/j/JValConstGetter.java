@@ -4,11 +4,13 @@ import org.fw.core.FW;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.StrFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 
 import java.lang.reflect.Field;
@@ -33,7 +35,7 @@ public final class JValConstGetter {
             Vit nameVit = VitFw.unwrap0(retVit);
             assert nameVit != null;
 
-            Val nameVal = nameVit.eval(Context.outOf);
+            Val nameVal = nameVit.eval(RtEnv.unspecified);
             if (!nameVal.type().equals(StrFw.str))
                 return null;
 
@@ -43,10 +45,10 @@ public final class JValConstGetter {
             if (!VitFw.isVit(fretVit.type()))
                 return fretVit; // compile error idk
 
-            Vit fnameVit = VitFw.unwrap0(fretVit);
+            Vit fnameVit = fretVit._unpack();
             assert fnameVit != null;
 
-            Val fnameVal = fnameVit.eval(Context.outOf);
+            Val fnameVal = fnameVit.eval(RtEnv.unspecified);
             if (!fnameVal.type().equals(StrFw.str))
                 return null;
 

@@ -16,8 +16,6 @@ import org.fw.core.base.context.Context;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.state.operation.Operation;
-import org.fw.core.state.operation.OperationFw;
 import org.fw.core.vit.*;
 
 import java.util.ArrayList;
@@ -136,24 +134,12 @@ public final class VitFw {
         return null;
     });
 
-    @Deprecated // this just converts it to operation, it does not evaluate anything (which leaves no room for local evaluations)
-    public static final Val eval = telephonist("eval", (arg) -> {
-        if (isVit(arg.type())) {
-            Vit vit = arg._unpack();
-            return telephonist((env) -> {
-                return State.performAndDie(scope ->
-                        OperationFw.wrap(Operation.vit(Vit.reduce(vit, new Context(RtEnv.of(env), scope)), RtEnv.of(env))));
-//                return ;
-            });
-        }
-        return null;
-    });
     public static final Val evalVit = telephonist("eval-vit", (arg) -> {
         if (isVit(arg.type())) {
             Vit vit = arg._unpack();
             return telephonist((env) -> {
                 return State.performAndDie(scope ->
-                        vit.eval(new Context(RtEnv.of(env), scope)));
+                        vit.eval(RtEnv.of(env), scope));
             });
         }
         return null;
@@ -169,8 +155,7 @@ public final class VitFw {
     public static final Val reduce = FW.telephonist("vit-reduce", (arg) -> {
         if (VitFw.isVit(arg.type())) {
             return FW.telephonist(env
-                    -> State.performAndDie(
-                    scope -> VitFw.wrap(Vit.reduce(arg._unpack(), new Context(RtEnv.of(env), scope))))); // thx java
+                    -> VitFw.wrap(Vit.reduce(arg._unpack(), RtEnv.of(env)))); // thx java
         }
         return null;
     });

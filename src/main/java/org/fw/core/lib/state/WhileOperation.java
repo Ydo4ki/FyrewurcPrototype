@@ -1,7 +1,7 @@
 package org.fw.core.lib.state;
 
-import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.lib.BoolFw;
 
@@ -15,10 +15,10 @@ public final class WhileOperation extends Operation {
     }
 
     @Override
-    public Val execute(Context context) {
+    public Val execute(State state) {
         Val ret = Operation.unit;
-        while (condition.execute(context) == BoolFw._true) {
-            ret = body.execute(context);
+        while (condition.execute(state) == BoolFw._true) {
+            ret = body.execute(state);
         }
         return ret;
     }

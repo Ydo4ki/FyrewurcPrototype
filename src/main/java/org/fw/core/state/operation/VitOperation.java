@@ -3,6 +3,7 @@ package org.fw.core.state.operation;
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 
 import java.util.Objects;
@@ -17,8 +18,8 @@ public final class VitOperation extends Operation {
     }
 
     @Override
-    public Val execute(Context context) {
-        return vit.eval(new Context(rtEnv, context.state()));
+    public Val execute(State state) {
+        return vit.eval(rtEnv, state);
     }
 
     @Override

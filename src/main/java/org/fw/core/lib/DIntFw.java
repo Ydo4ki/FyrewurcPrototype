@@ -96,7 +96,7 @@ public final class DIntFw {
     public static final class ParseDIntCEnvFw {
         public static final Val parseNumCenv = StrFw.ParseStrCEnvFw.symbolMapEnv(val(FW.telephonist("parseNum", (arg1) -> {
             return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1))
-                    .eval(Context.outOf);
+                    .eval();
         })));
     }
 

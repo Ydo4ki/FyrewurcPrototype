@@ -1,8 +1,8 @@
 package org.fw.core.lib.state;
 
 import org.fw.core.base.Val;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.BoolFw;
+import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 
 // it's not like this can't be implemented on the language itself, this just seems easier
@@ -18,11 +18,11 @@ public final class IfOperation extends Operation {
     }
 
     @Override
-    public Val execute(Context context) {
-        if (condition.execute(context) == BoolFw._true) {
-            return ifTrue.execute(context);
+    public Val execute(State state) {
+        if (condition.execute(state) == BoolFw._true) {
+            return ifTrue.execute(state);
         } else {
-            return ifFalse.execute(context);
+            return ifFalse.execute(state);
         }
     }
 

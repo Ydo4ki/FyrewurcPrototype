@@ -75,10 +75,10 @@ public final class StrFw {
                             .call(parseArg),
                     parseArg
             );
-            return State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(new Context(RtEnv.of(FW.telephonist((arg2) -> {
+            return State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(RtEnv.of(FW.telephonist((arg2) -> {
                 if (arg2.equals(symbol("arg"))) return arg1;
                 return null;
-            })), state))));
+            })), state)));
         }
 
         public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1) -> {

@@ -87,7 +87,7 @@ class CompEnvTest {
         Val vv = VitFw.wrap(vit);
 //        System.out.println(vv.toExpr(context));
 //        System.out.println(vv);
-        assertEquals(vit.eval(context), DIntFw.dint(5));
+        assertEquals(vit.eval(context.rtEnv(), context.state()), DIntFw.dint(5));
         assertEquals(vv, VitFw.wrap(val(DIntFw.dint(5))));
     }
 

@@ -60,7 +60,7 @@ public class VitTests {
                         .call(symbol("constructor"))
                         .call(v2));
 
-        Val vit = codeThatCreatesVit.eval(context);
+        Val vit = codeThatCreatesVit.eval(context.rtEnv(), context.state());
 
         assertEquals(v1, vit.call(symbol("func")).call(symbol("val")));
         assertEquals(v2, vit.call(symbol("arg")).call(symbol("val")));

@@ -5,11 +5,13 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.Context;
+import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
+import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.vit.Vit;
@@ -23,6 +25,18 @@ import static org.fw.core.FW.telephonist;
 @Deprecated
 public final class InvokeFuncCEnvFw {
 
+    @Deprecated // this just converts it to operation, it does not evaluate anything (which leaves no room for local evaluations)
+    public static final Val eval = telephonist("eval", (arg) -> {
+        if (VitFw.isVit(arg.type())) {
+            Vit vit = arg._unpack();
+            return telephonist((env) -> {
+                return State.performAndDie(scope ->
+                        OperationFw.wrap(Operation.vit(Vit.reduce(vit, RtEnv.of(env)), RtEnv.of(env))));
+//                return ;
+            });
+        }
+        return null;
+    });
     @Deprecated
     public static final Val invokeFuncCenv = telephonist("invokeFuncCenv", (arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
@@ -44,7 +58,7 @@ public final class InvokeFuncCEnvFw {
                 Vit vit = func.call(exprCallOp);
 
                 if (func instanceof VitVal) {
-                    Val codeToWhichFunctionJustCompiled = vit.eval(Context.outOf);
+                    Val codeToWhichFunctionJustCompiled = vit.eval();
                     if (!VitFw.isVit(codeToWhichFunctionJustCompiled.type())) {
                         return codeToWhichFunctionJustCompiled;
                     }
@@ -52,7 +66,7 @@ public final class InvokeFuncCEnvFw {
                 }
 
 //                Vit resultingCode = Vit.val(VitFw.eval).call(vit).call(Vit.var);
-                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(VitFw.eval).call(vit).call(Vit.var), Context.outOf.rtEnv())))); // ._.
+                Vit resultingCode = Vit.invoke(Vit.val(OperationFw.wrap(Operation.vit(Vit.val(eval).call(vit).call(Vit.var), Context.outOf.rtEnv())))); // ._.
 
                 return VitFw.wrap(resultingCode);
             }

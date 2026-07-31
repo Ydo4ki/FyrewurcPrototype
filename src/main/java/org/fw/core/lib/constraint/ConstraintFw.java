@@ -106,8 +106,8 @@ public final class ConstraintFw {
                         RtEnv rtEnv = RtEnv.of(arg1);
 
                         // we might as well do it in parallel
-                        Val a = State.performAndDie(scope -> payload.a().eval(new Context(rtEnv, scope)));
-                        Val b = State.performAndDie(scope -> payload.b().eval(new Context(rtEnv, scope)));
+                        Val a = payload.a().eval(rtEnv);
+                        Val b = payload.b().eval(rtEnv);
 
                         return BoolFw.wrap(a.equals(b));
                     });

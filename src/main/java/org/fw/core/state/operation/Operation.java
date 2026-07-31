@@ -8,6 +8,7 @@ import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
 import org.fw.core.vit.VitVal;
@@ -18,7 +19,7 @@ public abstract class Operation {
     // just without negative connotation
     public static final Val unit = FW.telephonist("unit", (arg) -> Operation.unit);
 
-    public abstract Val execute(Context context);
+    public abstract Val execute(State state);
 
     private final Val asVal;
     private Boolean isPure = null;

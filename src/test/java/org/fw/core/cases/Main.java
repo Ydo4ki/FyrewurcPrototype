@@ -60,11 +60,10 @@ public class Main {
     });
 
     public static void main(String[] args) {
-//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
 
         State state = SystemOperation.systemState;
-        Context context = new Context(rtEnv, state);
         CompEnv compEnv;
         compEnv = CompEnv.of(CompEnv.compEnv(
                 BaseFw.exports.asVal(),
@@ -124,7 +123,7 @@ public class Main {
                     System.err.println(expression);
                     throw new RuntimeException(e);
                 }
-                Val val = vit.eval(context);
+                Val val = vit.eval(rtEnv, state);
                 compEnv = CompEnv.of(CompEnv.compEnv(
                         compEnv.asVal(),
                         ModuleFw.ModuleCEnvFw.compEnv(val)
@@ -141,7 +140,7 @@ public class Main {
                 System.err.println(expression);
                 throw new RuntimeException(e);
             }
-            Val val = vit.eval(context);
+            Val val = vit.eval(rtEnv, state);
 //            System.out.println(val.toExpr(context));
         }
     }

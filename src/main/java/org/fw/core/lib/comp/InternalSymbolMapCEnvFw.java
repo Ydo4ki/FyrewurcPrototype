@@ -51,7 +51,7 @@ public final class InternalSymbolMapCEnvFw {
         Vit parseArg = telemap.call(argExpr);
         return FW.telephonist((arg1) -> {
             if (Unspecified.isUnspecified(arg1)) return null;
-            else return parseArg.eval(Context.outOf);
+            else return parseArg.eval();
         });
 //        return VitiateTelephonistFw.vitiate(
 //                FW.vIf(val(eq).call(parseArg).call(null).call(symbol("not")),

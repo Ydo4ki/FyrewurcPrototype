@@ -2,6 +2,8 @@ package org.fw.core.vit;
 
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.RtEnv;
+import org.fw.core.state.obj.State;
 
 public final class VitVar extends Vit {
 
@@ -11,8 +13,8 @@ public final class VitVar extends Vit {
     }
 
     @Override
-    public Val eval(Context context) {
-        return context.rtEnv().asVal();
+    public Val eval(RtEnv rtEnv, State state) {
+        return rtEnv.asVal();
     }
 
     @Override

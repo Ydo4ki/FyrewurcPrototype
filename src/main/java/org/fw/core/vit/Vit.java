@@ -2,6 +2,8 @@ package org.fw.core.vit;
 
 import org.fw.core.base.context.Context;
 import org.fw.core.base.Val;
+import org.fw.core.base.context.RtEnv;
+import org.fw.core.state.obj.State;
 
 // no side effects for now
 public abstract class Vit {
@@ -41,20 +43,20 @@ public abstract class Vit {
     }
 
     // simplifies and applies var value from the given context (so there won't be any VitVars in the resulting tree)
-    public static Vit reduce(Vit vit, Context context) {
+    public static Vit reduce(Vit vit, RtEnv rtEnv) {
         if (vit instanceof VitVal) {
             return vit;
         }
 
         if (vit instanceof VitVar) {
-            return val(context.rtEnv().asVal());
+            return val(rtEnv.asVal());
         }
 
         if (vit instanceof VitCall) {
             VitCall call = (VitCall) vit;
 
-            Vit func = reduce(call.func(), context);
-            Vit arg = reduce(call.arg(), context);
+            Vit func = reduce(call.func(), rtEnv);
+            Vit arg = reduce(call.arg(), rtEnv);
 
             if (func instanceof VitVal && arg instanceof VitVal) {
                 Val f = ((VitVal) func).val();
@@ -69,13 +71,21 @@ public abstract class Vit {
             VitInvoke inv = (VitInvoke) vit;
             return inv.isConst()
                     ? inv
-                    : new VitInvoke(reduce(inv.operation(), context));
+                    : new VitInvoke(reduce(inv.operation(), rtEnv));
         }
 
         throw new IllegalStateException("Unknown Vit: " + vit);
     }
 
-    public abstract Val eval(Context context);
+    public final Val eval() {
+        return eval(RtEnv.unspecified);
+    }
+
+    public final Val eval(RtEnv rtEnv) {
+        return State.performAndDie(state -> eval(rtEnv, state));
+    }
+
+    public abstract Val eval(RtEnv rtEnv, State state);
 
     public abstract boolean isConst();
 

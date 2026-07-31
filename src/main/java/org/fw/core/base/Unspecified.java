@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.base.context.Context;
 import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.util.FwUtils;
