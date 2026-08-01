@@ -11,7 +11,7 @@ import org.fw.core.vit.Vit;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
-public class FnCallFw {
+public final class FnCallFw {
     public static final CompEnv fnCallCenv = CompEnv.of(telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));

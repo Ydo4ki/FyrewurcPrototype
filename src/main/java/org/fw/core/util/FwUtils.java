@@ -12,7 +12,6 @@ import org.fw.core.lib.BoolFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.base.ValsFw;
 import org.fw.core.lib.VitFw;
-import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -26,7 +25,9 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Predicate;
 
+import static org.fw.core.FW.symbol;
 import static org.fw.core.vit.Vit.val;
+import static org.fw.core.vit.Vit.var;
 
 // todo: replace all java File with FwFiles or something like that so they won't be attached to the actual filesystem
 public final class FwUtils {
@@ -88,7 +89,7 @@ public final class FwUtils {
 
         Map<String, Val> defineds = new HashMap<>();
 
-        final Val defined = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
+        final Val defined = symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
             if (!arg1.type().equals(SymbolFw.symbol))
                 return null;
             String string = arg1._unpack().toString();
@@ -135,6 +136,21 @@ public final class FwUtils {
 
     public static Vit equals(Vit a, Vit b) {
         return val(ValsFw.eq).call(a).call(b);
+    }
+
+    public static Val symbolMapVitEnv(Vit telemap) {
+        Vit arg = var(symbol("arg"));
+        Vit argExpr = arg.call(symbol("expr"));
+        Vit parseArg = telemap.call(argExpr);
+        return FW.telephonist((arg1) -> {
+            if (Unspecified.isUnspecified(arg1)) return null;
+            else return parseArg.eval();
+        });
+//        return VitiateTelephonistFw.vitiate(
+//                FW.vIf(val(eq).call(parseArg).call(null).call(symbol("not")),
+//                        parseArg,
+//                        val(null)
+//                ), symbol("arg"), InternalSystemContext.context);
     }
 
     @FunctionalInterface

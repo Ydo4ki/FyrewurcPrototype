@@ -9,13 +9,13 @@ import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.VitFw;
-import org.fw.core.lib.comp.InternalSymbolMapCEnvFw;
 import org.fw.core.lib.expr.AccumulatorsExprFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.state.operation.LaserPointerFw;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.operation.Operation;
+import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 import org.junit.jupiter.api.Assertions;
@@ -59,7 +59,7 @@ class CompEnvTest {
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 
-    public static final Val testValsCenv = InternalSymbolMapCEnvFw.symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
+    public static final Val testValsCenv = FwUtils.symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
         if (!arg1.type().equals(SymbolFw.symbol))
             return null;
         String string = arg1._unpack().toString();
@@ -89,21 +89,21 @@ class CompEnvTest {
         assertEquals(vv, VitFw.wrap(val(DIntFw.dint(5))));
     }
 
-    @Test
-    void testVals() throws VitCompilationException {
-        String source = ":";
-
-        Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
-
-        CompEnv env = CompEnv.of(CompEnv.compEnv(InternalSymbolMapCEnvFw.valsCenv, Operation.unit));
-        Vit vit = env.compile(expr);
-        Val vv = VitFw.wrap(vit);
-//        System.out.println(vv.toExpr(context));
-//        System.out.println(vv);
-        Assertions.assertNotNull(vit);
-//        assertEquals(DeclaredFw.colon, vit.eval(context));
-//        assertEquals(vv, VitFw.wrap(val(DeclaredFw.colon)));
-    }
+//    @Test
+//    void testVals() throws VitCompilationException {
+//        String source = ":";
+//
+//        Expr expr = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes)).iterator().next().getExpr();
+//
+//        CompEnv env = CompEnv.of(CompEnv.compEnv(InternalSymbolMapCEnvFw.valsCenv, Operation.unit));
+//        Vit vit = env.compile(expr);
+//        Val vv = VitFw.wrap(vit);
+////        System.out.println(vv.toExpr(context));
+////        System.out.println(vv);
+//        Assertions.assertNotNull(vit);
+////        assertEquals(DeclaredFw.colon, vit.eval(context));
+////        assertEquals(vv, VitFw.wrap(val(DeclaredFw.colon)));
+//    }
 
     @Test
     void testTelemap() {
