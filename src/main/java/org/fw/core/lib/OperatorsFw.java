@@ -32,6 +32,17 @@ public final class OperatorsFw {
                         case "/":
                         case "%":
                         case "^^":
+
+                        case "|":
+                        case "&":
+                        case "^":
+                        case ">>":
+                        case ">>>":
+                        case ">>>>":
+                        case "<<":
+                        case "<<<":
+                        case "<<<<":
+
                         case "<=>": {
                             Vit vit = null;
                             if (isize < 2)
@@ -47,7 +58,8 @@ public final class OperatorsFw {
                             return VitFw.wrap(vit);
                         }
                         // senders
-                        case "not": {
+                        case "not":
+                        case "~": {
                             if (isize != 2)
                                 return null;
 
