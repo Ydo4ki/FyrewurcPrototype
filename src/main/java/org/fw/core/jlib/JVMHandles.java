@@ -9,6 +9,7 @@ import org.fw.core.base.Val;
 import org.fw.core.lib.*;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.state.SystemOperation;
+import org.fw.core.memlib.DWordFw;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -73,12 +74,16 @@ public final class JVMHandles {
                     return FW.telephonist(argumentsVec -> {
                         if (argumentsVec.type() != DVecFw.dVec)
                             return null;
+
                         Val[] arguments = argumentsVec._unpack();
                         Object[] jArgs = new Object[arguments.length];
                         for (int i = 0; i < arguments.length; i++) {
                             Val argument = arguments[i];
-                            if (argument.type() == DIntFw.dint) jArgs[i] = DIntFw.unwrap(argument).intValue();
-                            else jArgs[i] = argument;
+                            if (argument.type() == DWordFw.dword) {
+                                jArgs[i] = DWordFw.unwrap(argument);
+                            } else {
+                                jArgs[i] = argument;
+                            }
                         }
                         return new SystemOperation() {
                             @Override

@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
+@Deprecated
 public final class OperatorExprFw {
 
     public static final Type exprOperator = telephonist("ExprOperator", ((arg) -> {

@@ -12,6 +12,7 @@ import java.math.BigInteger;
 
 import static org.fw.core.FW.*;
 
+@Deprecated
 public final class AccumulatorsExprFw {
 
     public static final Type exprAccumulator = telephonist("ExprAccumulator", ((arg) -> {

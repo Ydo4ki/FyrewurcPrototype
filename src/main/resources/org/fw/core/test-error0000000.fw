@@ -15,11 +15,11 @@
 
  (: i (invoke! (call _CreateNewObjectOperation 0)))
 
- (invoke! (call _While (operation (call eq (call (invoke! (call _ReadOperation i)) (symbol "<=>") 10) -1)) (operation (do
+ (while (call eq (<=> (read! i) 10) -1) (do
   (invoke! (call _Sleep 500))
   (invoke! (call _Print "0"))
-  (invoke! (call _WriteOperation i (call (invoke! (call _ReadOperation i)) (symbol "+") 1)))
- ))))
+  (write! i (+ (read! i) 1))
+ ))
 
  (invoke! (call _Print "\nStop\n"))
  (invoke! (call _Print "Please reinstall\n"))

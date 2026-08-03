@@ -31,8 +31,9 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
 
         State state = SystemOperation.systemState;
@@ -76,6 +77,7 @@ public class Main {
                 DoFw.exports.asVal(),
                 UseFw.useDirectivesCenv.asVal(),
                 directivesCenv.asVal(),
+                OperatorsFw.exports.asVal(),
 
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(

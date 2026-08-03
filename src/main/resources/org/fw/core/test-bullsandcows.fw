@@ -8,9 +8,9 @@
  (: to-expr (fn [(= x)] ->
   (call (var) (symbol "to-expr") x)))
  (: < (fn [(= a) (= b)] ->
-  (call eq (call a (symbol "<=>") b) -1)))
+  (call eq (<=> a b) -1)))
  (: > (fn [(= a) (= b)] ->
-  (call eq (call a (symbol "<=>") b) 1)))
+  (call eq (<=> a b) 1)))
  (: == (fn [(= a)(= b)] ->
   (call eq a b)))
  (: typeof (fn [(= x)] ->
@@ -21,11 +21,11 @@
 
       (while (< (read! i) string.size) (do
        (: s (read! i))
-       (: e (call s (symbol "+") 1))
+       (: e (+ s 1))
 
        (print! (call string.sub s e))
        (sleep! 20)
-       (write! i (call (read! i) (symbol "+") 1))
+       (write! i (+ (read! i) 1))
       ))
       unit
  )))
@@ -33,25 +33,25 @@
  (: read-digits! (fn [] !> (do (: read-digits! (get (var) %self%))
   (: digits (call DInt.parse (readline!)))
   (: valid (== (typeof digits) DInt))
-  (if valid.not (do
+  (if (not valid) (do
    (slowprint! "Invalid input :( Try again:\n")
    (read-digits!)
   ) else digits)
  )))
 
- (: generate-number (fn [(= digits)(= nanoTime)] -> (do
-  (: possible-digits (new! ["1" "2" "3" "4" "5" "6" "7" "8" "9" "0"]))
-  (: ret (new! DVec.builder)))
-  (while (get (call dvecbf (read! ret)) size) )
-// ok this is kinda boring
- )))
+// (: generate-number (fn [(= digits)(= nanoTime)] -> (do
+//  (: possible-digits (new! ["1" "2" "3" "4" "5" "6" "7" "8" "9" "0"]))
+//  (: ret (new! DVec.builder)))
+//  (while (get (call dvecbf (read! ret)) size) )
+//// ok this is kinda boring
+// )))
 
  (slowprint! "Welcome! Enter amount of digits to guess:\n")
 
  (: digits (read-digits!))
 
- (: number (generate-number digits (invoke! _NanoTime)))
- (print! number)
+// (: number (generate-number digits (invoke! _NanoTime)))
+// (print! number)
  (print! "\n")
 
  (slowprint! "Number guessed, now try to guess it.

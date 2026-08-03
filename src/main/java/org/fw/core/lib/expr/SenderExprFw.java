@@ -13,6 +13,7 @@ import java.math.BigInteger;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
+@Deprecated
 public final class SenderExprFw {
 
     public static final Type exprSender = telephonist("ExprSender", ((arg) -> {
