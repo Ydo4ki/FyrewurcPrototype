@@ -40,7 +40,7 @@ public final class DWordFw {
     private static Val bop(Val instance, IntBinaryOperator operator) {
         Integer value = unwrap(instance);
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(DIntFw.dint)) {
+            if (arg1.type().equals(DWordFw.dword)) {
                 Integer v2 = unwrap(arg1);
                 return wrap(operator.applyAsInt(value, v2));
             }
