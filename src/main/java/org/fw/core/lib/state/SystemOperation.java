@@ -13,7 +13,7 @@ public abstract class SystemOperation extends Operation {
 
     public static final State systemState = State.eternal();
 
-    SystemOperation() {}
+    public SystemOperation() {}
 
     @Override
     public final Val execute(State state) {

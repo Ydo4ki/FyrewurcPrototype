@@ -8,7 +8,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.*;
-import org.fw.core.lib.BoolFw;
+import org.fw.core.base.BoolFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.base.ValsFw;
 import org.fw.core.lib.VitFw;

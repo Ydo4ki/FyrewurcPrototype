@@ -13,7 +13,7 @@ import org.fw.core.vit.VitVal;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
-public class UseFw {
+public final class UseFw {
     public static final CompEnv useDirectivesCenv = CompEnv.of(telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));

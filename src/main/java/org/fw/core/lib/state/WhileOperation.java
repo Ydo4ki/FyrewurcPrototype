@@ -3,7 +3,7 @@ package org.fw.core.lib.state;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.lib.BoolFw;
+import org.fw.core.base.BoolFw;
 import org.fw.core.state.operation.OperationFw;
 
 import static org.fw.core.FW.telephonist;

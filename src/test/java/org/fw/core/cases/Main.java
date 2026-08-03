@@ -4,9 +4,11 @@ import org.fw.core.FW;
 import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.Val;
+import org.fw.core.jlib.JVMHandles;
 import org.fw.core.lib.*;
 import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
+import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.lib.state.SystemOperation;
@@ -29,7 +31,8 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
 
         State state = SystemOperation.systemState;
@@ -47,6 +50,8 @@ public class Main {
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
+                        DeclaredFw.declared(symbol("_CurrentTimeMillis"), SystemOperation.currentTimeMillis.asVal()),
+                        DeclaredFw.declared(symbol("_NanoTime"), SystemOperation.nanoTime.asVal()),
                         DeclaredFw.declared(symbol("_Print"), telephonist((arg)
                                 -> new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal())),
                         DeclaredFw.declared(symbol("_Sleep"), telephonist((arg) -> {
@@ -60,7 +65,9 @@ public class Main {
                         DeclaredFw.declared(symbol("_CreateNewObjectOperation"), OperationFw._CreateNewObjectOperation),
                         DeclaredFw.declared(symbol("_ReadOperation"), OperationFw._ReadOperation),
                         DeclaredFw.declared(symbol("_WriteOperation"), OperationFw._WriteOperation),
-                        DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation)
+                        DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation),
+                        DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
+                        DeclaredFw.declared(symbol("unit"), Operation.unit)
                 )),
                 ModuleFw.exports.asVal(),
                 FunctionFw.exports.asVal(),
@@ -108,7 +115,8 @@ public class Main {
                 throw new RuntimeException(e);
             }
             Val val = vit.eval(rtEnv, state);
-//            System.out.println(val.toExpr(context));
+//            System.out.println(val.toExpr(RtEnv.unspecified));
+            System.out.println(val._unpack(Object.class));
         }
     }
 

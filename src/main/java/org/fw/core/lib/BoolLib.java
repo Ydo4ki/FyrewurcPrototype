@@ -1,6 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.base.BoolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.expr.ToExprFn;

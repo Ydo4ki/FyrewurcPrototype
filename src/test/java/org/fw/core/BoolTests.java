@@ -2,7 +2,7 @@ package org.fw.core;
 
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
-import org.fw.core.lib.BoolFw;
+import org.fw.core.base.BoolFw;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;

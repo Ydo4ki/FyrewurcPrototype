@@ -9,33 +9,58 @@
   (call (var) (symbol "to-expr") x)))
  (: < (fn [(= a) (= b)] ->
   (call eq (call a (symbol "<=>") b) -1)))
+ (: > (fn [(= a) (= b)] ->
+  (call eq (call a (symbol "<=>") b) 1)))
+ (: == (fn [(= a)(= b)] ->
+  (call eq a b)))
+ (: typeof (fn [(= x)] ->
+  (call type-get x)))
 
  (: slowprint! (fn [(= string)] !> (do
       (: i (new! 0))
 
-      (invoke! (call _While (operation (< (read! i) string.size)) (operation (do
+      (while (< (read! i) string.size) (do
        (: s (read! i))
        (: e (call s (symbol "+") 1))
 
        (print! (call string.sub s e))
-       (sleep! 50)
+       (sleep! 20)
        (write! i (call (read! i) (symbol "+") 1))
-      ))))
+      ))
+      unit
  )))
 
- (: read-digits! (fn [] !> (do
-  (: digits (new! (call DInt.parse (readline!))))
-  (: valid (new! (call eq (call type-get (read! digits)) DInt)))
-  (while (get (read! valid) not) (do
+ (: read-digits! (fn [] !> (do (: read-digits! (get (var) %self%))
+  (: digits (call DInt.parse (readline!)))
+  (: valid (== (typeof digits) DInt))
+  (if valid.not (do
    (slowprint! "Invalid input :( Try again:\n")
-   (write! digits (call DInt.parse (readline!)))
-   (write! valid (call eq (call type-get (read! digits)) DInt))
-  ))
-  digits
+   (read-digits!)
+  ) else digits)
+ )))
+
+ (: generate-number (fn [(= digits)(= nanoTime)] -> (do
+  (: possible-digits (new! ["1" "2" "3" "4" "5" "6" "7" "8" "9" "0"]))
+  (: ret (new! DVec.builder)))
+  (while (get (call dvecbf (read! ret)) size) )
+// ok this is kinda boring
  )))
 
  (slowprint! "Welcome! Enter amount of digits to guess:\n")
 
  (: digits (read-digits!))
+
+ (: number (generate-number digits (invoke! _NanoTime)))
+ (print! number)
+ (print! "\n")
+
+ (slowprint! "Number guessed, now try to guess it.
+The output will indicate how far are you from the number:
+a bull means that your guess contains a correct digit in a right place,
+a cow means that your guess contains a correct digit in a wrong place\n")
+
+
+
  (slowprint! (call expr2str (to-expr digits)))
+ (print! "\n")
 )
