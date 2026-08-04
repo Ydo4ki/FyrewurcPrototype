@@ -6,7 +6,6 @@ import org.fw.core.base.Call;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.lib.DIntFw;
 import org.fw.core.util.FwUtils;
 
 import java.util.function.IntBinaryOperator;
@@ -29,8 +28,10 @@ public final class DWordFw {
                     case "<<":
                     case "<<<":
                         return bop(instance, (a, b) -> a << b);
+                    case "<<<<": return bop(instance, Integer::rotateLeft);
                     case ">>": return bop(instance, (a, b) -> a >> b);
                     case ">>>": return bop(instance, (a, b) -> a >>> b);
+                    case ">>>>": return bop(instance, Integer::rotateRight);
                 }
             }
         }
