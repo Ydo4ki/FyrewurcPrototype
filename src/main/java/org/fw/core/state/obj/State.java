@@ -1,7 +1,7 @@
 package org.fw.core.state.obj;
 
 import org.fw.core.base.Val;
-import org.fw.core.state.operation.LaserPointerFw;
+import org.fw.core.state.LaserPointerFw;
 
 import java.util.Map;
 import java.util.WeakHashMap;

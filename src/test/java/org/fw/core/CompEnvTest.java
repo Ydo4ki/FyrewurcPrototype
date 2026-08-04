@@ -12,13 +12,11 @@ import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.AccumulatorsExprFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.state.SystemOperation;
-import org.fw.core.state.operation.LaserPointerFw;
-import org.fw.core.state.obj.Obj;
-import org.fw.core.state.operation.Operation;
+import org.fw.core.state.LaserPointerFw;
+import org.fw.core.state.obj.ValObj;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -55,7 +53,7 @@ class CompEnvTest {
     static {
         testValsMap.put("Test", TestFw.test.asVal());
         testValsMap.put("+", Val.of(AccumulatorsExprFw.exprAccumulator, symbol("+")));
-        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, new Obj.ValObj(DIntFw.dint(14), SystemOperation.systemState)));
+        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, new ValObj(DIntFw.dint(14), SystemOperation.systemState)));
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 

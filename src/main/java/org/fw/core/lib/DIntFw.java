@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.vit.Vit.val;
 
+// lmao I completely forgot we wanted to get rid of this
 public final class DIntFw {
     public static final Type dint = FW.telephonist("DInt", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DIntFw.dint)) {
@@ -85,7 +86,7 @@ public final class DIntFw {
 
     public static BigInteger unwrap(Val dint) {
         if (dint.type().equals(DIntFw.dint)) return unwrap0(dint);
-        return null;
+        throw new IllegalArgumentException(dint.toString());
     }
 
     public static BigInteger unwrap0(Val dint) {

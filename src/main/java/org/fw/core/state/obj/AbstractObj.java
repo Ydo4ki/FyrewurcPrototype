@@ -2,7 +2,7 @@ package org.fw.core.state.obj;
 
 import java.util.Objects;
 
-abstract class AbstractObj implements Obj {
+public abstract class AbstractObj implements Obj {
     private final State state;
 
     protected AbstractObj(State state) {

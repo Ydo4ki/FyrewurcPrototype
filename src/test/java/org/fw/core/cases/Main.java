@@ -8,6 +8,8 @@ import org.fw.core.jlib.JVMHandles;
 import org.fw.core.lib.*;
 import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
+import org.fw.core.memlib.DWordFw;
+import org.fw.core.memlib.HeapFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
@@ -31,7 +33,8 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
@@ -68,7 +71,8 @@ public class Main {
                         DeclaredFw.declared(symbol("_WriteOperation"), OperationFw._WriteOperation),
                         DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation),
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
-                        DeclaredFw.declared(symbol("unit"), Operation.unit)
+                        DeclaredFw.declared(symbol("unit"), Operation.unit),
+                        DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
                 ModuleFw.exports.asVal(),
                 FunctionFw.exports.asVal(),
@@ -118,7 +122,7 @@ public class Main {
             }
             Val val = vit.eval(rtEnv, state);
 //            System.out.println(val.toExpr(RtEnv.unspecified));
-            System.out.println(val._unpack(Object.class));
+            System.out.println(val.toString());
         }
     }
 
@@ -189,6 +193,23 @@ public class Main {
                                 .call(Vit.call(OperationFw._VitOperation, ifFalse).call(Vit.var))
                         );
                         return VitFw.wrap(ret);
+                    }
+                    case "dword": {
+                        if (isize != 2)
+                            return null;
+
+                        String number = exprVal.call(DIntFw.dint(1))._unpack().toString();
+                        int b;
+                        try {
+                            if (number.startsWith("0x")) {
+                                b = Integer.parseUnsignedInt(number.substring(2), 16);
+                            } else {
+                                b = Integer.parseInt(number);
+                            }
+                        } catch (RuntimeException e) {
+                            return null;
+                        }
+                        return VitFw.wrap(Vit.val(DWordFw.wrap(b)));
                     }
                 }
             }

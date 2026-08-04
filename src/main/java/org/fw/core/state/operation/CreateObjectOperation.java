@@ -1,8 +1,9 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.base.Val;
-import org.fw.core.state.obj.Obj;
+import org.fw.core.state.LaserPointerFw;
 import org.fw.core.state.obj.State;
+import org.fw.core.state.obj.ValObj;
 
 public final class CreateObjectOperation extends Operation {
 
@@ -14,7 +15,7 @@ public final class CreateObjectOperation extends Operation {
 
     @Override
     public Val execute(State state) {
-        Obj.ValObj obj = new Obj.ValObj(initialValue, state);
+        ValObj obj = new ValObj(initialValue, state);
         return Val.of(LaserPointerFw.laserPointer, obj);
     }
 

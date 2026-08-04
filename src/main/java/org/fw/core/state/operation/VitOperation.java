@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public final class VitOperation extends Operation {
     private final Vit vit;
-    private final RtEnv rtEnv;
+    private final RtEnv rtEnv; // ok storing this just seems easier
 
     VitOperation(Vit vit, RtEnv rtEnv) {
         this.vit = Objects.requireNonNull(vit);

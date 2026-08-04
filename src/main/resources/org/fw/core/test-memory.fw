@@ -1,0 +1,4 @@
+(do
+ (: mem (invoke! (call heap.allocator 16)))
+ (invoke! (call mem.put (dword 0xCAFEBABE)))
+)

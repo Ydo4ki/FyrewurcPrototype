@@ -1,4 +1,4 @@
-package org.fw.core.state.operation;
+package org.fw.core.state;
 
 import org.fw.core.FW;
 import org.fw.core.base.Type;
