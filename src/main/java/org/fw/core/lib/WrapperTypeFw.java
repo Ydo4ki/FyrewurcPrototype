@@ -4,7 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
-public class WrapperTypeFw {
+public final class WrapperTypeFw {
     
     public static final Type wrapperType = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, WrapperTypeFw.wrapperType)) {
@@ -44,10 +44,10 @@ public class WrapperTypeFw {
         return Val.of(wrapperType, new WrapperType(payloadType, callsHandler, staticCallsHandler)).asType();
     }
     
-    static class WrapperType {
-        private final Type payloadType;
-        private final Val callsHandler;
-        private final Val staticCallsHandler;
+    public final static class WrapperType {
+        public final Type payloadType;
+        public final Val callsHandler;
+        public final Val staticCallsHandler;
 
         WrapperType(Type payloadType, Val callsHandler, Val staticCallsHandler) {
             this.payloadType = payloadType;

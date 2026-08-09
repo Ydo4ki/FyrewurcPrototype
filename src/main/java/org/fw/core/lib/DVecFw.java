@@ -95,7 +95,7 @@ public final class DVecFw {
 
     public static final Val emptyBuilder = Val.of(DVecFw.dVecBuilder, new Val[0]);
 
-    static Val[] arAppended(Val[] value, Val arg) {
+    public static <T> T[] arAppended(T[] value, T arg) {
         int i = value.length;
         value = Arrays.copyOf(value, i + 1);
         value[i] = arg;

@@ -7,10 +7,8 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.*;
-import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.state.SystemOperation;
-import org.fw.core.memlib.DWordFw;
-import org.fw.core.state.obj.Obj;
+import org.fw.core.memlib.words.DWordFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
