@@ -8,7 +8,7 @@ import org.fw.core.memlib.words.BitFw;
 
 import java.util.BitSet;
 
-public class MemUtils {
+public final class MemUtils {
     public static boolean isBinary(Type type) {
         return binarySize(type) > 0;
     }

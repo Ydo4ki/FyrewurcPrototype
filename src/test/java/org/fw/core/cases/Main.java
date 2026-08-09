@@ -8,6 +8,7 @@ import org.fw.core.jlib.JVMHandles;
 import org.fw.core.lib.*;
 import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
+import org.fw.core.memlib.ReifiedTypeFw;
 import org.fw.core.memlib.words.BinOperationsFw;
 import org.fw.core.memlib.words.BitFw;
 import org.fw.core.memlib.words.DWordFw;
@@ -87,10 +88,11 @@ public class Main {
                 OperatorsFw.exports.asVal(),
 
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                        DeclaredFw.declared(symbol("bit"), BitFw.bit.asVal()),
+                        DeclaredFw.declared(symbol("Bit"), BitFw.bit.asVal()),
                         DeclaredFw.declared(symbol("b0"), BitFw.bit0),
                         DeclaredFw.declared(symbol("b1"), BitFw.bit1),
-                        DeclaredFw.declared(symbol("octet"), OctetFw.octet.asVal()),
+                        DeclaredFw.declared(symbol("ReifiedType"), ReifiedTypeFw.reifiedType.asVal()),
+                        DeclaredFw.declared(symbol("Octet"), OctetFw.octet.asVal()),
                         DeclaredFw.declared(symbol("bitor"), BinOperationsFw.or),
                         DeclaredFw.declared(symbol("bitand"), BinOperationsFw.and),
                         DeclaredFw.declared(symbol("bitxor"), BinOperationsFw.xor),

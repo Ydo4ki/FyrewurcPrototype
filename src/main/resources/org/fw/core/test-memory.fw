@@ -1,9 +1,10 @@
 (do
- (: a (call octet.builder b1 b1 b1 b1 b1 b1 b1 b1))
- (: b (call octet.builder b1 b1 b1 b1 b0 b1 b1 b1))
+ (: a (call Octet.builder b1 b1 b1 b1 b1 b1 b1 b1))
+ (: b (call Octet.builder b1 b1 b1 b1 b0 b1 b1 b1))
 
 
- (call bitnot octet (call bitxor octet a b))
+ (call bitnot Octet (call bitxor Octet a b))
+ (call eq (call ReifiedType.builder Bit 8) Octet)
 // (: mem (invoke! (call heap.allocator 16)))
 // (invoke! (call mem.put (dword 0xCAFEBABE)))
 )

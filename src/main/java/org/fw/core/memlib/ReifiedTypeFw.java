@@ -5,9 +5,12 @@ import org.fw.core.base.Call;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.DVecFw;
 import org.fw.core.memlib.words.BitFw;
 import org.fw.core.util.FwUtils;
+
+import java.util.Objects;
 
 public final class ReifiedTypeFw {
     public static final Type reifiedType = FW.telephonist(arg -> {
@@ -20,6 +23,15 @@ public final class ReifiedTypeFw {
                 return builder(instance.asType(), new Object[0]);
             }
             return null;
+        } else if (arg.type() == SymbolFw.symbol) {
+            String v = arg._unpack().toString();
+            if (v.equals("builder")) return FW.telephonist(atomType -> FW.telephonist(size0 -> {
+                if (size0.type().equals(DIntFw.dint)) {
+                    int size = DIntFw.unwrap0(size0).intValueExact();
+                    return reifiedType(atomType.asType(), size).asVal();
+                }
+                return null;
+            }));
         }
         return null;
     }).asType();
@@ -35,6 +47,18 @@ public final class ReifiedTypeFw {
         ReifiedType(Type atomT, int size) {
             atom_t = atomT;
             this.size = size;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            ReifiedType that = (ReifiedType) o;
+            return size == that.size && Objects.equals(atom_t, that.atom_t);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(atom_t, size);
         }
     }
 
