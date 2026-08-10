@@ -1,5 +1,11 @@
 (assert! true)
 
+// reified type
+(do
+ (assert! (== (ReifiedType Bit 8) Octet))
+ (assert! (== (ReifiedType Octet 2) (ReifiedType Bit 16)))
+)
+
 // operations on single bits
 (do
  (assert! (== (~ b1) b0))
@@ -48,7 +54,6 @@
 
 
  (call bitnot Octet (call bitxor Octet a b))
-// (call eq (ReifiedType Bit 8) Octet)
 
 // (: mem (invoke! (call heap.allocator 16)))
 // (invoke! (call mem.put (dword 0xCAFEBABE)))

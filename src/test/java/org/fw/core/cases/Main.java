@@ -20,7 +20,7 @@ import org.fw.core.memlib.words.BinOperationsFw;
 import org.fw.core.memlib.words.BitFw;
 import org.fw.core.memlib.words.DWordFw;
 import org.fw.core.memlib.HeapFw;
-import org.fw.core.memlib.words.OctetFw;
+import org.fw.core.memlib.words.PrimitiveLayoutsFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
@@ -47,9 +47,9 @@ public class Main {
 
     public static void main(String[] args) {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
-//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-arrays.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-dvec.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-dvec.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
@@ -111,12 +111,12 @@ public class Main {
 //                        DeclaredFw.declared(symbol("b0"), BitFw.bit0),
 //                        DeclaredFw.declared(symbol("b1"), BitFw.bit1),
                         DeclaredFw.declared(symbol("ReifiedType"), ReifiedTypeFw.reifiedType.asVal()),
-                        DeclaredFw.declared(symbol("Octet"), OctetFw.octet.asVal()),
                         DeclaredFw.declared(symbol("bitor"), BinOperationsFw.or),
                         DeclaredFw.declared(symbol("bitand"), BinOperationsFw.and),
                         DeclaredFw.declared(symbol("bitxor"), BinOperationsFw.xor),
                         DeclaredFw.declared(symbol("bitnot"), BinOperationsFw.not)
                 )),
+                PrimitiveLayoutsFw.lib.exports(),
 
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(

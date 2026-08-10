@@ -1,6 +1,7 @@
 package org.fw.core.lib;
 
 import org.fw.core.FW;
+import org.fw.core.adapter.ValAdapter;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
@@ -104,6 +105,10 @@ public final class DeclaredFw {
         return declared.call(symbol("value"));
     }
 
+
+    public static Val declared(Val key, ValAdapter value) {
+        return declared(key, value.asVal());
+    }
 
     public static Val declared(Val key, Val value) {
         return Val.of(DeclaredFw.declared, new Declared(key, value));

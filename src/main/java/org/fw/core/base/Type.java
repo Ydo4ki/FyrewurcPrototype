@@ -1,6 +1,8 @@
 package org.fw.core.base;
 
-public abstract class Type {
+import org.fw.core.adapter.ValAdapter;
+
+public abstract class Type implements ValAdapter {
 
     Type() {}
 

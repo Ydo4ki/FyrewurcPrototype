@@ -20,28 +20,6 @@ import java.util.Objects;
 import static org.fw.core.FW.symbol;
 
 public final class DeclarationFw {
-    @Deprecated
-    public static final Val field = FW.telephonist("=", (arg) -> {
-        if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"));
-            Val cEnv = arg.call(symbol("comp-env"));
-
-            int isize = size._unpack(BigInteger.class).intValue();
-            if (isize != 2)
-                return null;
-
-            Val name = arg.call(DIntFw.dint(0));
-            if (!name.type().equals(SymbolFw.symbol))
-                return null; // symbol expected
-
-            Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1))._unpack(), CompEnv.of(cEnv)));
-            if (!VitFw.isVit(value.type())) return value; // error idk
-
-            return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(name)
-                    .call(Vit.call(ConstraintFw.to_constraint, VitFw.unwrap0(value))));
-        }
-        return null;
-    });
 
     // I hope it will be possible to make it a struct later
     public static final Type declaration = FW.telephonist("Declaration", (arg) -> {
@@ -55,23 +33,6 @@ public final class DeclarationFw {
             } else if (arg.equals(symbol("constraint"))) {
                 return decl.constraint();
             }
-        } else if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"));
-            Val cEnv = arg.call(symbol("comp-env"));
-
-            int isize = size._unpack(BigInteger.class).intValue();
-            if (isize != 2)
-                return null;
-
-            Val name = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
-            if (!VitFw.isVit(name.type()))
-                return name; // error idk
-
-            Val value = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(1))._unpack(), CompEnv.of(cEnv)));
-            if (!VitFw.isVit(value.type()))
-                return value; // error idk
-
-            return VitFw.wrap(Vit.val(DeclarationFw.declaration.asVal()).call(symbol("builder")).call(VitFw.unwrap0(name)).call(VitFw.unwrap0(value)));
         } else if (arg.equals(symbol("builder"))) {
             return FW.telephonist("Declaration.builder", (key) -> {
                 return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint) -> {

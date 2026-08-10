@@ -25,10 +25,10 @@ public final class ReifiedTypeFw {
             if (FwUtils.isTypeApiCall(arg, type)) {
                 instance = Call.getVal(arg);
                 arg = Call.getArg(arg);
-                int elements = rt.size;
+                int elements = Math.toIntExact(rt.size);
                 Val[] vals = new Val[elements];
                 for (int i = 0; i < elements; i++) {
-                    vals[i] = getOne(instance, i).call(arg);
+                    vals[i] = getAtom(instance, i).call(arg);
                 }
                 return reify(vals);
             } else if (arg.type() == SymbolFw.symbol && arg._unpack().toString().equals("builder")) {
@@ -64,13 +64,18 @@ public final class ReifiedTypeFw {
         return null;
     }).asType();
 
-    public static Type reifiedType(Type atom_t, int size) {
+    public static Type reifiedType(Type elementType, long size) {
         if (size == 1)
-            return atom_t;
-        return Val.of(reifiedType, new ReifiedType(atom_t, size)).asType();
+            return elementType;
+        while (elementType.asVal().type() == reifiedType) {
+            ReifiedType rt = elementType.asVal()._unpack();
+            elementType = rt.atom_t;
+            size *= rt.size;
+        }
+        return Val.of(reifiedType, new ReifiedType(elementType, size)).asType();
     }
 
-    public static Val getOne(Val reified, int index) {
+    private static Val getAtom(Val reified, int index) {
         Type type = reified.type();
         if (type.asVal().type() != ReifiedTypeFw.reifiedType)
             throw new IllegalStateException();
@@ -124,9 +129,9 @@ public final class ReifiedTypeFw {
 
     static class ReifiedType {
         final Type atom_t;
-        final int size;
+        final long size;
 
-        ReifiedType(Type atomT, int size) {
+        ReifiedType(Type atomT, long size) {
             atom_t = atomT;
             this.size = size;
         }

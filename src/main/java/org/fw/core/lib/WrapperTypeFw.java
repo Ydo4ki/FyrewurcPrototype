@@ -43,7 +43,13 @@ public final class WrapperTypeFw {
     public static Type wrapperType(Type payloadType, Val callsHandler, Val staticCallsHandler) {
         return Val.of(wrapperType, new WrapperType(payloadType, callsHandler, staticCallsHandler)).asType();
     }
-    
+
+    public static Type unwrapOrReturn(Type type) {
+        if (type.asVal().type().equals(WrapperTypeFw.wrapperType))
+            return type.asVal()._unpack(WrapperTypeFw.WrapperType.class).payloadType;
+        return type;
+    }
+
     public final static class WrapperType {
         public final Type payloadType;
         public final Val callsHandler;

@@ -14,8 +14,7 @@ public final class MemUtils {
     }
 
     public static long binarySize(Type type) {
-        if (type.asVal().type().equals(WrapperTypeFw.wrapperType))
-            type = type.asVal()._unpack(WrapperTypeFw.WrapperType.class).payloadType;
+        type = WrapperTypeFw.unwrapOrReturn(type);
 
         if (type == BitFw.bit) return 1;
         if (type.asVal().type().equals(ReifiedTypeFw.reifiedType)) {
