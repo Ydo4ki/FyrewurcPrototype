@@ -29,7 +29,7 @@ public final class AllocatedMemoryFw {
                             int v = arg1._unpack();
                             return new Operation() {
                                 @Override
-                                public Val execute(State state) {
+                                public Val apply(State state) {
                                     amo.buffer().putInt(v);
                                     return Operation.unit;
                                 }

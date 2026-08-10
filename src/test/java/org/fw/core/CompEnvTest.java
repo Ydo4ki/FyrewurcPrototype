@@ -53,7 +53,7 @@ class CompEnvTest {
     static {
         testValsMap.put("Test", TestFw.test.asVal());
         testValsMap.put("+", Val.of(AccumulatorsExprFw.exprAccumulator, symbol("+")));
-        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, new ValObj(DIntFw.dint(14), SystemOperation.systemState)));
+        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, ValObj.of(DIntFw.dint(14), SystemOperation.systemState)));
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 

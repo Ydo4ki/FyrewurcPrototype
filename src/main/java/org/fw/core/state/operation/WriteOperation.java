@@ -23,7 +23,7 @@ public final class WriteOperation extends Operation {
     }
 
     @Override
-    public Val execute(State state) {
+    public Val apply(State state) {
         obj.write(state, x);
         return Operation.unit;
     }

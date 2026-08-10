@@ -10,6 +10,7 @@ import org.fw.core.jlib.JVMHandles;
 import org.fw.core.lib.*;
 import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
+import org.fw.core.lib.state.array.CreateArrayOperation;
 import org.fw.core.memlib.MemUtils;
 import org.fw.core.memlib.ReifiedTypeFw;
 import org.fw.core.memlib.words.BinOperationsFw;
@@ -43,7 +44,8 @@ public class Main {
 
     public static void main(String[] args) {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-arrays.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
@@ -80,6 +82,8 @@ public class Main {
                         DeclaredFw.declared(symbol("_WriteOperation"), OperationFw._WriteOperation),
                         DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation),
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
+                        DeclaredFw.declared(symbol("_CreateNewArrayOperation"), telephonist(size -> telephonist(init ->
+                                new CreateArrayOperation(DIntFw.unwrap(size).intValueExact(), i -> OperationFw.unwrap(init.call(DIntFw.dint(i)))).asVal()))),
                         DeclaredFw.declared(symbol("unit"), Operation.unit),
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
@@ -259,8 +263,8 @@ public class Main {
         }
 
         @Override
-        public Val execute(State state) {
-            Val ret = _assert.execute(state);
+        public Val apply(State state) {
+            Val ret = _assert.apply(state);
             if (ret == BoolFw._true) return Operation.unit;
             else throw new AssertionError(_assert.toString());
         }

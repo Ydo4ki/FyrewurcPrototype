@@ -29,10 +29,10 @@ public final class WhileOperation extends Operation {
     }
 
     @Override
-    public Val execute(State state) {
+    public Val apply(State state) {
         Val ret = Operation.unit;
-        while (condition.execute(state) == BoolFw._true) {
-            ret = body.execute(state);
+        while (condition.apply(state) == BoolFw._true) {
+            ret = body.apply(state);
         }
         return ret;
     }

@@ -16,7 +16,7 @@ public abstract class SystemOperation extends Operation {
     public SystemOperation() {}
 
     @Override
-    public final Val execute(State state) {
+    public final Val apply(State state) {
         // errr ok I'm not sure how to determine if that's a system context or not
         // and it's not like it will be much useful later
         // I should probably create a random instance and call it a system context

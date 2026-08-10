@@ -14,8 +14,8 @@ public final class CreateObjectOperation extends Operation {
     }
 
     @Override
-    public Val execute(State state) {
-        ValObj obj = new ValObj(initialValue, state);
+    public Val apply(State state) {
+        ValObj obj = ValObj.of(initialValue, state);
         return Val.of(LaserPointerFw.laserPointer, obj);
     }
 

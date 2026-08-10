@@ -35,7 +35,7 @@ public final class MemAllocatorFw {
             long size = DIntFw.unwrap0(arg).longValueExact();
             return new Operation() {
                 @Override
-                public Val execute(State state) {
+                public Val apply(State state) {
                     if (state != heap.state())
                         return Operation.unit;
                     return Val.of(AllocatedMemoryFw.allocatedMemory, new AllocatedMemoryObj(heap, size));

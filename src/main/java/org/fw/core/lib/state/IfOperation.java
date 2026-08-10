@@ -37,11 +37,11 @@ public final class IfOperation extends Operation {
     }
 
     @Override
-    public Val execute(State state) {
-        if (condition.execute(state) == BoolFw._true) {
-            return ifTrue.execute(state);
+    public Val apply(State state) {
+        if (condition.apply(state) == BoolFw._true) {
+            return ifTrue.apply(state);
         } else {
-            return ifFalse.execute(state);
+            return ifFalse.apply(state);
         }
     }
 

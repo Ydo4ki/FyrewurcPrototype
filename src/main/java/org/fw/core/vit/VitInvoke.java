@@ -30,7 +30,7 @@ public final class VitInvoke extends Vit {
         }
 //        if (!Operation.isLocal(op, context.scope(), context))
 //            return Val.unspecified;
-        return op.execute(state);
+        return op.apply(state);
     }
 
     @Override

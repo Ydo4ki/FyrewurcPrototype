@@ -21,7 +21,7 @@ public abstract class Operation implements ValAdapter {
     // maybe I should make a separate unspecified type for failed operations :hmm:
     public static final Val unit = FW.telephonist("unit", (arg) -> Operation.unit);
 
-    public abstract Val execute(State state);
+    public abstract Val apply(State state);
 
     private final Val asVal;
     private Boolean isPure = null;

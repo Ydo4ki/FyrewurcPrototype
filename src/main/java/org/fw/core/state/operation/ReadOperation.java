@@ -17,7 +17,7 @@ public final class ReadOperation extends Operation {
     }
 
     @Override
-    public Val execute(State state) {
+    public Val apply(State state) {
         return obj.read(state);
     }
 
