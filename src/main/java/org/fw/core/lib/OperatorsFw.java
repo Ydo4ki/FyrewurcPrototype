@@ -36,6 +36,9 @@ public final class OperatorsFw {
                         case "|":
                         case "&":
                         case "^":
+                        case "~|":
+                        case "~&":
+                        case "~^":
                         case ">>":
                         case ">>>":
                         case ">>>>":

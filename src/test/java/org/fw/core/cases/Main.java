@@ -3,11 +3,14 @@ package org.fw.core.cases;
 import org.fw.core.FW;
 import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
+import org.fw.core.base.BoolFw;
+import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.jlib.JVMHandles;
 import org.fw.core.lib.*;
 import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
+import org.fw.core.memlib.MemUtils;
 import org.fw.core.memlib.ReifiedTypeFw;
 import org.fw.core.memlib.words.BinOperationsFw;
 import org.fw.core.memlib.words.BitFw;
@@ -20,10 +23,12 @@ import org.fw.core.state.obj.State;
 import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.lib.state.WhileOperation;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.util.bits.Bits;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -86,11 +91,12 @@ public class Main {
                 UseFw.useDirectivesCenv.asVal(),
                 directivesCenv.asVal(),
                 OperatorsFw.exports.asVal(),
+                parseReifiedBits.asVal(),
 
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("Bit"), BitFw.bit.asVal()),
-                        DeclaredFw.declared(symbol("b0"), BitFw.bit0),
-                        DeclaredFw.declared(symbol("b1"), BitFw.bit1),
+//                        DeclaredFw.declared(symbol("b0"), BitFw.bit0),
+//                        DeclaredFw.declared(symbol("b1"), BitFw.bit1),
                         DeclaredFw.declared(symbol("ReifiedType"), ReifiedTypeFw.reifiedType.asVal()),
                         DeclaredFw.declared(symbol("Octet"), OctetFw.octet.asVal()),
                         DeclaredFw.declared(symbol("bitor"), BinOperationsFw.or),
@@ -210,6 +216,18 @@ public class Main {
                         );
                         return VitFw.wrap(ret);
                     }
+                    case "assert!": {
+                        if (isize != 2)
+                            return null;
+
+                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        if (!VitFw.isVit(condition.type()))
+                            return null;
+                        Vit vitOperation = Vit.call(OperationFw._VitOperation, condition).call(Vit.var);
+                        Vit assertOperation = Vit.call(FW.telephonist(arg1 ->
+                                new AssertOperation(arg1._unpack(Operation.class)).asVal()), vitOperation);
+                        return VitFw.wrap(Vit.invoke(assertOperation));
+                    }
                     case "dword": {
                         if (isize != 2)
                             return null;
@@ -233,4 +251,55 @@ public class Main {
         return null;
     }));
 
+    static class AssertOperation extends Operation {
+        private final Operation _assert;
+
+        AssertOperation(Operation anAssert) {
+            _assert = anAssert;
+        }
+
+        @Override
+        public Val execute(State state) {
+            Val ret = _assert.execute(state);
+            if (ret == BoolFw._true) return Operation.unit;
+            else throw new AssertionError(_assert.toString());
+        }
+
+        @Override
+        protected boolean isPure0() {
+            return false;
+        }
+    }
+
+    public static final CompEnv parseReifiedBits = CompEnv.of(telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
+            Expr expr = exprVal._unpack();
+            if (!(expr instanceof Symbol))
+                return null;
+
+            String text = ((Symbol) expr).getValue();
+            if (!text.startsWith("b"))
+                return null;
+
+            BitSet bitset = new BitSet();
+            int size = text.length() - 1;
+            if (size <= 0)
+                return null;
+
+            for (int i = 0; i < size; i++) {
+                char c = text.charAt(i + 1);
+                boolean b;
+                if (c == '0') b = false;
+                else if (c == '1') b = true;
+                else return null;
+                bitset.set(i, b);
+            }
+            Type type = ReifiedTypeFw.reifiedType(BitFw.bit, size);
+            Bits bits = Bits.of(bitset, size);
+            return VitFw.wrap(Vit.val(MemUtils.wrap(type, bits)));
+        }
+        return null;
+    }));
 }

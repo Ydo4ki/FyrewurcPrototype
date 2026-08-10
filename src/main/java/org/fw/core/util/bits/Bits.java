@@ -4,6 +4,8 @@ import java.util.BitSet;
 
 public abstract class Bits {
 
+    Bits() {}
+
     public static Bits bits(boolean b) {
         return b ? SingleBit.ONE : SingleBit.ZERO;
     }
@@ -90,4 +92,10 @@ public abstract class Bits {
     }
 
     public abstract Bits not();
+
+    public Bits getSlice(long fromIndex, long toIndex) {
+        BitSet bs = BitSet.valueOf(toLongArray());
+        BitSet sub = bs.get(Math.toIntExact(fromIndex), Math.toIntExact(toIndex)); // placeholder
+        return of(sub, toIndex - fromIndex);
+    }
 }

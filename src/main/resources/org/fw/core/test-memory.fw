@@ -1,10 +1,55 @@
+(assert! true)
+
+// operations on single bits
 (do
- (: a (call Octet.builder b1 b1 b1 b1 b1 b1 b1 b1))
- (: b (call Octet.builder b1 b1 b1 b1 b0 b1 b1 b1))
+ (assert! (== (~ b1) b0))
+ (assert! (== (~ b0) b1))
+
+ (assert! (== (| b0 b0) b0))
+ (assert! (== (| b0 b1) b1))
+ (assert! (== (| b1 b0) b1))
+ (assert! (== (| b1 b1) b1))
+
+ (assert! (== (& b0 b0) b0))
+ (assert! (== (& b0 b1) b0))
+ (assert! (== (& b1 b0) b0))
+ (assert! (== (& b1 b1) b1))
+
+ (assert! (== (^ b0 b0) b0))
+ (assert! (== (^ b0 b1) b1))
+ (assert! (== (^ b1 b0) b1))
+ (assert! (== (^ b1 b1) b0))
+
+ (assert! (== (~| b0 b0) b1))
+ (assert! (== (~| b0 b1) b0))
+ (assert! (== (~| b1 b0) b0))
+ (assert! (== (~| b1 b1) b0))
+
+ (assert! (== (~& b0 b0) b1))
+ (assert! (== (~& b0 b1) b1))
+ (assert! (== (~& b1 b0) b1))
+ (assert! (== (~& b1 b1) b0))
+
+ (assert! (== (~^ b0 b0) b1))
+ (assert! (== (~^ b0 b1) b0))
+ (assert! (== (~^ b1 b0) b0))
+ (assert! (== (~^ b1 b1) b1))
+)
+
+(do
+ (: x b01111)
+ (invoke! (call _Print (~ x)))
+ (invoke! (call _Print x))
+)
+
+(do
+ (: a b11111111)
+ (: b b11110111)
 
 
  (call bitnot Octet (call bitxor Octet a b))
- (call eq (call ReifiedType.builder Bit 8) Octet)
+// (call eq (ReifiedType Bit 8) Octet)
+
 // (: mem (invoke! (call heap.allocator 16)))
 // (invoke! (call mem.put (dword 0xCAFEBABE)))
 )
