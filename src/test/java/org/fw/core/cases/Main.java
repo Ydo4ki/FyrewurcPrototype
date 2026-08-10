@@ -82,8 +82,13 @@ public class Main {
                         DeclaredFw.declared(symbol("_WriteOperation"), OperationFw._WriteOperation),
                         DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation),
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
-                        DeclaredFw.declared(symbol("_CreateNewArrayOperation"), telephonist(size -> telephonist(init ->
-                                new CreateArrayOperation(DIntFw.unwrap(size).intValueExact(), i -> OperationFw.unwrap(init.call(DIntFw.dint(i)))).asVal()))),
+                        DeclaredFw.declared(symbol("_CreateNewArrayOperation"), telephonist(size -> telephonist(init -> {
+                            return new CreateArrayOperation(
+                                    DIntFw.unwrap(size).intValueExact(),
+                                    i -> {
+                                        return OperationFw.unwrap(init.call(DIntFw.dint(i)));
+                                    }).asVal();
+                        }))),
                         DeclaredFw.declared(symbol("unit"), Operation.unit),
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),

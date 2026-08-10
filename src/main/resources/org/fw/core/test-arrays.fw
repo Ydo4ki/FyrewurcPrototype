@@ -1,5 +1,5 @@
 (assert! true)
 
 (do
- (call _CreateNewArrayOperation 14 (call eval-vit (compile-vit (operation true)) 0))
+ (invoke! (call _CreateNewArrayOperation 14 (call eval-vit (compile-vit (operation true)))))
 )
