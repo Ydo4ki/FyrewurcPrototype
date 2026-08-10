@@ -6,10 +6,10 @@ import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.ValObj;
 import org.fw.core.state.operation.Operation;
 
-public final class ArrayObj extends AbstractObj {
+public final class ValArrayObj extends AbstractObj {
     private final Val[] value;
 
-    public ArrayObj(Val[] value, State owner) {
+    public ValArrayObj(Val[] value, State owner) {
         super(owner);
         this.value = value;
     }
@@ -31,27 +31,27 @@ public final class ArrayObj extends AbstractObj {
     }
 
     private static class ReferenceValObj implements ValObj {
-        private final ArrayObj arrayObj;
+        private final ValArrayObj valArrayObj;
         private final int index;
 
-        ReferenceValObj(ArrayObj arrayObj, int index) {
-            this.arrayObj = arrayObj;
+        ReferenceValObj(ValArrayObj valArrayObj, int index) {
+            this.valArrayObj = valArrayObj;
             this.index = index;
         }
 
         @Override
         public Val read(State state) {
-            return arrayObj.read(state, index);
+            return valArrayObj.read(state, index);
         }
 
         @Override
         public void write(State state, Val x) {
-            arrayObj.write(state, index, x);
+            valArrayObj.write(state, index, x);
         }
 
         @Override
         public State state() {
-            return arrayObj.state();
+            return valArrayObj.state();
         }
     }
 }

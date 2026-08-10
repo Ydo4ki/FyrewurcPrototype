@@ -6,19 +6,13 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.DVecFw;
+import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.memlib.words.BitFw;
-import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.util.bits.Bits;
 
-import java.util.Arrays;
-import java.util.BitSet;
 import java.util.Objects;
-
-import static org.fw.core.FW.symbol;
 
 public final class ReifiedTypeFw {
     public static final Type reifiedType = FW.telephonist(arg -> {

@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;

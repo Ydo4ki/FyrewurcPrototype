@@ -23,7 +23,7 @@ public class CreateArrayOperation extends Operation {
         for (int i = 0; i < value.length; i++) {
             value[i] = initialize.apply(i).apply(state);
         }
-        ArrayObj obj = new ArrayObj(value, state);
+        ValArrayObj obj = new ValArrayObj(value, state);
         return Val.of(LaserPointerFw.laserPointer, obj);
     }
 

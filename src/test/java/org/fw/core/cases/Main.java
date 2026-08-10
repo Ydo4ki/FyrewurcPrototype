@@ -6,8 +6,11 @@ import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.BoolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.core.base.ValsFw;
 import org.fw.core.jlib.JVMHandles;
 import org.fw.core.lib.*;
+import org.fw.core.lib.dvec.DVecBuilderFw;
+import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
 import org.fw.core.lib.state.array.CreateArrayOperation;
@@ -45,7 +48,8 @@ public class Main {
     public static void main(String[] args) {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-arrays.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-arrays.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-dvec.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
@@ -181,7 +185,7 @@ public class Main {
 //                        );
                     }
                     case "module": {
-                        Vit builder = Vit.val(DVecFw.emptyBuilder);
+                        Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
                             Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.type()))
@@ -189,7 +193,7 @@ public class Main {
 
                             builder = builder.call(val._unpack(Vit.class));
                         }
-                        builder = Vit.call(DVecFw.dvecbf, builder);
+                        builder = Vit.call(DVecBuilderFw.dvecbf, builder);
 
                         return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(builder));
                     }
@@ -253,6 +257,16 @@ public class Main {
                             return null;
                         }
                         return VitFw.wrap(Vit.val(DWordFw.wrap(b)));
+                    }
+                    case "typeof": {
+                        if (isize != 2)
+                            return null;
+
+                        Val operand = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        if (!VitFw.isVit(operand.type()))
+                            return null;
+
+                        return VitFw.wrap(Vit.call(ValsFw.typeGet, operand._unpack(Vit.class)));
                     }
                 }
             }

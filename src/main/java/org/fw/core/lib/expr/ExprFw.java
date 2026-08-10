@@ -4,6 +4,8 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.*;
+import org.fw.core.lib.dvec.DVecBuilderFw;
+import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.*;
 import org.fw.core.vit.Vit;
@@ -182,7 +184,7 @@ public final class ExprFw {
                         return VitFw.wrap(Vit.val(ExprFw.symbolConstructor).call(retVit._unpack(Vit.class)));
                     }
                     case "expr-list": {
-                        Vit ctor = Vit.val(DVecFw.emptyBuilder);
+                        Vit ctor = Vit.val(DVecBuilderFw.emptyBuilder);
 
                         for (int i = 1; i < isize + 1; i++) {
                             Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)));
@@ -196,7 +198,7 @@ public final class ExprFw {
                             }
                         }
 
-                        ctor = Vit.val(DVecFw.dvecbf).call(ctor);
+                        ctor = Vit.val(DVecBuilderFw.dvecbf).call(ctor);
                         return VitFw.wrap(Vit.val(ExprFw.exprList.asVal()).call(symbol("constructor")).call(ctor).call(roundBrackets));
                     }
                 }

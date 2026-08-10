@@ -113,7 +113,7 @@ public abstract class Val {
                 return value.representation().get().toString();
             }
             return "Val[" +
-                    "type=" + type + ", " +
+                    "type=" + type.asVal() + ", " +
                     "value=" + value + ']';
         }
     }

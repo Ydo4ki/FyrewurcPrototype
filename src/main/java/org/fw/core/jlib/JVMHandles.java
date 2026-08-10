@@ -7,6 +7,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.lib.*;
+import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.memlib.words.DWordFw;
 import org.fw.core.state.operation.Operation;
