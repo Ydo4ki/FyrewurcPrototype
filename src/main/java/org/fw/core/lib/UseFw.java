@@ -69,11 +69,13 @@ public final class UseFw {
 
                         return value;
                     }
-                    // todo: use for libs
+                    // todo: 'use' for libs
                     //  or it could also be import
                 }
             }
         }
         return null;
     }));
+
+    public static final Lib lib = Lib.of(useDirectivesCenv);
 }

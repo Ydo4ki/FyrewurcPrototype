@@ -1,0 +1,44 @@
+package org.fw.core.state;
+
+import org.fw.core.FW;
+import org.fw.core.base.Call;
+import org.fw.core.base.SymbolFw;
+import org.fw.core.base.Type;
+import org.fw.core.base.Val;
+import org.fw.core.lib.DIntFw;
+import org.fw.core.lib.state.array.CreateArrayOperation;
+import org.fw.core.lib.state.array.ValArrayObj;
+import org.fw.core.state.operation.OperationFw;
+import org.fw.core.util.FwUtils;
+
+import static org.fw.core.FW.telephonist;
+
+public final class WidePointer {
+    public static final Type widePointer = FW.telephonist("WidePointer", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, WidePointer.widePointer)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
+
+            ValArrayObj vao = instance._unpack();
+            if (arg.type() == SymbolFw.symbol) {
+                String v = arg._unpack().toString();
+                if (v.equals("size")) {
+                    // this one's pure since array size cannot change after its creation
+                    // wait I just realized
+                    // maybe we don't need a separate class of objects for this
+                    return DIntFw.dint(vao.size());
+                }
+            }
+            return null;
+        }
+        return null;
+    }).asType();
+
+    public static final Val _CreateNewArrayOperation = telephonist(size -> telephonist(init -> {
+        return new CreateArrayOperation(
+                DIntFw.unwrap(size).intValueExact(),
+                i -> {
+                    return OperationFw.unwrap(init.call(DIntFw.dint(i)));
+                }).asVal();
+    }));
+}

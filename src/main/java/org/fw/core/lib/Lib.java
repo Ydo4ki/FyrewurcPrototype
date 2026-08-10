@@ -7,6 +7,10 @@ import java.util.function.Function;
 
 public final class Lib {
 
+    public static Lib of(CompEnv extraCEnv) {
+        return Lib.of(null, extraCEnv.asVal());
+    }
+
     public static Lib of(Val module) {
         return Lib.of(module, (Val) null);
     }

@@ -13,7 +13,6 @@ import org.fw.core.lib.dvec.DVecBuilderFw;
 import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
-import org.fw.core.lib.state.array.CreateArrayOperation;
 import org.fw.core.memlib.MemUtils;
 import org.fw.core.memlib.ReifiedTypeFw;
 import org.fw.core.memlib.words.BinOperationsFw;
@@ -21,6 +20,8 @@ import org.fw.core.memlib.words.BitFw;
 import org.fw.core.memlib.words.DWordFw;
 import org.fw.core.memlib.HeapFw;
 import org.fw.core.memlib.words.PrimitiveLayoutsFw;
+import org.fw.core.state.LaserPointerFw;
+import org.fw.core.state.WidePointer;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
@@ -81,18 +82,12 @@ public class Main {
                         })),
                         DeclaredFw.declared(symbol("_While"), WhileOperation._While),
                         DeclaredFw.declared(symbol("_If"), IfOperation._If),
-                        DeclaredFw.declared(symbol("_CreateNewObjectOperation"), OperationFw._CreateNewObjectOperation),
-                        DeclaredFw.declared(symbol("_ReadOperation"), OperationFw._ReadOperation),
-                        DeclaredFw.declared(symbol("_WriteOperation"), OperationFw._WriteOperation),
+                        DeclaredFw.declared(symbol("_CreateNewObjectOperation"), LaserPointerFw._CreateNewObjectOperation),
+                        DeclaredFw.declared(symbol("_CreateNewArrayOperation"), WidePointer._CreateNewArrayOperation),
+                        DeclaredFw.declared(symbol("_ReadOperation"), LaserPointerFw._ReadOperation),
+                        DeclaredFw.declared(symbol("_WriteOperation"), LaserPointerFw._WriteOperation),
                         DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation),
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
-                        DeclaredFw.declared(symbol("_CreateNewArrayOperation"), telephonist(size -> telephonist(init -> {
-                            return new CreateArrayOperation(
-                                    DIntFw.unwrap(size).intValueExact(),
-                                    i -> {
-                                        return OperationFw.unwrap(init.call(DIntFw.dint(i)));
-                                    }).asVal();
-                        }))),
                         DeclaredFw.declared(symbol("unit"), Operation.unit),
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),

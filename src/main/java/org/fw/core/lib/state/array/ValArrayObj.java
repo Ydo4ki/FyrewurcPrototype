@@ -30,6 +30,10 @@ public final class ValArrayObj extends AbstractObj {
         value[index] = x;
     }
 
+    public int size() {
+        return value.length;
+    }
+
     private static class ReferenceValObj implements ValObj {
         private final ValArrayObj valArrayObj;
         private final int index;

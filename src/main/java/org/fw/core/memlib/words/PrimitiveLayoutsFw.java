@@ -21,7 +21,6 @@ public final class PrimitiveLayoutsFw {
     public static final Type hword = ReifiedTypeFw.reifiedType(octet, 256);
     public static final Type xword = ReifiedTypeFw.reifiedType(octet, 512);
 
-
     public static final Type nibble = ReifiedTypeFw.reifiedType(BitFw.bit, 4);
     public static final Type triad = ReifiedTypeFw.reifiedType(octet, 3);
     public static final Type fword = ReifiedTypeFw.reifiedType(word, 3);
