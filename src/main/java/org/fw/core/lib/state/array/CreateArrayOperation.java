@@ -2,6 +2,7 @@ package org.fw.core.lib.state.array;
 
 import org.fw.core.base.Val;
 import org.fw.core.state.LaserPointerFw;
+import org.fw.core.state.WidePointer;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 
@@ -24,7 +25,7 @@ public class CreateArrayOperation extends Operation {
             value[i] = initialize.apply(i).apply(state);
         }
         ValArrayObj obj = new ValArrayObj(value, state);
-        return Val.of(LaserPointerFw.laserPointer, obj);
+        return Val.of(WidePointer.widePointer, obj);
     }
 
     @Override
