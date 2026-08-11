@@ -1,5 +1,5 @@
 (do
  (: System (invoke! (call _JvmEnv.get-class "java.lang.System")))
- (: exit (invoke! (call System.find-static-method "exit" "(I)V")))
+ (: exit (invoke! (call System.find-method "exit" "(I)V")))
  (invoke! (call exit.invoke-method [1]))
 )

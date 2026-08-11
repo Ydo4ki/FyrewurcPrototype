@@ -1,111 +1,22 @@
 package org.fw.core.jlib;
 
 import org.fw.core.FW;
-import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.SymbolFw;
-import org.fw.core.base.Type;
+import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
+import org.fw.core.jlib.data.JOopFw;
 import org.fw.core.lib.*;
-import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.state.SystemOperation;
-import org.fw.core.memlib.words.DWordFw;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.util.FwUtils;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 
 import static org.fw.core.FW.symbol;
 
 public final class JVMHandles {
-    private static final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    public static final Type jClass = FW.telephonist((arg) -> {
-        if (FwUtils.isTypeApiCall(arg, JVMHandles.jClass)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
-            if (arg.type() != SymbolFw.symbol)
-                return null;
+    static final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
-            Class<?> cls = instance._unpack();
+    private static final ClassLoader fwClassLoader = new JFWClassLoader(Thread.currentThread().getContextClassLoader());
 
-            switch (arg._unpack(Symbol.class).getValue()) {
-                case "find-static-method": {
-                    return FW.telephonist(nameV -> {
-                        if (!nameV.type().equals(StrFw.str)) return null;
-                        String name = nameV._unpack();
-                        return FW.telephonist(arg1 -> {
-                            if (!arg1.type().equals(StrFw.str)) return null;
-                            String descriptor = arg1._unpack();
-
-                            return new SystemOperation() {
-                                @Override
-                                protected Val execute0() {
-                                    MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, ClassLoader.getSystemClassLoader());
-                                    try {
-                                        return Val.of(JVMHandles.jMethod, lookup.findStatic(cls, name, methodType));
-                                    } catch (NoSuchMethodException | IllegalAccessException e) {
-                                        return Operation.unit;
-                                    }
-                                }
-                            }.asVal();
-                        });
-                    });
-                }
-            }
-
-            return null;
-        }
-        return null;
-    }).asType();
-    public static final Type jMethod = FW.telephonist((arg) -> {
-        if (FwUtils.isTypeApiCall(arg, JVMHandles.jMethod)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
-            if (arg.type() != SymbolFw.symbol)
-                return null;
-
-            MethodHandle method = instance._unpack();
-
-            switch (arg._unpack(Symbol.class).getValue()) {
-                case "invoke-method": {
-                    return FW.telephonist(argumentsVec -> {
-                        if (argumentsVec.type() != DVecFw.dVec)
-                            return null;
-
-                        Val[] arguments = argumentsVec._unpack();
-                        Object[] jArgs = new Object[arguments.length];
-                        for (int i = 0; i < arguments.length; i++) {
-                            Val argument = arguments[i];
-                            if (argument.type() == DWordFw.dword) {
-                                jArgs[i] = DWordFw.unwrap(argument);
-                            } else {
-                                jArgs[i] = argument;
-                            }
-                        }
-                        return new SystemOperation() {
-                            @Override
-                            protected Val execute0() {
-                                try {
-                                    return wrap(method.invokeWithArguments((Object[]) jArgs));
-                                } catch (Throwable e) {
-                                    e.printStackTrace();
-                                    return Operation.unit;
-                                }
-                            }
-                        }.asVal();
-                    });
-                }
-            }
-
-            return null;
-        }
-        return null;
-    }).asType();
-    public static final Type jOop = FW.telephonist((arg) -> {
-        return null;
-    }).asType();
     public static final Val jvmEnv = ModuleFw.module(
             DeclaredFw.declared(symbol("get-class"), FW.telephonist((arg) -> {
                 if (!arg.type().equals(StrFw.str))
@@ -114,19 +25,29 @@ public final class JVMHandles {
                 return new SystemOperation() {
                     @Override
                     protected Val execute0() {
-                        Class<?> cls = null;
+                        Class<?> cls;
                         try {
-                            cls = Class.forName(name);
+                            cls = fwClassLoader.loadClass(name);
                         } catch (ClassNotFoundException e) {
                             return Operation.unit;
                         }
-                        return Val.of(jClass, cls);
+                        return Val.of(JClassFw.jClass, cls);
                     }
                 }.asVal();
             }))
     );
 
-    private static Val wrap(Object jObj) {
-        return Operation.unit;
+    static Val wrap(Object jObj, Class<?> aClass) {
+        if (aClass.isInstance(jObj)) return Val.of(JOopFw.jOop, jObj);
+        if (aClass == boolean.class && jObj instanceof Boolean) return BoolFw.wrap((Boolean) jObj);
+        if (aClass == byte.class && jObj instanceof Byte) return null;
+        if (aClass == char.class && jObj instanceof Character) return null;
+        if (aClass == short.class && jObj instanceof Short) return null;
+        if (aClass == float.class && jObj instanceof Float) return null;
+        if (aClass == int.class && jObj instanceof Integer) return null;
+        if (aClass == double.class && jObj instanceof Double) return null;
+        if (aClass == long.class && jObj instanceof Long) return null;
+        if (aClass == void.class) return Operation.unit;
+        return null;
     }
 }

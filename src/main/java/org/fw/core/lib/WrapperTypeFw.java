@@ -50,6 +50,13 @@ public final class WrapperTypeFw {
         return type;
     }
 
+    public static Val unwrapOrReturn(Val val) {
+        Type type = unwrapOrReturn(val.type());
+        if (type != val.type())
+            return Val.of(type, val._unpack());
+        return val;
+    }
+
     public final static class WrapperType {
         public final Type payloadType;
         public final Val callsHandler;

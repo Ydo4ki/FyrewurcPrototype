@@ -17,7 +17,7 @@ import org.fw.core.memlib.MemUtils;
 import org.fw.core.memlib.ReifiedTypeFw;
 import org.fw.core.memlib.words.BinOperationsFw;
 import org.fw.core.memlib.words.BitFw;
-import org.fw.core.memlib.words.DWordFw;
+import org.fw.core.jlib.data.JIntFw;
 import org.fw.core.memlib.HeapFw;
 import org.fw.core.memlib.words.PrimitiveLayoutsFw;
 import org.fw.core.state.LaserPointerFw;
@@ -48,11 +48,11 @@ public class Main {
 
     public static void main(String[] args) {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-arrays.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-dvec.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
-//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
 
         State state = SystemOperation.systemState;
@@ -251,7 +251,7 @@ public class Main {
                         } catch (RuntimeException e) {
                             return null;
                         }
-                        return VitFw.wrap(Vit.val(DWordFw.wrap(b)));
+                        return VitFw.wrap(Vit.val(JIntFw.wrap(b)));
                     }
                     case "typeof": {
                         if (isize != 2)

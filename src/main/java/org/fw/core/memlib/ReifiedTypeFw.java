@@ -23,14 +23,15 @@ public final class ReifiedTypeFw {
             Type type = instance.asType();
             ReifiedType rt = instance._unpack();
             if (FwUtils.isTypeApiCall(arg, type)) {
-                instance = Call.getVal(arg);
-                arg = Call.getArg(arg);
-                int elements = Math.toIntExact(rt.size);
-                Val[] vals = new Val[elements];
-                for (int i = 0; i < elements; i++) {
-                    vals[i] = getAtom(instance, i).call(arg);
-                }
-                return reify(vals);
+                // nah
+//                instance = Call.getVal(arg);
+//                arg = Call.getArg(arg);
+//                int elements = Math.toIntExact(rt.size);
+//                Val[] vals = new Val[elements];
+//                for (int i = 0; i < elements; i++) {
+//                    vals[i] = getAtom(instance, i).call(arg);
+//                }
+//                return reify(vals);
             } else if (arg.type() == SymbolFw.symbol && arg._unpack().toString().equals("builder")) {
                 return builder(instance.asType(), new Object[0]);
             }

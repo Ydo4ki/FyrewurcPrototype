@@ -6,7 +6,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.memlib.obj.AllocatedMemoryObj;
-import org.fw.core.memlib.words.DWordFw;
+import org.fw.core.jlib.data.JIntFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -24,7 +24,7 @@ public final class AllocatedMemoryFw {
                 switch (sym) {
                     case "put":
                         return FW.telephonist(arg1 -> {
-                            if (arg1.type() != DWordFw.dword)
+                            if (arg1.type() != JIntFw.jint)
                                 return null;
                             int v = arg1._unpack();
                             return new Operation() {

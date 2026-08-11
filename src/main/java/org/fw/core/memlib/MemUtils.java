@@ -25,8 +25,7 @@ public final class MemUtils {
     }
 
     public static Bits toBits(Val val) {
-        if (val.type().asVal().type().equals(WrapperTypeFw.wrapperType))
-            val = Val.of(val.type().asVal()._unpack(WrapperTypeFw.WrapperType.class).payloadType, val._unpack());
+        val = WrapperTypeFw.unwrapOrReturn(val);
 
         if (val.type().equals(BitFw.bit))
             return Bits.bits(val._unpack());
