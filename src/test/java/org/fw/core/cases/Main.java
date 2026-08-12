@@ -152,8 +152,11 @@ public class Main {
                 throw new RuntimeException(e);
             }
             Val val = vit.eval(rtEnv, state);
-//            System.out.println(val.toExpr(RtEnv.unspecified));
-            System.out.println(val.toString());
+            if (val.type() == DeclaredFw.declared) {
+                compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asVal()));
+            } else {
+                System.out.println(val.toExpr(rtEnv));
+            }
         }
     }
 

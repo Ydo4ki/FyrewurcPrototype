@@ -3,7 +3,7 @@ package org.fw.core.jlib;
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.jlib.util.DescriptorUtils;
+import org.fw.core.jlib.util.JvmUtils;
 import org.fw.core.lib.StrFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -83,7 +83,7 @@ public final class JClassFw {
                     });
                 }
                 case "descriptor": {
-                    return StrFw.str(DescriptorUtils.getDescriptor(cls));
+                    return StrFw.str(JvmUtils.getDescriptor(cls));
                 }
                 case "canonical-name": {
                     return StrFw.str(cls.getCanonicalName());

@@ -1,9 +1,17 @@
 package org.fw.core.jlib.util;
 
+import org.fw.core.base.Val;
+import org.fw.core.base.context.RtEnv;
+import org.fw.core.state.obj.State;
+import org.fw.core.vit.Vit;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class DescriptorUtils {
+public final class JvmUtils {
 
     private static final Map<Class<?>, String> PRIMITIVE_DESCRIPTORS = new HashMap<>();
 
@@ -30,5 +38,20 @@ public final class DescriptorUtils {
         }
 
         return "L" + clazz.getName().replace('.', '/') + ";";
+    }
+
+    private static final MethodHandle vitEvalM;
+    static {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        try {
+            vitEvalM = lookup.findVirtual(Vit.class, "eval",
+                    MethodType.methodType(Val.class, RtEnv.class, State.class));
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static MethodHandle toMethodHandle(Vit vit) {
+        return vitEvalM.bindTo(vit);
     }
 }

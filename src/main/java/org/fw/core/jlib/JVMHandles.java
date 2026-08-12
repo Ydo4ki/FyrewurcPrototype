@@ -28,6 +28,18 @@ public final class JVMHandles {
     public static final Val jvmEnv = ModuleFw.module(
             // let's just assume find-X is an operation and get-X is pure
             // that would be more intuitive
+            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist((arg) -> {
+                if (!arg.type().equals(StrFw.str))
+                    return null;
+                String string = arg._unpack();
+                return jwrap(string, String.class);
+            })),
+            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist((arg) -> {
+                if (!arg.type().equals(JOopFw.jOop) || !(arg._unpack() instanceof String))
+                    return null;
+                String string = arg._unpack();
+                return StrFw.str(string);
+            })),
             DeclaredFw.declared(symbol("find-type"), FW.telephonist((arg) -> {
                 if (!arg.type().equals(StrFw.str))
                     return null;
