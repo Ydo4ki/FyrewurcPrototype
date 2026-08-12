@@ -12,8 +12,8 @@ public class VitCompilationException extends FyrewurcException {
         this.value = value;
     }
 
-    public VitCompilationException(Val value, RtEnv rtEnv) {
-        super(value.toExpr(rtEnv).toString());
+    public VitCompilationException(Val value, Val toExpr) {
+        super(value.toExpr(toExpr).toString());
         this.value = value;
     }
 

@@ -9,6 +9,8 @@ import org.fw.core.state.operation.OperationFw;
 
 import java.util.Objects;
 
+import static org.fw.core.FW.symbol;
+
 public final class VitInvoke extends Vit {
 
     private Vit operation;
@@ -26,7 +28,7 @@ public final class VitInvoke extends Vit {
         Operation op = OperationFw.unwrap(operationVal(rtEnv, state));
         if (op == null) {
             // temp
-            throw new IllegalStateException(operation.eval(rtEnv, state).toExpr(rtEnv).toString() + " from " + VitFw.wrap(operation).toExpr(rtEnv));
+            throw new IllegalStateException(operation.eval(rtEnv, state).toExpr(rtEnv.get(symbol("to-expr"))).toString() + " from " + VitFw.wrap(operation).toExpr(rtEnv.get(symbol("to-expr"))));
         }
 //        if (!Operation.isLocal(op, context.scope(), context))
 //            return Val.unspecified;

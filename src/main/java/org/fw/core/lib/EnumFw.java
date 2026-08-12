@@ -73,13 +73,13 @@ public final class EnumFw {
         return resultingType;
     }
 
-    public static Val toExpr(Val arg, RtEnv rtEnv) {
+    public static Val toExpr(Val arg, Val toExpr) {
         EnumFw.Enum value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(EnumFw.enumeration.asVal().toExpr(rtEnv));
+        finElements.add(EnumFw.enumeration.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.values()) {
-            elements.add(val._unpack(Val.class).toExpr(rtEnv));
+            elements.add(val._unpack(Val.class).toExpr(toExpr));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));

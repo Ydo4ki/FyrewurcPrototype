@@ -10,6 +10,11 @@ import static org.fw.core.FW.symbol;
 
 public final class BoolLib {
     public static final Val boolToExpr = FW.telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(BoolFw.bool)) {
             return symbol(arg._unpack().toString());

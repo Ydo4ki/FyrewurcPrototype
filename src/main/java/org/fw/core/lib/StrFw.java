@@ -8,6 +8,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.context.RtEnv;
@@ -48,6 +49,11 @@ public final class StrFw {
         return null;
     }).asType();
     public static final Val strToExpr = FW.telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(str)) {
             return symbol('"' + arg._unpack(String.class) + '"');

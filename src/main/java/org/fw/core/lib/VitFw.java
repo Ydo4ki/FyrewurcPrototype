@@ -10,6 +10,7 @@ import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
+import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
@@ -113,23 +114,28 @@ public final class VitFw {
         return null;
     })).asType();
     public static final Val vitToExpr = telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
+
         Type type = arg.type();
-        RtEnv context = RtEnv.unspecified; // todo: resolve structure
         if (type.equals(vitVal)) {
             VitVal vitVal = arg._unpack();
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), vitVal.val().toExpr(context)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr), vitVal.val().toExpr(toExpr)));
         } else if (type.equals(vitVar)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr)));
         } else if (type.equals(vitCall)) {
             VitCall vitVal = arg._unpack();
             List<Expr> elements = new ArrayList<>();
-            elements.add(type.asVal().toExpr(context));
-            elements.addAll(vitVal.exprs(context));
+            elements.add(type.asVal().toExpr(toExpr));
+            elements.addAll(vitVal.exprs(toExpr));
 
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
         } else if (type.equals(vitInvoke)) {
             VitInvoke vitInvoke = arg._unpack();
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(context), wrap(vitInvoke.operation()).toExpr(context)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr), wrap(vitInvoke.operation()).toExpr(toExpr)));
         }
         return null;
     });

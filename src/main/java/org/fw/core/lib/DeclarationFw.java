@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -44,9 +45,14 @@ public final class DeclarationFw {
         return null;
     }).asType();
     public static final Val declarationToExpr = FW.telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(declaration)) {
-            Expr expr = toExpr(arg, RtEnv.unspecified); // todo
+            Expr expr = toExpr(arg, toExpr); // todo
             return ExprFw.wrap(expr);
         }
         return null;
@@ -66,8 +72,8 @@ public final class DeclarationFw {
         return Val.of(declaration, new Declaration(key, constraint));
     }
 
-    public static Expr toExpr(Val arg, RtEnv rtEnv) {
-        return arg._unpack(DeclarationFw.Declaration.class).toExpr(rtEnv);
+    public static Expr toExpr(Val arg, Val toExpr) {
+        return arg._unpack(DeclarationFw.Declaration.class).toExpr(toExpr);
     }
 
     private static final class Declaration {
@@ -79,8 +85,8 @@ public final class DeclarationFw {
             this.constraint = constraint;
         }
 
-        public Expr toExpr(RtEnv rtEnv) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(rtEnv), constraint.toExpr(rtEnv));
+        public Expr toExpr(Val toExpr) {
+            return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(toExpr), constraint.toExpr(toExpr));
         }
 
         public Val key() {

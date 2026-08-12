@@ -12,6 +12,7 @@ import org.fw.core.lib.ModuleFw;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.SyntaxResolveFw;
+import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
@@ -68,20 +69,25 @@ public final class DVecFw {
     }).asType();
 
     public static final Val dvecToExpr = telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(dVec)) {
             Val[] vec = arg._unpack();
             List<Expr> elements = new ArrayList<>();
             for (Val val : vec) {
-                elements.add(val.toExpr(RtEnv.unspecified));
+                elements.add(val.toExpr(toExpr));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.square, elements));
         } else if (type.equals(DVecBuilderFw.dVecBuilder)) {
             Val[] vec = arg._unpack();
             List<Expr> elements = new ArrayList<>();
-            elements.add(type.asVal().toExpr(RtEnv.unspecified));
+            elements.add(type.asVal().toExpr(toExpr));
             for (Val val : vec) {
-                elements.add(val.toExpr(RtEnv.unspecified));
+                elements.add(val.toExpr(toExpr));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
         }

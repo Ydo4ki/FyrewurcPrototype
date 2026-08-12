@@ -4,15 +4,12 @@ import org.fw.core.FW;
 import org.fw.core.adapter.ValAdapter;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.lib.expr.ExprFw;
-import org.fw.core.lib.expr.SyntaxResolveFw;
+import org.fw.core.lib.expr.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.ExprCallOpFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
@@ -89,9 +86,14 @@ public final class DeclaredFw {
         return null;
     }).asType();
     public static final Val declaredToExpr = telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(declared)) {
-            Expr expr = toExpr(arg, RtEnv.unspecified);
+            Expr expr = toExpr(arg, toExpr);
             return ExprFw.wrap(expr);
         }
         return null;
@@ -114,8 +116,8 @@ public final class DeclaredFw {
         return Val.of(DeclaredFw.declared, new Declared(key, value));
     }
 
-    public static Expr toExpr(Val arg, RtEnv rtEnv) {
-        return arg._unpack(DeclaredFw.Declared.class).toExpr(rtEnv);
+    public static Expr toExpr(Val arg, Val toExpr) {
+        return arg._unpack(DeclaredFw.Declared.class).toExpr(toExpr);
     }
 
     private static final class Declared {
@@ -127,8 +129,8 @@ public final class DeclaredFw {
             this.value = value;
         }
 
-        public Expr toExpr(RtEnv rtEnv) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr(rtEnv), value.toExpr(rtEnv));
+        public Expr toExpr(Val toExpr) {
+            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr(toExpr), value.toExpr(toExpr));
         }
 
         public Val key() {

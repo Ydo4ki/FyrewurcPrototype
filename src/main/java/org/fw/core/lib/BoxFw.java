@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
@@ -23,11 +24,16 @@ public final class BoxFw {
         return null;
     }).asType();
     public static final Val boxToExpr = FW.telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(boxType)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(RtEnv.unspecified), unbox(arg).toExpr(RtEnv.unspecified)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(toExpr), unbox(arg).toExpr(toExpr)));
         } else if (type.asVal().type().equals(boxType)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(RtEnv.unspecified), unbox(arg).toExpr(RtEnv.unspecified)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr), unbox(arg).toExpr(toExpr)));
         }
         return null;
     });

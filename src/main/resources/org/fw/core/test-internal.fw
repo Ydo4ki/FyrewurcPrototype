@@ -46,6 +46,8 @@
  (fn [(= text)] !> (jprintln (call _JvmEnv.str2jstring text)))
 ))
 
+(module (: num 6))
+
 (do
  (println "Hello World Test 2!!!")
 

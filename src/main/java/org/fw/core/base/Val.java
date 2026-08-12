@@ -1,6 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -25,14 +26,18 @@ public abstract class Val {
     }
 
     public Expr toExpr(RtEnv rtEnv) {
+        Val toExpr = rtEnv.get(symbol("to-expr"));
+        return toExpr(toExpr);
+    }
+
+    public Expr toExpr(Val toExpr) {
         if (type().equals(Call.call_t)) return ExprList.of(
                 BracketsTypes.round,
                 Symbol.of("Call"),
-                Call.getVal(this).toExpr(rtEnv),
-                Call.getArg(this).toExpr(rtEnv)
+                Call.getVal(this).toExpr(toExpr),
+                Call.getArg(this).toExpr(toExpr)
         ); // huh
-        Val function = rtEnv.get(symbol("to-expr"));
-        Val result = function.call(this);
+        Val result = toExpr.call(ToExprFn.toExprResolve(this, toExpr));
         if (result._unpack() instanceof Expr)
             return result._unpack();
 

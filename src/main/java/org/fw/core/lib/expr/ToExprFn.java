@@ -22,6 +22,11 @@ public class ToExprFn {
             .call(ConstraintFw.isSpecified)
             .asType();
 
+    public static final Type toExprResolve = ChainResolveFw.chainResolveType(ConstraintFw.isSpecified);
+
+    public static Val toExprResolve(Val val, Val toExpr) {
+        return Val.of(ToExprFn.toExprResolve, new ChainResolveFw.ChainResolve(val, toExpr));
+    }
 
     // ok this ones breaking everything anyway
 //    @Deprecated
@@ -36,6 +41,11 @@ public class ToExprFn {
     // wait did I really write all of this instead of using hashmap or some custom overengineered condition table?
     // wow
     public static final Val toExprRest = FW.telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(Val.ofTelephonist(0).asType())) {
             TelephonistType.Telephonist tele = arg._unpack();
@@ -46,20 +56,20 @@ public class ToExprFn {
 
         if (type.equals(OperatorExprFw.exprOperator) || type.equals(SenderExprFw.exprSender)) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    type.asVal().toExpr(RtEnv.unspecified),
-                    arg.call(symbol("operator")).toExpr(RtEnv.unspecified)
+                    type.asVal().toExpr(toExpr),
+                    arg.call(symbol("operator")).toExpr(toExpr)
             ));
         }
 
         if (type.equals(AccumulatorsExprFw.exprAccumulator)) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(RtEnv.unspecified),
-                    arg.call(symbol("operator")).toExpr(RtEnv.unspecified)
+                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(toExpr),
+                    arg.call(symbol("operator")).toExpr(toExpr)
             ));
         }
 
         if (type.equals(EnumFw.enumeration)) {
-            return EnumFw.toExpr(arg, RtEnv.unspecified);
+            return EnumFw.toExpr(arg, toExpr);
         } else if (type.asVal().type().equals(EnumFw.enumeration)) {
             return arg._unpack(); // it was supposed to be a symbol
         }

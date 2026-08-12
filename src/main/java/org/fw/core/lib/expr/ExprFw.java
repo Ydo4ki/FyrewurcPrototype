@@ -96,19 +96,24 @@ public final class ExprFw {
             Vit.val(BoolFw._true)
     );
     public static final Val esastToExpr = telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.equals(exprList)) {
             List<Expr> content = new ArrayList<>();
-            content.add(type.asVal().toExpr(RtEnv.unspecified));
+            content.add(type.asVal().toExpr(toExpr));
             ExprList el = arg._unpack();
             for (Expr expr : el) {
-                content.add(wrap(expr).toExpr(RtEnv.unspecified));
+                content.add(wrap(expr).toExpr(toExpr));
             }
             return wrap(ExprList.of(BracketsTypes.round, content));
         } else if (type.equals(SymbolFw.symbol)) {
             String str = arg._unpack().toString();
             str = str.replace("\"", "\\\"");
-            return wrap(ExprList.of(BracketsTypes.round, Symbol.of("Symbol"), Symbol.of('"' + str + '"')));
+            return wrap(ExprList.of(BracketsTypes.round, Symbol.of("symbol"), Symbol.of('"' + str + '"')));
         }
         return null;
     });

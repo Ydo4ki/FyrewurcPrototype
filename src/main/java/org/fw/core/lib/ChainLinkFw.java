@@ -12,6 +12,7 @@ import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.ExprFw;
+import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 
 import java.util.Objects;
@@ -62,10 +63,15 @@ public final class ChainLinkFw {
         return null;
     }).asType();
     public static final Val chainLinkToExpr = FW.telephonist((arg) -> {
+        if (arg.type() != ToExprFn.toExprResolve)
+            return null;
+        Val toExpr = arg.call(symbol("chain"));
+        arg = arg.call(symbol("passing"));
+
         Type type = arg.type();
         if (type.asVal().type().equals(chainLinkType)) {
             ChainLinkRecord env = arg._unpack();
-            return ExprFw.wrap(env.toExpr(RtEnv.unspecified));
+            return ExprFw.wrap(env.toExpr(toExpr));
         }
         return null;
     });
@@ -121,8 +127,8 @@ public final class ChainLinkFw {
             return parent;
         }
 
-        public Expr toExpr(RtEnv rtEnv) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), primary.toExpr(rtEnv), parent.toExpr(rtEnv));
+        public Expr toExpr(Val toExpr) {
+            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), primary.toExpr(toExpr), parent.toExpr(toExpr));
         }
 
         @Override

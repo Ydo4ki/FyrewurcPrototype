@@ -5,7 +5,7 @@ import org.fw.core.adapter.AbstractValAdapted;
 import org.fw.core.base.Val;
 
 public final class RtEnv extends AbstractValAdapted {
-
+    @Deprecated
     public static final RtEnv unspecified = new RtEnv(FW.telephonist((arg) -> null));
 
     private RtEnv(Val val) {
