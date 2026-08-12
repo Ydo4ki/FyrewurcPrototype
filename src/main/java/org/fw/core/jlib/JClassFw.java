@@ -2,16 +2,14 @@ package org.fw.core.jlib;
 
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
-import org.fw.core.base.SymbolFw;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.core.base.*;
 import org.fw.core.jlib.util.DescriptorUtils;
 import org.fw.core.lib.StrFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Array;
 
 public final class JClassFw {
     public static final Type jClass = FW.telephonist((arg) -> {
@@ -84,11 +82,31 @@ public final class JClassFw {
                         });
                     });
                 }
-                case "get-descriptor": {
+                case "descriptor": {
                     return StrFw.str(DescriptorUtils.getDescriptor(cls));
+                }
+                case "canonical-name": {
+                    return StrFw.str(cls.getCanonicalName());
+                }
+                case "is-array": {
+                    return BoolFw.wrap(cls.isArray());
+                }
+                case "superclass": {
+                    return wrap(cls.getSuperclass());
+                }
+                case "is-primitive": {
+                    return BoolFw.wrap(cls.isPrimitive());
                 }
                 case "get-class-oop": {
                     return JVMHandles.jwrap(cls, Class.class);
+                }
+                case "array-type": {
+                    return wrap(Array.newInstance(cls, 0).getClass()); // can be optimized in modern java branch
+                }
+                case "component-type": {
+                    if (!cls.isArray())
+                        return null;
+                    return wrap(cls.getComponentType());
                 }
             }
 
@@ -96,4 +114,9 @@ public final class JClassFw {
         }
         return null;
     }).asType();
+
+    public static Val wrap(Class<?> cls) {
+        if (cls == null) return null;
+        return Val.of(JClassFw.jClass, cls);
+    }
 }

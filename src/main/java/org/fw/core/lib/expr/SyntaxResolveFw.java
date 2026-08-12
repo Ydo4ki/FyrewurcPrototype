@@ -9,12 +9,16 @@ import static org.fw.core.FW.symbol;
 
 public final class SyntaxResolveFw {
 
-    public static final Type syntaxResolve = WrapperTypeFw.wrapperType(Val.of(ChainResolveFw.chainResolveType, ExprFw.constraint).asType(),
+    public static final Type syntaxResolve = WrapperTypeFw.wrapperType(ChainResolveFw.chainResolveType(ExprFw.isExpr),
             FW.telephonist(rawPayload -> FW.telephonist(arg -> {
-                if (arg.equals(symbol("expr"))) {
-                    return rawPayload.call(symbol("passing"));
-                } else if (arg.equals(symbol("comp-env"))) {
-                    return rawPayload.call(symbol("chain"));
+                if (arg.type() == SymbolFw.symbol) {
+                    String s = arg._unpack().toString();
+                    switch (s) {
+                        case "expr":
+                            return rawPayload.call(symbol("passing"));
+                        case "comp-env":
+                            return rawPayload.call(symbol("chain"));
+                    }
                 }
                 return null;
             })), FW.telephonist(arg -> {

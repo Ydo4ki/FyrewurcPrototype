@@ -17,7 +17,7 @@ import java.lang.reflect.Array;
 import static org.fw.core.FW.symbol;
 
 public final class JVMHandles {
-    public static final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    public static final MethodHandles.Lookup lookup = MethodHandles.publicLookup();
 
     public static final ClassLoader fwClassLoader = new JFWClassLoader(Thread.currentThread().getContextClassLoader());
 

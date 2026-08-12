@@ -2,13 +2,13 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.lib.expr.SyntaxResolveFw;
+import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.util.FwUtils;
 
 import static org.fw.core.FW.symbol;
 
 public final class ChainResolveFw {
-    public static final Type chainResolveType = FW.telephonist("SyntaxResolve", (arg) -> {
+    public static final Type chainResolveType = FW.telephonist("ChainResolveType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ChainResolveFw.chainResolveType)) {
             Val instance = Call.getVal(arg);
             arg = Call.getArg(arg);
@@ -36,9 +36,20 @@ public final class ChainResolveFw {
                 });
             }
             return null;
+        } else if (arg.equals(symbol("builder"))) {
+            return FW.telephonist((constraint) -> {
+                if (!ConstraintFw.isConstraint(constraint))
+                    return null;
+
+                return chainResolveType(constraint).asVal();
+            });
         }
         return null;
     }).asType();
+
+    public static Type chainResolveType(Val constraint) {
+        return Val.of(ChainResolveFw.chainResolveType, constraint).asType();
+    }
 
     public static final class ChainResolve {
         private final Val passing;

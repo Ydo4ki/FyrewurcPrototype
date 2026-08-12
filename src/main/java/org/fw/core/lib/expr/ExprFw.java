@@ -90,7 +90,7 @@ public final class ExprFw {
             return null;
         });
     }).asType(); // bruh
-    public static final Val constraint = ConstraintFw.constraint(
+    public static final Val isExpr = ConstraintFw.constraint(
             Vit.val(telephonist(passingArg
                     -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList)))),
             Vit.val(BoolFw._true)
