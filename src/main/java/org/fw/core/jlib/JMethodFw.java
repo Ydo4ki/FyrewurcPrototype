@@ -24,6 +24,7 @@ public final class JMethodFw {
             MethodHandle method = instance._unpack();
 
             switch (arg._unpack(Symbol.class).getValue()) {
+                case "fn-call":
                 case "invoke-method": {
                     return FW.telephonist(argumentsVec -> {
                         if (argumentsVec.type() != DVecFw.dVec)

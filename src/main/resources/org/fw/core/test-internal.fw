@@ -1,11 +1,11 @@
-
+(assert! true)
 
 (do
  // looking up println method
  (: println (do
   (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
   (: outGetter (call System.get-static-getter "out" "Ljava/io/PrintStream;"))
-  (: out (invoke! (call outGetter.invoke-method [])))
+  (: out (outGetter))
   (call out.get-method "println" "(Ljava/lang/String;)V")
  ))
 
@@ -13,31 +13,29 @@
  (: String (invoke! (call _JvmEnv.find-type "Ljava/lang/String;")))
  (: string-ctor (call String.get-constructor "([C)V"))
  (: ca-ctor (invoke! (call _JvmEnv.find-array-constructor "C")))
- (: ca (invoke! (call ca-ctor.invoke-method [(jint 12)])))
+ (: ca (ca-ctor (jint 12)))
  (: ca-setter (invoke! (call _JvmEnv.find-array-setter "[C")))
- (invoke! (call ca-setter.invoke-method [ca (jint 0) (jchar 'H')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 1) (jchar 'e')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 2) (jchar 'l')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 3) (jchar 'l')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 4) (jchar 'o')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 5) (jchar ' ')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 6) (jchar 'W')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 7) (jchar 'o')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 8) (jchar 'r')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 9) (jchar 'l')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 10) (jchar 'd')]))
- (invoke! (call ca-setter.invoke-method [ca (jint 11) (jchar '!')]))
- (: text (invoke! (call string-ctor.invoke-method [ca])))
+ (ca-setter ca (jint 0) (jchar 'H'))
+ (ca-setter ca (jint 1) (jchar 'e'))
+ (ca-setter ca (jint 2) (jchar 'l'))
+ (ca-setter ca (jint 3) (jchar 'l'))
+ (ca-setter ca (jint 4) (jchar 'o'))
+ (ca-setter ca (jint 5) (jchar ' '))
+ (ca-setter ca (jint 6) (jchar 'W'))
+ (ca-setter ca (jint 7) (jchar 'o'))
+ (ca-setter ca (jint 8) (jchar 'r'))
+ (ca-setter ca (jint 9) (jchar 'l'))
+ (ca-setter ca (jint 10) (jchar 'd'))
+ (ca-setter ca (jint 11) (jchar '!'))
+ (: text (string-ctor ca))
 
  // the printing part
- (invoke! (call println.invoke-method [text]))
-
- String.get-descriptor
+ (println text)
 )
 
 
 (do
  (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
  (: exit (call System.get-static-method "exit" "(I)V"))
- (invoke! (call exit.invoke-method [(jint 1)]))
+ (exit (jint 1))
 )
