@@ -2,7 +2,7 @@
 
 (do
  // looking up println method
- (: println (do
+ (: println! (do
   (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
   (: outGetter (call System.get-static-getter "out" "Ljava/io/PrintStream;"))
   (: out (outGetter))
@@ -30,28 +30,44 @@
  (: text (string-ctor ca))
 
  // the printing part
- (println text)
+ (println! text)
 )
 
 
-(: println (do
+(: println! (do
  // looking up println method
- (: jprintln (do
+ (: jprintln! (do
   (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
   (: outGetter (call System.get-static-getter "out" "Ljava/io/PrintStream;"))
   (: out (outGetter))
   (call out.get-method "println" "(Ljava/lang/String;)V")
  ))
 
- (fn [(= text)] !> (jprintln (call _JvmEnv.str2jstring text)))
+ (fn [(= text)] !> (jprintln! (call _JvmEnv.str2jstring text)))
 ))
 
-(module (: num 6))
+(: get-property! (do
+ (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
+ (: getProperty! (call System.get-static-method "getProperty" "(Ljava/lang/String;)Ljava/lang/String;"))
+
+ (fn [(= prop)] !> (call _JvmEnv.jstring2str (getProperty! (call _JvmEnv.str2jstring prop))))
+))
 
 (do
- (println "Hello World Test 2!!!")
+ (println! "Hello World Test 2!!!")
+
+ (println! (+ "Java Version: " (get-property! "java.version")))
+ (println! (+ "Vendor: " (get-property! "java.vendor")))
+ (println! (+ "Spec Version: " (get-property! "java.specification.version")))
+ (println! (+ "Spec Vendor: " (get-property! "java.specification.vendor")))
+
+ (println! (+ "OS: " (get-property! "os.name") " " (get-property! "os.arch") " " (get-property! "os.version")))
+
+ (println! (+ "User: " (get-property! "user.name")))
+ (println! (+ "User path: " (get-property! "user.home")))
+ (println! (+ "Working directory: " (get-property! "user.dir")))
 
  (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
- (: exit (call System.get-static-method "exit" "(I)V"))
- (exit (jint 1))
+ (: exit! (call System.get-static-method "exit" "(I)V"))
+ (exit! (jint 1))
 )

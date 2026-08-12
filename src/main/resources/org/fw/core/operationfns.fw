@@ -5,6 +5,7 @@
   (invoke! (call _ReadOperation o))))
  (: write! (fn [(= o) (= x)] !>
   (invoke! (call _WriteOperation o x))))
+
  (: == (fn [(= a)(= b)] ->
   (call eq a b)))
  (: != (fn [(= a)(= b)] ->

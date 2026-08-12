@@ -15,6 +15,7 @@ import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
+import java.util.function.BiFunction;
 
 public final class StrFw {
     public static final Type str = FW.telephonist("Str", (arg) -> {
@@ -24,30 +25,53 @@ public final class StrFw {
 
             String value = instance._unpack();
             assert value != null;
-            if (cArg.equals(symbol("sub"))) {
-                return FW.telephonist((start) -> {
-                    if (start.type() != DIntFw.dint)
-                        return null;
-                    int s = start._unpack(BigInteger.class).intValue();
+            if (cArg.type() == SymbolFw.symbol) {
+                String s = cArg._unpack().toString();
+                switch (s) {
+                    case "sub": {
+                        return FW.telephonist((start) -> {
+                            if (start.type() != DIntFw.dint)
+                                return null;
+                            int st = start._unpack(BigInteger.class).intValue();
 
-                    return FW.telephonist((end) -> {
-                        if (end.type() != DIntFw.dint)
-                            return null;
-                        int e = end._unpack(BigInteger.class).intValue();
+                            return FW.telephonist((end) -> {
+                                if (end.type() != DIntFw.dint)
+                                    return null;
+                                int e = end._unpack(BigInteger.class).intValue();
 
-                        try {
-                            return str(value.substring(s, e));
-                        } catch (StringIndexOutOfBoundsException ee) {
-                            return null;
-                        }
-                    });
-                });
-            } if (cArg.equals(symbol("size"))) {
-                return DIntFw.dint(value.length());
+                                try {
+                                    return str(value.substring(st, e));
+                                } catch (StringIndexOutOfBoundsException ee) {
+                                    return null;
+                                }
+                            });
+                        });
+                    }
+                    case "size": {
+                        return DIntFw.dint(value.length());
+                    }
+                    case "+": {
+                        return bop(instance, String::concat);
+                    }
+                }
             }
         }
         return null;
     }).asType();
+
+    private static Val bop(Val instance, BiFunction<String, String, String> operator) {
+        String value = instance._unpack();
+        assert value != null;
+        return FW.telephonist((arg1) -> {
+            if (arg1.type().equals(StrFw.str)) {
+                String v2 = arg1._unpack();
+                return str(operator.apply(value, v2));
+            }
+            return null;
+        });
+    }
+
+
     public static final Val strToExpr = FW.telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)
             return null;
