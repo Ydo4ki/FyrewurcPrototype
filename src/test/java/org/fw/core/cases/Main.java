@@ -8,6 +8,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.base.ValsFw;
 import org.fw.core.jlib.JVMHandles;
+import org.fw.core.jlib.data.JCharFw;
 import org.fw.core.lib.*;
 import org.fw.core.lib.dvec.DVecBuilderFw;
 import org.fw.core.lib.dvec.DVecFw;
@@ -252,6 +253,23 @@ public class Main {
                             return null;
                         }
                         return VitFw.wrap(Vit.val(JIntFw.wrap(b)));
+                    }
+                    case "jchar": {
+                        if (isize != 2)
+                            return null;
+
+                        String token = exprVal.call(DIntFw.dint(1))._unpack().toString();
+                        char b;
+                        try {
+                            if (token.length() == 3 && token.charAt(0) == '\'' && token.charAt(2) == '\'') {
+                                b = token.charAt(1);
+                            } else {
+                                b = (char)Integer.parseInt(token);
+                            }
+                        } catch (RuntimeException e) {
+                            return null;
+                        }
+                        return VitFw.wrap(Vit.val(JCharFw.wrap(b)));
                     }
                     case "typeof": {
                         if (isize != 2)

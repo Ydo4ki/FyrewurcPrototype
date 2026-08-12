@@ -27,7 +27,7 @@ public final class JOopFw {
             Class<?> cls = oop.getClass();
 
             switch (arg._unpack(Symbol.class).getValue()) {
-                case "find-method": {
+                case "get-method": {
                     return FW.telephonist(nameV -> {
                         if (!nameV.type().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
@@ -44,6 +44,7 @@ public final class JOopFw {
                         });
                     });
                 }
+                // todo: find-method-polymorphic
             }
 
             return null;

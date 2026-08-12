@@ -9,8 +9,10 @@ import org.fw.core.lib.*;
 import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Array;
 
 import static org.fw.core.FW.symbol;
 
@@ -19,17 +21,70 @@ public final class JVMHandles {
 
     public static final ClassLoader fwClassLoader = new JFWClassLoader(Thread.currentThread().getContextClassLoader());
 
+    public static Class<?> findType(String descriptor) {
+        return MethodType.fromMethodDescriptorString("()" + descriptor, fwClassLoader).returnType();
+    }
+
     public static final Val jvmEnv = ModuleFw.module(
-            DeclaredFw.declared(symbol("get-type"), FW.telephonist((arg) -> {
+            // let's just assume find-X is an operation and get-X is pure
+            // that would be more intuitive
+            DeclaredFw.declared(symbol("find-type"), FW.telephonist((arg) -> {
                 if (!arg.type().equals(StrFw.str))
                     return null;
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
                     @Override
                     protected Val execute0() {
-                        Class<?> cls;
-                        cls = MethodType.fromMethodDescriptorString("()" + descriptor, fwClassLoader).returnType();
+                        Class<?> cls = findType(descriptor);
                         return Val.of(JClassFw.jClass, cls);
+                    }
+                }.asVal();
+            })),
+            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist((arg) -> {
+                if (!arg.type().equals(StrFw.str))
+                    return null;
+                String descriptor = arg._unpack();
+                return new SystemOperation() {
+                    @Override
+                    protected Val execute0() {
+                        Class<?> elementType = findType(descriptor);
+                        MethodHandle arrayCtor;
+                        try {
+                            arrayCtor = MethodHandles.lookup().findStatic(
+                                    Array.class,
+                                    "newInstance",
+                                    MethodType.methodType(Object.class, Class.class, int.class)
+                            );
+                        } catch (NoSuchMethodException | IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                        return Val.of(JMethodFw.jMethod, arrayCtor.bindTo(elementType));
+                    }
+                }.asVal();
+            })),
+            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist((arg) -> {
+                if (!arg.type().equals(StrFw.str))
+                    return null;
+                String descriptor = arg._unpack();
+                return new SystemOperation() {
+                    @Override
+                    protected Val execute0() {
+                        Class<?> arrayClass = findType(descriptor);
+
+                        return Val.of(JMethodFw.jMethod, MethodHandles.arrayElementSetter(arrayClass));
+                    }
+                }.asVal();
+            })),
+            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist((arg) -> {
+                if (!arg.type().equals(StrFw.str))
+                    return null;
+                String descriptor = arg._unpack();
+                return new SystemOperation() {
+                    @Override
+                    protected Val execute0() {
+                        Class<?> arrayClass = findType(descriptor);
+
+                        return Val.of(JMethodFw.jMethod, MethodHandles.arrayElementGetter(arrayClass));
                     }
                 }.asVal();
             }))
@@ -54,7 +109,7 @@ public final class JVMHandles {
         if (type == JOopFw.jOop) return val._unpack();
         if (type == BoolFw.bool) return val._unpack(Boolean.class);
         if (type == JByteFw.jbyte) return JByteFw.unwrap(val);
-        if (type == JCharFw.jchar) return JCharFw.unwrap(val);
+        if (type == JCharFw.jchar) return (char)(short)JCharFw.unwrap(val);
         if (type == JShortFw.jshort) return JShortFw.unwrap(val);
         if (type == JFloatFw.jfloat) return JFloatFw.unwrap(val);
         if (type == JIntFw.jint) return JIntFw.unwrap(val);

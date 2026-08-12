@@ -6,8 +6,8 @@ import org.fw.core.base.Call;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.core.jlib.util.DescriptorUtils;
 import org.fw.core.lib.StrFw;
-import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
@@ -24,7 +24,7 @@ public final class JClassFw {
             Class<?> cls = instance._unpack();
 
             switch (arg._unpack(Symbol.class).getValue()) {
-                case "find-static-method": {
+                case "get-static-method": {
                     return FW.telephonist(nameV -> {
                         if (!nameV.type().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
@@ -41,7 +41,7 @@ public final class JClassFw {
                         });
                     });
                 }
-                case "find-constructor": {
+                case "get-constructor": {
                     return FW.telephonist(arg1 -> {
                         if (!arg1.type().equals(StrFw.str)) return null;
                         String descriptor = arg1._unpack();
@@ -54,21 +54,41 @@ public final class JClassFw {
                         }
                     });
                 }
-                case "find-static-getter": {
+                case "get-static-getter": {
                     return FW.telephonist(nameV -> {
                         if (!nameV.type().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
                         return FW.telephonist(arg1 -> {
                             if (!arg1.type().equals(StrFw.str)) return null;
                             String descriptor = arg1._unpack();
-                            MethodType methodType = MethodType.fromMethodDescriptorString("()" + descriptor, ClassLoader.getSystemClassLoader());
                             try {
-                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStaticGetter(cls, name, methodType.returnType()));
+                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStaticGetter(cls, name, JVMHandles.findType(descriptor)));
                             } catch (IllegalAccessException e) {
                                 return Operation.unit;
                             }
                         });
                     });
+                }
+                case "get-static-setter": {
+                    return FW.telephonist(nameV -> {
+                        if (!nameV.type().equals(StrFw.str)) return null;
+                        String name = nameV._unpack();
+                        return FW.telephonist(arg1 -> {
+                            if (!arg1.type().equals(StrFw.str)) return null;
+                            String descriptor = arg1._unpack();
+                            try {
+                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStaticSetter(cls, name, JVMHandles.findType(descriptor)));
+                            } catch (IllegalAccessException e) {
+                                return Operation.unit;
+                            }
+                        });
+                    });
+                }
+                case "get-descriptor": {
+                    return StrFw.str(DescriptorUtils.getDescriptor(cls));
+                }
+                case "get-class-oop": {
+                    return JVMHandles.jwrap(cls, Class.class);
                 }
             }
 
