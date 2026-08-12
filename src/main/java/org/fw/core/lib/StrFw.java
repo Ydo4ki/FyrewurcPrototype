@@ -69,7 +69,7 @@ public final class StrFw {
             // what the heck is this
             // how's it suppose to work
             // WHY IT WORKS
-            Vit body = FW.vIf(val(Unspecified.isUnspecified).call(parseArg).call(symbol("not")),
+            Vit body = FW.vIf(val(ValsFw.isUnspecified).call(parseArg).call(symbol("not")),
                     Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))
                             .call(parseArg),
                     parseArg

@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.*;
+import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.dvec.DVecBuilderFw;
 import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.util.FwUtils;
@@ -89,6 +90,11 @@ public final class ExprFw {
             return null;
         });
     }).asType(); // bruh
+    public static final Val constraint = ConstraintFw.constraint(
+            Vit.val(telephonist(passingArg
+                    -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList)))),
+            Vit.val(BoolFw._true)
+    );
     public static final Val esastToExpr = telephonist((arg) -> {
         Type type = arg.type();
         if (type.equals(exprList)) {

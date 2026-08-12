@@ -7,6 +7,7 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.*;
+import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.dvec.DVecFw;
 
 import java.util.function.Supplier;
@@ -18,7 +19,7 @@ public class ToExprFn {
 
     public static final Type exprififier = ChainLinkFw.chainLinkType.asVal()
             .call(symbol("constructor"))
-            .call(Unspecified.isNot)
+            .call(ConstraintFw.isSpecified)
             .asType();
 
 

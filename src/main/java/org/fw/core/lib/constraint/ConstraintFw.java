@@ -19,7 +19,6 @@ import static org.fw.core.FW.symbol;
 // I'll add normal form
 // when I think it up
 public final class ConstraintFw {
-
     private static final WeakHashMap<Val, Val> typeConstraints = new WeakHashMap<>();
 
     public static final Val to_constraint = FW.telephonist("to-constraint", (arg) -> {
@@ -175,4 +174,8 @@ public final class ConstraintFw {
         return Val.of(ConstraintFw.constraint, new Constraint(a, b, a.equals(b)));
     }
 
+    public static final Val isSpecified = constraint(
+            Vit.val(BoolFw._false),
+            Vit.val(ValsFw.isUnspecified).call(Vit.var)
+    );
 }

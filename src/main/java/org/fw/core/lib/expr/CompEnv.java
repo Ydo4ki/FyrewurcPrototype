@@ -4,7 +4,9 @@ import org.fw.core.base.*;
 import org.fw.core.lib.ChainLinkFw;
 import org.fw.core.adapter.AbstractValAdapted;
 import org.fw.core.ast.Expr;
+import org.fw.core.lib.ChainResolveFw;
 import org.fw.core.lib.VitFw;
+import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
@@ -14,7 +16,7 @@ public final class CompEnv extends AbstractValAdapted {
 
     public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
             .call(symbol("constructor"))
-            .call(Unspecified.isNot)
+            .call(ConstraintFw.isSpecified)
             .asType();
 
     private CompEnv(Val val) {
@@ -43,7 +45,7 @@ public final class CompEnv extends AbstractValAdapted {
     }
 
     public static Val syntaxResolve(Expr expr, CompEnv env) {
-        return Val.of(SyntaxResolveFw.syntaxResolve, new SyntaxResolveFw.SyntaxResolve(expr, env));
+        return Val.of(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(ExprFw.wrap(expr), env.asVal()));
     }
 
     public static Val compEnv(Val resolver, Val parentCEnv) {

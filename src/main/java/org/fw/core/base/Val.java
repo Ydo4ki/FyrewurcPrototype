@@ -170,5 +170,3 @@ public abstract class Val {
         }
     }
 }
-
-
