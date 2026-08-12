@@ -24,7 +24,7 @@ public final class JClassFw {
             Class<?> cls = instance._unpack();
 
             switch (arg._unpack(Symbol.class).getValue()) {
-                case "find-method": {
+                case "find-static-method": {
                     return FW.telephonist(nameV -> {
                         if (!nameV.type().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
@@ -32,17 +32,12 @@ public final class JClassFw {
                             if (!arg1.type().equals(StrFw.str)) return null;
                             String descriptor = arg1._unpack();
 
-                            return new SystemOperation() {
-                                @Override
-                                protected Val execute0() {
-                                    MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, ClassLoader.getSystemClassLoader());
-                                    try {
-                                        return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStatic(cls, name, methodType));
-                                    } catch (NoSuchMethodException | IllegalAccessException e) {
-                                        return Operation.unit;
-                                    }
-                                }
-                            }.asVal();
+                            MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
+                            try {
+                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStatic(cls, name, methodType));
+                            } catch (NoSuchMethodException | IllegalAccessException e) {
+                                return Operation.unit;
+                            }
                         });
                     });
                 }
@@ -51,17 +46,28 @@ public final class JClassFw {
                         if (!arg1.type().equals(StrFw.str)) return null;
                         String descriptor = arg1._unpack();
 
-                        return new SystemOperation() {
-                            @Override
-                            protected Val execute0() {
-                                MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, ClassLoader.getSystemClassLoader());
-                                try {
-                                    return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findConstructor(cls, methodType));
-                                } catch (NoSuchMethodException | IllegalAccessException e) {
-                                    return Operation.unit;
-                                }
+                        MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
+                        try {
+                            return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findConstructor(cls, methodType));
+                        } catch (NoSuchMethodException | IllegalAccessException e) {
+                            return Operation.unit;
+                        }
+                    });
+                }
+                case "find-static-getter": {
+                    return FW.telephonist(nameV -> {
+                        if (!nameV.type().equals(StrFw.str)) return null;
+                        String name = nameV._unpack();
+                        return FW.telephonist(arg1 -> {
+                            if (!arg1.type().equals(StrFw.str)) return null;
+                            String descriptor = arg1._unpack();
+                            MethodType methodType = MethodType.fromMethodDescriptorString("()" + descriptor, ClassLoader.getSystemClassLoader());
+                            try {
+                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStaticGetter(cls, name, methodType.returnType()));
+                            } catch (IllegalAccessException e) {
+                                return Operation.unit;
                             }
-                        }.asVal();
+                        });
                     });
                 }
             }

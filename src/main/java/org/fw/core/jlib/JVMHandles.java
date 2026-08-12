@@ -10,28 +10,25 @@ import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
 
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
 import static org.fw.core.FW.symbol;
 
 public final class JVMHandles {
-    static final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    public static final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
-    private static final ClassLoader fwClassLoader = new JFWClassLoader(Thread.currentThread().getContextClassLoader());
+    public static final ClassLoader fwClassLoader = new JFWClassLoader(Thread.currentThread().getContextClassLoader());
 
     public static final Val jvmEnv = ModuleFw.module(
-            DeclaredFw.declared(symbol("get-class"), FW.telephonist((arg) -> {
+            DeclaredFw.declared(symbol("get-type"), FW.telephonist((arg) -> {
                 if (!arg.type().equals(StrFw.str))
                     return null;
-                String name = arg._unpack();
+                String descriptor = arg._unpack();
                 return new SystemOperation() {
                     @Override
                     protected Val execute0() {
                         Class<?> cls;
-                        try {
-                            cls = fwClassLoader.loadClass(name);
-                        } catch (ClassNotFoundException e) {
-                            return Operation.unit;
-                        }
+                        cls = MethodType.fromMethodDescriptorString("()" + descriptor, fwClassLoader).returnType();
                         return Val.of(JClassFw.jClass, cls);
                     }
                 }.asVal();

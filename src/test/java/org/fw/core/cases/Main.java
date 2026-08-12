@@ -236,7 +236,7 @@ public class Main {
                                 new AssertOperation(arg1._unpack(Operation.class)).asVal()), vitOperation);
                         return VitFw.wrap(Vit.invoke(assertOperation));
                     }
-                    case "dword": {
+                    case "jint": {
                         if (isize != 2)
                             return null;
 

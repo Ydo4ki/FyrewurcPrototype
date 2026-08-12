@@ -1,5 +1,16 @@
+
+
 (do
- (: System (invoke! (call _JvmEnv.get-class "java.lang.System")))
- (: exit (invoke! (call System.find-method "exit" "(I)V")))
- (invoke! (call exit.invoke-method [1]))
+ (: System (invoke! (call _JvmEnv.get-type "Ljava/lang/System;")))
+ (: outGetter (call System.find-static-getter "out" "Ljava/io/PrintStream;"))
+ (: out (invoke! (call outGetter.invoke-method [])))
+ (: println (call out.find-method "println" "(I)V"))
+ (invoke! (call println.invoke-method [(jint 94)]))
+)
+
+
+(do
+ (: System (invoke! (call _JvmEnv.get-type "Ljava/lang/System;")))
+ (: exit (call System.find-static-method "exit" "(I)V"))
+ (invoke! (call exit.invoke-method [(jint 1)]))
 )

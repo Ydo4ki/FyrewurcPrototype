@@ -6,8 +6,6 @@ import org.fw.core.base.Call;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.jlib.data.JIntFw;
-import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
