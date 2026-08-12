@@ -35,19 +35,13 @@ public final class JMethodFw {
                         Object[] jArgs = new Object[arguments.length];
                         for (int i = 0; i < arguments.length; i++) {
                             Val argument = arguments[i];
-                            if (argument.type() == DIntFw.dint) {
-                                jArgs[i] = DIntFw.unwrap(argument).intValue(); // temp
-                            } else if (argument.type() == JIntFw.jint) {
-                                jArgs[i] = JIntFw.unwrap(argument);
-                            } else {
-                                jArgs[i] = argument;
-                            }
+                            jArgs[i] = JVMHandles.junwrap(argument);
                         }
                         return new SystemOperation() {
                             @Override
                             protected Val execute0() {
                                 try {
-                                    return JVMHandles.wrap(method.invokeWithArguments((Object[]) jArgs), method.type().returnType());
+                                    return JVMHandles.jwrap(method.invokeWithArguments((Object[]) jArgs), method.type().returnType());
                                 } catch (Throwable e) {
                                     e.printStackTrace();
                                     return Operation.unit;

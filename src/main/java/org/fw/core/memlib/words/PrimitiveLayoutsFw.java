@@ -14,7 +14,7 @@ public final class PrimitiveLayoutsFw {
     public static final Type dword = ReifiedTypeFw.reifiedType(word, 2);
     public static final Type qword = ReifiedTypeFw.reifiedType(word, 4);
     public static final Type dqword = ReifiedTypeFw.reifiedType(qword, 2);
-    public static final Type oword = ReifiedTypeFw.reifiedType(octet, 16); // no difference
+    public static final Type oword = ReifiedTypeFw.reifiedType(word, 8); // no difference
     public static final Type yword = ReifiedTypeFw.reifiedType(octet, 32);
     public static final Type zword = ReifiedTypeFw.reifiedType(octet, 64);
     public static final Type vword = ReifiedTypeFw.reifiedType(octet, 128);
