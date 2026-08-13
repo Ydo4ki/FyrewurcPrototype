@@ -1,6 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
+import org.fw.core.lib.constraint._Constraint;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
@@ -14,7 +15,7 @@ public final class ValsFw {
 
     public static final Val eq = FW.telephonist(
             (arg) -> Val.of(ValsFw.eqChecker, arg)
-//            , (arg) -> Constraint.of(Vit.call(ValsFw.eq, Vit.call(ValsFw.typeGet, Vit.var)).call(ValsFw.eqChecker.asVal()))
+            , (arg) -> _Constraint.of(Vit.call(ValsFw.eq, Vit.call(ValsFw.typeGet, Vit.var)).call(ValsFw.eqChecker.asVal()))
     );
 
     public static final Type eqChecker = FW.telephonist(arg -> {
@@ -26,12 +27,12 @@ public final class ValsFw {
             return BoolFw.wrap(arg.equals(a));
         }
         return null;
-    }/*, arg -> {
+    }, arg -> {
         if (FwUtils.isTypeApiCall(arg, ValsFw.eqChecker)) {
-            return Constraint.of(BoolFw.bool);
+            return _Constraint.of(BoolFw.bool);
         }
-        return Constraint.free;
-    }*/).asType();
+        return _Constraint.free;
+    }).asType();
 
     public static Vit eq(Vit a, Vit b) {
         return Vit.call(eq, a).call(b);

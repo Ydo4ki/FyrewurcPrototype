@@ -1,6 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.ast.Expr;
+import org.fw.core.lib.constraint._Constraint;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -41,6 +42,10 @@ public final class TelephonistType extends Type {
         Val call(Val arg) throws Exception;
     }
 
+    public interface ConstraintCallFunction {
+        _Constraint call(_Constraint arg) throws Exception;
+    }
+
     public static final class Telephonist {
         private final Supplier<Expr> representation;
         private final CallFunction function;
@@ -78,6 +83,5 @@ public final class TelephonistType extends Type {
                     "representation=" + representation + ", " +
                     "function=" + function + ']';
         }
-
-        }
+    }
 }

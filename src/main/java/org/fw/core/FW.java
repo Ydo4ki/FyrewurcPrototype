@@ -21,9 +21,9 @@ public final class FW {
     }
 
 
-//    public static Val telephonist(TelephonistType.CallFunction call, TelephonistType.ConstraintCallFunction constraintCall) {
-//        return telephonist(call);
-//    }
+    public static Val telephonist(TelephonistType.CallFunction call, TelephonistType.ConstraintCallFunction constraintCall) {
+        return telephonist(call);
+    }
 
     public static Val telephonist(TelephonistType.CallFunction call) {
         return Val.of(Val.ofTelephonist(0).asType(), new TelephonistType.Telephonist(null, call));

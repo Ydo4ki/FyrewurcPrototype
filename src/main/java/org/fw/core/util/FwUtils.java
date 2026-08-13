@@ -12,6 +12,7 @@ import org.fw.core.base.BoolFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.base.ValsFw;
 import org.fw.core.lib.VitFw;
+import org.fw.core.lib.constraint._Constraint;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -66,15 +67,15 @@ public final class FwUtils {
         return false;
     }
 
-//    public static boolean isTypeApiCall(Constraint arg, Type type) {
-//        Constraint argType = arg.typeConstraint();
-//        if (argType.implies(Constraint.equals(Call.call_t.asVal()))) {
-//            Constraint valc = arg.call(Constraint.equals(symbol("val")));
-//            Constraint valType = valc.typeConstraint();
-//            return valType.implies(Constraint.equals(type.asVal()));
-//        }
-//        return false;
-//    }
+    public static boolean isTypeApiCall(_Constraint arg, Type type) {
+        _Constraint argType = arg.typeConstraint();
+        if (argType.implies(_Constraint.equals(Call.call_t.asVal()))) {
+            _Constraint valc = arg.call(_Constraint.equals(symbol("val")));
+            _Constraint valType = valc.typeConstraint();
+            return valType.implies(_Constraint.equals(type.asVal()));
+        }
+        return false;
+    }
 
     public static Vit isTypeApiCall(Vit call, Type type) {
         return ValsFw.eq(Vit.call(ValsFw.typeGet, call), Vit.val(Call.call_t.asVal()))
