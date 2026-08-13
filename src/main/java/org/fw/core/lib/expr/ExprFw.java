@@ -92,8 +92,7 @@ public final class ExprFw {
     }).asType(); // bruh
     public static final Val isExpr = ConstraintFw.constraint(
             Vit.val(telephonist(passingArg
-                    -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList)))),
-            Vit.val(BoolFw._true)
+                    -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList))))
     );
     public static final Val esastToExpr = telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)

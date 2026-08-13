@@ -1,4 +1,4 @@
-package org.fw.core.adapter;
+package org.fw.core.commons;
 
 import org.fw.core.base.Val;
 

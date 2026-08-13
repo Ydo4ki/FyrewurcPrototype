@@ -2,7 +2,7 @@ package org.fw.core.lib.expr;
 
 import org.fw.core.base.*;
 import org.fw.core.lib.ChainLinkFw;
-import org.fw.core.adapter.AbstractValAdapted;
+import org.fw.core.commons.AbstractValAdapted;
 import org.fw.core.ast.Expr;
 import org.fw.core.lib.ChainResolveFw;
 import org.fw.core.lib.VitFw;

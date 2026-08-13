@@ -167,7 +167,6 @@ public final class VitFw {
     });
 
     public static final Val isVit = ConstraintFw.constraint(
-            Vit.val(BoolFw._true),
             FwUtils.equals(
                     Vit.val(ValsFw.typeGet).call(Vit.var),
                     Vit.val(VitFw.vitVal.asVal())

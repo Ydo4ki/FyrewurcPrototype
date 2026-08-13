@@ -1,7 +1,7 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.FW;
-import org.fw.core.adapter.ValAdapter;
+import org.fw.core.commons.ValAdapter;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;

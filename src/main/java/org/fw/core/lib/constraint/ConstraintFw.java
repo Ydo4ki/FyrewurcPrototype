@@ -69,7 +69,7 @@ public final class ConstraintFw {
     public static final Val constraintBuilder = FW.telephonist("Constraint.constructor", (arg1) -> {
         if (!VitFw.isVit(arg1.type()))
             return null;
-        return Val.of(ConstraintFw.constraint, arg1);
+        return Val.of(ConstraintFw.constraint, VitFw.unwrap(arg1));
     });
 
     public static final Type constraint = FW.telephonist("Constraint", (arg) -> {
@@ -97,8 +97,8 @@ public final class ConstraintFw {
 
                         return BoolFw.wrap(payload.eval(rtEnv) == BoolFw._true);
                     });
-//                case "a":
-//                    return VitFw.wrap(payload.a());
+                case "vit":
+                    return VitFw.wrap(payload);
 //                case "b":
 //                    return VitFw.wrap(payload.b());
             }

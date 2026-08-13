@@ -1,6 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.commons.PureCallable;
 import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -12,7 +13,7 @@ import java.util.*;
 
 import static org.fw.core.FW.symbol;
 
-public abstract class Val {
+public abstract class Val implements PureCallable<Val> {
     Val() {}
 
     public abstract Type type();
@@ -21,6 +22,7 @@ public abstract class Val {
 
     public abstract Type asType();
 
+    @Override
     public Val call(Val arg) {
         return type().callInstance(this, arg);
     }

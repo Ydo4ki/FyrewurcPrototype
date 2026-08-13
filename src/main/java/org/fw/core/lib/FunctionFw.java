@@ -115,8 +115,9 @@ public final class FunctionFw {
                         }
 
                         Val constraint = ConstraintFw.constraint(
-                                Vit.var.call(symbol("size")),
-                                Vit.val(DIntFw.dint(paramsList.size()))
+                                Vit.val(ValsFw.eq)
+                                        .call(Vit.var.call(symbol("size")))
+                                        .call(Vit.val(DIntFw.dint(paramsList.size())))
                         );
 
                         Expr bodyE = exprVal.call(DIntFw.dint(3))._unpack();
