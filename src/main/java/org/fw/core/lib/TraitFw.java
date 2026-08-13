@@ -126,8 +126,7 @@ public final class TraitFw {
             }
             Vit b = Vit.val(BoolFw._true);
             return ConstraintFw.constraintBuilder
-                    .call(VitFw.wrap(a))
-                    .call(VitFw.wrap(b));
+                    .call(VitFw.wrap(Vit.call(ValsFw.eq, a).call(b)));
         }
 
         public int indexOf(Val key) {

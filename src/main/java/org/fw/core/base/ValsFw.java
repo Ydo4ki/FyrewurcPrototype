@@ -14,7 +14,19 @@ public final class ValsFw {
 
     public static final Val eq = FW.telephonist(
             Symbol.of("eq"),
-            (arg) -> FW.telephonist((arg1) -> BoolFw.wrap(arg.equals(arg1)))
+            (arg) -> Val.of(ValsFw.eqChecker, arg)
     );
+
+    public static final Type eqChecker = FW.telephonist(arg -> {
+        if (FwUtils.isTypeApiCall(arg, ValsFw.eqChecker)) {
+            Val instance = Call.getVal(arg);
+            arg = Call.getArg(arg);
+
+            Val a = instance._unpack();
+            return BoolFw.wrap(arg.equals(a));
+        }
+        return null;
+    }).asType();
+
     public static final Val isUnspecified = FwUtils.valify(Unspecified::isUnspecified);
 }

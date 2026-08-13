@@ -11,7 +11,6 @@ import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;
-import java.util.Objects;
 import java.util.WeakHashMap;
 
 import static org.fw.core.FW.symbol;
@@ -31,9 +30,8 @@ public final class ConstraintFw {
             return ret;
 
         return typeConstraints.computeIfAbsent(arg, arg0 -> {
-            Val a = VitFw.wrap(Vit.call(ValsFw.typeGet, Vit.var));
-            Val b = VitFw.wrap(Vit.val(arg0));
-            return ConstraintFw.constraintBuilder.call(a).call(b);
+            Val a = VitFw.wrap(Vit.call(ValsFw.eq, Vit.call(ValsFw.typeGet, Vit.var)));
+            return ConstraintFw.constraintBuilder.call(a);
         });
     });
 
@@ -68,14 +66,10 @@ public final class ConstraintFw {
         return null;
     });
 
-    public static final Val constraintBuilder = FW.telephonist("Constraint.builder", (arg1) -> {
+    public static final Val constraintBuilder = FW.telephonist("Constraint.constructor", (arg1) -> {
         if (!VitFw.isVit(arg1.type()))
             return null;
-        return FW.telephonist((arg2) -> {
-            if (!VitFw.isVit(arg2.type()))
-                return null;
-            return Val.of(ConstraintFw.constraint, new Constraint(arg1._unpack(), arg2._unpack(), arg1.equals(arg2)));
-        });
+        return Val.of(ConstraintFw.constraint, arg1);
     });
 
     public static final Type constraint = FW.telephonist("Constraint", (arg) -> {
@@ -84,29 +78,24 @@ public final class ConstraintFw {
             return handleInstanceCall(instance, instance._unpack(), Call.getArg(arg));
         } else if (arg.type().equals(SymbolFw.symbol)) {
             String value = arg._unpack(Symbol.class).getValue();
-            if (value.equals("builder")) {
+            if (value.equals("constructor")) {
                 return constraintBuilder;
             }
         }
         return null;
     }).asType();
 
-    private static Val handleInstanceCall(Val instance, Constraint payload, Val arg) {
+    private static Val handleInstanceCall(Val instance, Vit payload, Val arg) {
         if (arg.type().equals(SymbolFw.symbol)) {
             String val = arg._unpack(Symbol.class).getValue();
             switch (val) {
                 case "check":
                     return FW.telephonist("Constraint.check", (arg1) -> {
-                        if (payload.alwaysTrue())
-                            return BoolFw._true;
-
                         RtEnv rtEnv = RtEnv.of(arg1);
 
                         // we might as well do it in parallel
-                        Val a = payload.a().eval(rtEnv);
-                        Val b = payload.b().eval(rtEnv);
 
-                        return BoolFw.wrap(a.equals(b));
+                        return BoolFw.wrap(payload.eval(rtEnv) == BoolFw._true);
                     });
 //                case "a":
 //                    return VitFw.wrap(payload.a());
@@ -117,65 +106,17 @@ public final class ConstraintFw {
         return null;
     }
 
-    protected static final class Constraint {
-        private final Vit a;
-        private final Vit b;
-        private final boolean alwaysTrue;
-
-        private Constraint(Vit a, Vit b, boolean alwaysTrue) {
-            this.a = a;
-            this.b = b;
-            this.alwaysTrue = alwaysTrue;
-        }
-
-        public Vit a() {
-            return a;
-        }
-
-        public Vit b() {
-            return b;
-        }
-
-        public boolean alwaysTrue() {
-            return alwaysTrue;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this) return true;
-            if (obj == null || obj.getClass() != this.getClass()) return false;
-            Constraint that = (Constraint) obj;
-            return Objects.equals(this.a, that.a) &&
-                    Objects.equals(this.b, that.b) &&
-                    this.alwaysTrue == that.alwaysTrue;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(a, b, alwaysTrue);
-        }
-
-        @Override
-        public String toString() {
-            return "Constraint[" +
-                    "a=" + a + ", " +
-                    "b=" + b + ", " +
-                    "alwaysTrue=" + alwaysTrue + ']';
-        }
-    }
-
-    public static final Val free = constraint(Vit.var, Vit.var);
+    public static final Val free = constraint(Vit.val(BoolFw._true));
 
     public static boolean isConstraint(Val val) {
         return val.type().equals(ConstraintFw.constraint);
     }
 
-    public static Val constraint(Vit a, Vit b) {
-        return Val.of(ConstraintFw.constraint, new Constraint(a, b, a.equals(b)));
+    public static Val constraint(Vit a) {
+        return Val.of(ConstraintFw.constraint, a);
     }
 
     public static final Val isSpecified = constraint(
-            Vit.val(BoolFw._false),
-            Vit.val(ValsFw.isUnspecified).call(Vit.var)
+            Vit.val(ValsFw.isUnspecified).call(Vit.var).call(symbol("not"))
     );
 }
