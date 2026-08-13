@@ -14,7 +14,7 @@ public final class MemUtils {
     }
 
     public static long binarySize(Type type) {
-        type = WrapperTypeFw.unwrapOrReturn(type);
+        type = WrapperTypeFw.unwrapFully(type);
 
         if (type == BitFw.bit) return 1;
         if (type.asVal().type().equals(ReifiedTypeFw.reifiedType)) {
@@ -25,7 +25,7 @@ public final class MemUtils {
     }
 
     public static Bits toBits(Val val) {
-        val = WrapperTypeFw.unwrapOrReturn(val);
+        val = WrapperTypeFw.unwrapFully(val);
 
         if (val.type().equals(BitFw.bit))
             return Bits.bits(val._unpack());

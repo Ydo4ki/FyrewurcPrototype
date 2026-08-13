@@ -4,6 +4,8 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
+import static org.fw.core.FW.symbol;
+
 public final class WrapperTypeFw {
     
     public static final Type wrapperType = FW.telephonist(arg -> {
@@ -44,14 +46,22 @@ public final class WrapperTypeFw {
         return Val.of(wrapperType, new WrapperType(payloadType, callsHandler, staticCallsHandler)).asType();
     }
 
-    public static Type unwrapOrReturn(Type type) {
+    public static Type payloadType(Type type) {
+        throw new UnsupportedOperationException();
+    }
+
+    public static Val payloadConstraint(Type type) {
+        throw new UnsupportedOperationException();
+    }
+
+    public static Type unwrapFully(Type type) {
         while (type.asVal().type().equals(WrapperTypeFw.wrapperType))
             type = type.asVal()._unpack(WrapperTypeFw.WrapperType.class).payloadType;
         return type;
     }
 
-    public static Val unwrapOrReturn(Val val) {
-        Type type = unwrapOrReturn(val.type());
+    public static Val unwrapFully(Val val) {
+        Type type = unwrapFully(val.type());
         if (type != val.type())
             return Val.of(type, val._unpack());
         return val;
