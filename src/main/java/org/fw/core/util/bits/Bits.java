@@ -23,10 +23,21 @@ public abstract class Bits {
     public static Bits of(BitSet bitSet, long size) {
         if (size == 0) return empty;
         if (size == 1) return bits(bitSet.get(0));
-        if (size <= 8) return new OctetBits(bitSet.toByteArray()[0], (int) size);
-        if (size <= 16) return new WordBits((short) bitSet.toLongArray()[0], (int) size);
-        if (size <= 32) return new DWordBits((int) bitSet.toLongArray()[0], (int) size);
-        if (size <= 64) return new QWordBits(bitSet.toLongArray()[0], (int) size);
+        if (size <= 8) {
+            byte[] bs = bitSet.toByteArray();
+            if (bs.length == 0) return new OctetBits((byte) 0, (int) size);
+            return new OctetBits(bs[0], (int) size);
+        }
+        long[] ls = bitSet.toLongArray();
+        if (ls.length == 0) {
+            if (size <= 16) return new WordBits((short) 0, (int) size);
+            if (size <= 32) return new DWordBits(0, (int) size);
+            if (size <= 64) return new QWordBits(0, (int) size);
+        } else {
+            if (size <= 16) return new WordBits((short) ls[0], (int) size);
+            if (size <= 32) return new DWordBits((int) ls[0], (int) size);
+            if (size <= 64) return new QWordBits(ls[0], (int) size);
+        }
         return new MnogaBits(bitSet, size);
     }
 
@@ -66,6 +77,11 @@ public abstract class Bits {
             return this;
         }
     };
+
+    public static Bits of(byte[] bytes) {
+        BitSet bs = BitSet.valueOf(bytes);
+        return of(bs, bytes.length * 8L);
+    }
 
     public abstract long size();
 

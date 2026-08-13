@@ -9,6 +9,7 @@ import org.fw.core.base.Val;
 import org.fw.core.base.ValsFw;
 import org.fw.core.jlib.JVMHandles;
 import org.fw.core.jlib.data.JCharFw;
+import org.fw.core.jlib.data.JLongFw;
 import org.fw.core.lib.*;
 import org.fw.core.lib.dvec.DVecBuilderFw;
 import org.fw.core.lib.dvec.DVecFw;
@@ -160,8 +161,8 @@ public class Main {
             if (val.type() == DeclaredFw.declared) {
                 compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asVal()));
             } else {
-//                System.out.println(val.toExpr(rtEnv));
-                System.out.println(val);
+                System.out.println(val.toExpr(rtEnv));
+//                System.out.println(val);
             }
         }
     }
@@ -263,6 +264,23 @@ public class Main {
                         }
                         return VitFw.wrap(Vit.val(JIntFw.wrap(b)));
                     }
+                    case "jlong": {
+                        if (isize != 2)
+                            return null;
+
+                        String number = exprVal.call(DIntFw.dint(1))._unpack().toString();
+                        long b;
+                        try {
+                            if (number.startsWith("0x")) {
+                                b = Long.parseUnsignedLong(number.substring(2), 16);
+                            } else {
+                                b = Long.parseLong(number);
+                            }
+                        } catch (RuntimeException e) {
+                            return null;
+                        }
+                        return VitFw.wrap(Vit.val(JLongFw.wrap(b)));
+                    }
                     case "jchar": {
                         if (isize != 2)
                             return null;
@@ -325,25 +343,45 @@ public class Main {
                 return null;
 
             String text = ((Symbol) expr).getValue();
-            if (!text.startsWith("b"))
-                return null;
+            if (text.startsWith("b")) {
+                BitSet bitset = new BitSet();
+                int size = text.length() - 1;
+                if (size <= 0)
+                    return null;
 
-            BitSet bitset = new BitSet();
-            int size = text.length() - 1;
-            if (size <= 0)
-                return null;
+                for (int i = 0; i < size; i++) {
+                    char c = text.charAt(i + 1);
+                    boolean b;
+                    if (c == '0') b = false;
+                    else if (c == '1') b = true;
+                    else return null;
+                    bitset.set(i, b);
+                }
+                Type type = ReifiedTypeFw.reifiedType(BitFw.bit, size);
+                Bits bits = Bits.of(bitset, size);
+                return VitFw.wrap(Vit.val(MemUtils.wrap(type, bits)));
+            } else if (text.startsWith("0x")) {
+                int hexSize = text.length() - 2;
+                if (hexSize <= 0 || (hexSize & 1) != 0)
+                    return null;
 
-            for (int i = 0; i < size; i++) {
-                char c = text.charAt(i + 1);
-                boolean b;
-                if (c == '0') b = false;
-                else if (c == '1') b = true;
-                else return null;
-                bitset.set(i, b);
+                int size = hexSize / 2;
+                byte[] bytes = new byte[size];
+
+                for (int i = 0; i < size; i++) {
+                    int hi = Character.digit(text.charAt(2 + i * 2), 16);
+                    int lo = Character.digit(text.charAt(3 + i * 2), 16);
+
+                    if (hi < 0 || lo < 0)
+                        return null;
+
+                    bytes[i] = (byte) ((hi << 4) | lo);
+                }
+
+                Type type = ReifiedTypeFw.reifiedType(PrimitiveLayoutsFw.octet, size);
+                return VitFw.wrap(Vit.val(MemUtils.wrap(type, Bits.of(bytes))));
             }
-            Type type = ReifiedTypeFw.reifiedType(BitFw.bit, size);
-            Bits bits = Bits.of(bitset, size);
-            return VitFw.wrap(Vit.val(MemUtils.wrap(type, bits)));
+
         }
         return null;
     }));

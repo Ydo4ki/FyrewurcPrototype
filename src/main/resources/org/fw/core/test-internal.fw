@@ -42,6 +42,9 @@
  (fn [(= prop)] !> (call _JvmEnv.jstring2str (getProperty! (call _JvmEnv.str2jstring prop))))
 ))
 
+DQWord
+0x01F4
+
 (do
  (println! "Hello World Test 2!!!")
 
@@ -49,6 +52,10 @@
  (println! (+ "Vendor: " (get-property! "java.vendor")))
  (println! (+ "Spec Version: " (get-property! "java.specification.version")))
  (println! (+ "Spec Vendor: " (get-property! "java.specification.vendor")))
+
+ (: Thread (invoke! (call _JvmEnv.find-type "Ljava/lang/Thread;")))
+ (: threadSleep! (call Thread.get-static-method "sleep" "(J)V"))
+ (threadSleep! (jlong 500))
 
  (println! (+ "OS: " (get-property! "os.name") " " (get-property! "os.arch") " " (get-property! "os.version")))
 
