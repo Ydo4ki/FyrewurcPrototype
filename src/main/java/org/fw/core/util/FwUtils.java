@@ -66,6 +66,22 @@ public final class FwUtils {
         return false;
     }
 
+//    public static boolean isTypeApiCall(Constraint arg, Type type) {
+//        Constraint argType = arg.typeConstraint();
+//        if (argType.implies(Constraint.equals(Call.call_t.asVal()))) {
+//            Constraint valc = arg.call(Constraint.equals(symbol("val")));
+//            Constraint valType = valc.typeConstraint();
+//            return valType.implies(Constraint.equals(type.asVal()));
+//        }
+//        return false;
+//    }
+
+    public static Vit isTypeApiCall(Vit call, Type type) {
+        return ValsFw.eq(Vit.call(ValsFw.typeGet, call), Vit.val(Call.call_t.asVal()))
+                .call(symbol("and"))
+                .call(ValsFw.eq(Vit.call(ValsFw.typeGet, call.call(symbol("val"))), Vit.val(type.asVal())));
+    }
+
     public static Val getValueFromFile(File file, CompEnv compEnv) throws IOException {
         return State.performAndDie(s -> {
             try {

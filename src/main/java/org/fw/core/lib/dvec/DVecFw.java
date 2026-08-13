@@ -5,7 +5,6 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.DIntFw;
 import org.fw.core.lib.DeclaredFw;
 import org.fw.core.lib.ModuleFw;
@@ -17,6 +16,7 @@ import org.fw.core.util.FwUtils;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
+import org.fw.core.vit.VitUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ public final class DVecFw {
                         } catch (VitCompilationException e) {
                             throw new RuntimeException(e);
                         }
-                        ctor = ctor.call(Vit.simplify(vit));
+                        ctor = ctor.call(VitUtils.simplify(vit));
                     }
 
                     ctor = Vit.val(DVecBuilderFw.dvecbf).call(ctor);

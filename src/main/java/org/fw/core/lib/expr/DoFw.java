@@ -14,6 +14,7 @@ import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
+import org.fw.core.vit.VitUtils;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -69,7 +70,7 @@ public final class DoFw {
                     throw new VitCompilationException(null); // syntax error: symbol expected
                 String name = ((Symbol) nameE).getValue();
                 Expr valueE = ((ExprList) line).get(2);
-                Vit valueV = Vit.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv)))));
+                Vit valueV = VitUtils.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv)))));
 
                 // OK FINE
                 Val newRtGetter = FW.telephonist((oldRt) -> FW.telephonist((varValue) -> {

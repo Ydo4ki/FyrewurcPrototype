@@ -13,6 +13,7 @@ import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public final class TestFw {
                 if (!VitFw.isVit(argNVit.type()))
                     return argNVit; // compile error idk
 
-                vits[i] = Vit.simplify(argNVit._unpack(Vit.class));
+                vits[i] = VitUtils.simplify(argNVit._unpack(Vit.class));
             }
             return VitFw.wrap(Vit.val(Val.of(TestFw.test, new TestRecord(vits))).call(symbol("complete")).call(Vit.var)); // nah
         } else if (FwUtils.isTypeApiCall(arg, TestFw.test)) {

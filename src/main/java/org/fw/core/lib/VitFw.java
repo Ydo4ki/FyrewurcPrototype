@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.BoolFw;
 import org.fw.core.base.ValsFw;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.constraint.ConstraintFw;
@@ -59,7 +58,7 @@ public final class VitFw {
                     return null;
 
                 Vit operation = arg._unpack();
-                operation = Vit.simplify(operation);
+                operation = VitUtils.simplify(operation);
                 return wrap(Vit.invoke(operation));
             });
         }
@@ -153,7 +152,7 @@ public final class VitFw {
 
     public static final Val simplify = FW.telephonist("vit-simplify", (arg) -> {
         if (VitFw.isVit(arg.type())) {
-            return VitFw.wrap(Vit.simplify(arg._unpack()));
+            return VitFw.wrap(VitUtils.simplify(arg._unpack()));
         }
         return null;
     });
@@ -161,7 +160,7 @@ public final class VitFw {
     public static final Val reduce = FW.telephonist("vit-reduce", (arg) -> {
         if (VitFw.isVit(arg.type())) {
             return FW.telephonist(env
-                    -> VitFw.wrap(Vit.reduce(arg._unpack(), RtEnv.of(env)))); // thx java
+                    -> VitFw.wrap(VitUtils.reduce(arg._unpack(), RtEnv.of(env)))); // thx java
         }
         return null;
     });
@@ -287,7 +286,7 @@ public final class VitFw {
                         if (!VitFw.isVit(retVit.type()))
                             return retVit; // compile error idk
 
-                        Vit vit = Vit.simplify(retVit._unpack());
+                        Vit vit = VitUtils.simplify(retVit._unpack());
 
                         return VitFw.wrap(Vit.invoke(vit));
                     }

@@ -20,6 +20,11 @@ public final class FW {
         return telephonistE(() -> FwUtils.parse(name).getExpr(), call);
     }
 
+
+//    public static Val telephonist(TelephonistType.CallFunction call, TelephonistType.ConstraintCallFunction constraintCall) {
+//        return telephonist(call);
+//    }
+
     public static Val telephonist(TelephonistType.CallFunction call) {
         return Val.of(Val.ofTelephonist(0).asType(), new TelephonistType.Telephonist(null, call));
     }
@@ -50,4 +55,5 @@ public final class FW {
     public static Vit vEq(Vit a, Vit b) {
         return val(eq).call(a).call(b);
     }
+
 }

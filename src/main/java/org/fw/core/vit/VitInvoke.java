@@ -46,7 +46,7 @@ public final class VitInvoke extends Vit {
         // I dunno operation are you pure?
 //        return operation.isPure();
         // WAIT
-        operation = Vit.simplify(operation);
+        operation = VitUtils.simplify(operation);
         if (operation instanceof VitVal) {
             Val val = ((VitVal) operation).val();
             if (val.type() == OperationFw.operation) {
