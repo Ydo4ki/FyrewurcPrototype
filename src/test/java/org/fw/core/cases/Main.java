@@ -125,20 +125,25 @@ public class Main {
         additionals.add(ExprOutput.valueOf(FW.class.getResourceAsStream("operationfns.fw")));
 
         for (Iterable<LocatedExpr<? extends Expr>> additional1 : additionals) {
+            CompEnv perFileCE = compEnv;
             for (LocatedExpr<? extends Expr> locatedExpression : additional1) {
                 Expr expression = locatedExpression.getExpr();
                 Vit vit;
                 try {
-                    vit = compEnv.compile(expression);
+                    vit = perFileCE.compile(expression);
                 } catch (VitCompilationException e) {
                     System.err.println(expression);
                     throw new RuntimeException(e);
                 }
                 Val val = vit.eval(rtEnv, state);
-                compEnv = CompEnv.of(CompEnv.compEnv(
-                        compEnv.asVal(),
-                        ModuleFw.ModuleCEnvFw.compEnv(val)
-                ));
+                if (val.type() == DeclaredFw.declared) {
+                    perFileCE = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), perFileCE.asVal()));
+                } else {
+                    compEnv = CompEnv.of(CompEnv.compEnv(
+                            compEnv.asVal(),
+                            ModuleFw.ModuleCEnvFw.compEnv(val)
+                    ));
+                }
             }
         }
 
@@ -155,7 +160,8 @@ public class Main {
             if (val.type() == DeclaredFw.declared) {
                 compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asVal()));
             } else {
-                System.out.println(val.toExpr(rtEnv));
+//                System.out.println(val.toExpr(rtEnv));
+                System.out.println(val);
             }
         }
     }

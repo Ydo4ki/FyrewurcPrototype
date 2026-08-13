@@ -1,3 +1,18 @@
+(: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
+(: out ((call System.get-static-getter "out" "Ljava/io/PrintStream;")))
+
+(: println! (do
+ (: jprintln! (call out.get-method "println" "(Ljava/lang/String;)V"))
+
+ (fn [(= text)] !> (jprintln! (call _JvmEnv.str2jstring text)))
+))
+
+(: print! (do
+ (: jprint! (call out.get-method "print" "(Ljava/lang/String;)V"))
+
+ (fn [(= text)] !> (jprint! (call _JvmEnv.str2jstring text)))
+))
+
 (module
  (: new! (fn [(= x)] !>
   (invoke! (call _CreateNewObjectOperation x))))
@@ -5,6 +20,9 @@
   (invoke! (call _ReadOperation o))))
  (: write! (fn [(= o) (= x)] !>
   (invoke! (call _WriteOperation o x))))
+
+ (: println! println!)
+ (: print! print!)
 
  (: == (fn [(= a)(= b)] ->
   (call eq a b)))

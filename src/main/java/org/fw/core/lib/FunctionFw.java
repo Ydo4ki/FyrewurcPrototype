@@ -138,6 +138,8 @@ public final class FunctionFw {
                         }));
 
                         Val body = newCompEnv.call(CompEnv.syntaxResolve(bodyE, CompEnv.of(newCompEnv)));
+                        if (!VitFw.isVit(body.type()))
+                            return null;
 
                         Vit varValuesV = Vit.var.call(symbol("%"));
 

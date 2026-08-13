@@ -34,17 +34,6 @@
 )
 
 
-(: println! (do
- // looking up println method
- (: jprintln! (do
-  (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
-  (: outGetter (call System.get-static-getter "out" "Ljava/io/PrintStream;"))
-  (: out (outGetter))
-  (call out.get-method "println" "(Ljava/lang/String;)V")
- ))
-
- (fn [(= text)] !> (jprintln! (call _JvmEnv.str2jstring text)))
-))
 
 (: get-property! (do
  (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))

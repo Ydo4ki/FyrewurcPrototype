@@ -288,12 +288,7 @@ public final class VitFw {
                         if (!VitFw.isVit(retVit.type()))
                             return retVit; // compile error idk
 
-                        Vit vit = null;
-                        try {
-                            vit = Vit.simplify(VitFw.unwrap(retVit));
-                        } catch (VitCompilationException e) {
-                            throw new RuntimeException(e);
-                        }
+                        Vit vit = Vit.simplify(retVit._unpack());
 
                         return VitFw.wrap(Vit.invoke(vit));
                     }

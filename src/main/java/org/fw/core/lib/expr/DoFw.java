@@ -83,7 +83,7 @@ public final class DoFw {
                 // this looks cryptic as hell
                 // still probably conceptually the best way to do this
 
-                Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
+                Val newCompEnv = CompEnv.compEnv(FW.telephonist((arg) -> {
                     if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
                         Val exprVal0 = arg.call(symbol("expr"));
                         Expr expr = exprVal0._unpack();
@@ -92,7 +92,7 @@ public final class DoFw {
                         }
                     }
                     return null;
-                }));
+                }), compEnv);
 
                 Vit rest = compileDo(exprVal, i + 1, isize, newCompEnv);
 
