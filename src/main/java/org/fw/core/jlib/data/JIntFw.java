@@ -11,7 +11,7 @@ import org.fw.core.memlib.words.PrimitiveLayoutsFw;
 import java.util.function.IntBinaryOperator;
 
 public final class JIntFw {
-    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist(rawPayload -> FW.telephonist(arg -> {
+    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Integer value = unwrap(rawPayload);
         assert value != null;
         if (arg.type().equals(SymbolFw.symbol)) {
@@ -39,7 +39,7 @@ public final class JIntFw {
             }
         }
         return null;
-    })), FW.telephonist(arg -> null));
+    }))), FW.telephonist(arg -> null));
 
     private static Val bop(Integer value, IntBinaryOperator operator) {
         return FW.telephonist((arg1) -> {

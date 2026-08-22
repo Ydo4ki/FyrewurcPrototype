@@ -1,0 +1,9 @@
+(assert! true)
+
+(do
+ (println! "A")
+
+ (: uint16 (call IntType.construct 16 Signedness.signed Endian.little Overflow.wrap))
+// (call uint16.construct 91)
+ uint16
+)

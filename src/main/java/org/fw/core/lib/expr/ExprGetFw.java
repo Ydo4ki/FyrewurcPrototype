@@ -16,7 +16,7 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class ExprGetFw {
-    public static final Val getterCEnv = telephonist("dot-getters-cenv-fw", (arg) -> {
+    public static final Val getterCEnv = FW.telephonist("dot-getters-cenv-fw", (arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

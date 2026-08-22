@@ -13,6 +13,7 @@ import org.fw.core.util.FwUtils;
 import org.fw.core.util.bits.Bits;
 
 import java.util.Objects;
+import java.util.WeakHashMap;
 
 public final class ReifiedTypeFw {
     public static final Type reifiedType = FW.telephonist(arg -> {
@@ -65,6 +66,8 @@ public final class ReifiedTypeFw {
         return null;
     }).asType();
 
+    private static final WeakHashMap<Long, Type> reifiedBits = new WeakHashMap<>();
+
     public static Type reifiedType(Type elementType, long size) {
         if (size == 1)
             return elementType;
@@ -72,6 +75,9 @@ public final class ReifiedTypeFw {
             ReifiedType rt = elementType.asVal()._unpack();
             elementType = rt.atom_t;
             size *= rt.size;
+        }
+        if (elementType == BitFw.bit) {
+            return reifiedBits.computeIfAbsent(size, s -> Val.of(reifiedType, new ReifiedType(BitFw.bit, s)).asType());
         }
         return Val.of(reifiedType, new ReifiedType(elementType, size)).asType();
     }

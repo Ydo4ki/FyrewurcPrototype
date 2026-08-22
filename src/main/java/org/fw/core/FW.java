@@ -2,9 +2,8 @@ package org.fw.core;
 
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.SymbolFw;
-import org.fw.core.base.TelephonistType;
-import org.fw.core.base.Val;
+import org.fw.core.base.*;
+import org.fw.core.lib.TypePayloadInfo;
 import org.fw.core.util.FwUtils;
 import org.fw.core.util.LazyObj;
 import org.fw.core.vit.Vit;
@@ -19,7 +18,6 @@ public final class FW {
     public static Val telephonist(String name, TelephonistType.CallFunction call) {
         return telephonistE(() -> FwUtils.parse(name).getExpr(), call);
     }
-
 
     public static Val telephonist(TelephonistType.CallFunction call, TelephonistType.ConstraintCallFunction constraintCall) {
         return telephonist(call);
@@ -56,4 +54,12 @@ public final class FW {
         return val(eq).call(a).call(b);
     }
 
+    public static Type payloadType(Type type) {
+        Val ret = type.asVal().call(symbol("Payload"));
+        return TypePayloadInfo.value(ret);
+    }
+
+    public static Val payloadConstraint(Type type) {
+        throw new UnsupportedOperationException();
+    }
 }

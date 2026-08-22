@@ -2,7 +2,6 @@ package org.fw.core.lib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.dvec.DVecBuilderFw;
@@ -20,7 +19,7 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class ExprFw {
-    public static final Val symbolConstructor = telephonist("stringToSymbol", (arg1) -> {
+    public static final Val symbolConstructor = FW.telephonist("stringToSymbol", (arg1) -> {
         if (!arg1.type().equals(StrFw.str))
             return null;
 
@@ -32,14 +31,14 @@ public final class ExprFw {
         return null;
     });
 
-    public static final Val symbolToString = telephonist("symbolToString", (arg) -> {
+    public static final Val symbolToString = FW.telephonist("symbolToString", (arg) -> {
         if (arg.type() == SymbolFw.symbol) {
             return StrFw.str(arg._unpack(Symbol.class).getValue());
         }
         return null;
     });
 
-    public static final Type exprList = telephonist("ExprList", (arg0) -> {
+    public static final Type exprList = FW.telephonist("ExprList", (arg0) -> {
         return FwUtils.handleSymbols(arg0, ExprFw.exprList, (instance, symbol) -> {
             ExprList list = instance._unpack();
             if (symbol.equals("size")) {
@@ -91,10 +90,10 @@ public final class ExprFw {
         });
     }).asType(); // bruh
     public static final Val isExpr = ConstraintFw.constraint(
-            Vit.val(telephonist(passingArg
+            Vit.val(FW.telephonist(passingArg
                     -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList))))
     );
-    public static final Val esastToExpr = telephonist((arg) -> {
+    public static final Val esastToExpr = FW.telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
@@ -117,7 +116,7 @@ public final class ExprFw {
         return null;
     });
 
-    public static final Type bracketsType = telephonist("BracketsType", (arg) -> {
+    public static final Type bracketsType = FW.telephonist("BracketsType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ExprFw.bracketsType)) {
             Val instance = Call.getVal(arg);
             arg = Call.getArg(arg);
@@ -161,7 +160,7 @@ public final class ExprFw {
     }
 
     @Deprecated
-    public static final Val expr = telephonist("expr", (arg) -> {
+    public static final Val expr = FW.telephonist("expr", (arg) -> {
         if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
             Val size = arg.call(symbol("size"));
             Val cEnv = arg.call(symbol("comp-env"));
@@ -175,7 +174,7 @@ public final class ExprFw {
         return null;
     });
 
-    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

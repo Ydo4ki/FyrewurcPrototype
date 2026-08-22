@@ -4,7 +4,7 @@ import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 
 public final class VitUtils {
-    public static Vit reduce(Vit vit, Vit replaceVarWith) {
+    public static Vit substitude(Vit vit, Vit replaceVarWith) {
         if (vit instanceof VitVal) {
             return vit;
         }
@@ -16,8 +16,8 @@ public final class VitUtils {
         if (vit instanceof VitCall) {
             VitCall call = (VitCall) vit;
 
-            Vit func = reduce(call.func(), replaceVarWith);
-            Vit arg = reduce(call.arg(), replaceVarWith);
+            Vit func = substitude(call.func(), replaceVarWith);
+            Vit arg = substitude(call.arg(), replaceVarWith);
 
             if (func instanceof VitVal && arg instanceof VitVal) {
                 Val f = ((VitVal) func).val();
@@ -32,7 +32,7 @@ public final class VitUtils {
             VitInvoke inv = (VitInvoke) vit;
             return inv.isConst()
                     ? inv
-                    : new VitInvoke(reduce(inv.operation(), replaceVarWith));
+                    : new VitInvoke(substitude(inv.operation(), replaceVarWith));
         }
 
         throw new IllegalStateException("Unknown Vit: " + vit);
@@ -40,7 +40,7 @@ public final class VitUtils {
 
     // simplifies and applies var value from the given context (so there won't be any VitVars in the resulting tree)
     public static Vit reduce(Vit vit, RtEnv rtEnv) {
-        return VitUtils.reduce(vit, Vit.val(rtEnv.asVal()));
+        return VitUtils.substitude(vit, Vit.val(rtEnv.asVal()));
     }
 
     public static Vit simplify(Vit vit) {

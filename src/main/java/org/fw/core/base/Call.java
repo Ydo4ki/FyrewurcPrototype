@@ -1,11 +1,8 @@
 package org.fw.core.base;
 
-import org.fw.core.FW;
-
 import java.util.Objects;
 
-import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist;
+import static org.fw.core.FW.*;
 
 // Remember local runtimes
 // what
@@ -22,9 +19,10 @@ public final class Call {
             Call.CallRecord meCall = me._unpack();
             if (cArg.equals(symbol("arg"))) return meCall.arg();
             if (cArg.equals(symbol("val"))) return meCall.val();
-        } else if (arg.equals(symbol("builder"))) {
-            return FW.telephonist("Call.builder", (func) -> FW.telephonist((argument) -> fwCall(func, argument)));
         }
+//        else if (arg.equals(symbol("builder"))) {
+//            return FW.telephonist("Call.builder", (func) -> FW.telephonist((argument) -> fwCall(func, argument)));
+//        }
         return null;
     }).asType();
 

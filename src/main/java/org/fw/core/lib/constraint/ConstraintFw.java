@@ -30,7 +30,7 @@ public final class ConstraintFw {
             return ret;
 
         return typeConstraints.computeIfAbsent(arg, arg0 -> {
-            Val a = VitFw.wrap(Vit.call(ValsFw.eq, Vit.call(ValsFw.typeGet, Vit.var)));
+            Val a = VitFw.wrap(Vit.call(ValsFw.eq, Vit.call(ValsFw.typeGet, Vit.var)).call(arg0));
             return ConstraintFw.constraintBuilder.call(a);
         });
     });

@@ -9,7 +9,7 @@ import org.fw.core.lib.WrapperTypeFw;
 import org.fw.core.memlib.words.PrimitiveLayoutsFw;
 
 public final class JFloatFw {
-    public static final Type jfloat = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist(rawPayload -> FW.telephonist(arg -> {
+    public static final Type jfloat = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Float value = unwrap(rawPayload);
         if (arg.type().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
@@ -23,7 +23,7 @@ public final class JFloatFw {
             }
         }
         return null;
-    })), FW.telephonist(arg -> null));
+    }))), FW.telephonist(arg -> null));
 
     private static Val bop(Float value, FloatBinaryOperator operator) {
         return FW.telephonist((arg1) -> {

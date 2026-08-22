@@ -6,7 +6,6 @@ import org.fw.core.base.Call;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.jlib.JClassFw;
 import org.fw.core.jlib.JMethodFw;
 import org.fw.core.jlib.JVMHandles;
 import org.fw.core.lib.StrFw;

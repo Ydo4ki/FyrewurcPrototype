@@ -2,7 +2,6 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -87,9 +86,21 @@ public final class EnumFw {
 
     private static final class Enum {
         private final Val[] values;
+        private final Object[] payloads;
+        private final int hash;
 
         private Enum(Val[] values) {
             this.values = values;
+            this.payloads = new Object[values.length];
+            int result = 1;
+            for (int i = 0; i < values.length; i++) {
+                Val value = values[i];
+                if (value == null) continue;
+                Object a = value._unpack();
+                payloads[i] = a;
+                result = 31 * result + (a == null ? 0 : a.hashCode());
+            }
+            this.hash = result;
         }
 
         public Val[] values() {
@@ -101,18 +112,18 @@ public final class EnumFw {
             if (obj == this) return true;
             if (obj == null || obj.getClass() != this.getClass()) return false;
             Enum that = (Enum) obj;
-            return Arrays.equals(this.values, that.values);
+            return Arrays.equals(this.payloads, that.payloads);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash((Object[]) values);
+            return hash;
         }
 
         @Override
         public String toString() {
             return "Enum[" +
-                    "values=" + Arrays.toString(values) + ']';
+                    "values=" + Arrays.toString(payloads) + ']';
         }
 
     }

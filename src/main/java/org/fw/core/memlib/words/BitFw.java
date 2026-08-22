@@ -1,14 +1,10 @@
 package org.fw.core.memlib.words;
 
 import org.fw.core.FW;
-import org.fw.core.base.BoolFw;
 import org.fw.core.base.Call;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.memlib.DWordFw;
 import org.fw.core.util.FwUtils;
-
-import java.util.function.IntBinaryOperator;
 
 import static org.fw.core.FW.symbol;
 

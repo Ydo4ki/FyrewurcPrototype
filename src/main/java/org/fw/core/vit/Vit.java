@@ -1,8 +1,11 @@
 package org.fw.core.vit;
 
+import org.fw.core.FW;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
+
+import static org.fw.core.FW.telephonist;
 
 // no side effects for now
 public abstract class Vit {
@@ -59,5 +62,10 @@ public abstract class Vit {
 
     public static Vit invoke(Vit operation) {
         return new VitInvoke(operation);
+    }
+
+    public final Val asLambdaVal() {
+        return FW.telephonist((env) -> State.performAndDie(scope ->
+                this.eval(RtEnv.of(env), scope)));
     }
 }

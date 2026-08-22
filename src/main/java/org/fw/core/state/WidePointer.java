@@ -34,7 +34,7 @@ public final class WidePointer {
         return null;
     }).asType();
 
-    public static final Val _CreateNewArrayOperation = telephonist(size -> telephonist(init -> {
+    public static final Val _CreateNewArrayOperation = FW.telephonist(size -> FW.telephonist(init -> {
         return new CreateArrayOperation(
                 DIntFw.unwrap(size).intValueExact(),
                 i -> {

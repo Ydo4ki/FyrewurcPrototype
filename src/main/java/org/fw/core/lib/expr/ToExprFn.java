@@ -5,10 +5,10 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.*;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.dvec.DVecFw;
+import org.fw.core.memlib.ints.IntTypeFw;
 
 import java.util.function.Supplier;
 
@@ -95,6 +95,7 @@ public class ToExprFn {
             StructFw.structToExpr,
             TraitFw.traitToExpr,
             BoxFw.boxToExpr,
+            IntTypeFw.intToExpr,
 //            unknownToExpr,
             toExprRest
     );

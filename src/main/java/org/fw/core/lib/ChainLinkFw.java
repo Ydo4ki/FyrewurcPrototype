@@ -9,7 +9,6 @@ import org.fw.core.base.BoolFw;
 import org.fw.core.base.Call;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.ToExprFn;

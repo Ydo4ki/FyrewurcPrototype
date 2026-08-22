@@ -4,8 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.symbol;
-
 public final class WrapperTypeFw {
     
     public static final Type wrapperType = FW.telephonist(arg -> {
@@ -23,7 +21,7 @@ public final class WrapperTypeFw {
                 // since we know the core type anyway there's no reason to create additional nesting levels
                 // so the value of wrapper type instance is exactly the same as the one in the wrapped type
                 Val rawPayload = Val.of(payloadType, instanceOfWt._unpack());
-                return callsHandler.call(rawPayload).call(arg);
+                return callsHandler.call(instanceOfWt).call(rawPayload).call(arg);
             } else {
                 Val staticCallsHandler = wt.staticCallsHandler;
                 Val ret = staticCallsHandler.call(arg);
@@ -32,7 +30,7 @@ public final class WrapperTypeFw {
                     String sym = arg._unpack().toString();
                     switch (sym) {
                         case "Payload":
-                            return payloadType.asVal();
+                            return TypePayloadInfo.wrap(payloadType);
                     }
                 }
             }
@@ -44,14 +42,6 @@ public final class WrapperTypeFw {
 
     public static Type wrapperType(Type payloadType, Val callsHandler, Val staticCallsHandler) {
         return Val.of(wrapperType, new WrapperType(payloadType, callsHandler, staticCallsHandler)).asType();
-    }
-
-    public static Type payloadType(Type type) {
-        throw new UnsupportedOperationException();
-    }
-
-    public static Val payloadConstraint(Type type) {
-        throw new UnsupportedOperationException();
     }
 
     public static Type unwrapFully(Type type) {

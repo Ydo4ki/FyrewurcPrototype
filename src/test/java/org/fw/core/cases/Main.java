@@ -17,6 +17,7 @@ import org.fw.core.lib.expr.*;
 import org.fw.core.lib.state.IfOperation;
 import org.fw.core.memlib.MemUtils;
 import org.fw.core.memlib.ReifiedTypeFw;
+import org.fw.core.memlib.ints.IntTypeFw;
 import org.fw.core.memlib.words.BinOperationsFw;
 import org.fw.core.memlib.words.BitFw;
 import org.fw.core.jlib.data.JIntFw;
@@ -54,29 +55,22 @@ public class Main {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-arrays.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-dvec.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
+//        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-int.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
 
         State state = SystemOperation.systemState;
         CompEnv compEnv;
         compEnv = CompEnv.of(CompEnv.compEnv(
-                BaseFw.exports.asVal(),
-                BoolLib.lib.exports(),
-                VitFw.exports.asVal(),
-                ExprGetFw.getterCEnv,
-                DIntFw.exports.asVal(),
-                ExprFw.exports.asVal(),
-                StrFw.exports.asVal(),
-                DVecFw.exports.asVal(),
-                FnCallFw.fnCallCenv.asVal(),
+                EssentiaLibstd.lib.exports(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
                         DeclaredFw.declared(symbol("_CurrentTimeMillis"), SystemOperation.currentTimeMillis.asVal()),
                         DeclaredFw.declared(symbol("_NanoTime"), SystemOperation.nanoTime.asVal()),
-                        DeclaredFw.declared(symbol("_Print"), telephonist((arg)
+                        DeclaredFw.declared(symbol("_Print"), FW.telephonist((arg)
                                 -> new SystemOperation.PrintOperation(System.out, arg._unpack().toString()).asVal())),
-                        DeclaredFw.declared(symbol("_Sleep"), telephonist((arg) -> {
+                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist((arg) -> {
                             if (arg.type() != DIntFw.dint)
                                 return null;
 
@@ -93,14 +87,8 @@ public class Main {
                         DeclaredFw.declared(symbol("unit"), Operation.unit),
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
-                ModuleFw.exports.asVal(),
-                FunctionFw.exports.asVal(),
-                DeclaredFw.exports.asVal(),
-                CompEnvLib.exports.asVal(),
-                DoFw.exports.asVal(),
-                UseFw.useDirectivesCenv.asVal(),
+                IntTypeFw.lib.exports(),
                 directivesCenv.asVal(),
-                OperatorsFw.exports.asVal(),
                 parseReifiedBits.asVal(),
 
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
@@ -167,7 +155,7 @@ public class Main {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
@@ -334,7 +322,7 @@ public class Main {
         }
     }
 
-    public static final CompEnv parseReifiedBits = CompEnv.of(telephonist((arg) -> {
+    public static final CompEnv parseReifiedBits = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

@@ -9,7 +9,7 @@ import org.fw.core.lib.WrapperTypeFw;
 import org.fw.core.memlib.words.PrimitiveLayoutsFw;
 
 public final class JByteFw {
-    public static final Type jbyte = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.octet, FW.telephonist(rawPayload -> FW.telephonist(arg -> {
+    public static final Type jbyte = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.octet, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Byte value = unwrap(rawPayload);
         if (arg.type().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
@@ -35,7 +35,7 @@ public final class JByteFw {
             }
         }
         return null;
-    })), FW.telephonist(arg -> null));
+    }))), FW.telephonist(arg -> null));
 
     public static byte rotateRight(byte value, int distance) {
         distance = distance & 7;

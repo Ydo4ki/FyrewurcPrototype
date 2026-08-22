@@ -11,7 +11,7 @@ import org.fw.core.memlib.words.PrimitiveLayoutsFw;
 import java.util.function.DoubleBinaryOperator;
 
 public final class JDoubleFw {
-    public static final Type jdouble = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist(rawPayload -> FW.telephonist(arg -> {
+    public static final Type jdouble = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Double value = unwrap(rawPayload);
         if (arg.type().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
@@ -25,7 +25,7 @@ public final class JDoubleFw {
             }
         }
         return null;
-    })), FW.telephonist(arg -> null));
+    }))), FW.telephonist(arg -> null));
 
     private static Val bop(Double value, DoubleBinaryOperator operator) {
         return FW.telephonist((arg1) -> {

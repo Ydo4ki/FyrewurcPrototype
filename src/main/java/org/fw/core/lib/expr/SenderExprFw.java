@@ -1,5 +1,6 @@
 package org.fw.core.lib.expr;
 
+import org.fw.core.FW;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.Call;
 import org.fw.core.base.Type;
@@ -16,7 +17,7 @@ import static org.fw.core.FW.telephonist;
 @Deprecated
 public final class SenderExprFw {
 
-    public static final Type exprSender = telephonist("ExprSender", ((arg) -> {
+    public static final Type exprSender = FW.telephonist("ExprSender", ((arg) -> {
         if (FwUtils.isTypeApiCall(arg, SenderExprFw.exprSender)) {
             Val instance = Call.getVal(arg);
             Val operator = instance._unpack();
@@ -58,7 +59,7 @@ public final class SenderExprFw {
             Vit v = Vit.val(SenderExprFw.exprSender.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit));
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
-            return telephonist((argument) -> {
+            return FW.telephonist((argument) -> {
                 return Val.of(SenderExprFw.exprSender, argument);
             });
         }

@@ -2,7 +2,6 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
@@ -11,11 +10,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.lib.constraint.ConstraintFw;
-import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.ExprCallOpFw;
-import org.fw.core.vit.Vit;
 
-import java.math.BigInteger;
 import java.util.Objects;
 
 import static org.fw.core.FW.symbol;

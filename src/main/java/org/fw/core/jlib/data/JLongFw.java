@@ -11,7 +11,7 @@ import org.fw.core.memlib.words.PrimitiveLayoutsFw;
 import java.util.function.LongBinaryOperator;
 
 public final class JLongFw {
-    public static final Type jlong = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist(rawPayload -> FW.telephonist(arg -> {
+    public static final Type jlong = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Long value = unwrap(rawPayload);
         if (arg.type().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
@@ -37,7 +37,7 @@ public final class JLongFw {
             }
         }
         return null;
-    })), FW.telephonist(arg -> null));
+    }))), FW.telephonist(arg -> null));
 
     private static Val bopLIL(Long value, LongIntLongOperator operator) {
         return FW.telephonist((arg1) -> {

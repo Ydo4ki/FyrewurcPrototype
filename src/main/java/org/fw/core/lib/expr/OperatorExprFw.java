@@ -18,7 +18,7 @@ import static org.fw.core.FW.telephonist;
 @Deprecated
 public final class OperatorExprFw {
 
-    public static final Type exprOperator = telephonist("ExprOperator", ((arg) -> {
+    public static final Type exprOperator = FW.telephonist("ExprOperator", ((arg) -> {
         if (FwUtils.isTypeApiCall(arg, OperatorExprFw.exprOperator)) {
             Val instance = Call.getVal(arg);
             Val operator = instance._unpack();
@@ -70,7 +70,7 @@ public final class OperatorExprFw {
             }
             return VitFw.wrap(v);
         } else if (arg.equals(symbol("constructor"))) {
-            return telephonist((argument) -> {
+            return FW.telephonist((argument) -> {
                 return Val.of(OperatorExprFw.exprOperator, argument);
             });
         }

@@ -84,7 +84,7 @@ public final class DeclaredFw {
         }
         return null;
     }).asType();
-    public static final Val declaredToExpr = telephonist((arg) -> {
+    public static final Val declaredToExpr = FW.telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
@@ -162,7 +162,7 @@ public final class DeclaredFw {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

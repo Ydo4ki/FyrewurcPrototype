@@ -1,5 +1,6 @@
 package org.fw.core.lib;
 
+import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -14,7 +15,7 @@ import static org.fw.core.FW.telephonist;
 
 public final class OperatorsFw {
 
-    public static final CompEnv exports = CompEnv.of(telephonist((arg) -> {
+    public static final CompEnv exports = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

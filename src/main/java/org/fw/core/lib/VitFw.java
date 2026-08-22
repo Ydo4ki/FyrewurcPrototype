@@ -10,7 +10,6 @@ import org.fw.core.lib.constraint.ConstraintFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.lib.expr.ToExprFn;
-import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Type;
@@ -26,7 +25,7 @@ import static org.fw.core.FW.telephonist;
 
 public final class VitFw {
 
-    public static final Type vitVal = telephonist("VitVal", (arg0)
+    public static final Type vitVal = FW.telephonist("VitVal", (arg0)
             -> FwUtils.handleSymbols(arg0, VitFw.vitVal, (instance, symbol) -> {
         switch (symbol) {
             case "val":
@@ -43,7 +42,7 @@ public final class VitFw {
         return null;
     })).asType();
 
-    public static final Type vitInvoke = telephonist("VitInvoke", (arg0)
+    public static final Type vitInvoke = FW.telephonist("VitInvoke", (arg0)
             -> FwUtils.handleSymbols(arg0, VitFw.vitInvoke, (instance, symbol) -> {
         switch (symbol) {
             case "operation":
@@ -65,7 +64,7 @@ public final class VitFw {
         return null;
     })).asType();
 
-    public static final Type vitVar = telephonist("VitVar", (arg0)
+    public static final Type vitVar = FW.telephonist("VitVar", (arg0)
             -> FwUtils.handleSymbols(arg0, VitFw.vitVar, (instance, symbol) -> {
         switch (symbol) {
 //        case "key":
@@ -81,7 +80,7 @@ public final class VitFw {
     })).asType();
 
     private static final Expr repr = FwUtils.parse("VitCall.builder").getExpr();
-    public static final Type vitCall = telephonist("VitCall", (arg0)
+    public static final Type vitCall = FW.telephonist("VitCall", (arg0)
             -> FwUtils.handleSymbols(arg0, VitFw.vitCall, (instance, symbol) -> {
         switch (symbol) {
             case "func":
@@ -98,7 +97,7 @@ public final class VitFw {
                     return null;
                 }
 
-                return telephonist((arg) -> {
+                return FW.telephonist((arg) -> {
                     if (!isVit(arg.type())) {
                         return null;
                     }
@@ -112,7 +111,7 @@ public final class VitFw {
         }
         return null;
     })).asType();
-    public static final Val vitToExpr = telephonist((arg) -> {
+    public static final Val vitToExpr = FW.telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
@@ -139,13 +138,10 @@ public final class VitFw {
         return null;
     });
 
-    public static final Val evalVit = telephonist("eval-vit", (arg) -> {
+    public static final Val evalVit = FW.telephonist("eval-vit", (arg) -> {
         if (isVit(arg.type())) {
             Vit vit = arg._unpack();
-            return telephonist((env) -> {
-                return State.performAndDie(scope ->
-                        vit.eval(RtEnv.of(env), scope));
-            });
+            return vit.asLambdaVal();
         }
         return null;
     });
@@ -241,7 +237,7 @@ public final class VitFw {
     }
 
 
-    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

@@ -2,7 +2,6 @@ package org.fw.core.lib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
@@ -179,6 +178,12 @@ public final class StructFw {
             Val instance = Call.getVal(arg);
             arg = Call.getArg(arg);
             StructBuilder payload = instance._unpack();
+
+            Val constraint = DeclarationFw.getConstraint(payload.struct.fields[payload.progress.length]);
+            if (constraint.call(symbol("check")).call(arg) != BoolFw._true) {
+                return null;
+            }
+
             Val[] values = DVecFw.arAppended(payload.progress, arg);
             if (values.length == payload.struct.fields.length) {
                 return Val.of(payload.sameStructButItsAVal.asType(), values);

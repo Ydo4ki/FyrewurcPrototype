@@ -1,5 +1,6 @@
 package org.fw.core.lib.state;
 
+import org.fw.core.FW;
 import org.fw.core.base.Val;
 import org.fw.core.base.BoolFw;
 import org.fw.core.state.obj.State;
@@ -10,15 +11,15 @@ import static org.fw.core.FW.telephonist;
 
 // it's not like this can't be implemented on the language itself, this just seems easier
 public final class IfOperation extends Operation {
-    public static final Val _If = telephonist((condition) -> {
+    public static final Val _If = FW.telephonist((condition) -> {
         if (condition.type() != OperationFw.operation)
             return null;
 
-        return telephonist((ifTrue) -> {
+        return FW.telephonist((ifTrue) -> {
             if (ifTrue.type() != OperationFw.operation)
                 return null;
 
-            return telephonist((ifFalse) -> {
+            return FW.telephonist((ifFalse) -> {
                 if (ifFalse.type() != OperationFw.operation)
                     return null;
 

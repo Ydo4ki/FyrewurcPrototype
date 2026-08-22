@@ -12,7 +12,7 @@ import static org.fw.core.FW.telephonist;
 
 public final class LaserPointerFw {
     public static final Type laserPointer = FW.telephonist("LaserPointer", (arg) -> null).asType();
-    public static final Val _ReadOperation = telephonist((arg) -> {
+    public static final Val _ReadOperation = FW.telephonist((arg) -> {
         if (arg.type() != laserPointer)
             return null;
 
@@ -22,7 +22,7 @@ public final class LaserPointerFw {
 
         return Operation.read((ValObj) obj).asVal();
     });
-    public static final Val _WriteOperation = telephonist((arg) -> {
+    public static final Val _WriteOperation = FW.telephonist((arg) -> {
         if (arg.type() != laserPointer)
             return null;
 
@@ -30,11 +30,11 @@ public final class LaserPointerFw {
         if (!(obj instanceof ValObj))
             return null;
 
-        return telephonist((arg1) -> {
+        return FW.telephonist((arg1) -> {
             return Operation.write((ValObj) obj, arg1).asVal();
         });
     });
-    public static final Val _CreateNewObjectOperation = telephonist((arg) -> {
+    public static final Val _CreateNewObjectOperation = FW.telephonist((arg) -> {
         return new CreateObjectOperation(arg).asVal();
     });
 }

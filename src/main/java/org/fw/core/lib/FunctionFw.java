@@ -75,7 +75,7 @@ public final class FunctionFw {
         return ret;
     }).asType();
 
-    public static final CompEnv directivesCenv = CompEnv.of(telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

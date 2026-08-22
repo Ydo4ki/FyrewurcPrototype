@@ -10,7 +10,7 @@ import static org.fw.core.FW.symbol;
 public final class SyntaxResolveFw {
 
     public static final Type syntaxResolve = WrapperTypeFw.wrapperType(ChainResolveFw.chainResolveType(ExprFw.isExpr),
-            FW.telephonist(rawPayload -> FW.telephonist(arg -> {
+            FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
                 if (arg.type() == SymbolFw.symbol) {
                     String s = arg._unpack().toString();
                     switch (s) {
@@ -21,7 +21,7 @@ public final class SyntaxResolveFw {
                     }
                 }
                 return null;
-            })), FW.telephonist(arg -> {
+            }))), FW.telephonist(arg -> {
                 return null;
             }));
     public static final Val syntaxResolveToExpr = FW.telephonist((arg) -> {

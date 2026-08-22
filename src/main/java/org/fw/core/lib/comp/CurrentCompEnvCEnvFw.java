@@ -1,5 +1,6 @@
 package org.fw.core.lib.comp;
 
+import org.fw.core.FW;
 import org.fw.core.base.Val;
 import org.fw.core.lib.VitFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
@@ -9,7 +10,7 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class CurrentCompEnvCEnvFw {
-    public static final Val currentCompEnvCenv = telephonist("currentCompEnvCenv", (arg) -> {
+    public static final Val currentCompEnvCenv = FW.telephonist("currentCompEnvCenv", (arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
