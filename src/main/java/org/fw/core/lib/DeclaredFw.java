@@ -191,10 +191,10 @@ public final class DeclaredFw {
         return null;
     }));
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+    public static final Lib lib = Lib.of(
+            ModuleFw.module(
                     DeclaredFw.declared(symbol("Declared"), DeclaredFw.declared.asVal())
-            )),
+            ),
             DeclaredFw.directivesCenv.asVal()
-    ));
+    );
 }

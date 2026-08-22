@@ -6,9 +6,7 @@ import org.fw.core.lib.expr.CompEnv;
 import static org.fw.core.FW.symbol;
 
 public final class CompEnvLib {
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                    DeclaredFw.declared(symbol("Constraint"), ConstraintFw.constraint.asVal())
-            ))
+    public static final Lib lib = Lib.ofModule(ModuleFw.module(
+            DeclaredFw.declared(symbol("Constraint"), ConstraintFw.constraint.asVal())
     ));
 }

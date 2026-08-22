@@ -8,6 +8,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.lib.DIntFw;
+import org.fw.core.lib.Lib;
 import org.fw.core.lib.VitFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -69,4 +70,6 @@ public final class ExprGetFw {
         }
         return null;
     });
+
+    public static final Lib lib = Lib.ofCEnv(getterCEnv);
 }

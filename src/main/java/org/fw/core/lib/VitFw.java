@@ -300,15 +300,14 @@ public final class VitFw {
         return null;
     }));
 
-
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+    public static final Lib lib = Lib.of(
+            ModuleFw.module(
                     DeclaredFw.declared(symbol("VitVal"), VitFw.vitVal.asVal()),
                     DeclaredFw.declared(symbol("VitVar"), VitFw.vitVar.asVal()),
                     DeclaredFw.declared(symbol("VitCall"), VitFw.vitCall.asVal()),
                     DeclaredFw.declared(symbol("VitInvoke"), VitFw.vitInvoke.asVal()),
                     DeclaredFw.declared(symbol("eval-vit"), VitFw.evalVit)
-            )),
+            ),
             VitFw.directivesCenv.asVal()
-    ));
+    );
 }

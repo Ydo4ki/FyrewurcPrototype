@@ -124,8 +124,8 @@ public final class StrFw {
         })));
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+    public static final Lib lib = Lib.of(
+            ModuleFw.module(
                     DeclaredFw.declared(symbol("Str"), StrFw.str.asVal()),
                     DeclaredFw.declared(symbol("expr2str"), FW.telephonist((arg) -> {
                         if (ExprFw.isExpr(arg)) {
@@ -133,7 +133,7 @@ public final class StrFw {
                         }
                         return null;
                     }))
-            )),
+            ),
             ParseStrCEnvFw.parseStrCenv
-    ));
+    );
 }

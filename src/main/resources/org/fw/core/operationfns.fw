@@ -13,6 +13,7 @@
  (fn [(= text)] !> (jprint! (call _JvmEnv.str2jstring text)))
 ))
 
+
 (module
  (: new! (fn [(= x)] !>
   (invoke! (call _CreateNewObjectOperation x))))
@@ -24,8 +25,8 @@
  (: println! println!)
  (: print! print!)
 
- (: == (fn [(= a)(= b)] ->
-  (call eq a b)))
- (: != (fn [(= a)(= b)] ->
-  (not (call eq a b))))
+// (: == (fn [(= a)(= b)] ->
+//  (call eq a b)))
+// (: != (fn [(= a)(= b)] ->
+//  (not (call eq a b))))
 )

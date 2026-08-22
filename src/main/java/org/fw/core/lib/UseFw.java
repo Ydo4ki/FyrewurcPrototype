@@ -16,7 +16,7 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class UseFw {
-    public static final CompEnv useDirectivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final Val useDirectivesCenv = FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
@@ -77,7 +77,7 @@ public final class UseFw {
             }
         }
         return null;
-    }));
+    });
 
-    public static final Lib lib = Lib.of(useDirectivesCenv);
+    public static final Lib lib = Lib.ofCEnv(useDirectivesCenv);
 }

@@ -6,10 +6,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.DeclaredFw;
-import org.fw.core.lib.ModuleFw;
-import org.fw.core.lib.VitFw;
+import org.fw.core.lib.*;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
@@ -110,11 +107,11 @@ public final class DoFw {
         return Vit.val(DoFw.usLast).call(execution);
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+    public static final Lib lib = Lib.of(
+            ModuleFw.module(
                     DeclaredFw.declared(symbol("unary-store"), Val.of(DoFw.unaryStoreType, null)),
                     DeclaredFw.declared(symbol("unary-store-last"), DoFw.usLast)
-            )),
+            ),
             DoFw.directivesCenv.asVal()
-    ));
+    );
 }

@@ -5,10 +5,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.DeclaredFw;
-import org.fw.core.lib.ModuleFw;
-import org.fw.core.lib.VitFw;
+import org.fw.core.lib.*;
 import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.lib.expr.ToExprFn;
@@ -141,12 +138,12 @@ public final class DVecFw {
         });
     }
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+    public static final Lib lib = Lib.of(
+            ModuleFw.module(
                     DeclaredFw.declared(symbol("DVec"), DVecFw.dVec.asVal()),
                     DeclaredFw.declared(symbol("DVecBuilder"), DVecBuilderFw.dVecBuilder.asVal()),
                     DeclaredFw.declared(symbol("dvecbf"), DVecBuilderFw.dvecbf)
-            )),
+            ),
             DVecConstructorCEnvFw.dVecConstructorCenv
-    ));
+    );
 }

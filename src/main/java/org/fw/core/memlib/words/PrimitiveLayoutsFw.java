@@ -26,7 +26,7 @@ public final class PrimitiveLayoutsFw {
     public static final Type fword = ReifiedTypeFw.reifiedType(word, 3);
     public static final Type tword = ReifiedTypeFw.reifiedType(octet, 10);
 
-    public static final Lib lib = Lib.of(ModuleFw.module(
+    public static final Lib lib = Lib.ofModule(ModuleFw.module(
             DeclaredFw.declared(symbol("Octet"), octet),
             DeclaredFw.declared(symbol("Word"), word),
             DeclaredFw.declared(symbol("DWord"), dword),

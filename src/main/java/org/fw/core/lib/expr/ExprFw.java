@@ -216,12 +216,12 @@ public final class ExprFw {
         return null;
     }));
 
-    public static CompEnv exports = CompEnv.of(CompEnv.compEnv(
-            ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+    public static final Lib lib = Lib.of(
+            ModuleFw.module(
                     DeclaredFw.declared(symbol("Symbol"), SymbolFw.symbol.asVal()),
                     DeclaredFw.declared(symbol("ExprList"), exprList.asVal()),
                     DeclaredFw.declared(symbol("BracketsType"), bracketsType.asVal())
-            )),
+            ),
             ExprFw.directivesCenv.asVal()
-    ));
+    );
 }

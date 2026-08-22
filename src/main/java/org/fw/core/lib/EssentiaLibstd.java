@@ -1,29 +1,27 @@
 package org.fw.core.lib;
 
 import org.fw.core.lib.dvec.DVecFw;
-import org.fw.core.lib.expr.CompEnv;
 import org.fw.core.lib.expr.DoFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.ExprGetFw;
 
 public final class EssentiaLibstd {
-    public static final Lib lib = Lib.of(
-            CompEnv.of(CompEnv.compEnv(BaseFw.exports.asVal(),
-                    BoolLib.lib.exports(),
-                    VitFw.exports.asVal(),
-                    ExprGetFw.getterCEnv,
-                    DIntFw.exports.asVal(),
-                    ExprFw.exports.asVal(),
-                    StrFw.exports.asVal(),
-                    DVecFw.exports.asVal(),
-                    FnCallFw.fnCallCenv.asVal(),
-                    ModuleFw.exports.asVal(),
-                    FunctionFw.exports.asVal(),
-                    DeclaredFw.exports.asVal(),
-                    CompEnvLib.exports.asVal(),
-                    DoFw.exports.asVal(),
-                    UseFw.useDirectivesCenv.asVal(),
-                    OperatorsFw.exports.asVal()
-            ))
+    public static final Lib lib = Lib.combine(
+            BaseFw.lib,
+            BoolLib.lib,
+            VitFw.lib,
+            ExprGetFw.lib,
+            DIntFw.lib,
+            ExprFw.lib,
+            StrFw.lib,
+            DVecFw.lib,
+            FnCallFw.lib,
+            ModuleFw.lib,
+            FunctionFw.lib,
+            DeclaredFw.lib,
+            CompEnvLib.lib,
+            DoFw.lib,
+            UseFw.lib,
+            OperatorsFw.lib
     );
 }

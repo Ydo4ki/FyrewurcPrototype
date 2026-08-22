@@ -15,7 +15,7 @@ import static org.fw.core.FW.telephonist;
 
 public final class OperatorsFw {
 
-    public static final CompEnv exports = CompEnv.of(FW.telephonist((arg) -> {
+    public static final Val exports = FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
@@ -77,5 +77,7 @@ public final class OperatorsFw {
             }
         }
         return null;
-    }));
+    });
+
+    public static final Lib lib = Lib.ofCEnv(exports);
 }
