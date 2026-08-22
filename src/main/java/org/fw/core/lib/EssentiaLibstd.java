@@ -4,6 +4,7 @@ import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.expr.DoFw;
 import org.fw.core.lib.expr.ExprFw;
 import org.fw.core.lib.expr.ExprGetFw;
+import org.fw.core.state.operation.OperationFw;
 
 public final class EssentiaLibstd {
     public static final Lib lib = Lib.combine(
@@ -15,13 +16,15 @@ public final class EssentiaLibstd {
             ExprFw.lib,
             StrFw.lib,
             DVecFw.lib,
-            FnCallFw.lib,
             ModuleFw.lib,
+            FnCallFw.lib,
             FunctionFw.lib,
             DeclaredFw.lib,
             CompEnvLib.lib,
             DoFw.lib,
             UseFw.lib,
-            OperatorsFw.lib
+            OperatorsFw.lib,
+
+            OperationFw.lib
     );
 }

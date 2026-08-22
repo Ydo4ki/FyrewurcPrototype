@@ -3,9 +3,17 @@ package org.fw.core.lib;
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.core.jlib.data.JCharFw;
+import org.fw.core.jlib.data.JIntFw;
+import org.fw.core.jlib.data.JLongFw;
+import org.fw.core.lib.dvec.DVecBuilderFw;
 import org.fw.core.lib.dvec.DVecFw;
 import org.fw.core.lib.expr.SyntaxResolveFw;
 import org.fw.core.lib.expr.ToExprFn;
+import org.fw.core.lib.state.IfOperation;
+import org.fw.core.lib.state.WhileOperation;
+import org.fw.core.state.operation.Operation;
+import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -160,10 +168,40 @@ public final class ModuleFw {
         }
     }
 
-    public static final Lib lib = Lib.ofModule(
+
+    public static final Val directivesCenv = FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
+            Expr expr = exprVal._unpack();
+            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
+                Expr f = ((ExprList) expr).get(0);
+                int isize = ((ExprList) expr).size();
+                if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
+                    case "module": {
+                        Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
+                        for (int i = 1; i < isize; i++) {
+                            Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)));
+                            if (!VitFw.isVit(val.type()))
+                                return null;
+
+                            builder = builder.call(val._unpack(Vit.class));
+                        }
+                        builder = Vit.call(DVecBuilderFw.dvecbf, builder);
+
+                        return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(builder));
+                    }
+                }
+            }
+        }
+        return null;
+    });
+
+    public static final Lib lib = Lib.of(
             ModuleFw.module(
                     DeclaredFw.declared(symbol("Module"), ModuleFw.module.asVal()),
                     DeclaredFw.declared(symbol("ModuleCompEnv"), ModuleFw.ModuleCEnvFw.moduleCompEnv.asVal())
-            )
+            ),
+            directivesCenv
     );
 }

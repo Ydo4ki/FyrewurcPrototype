@@ -33,22 +33,6 @@ public abstract class SystemOperation extends Operation {
         return false;
     }
 
-    public static class PrintOperation extends SystemOperation {
-        private final PrintStream out;
-        private final String string;
-
-        public PrintOperation(PrintStream out, String string) {
-            this.out = out;
-            this.string = string;
-        }
-
-        @Override
-        public Val execute0() {
-            out.print(string);
-            return Operation.unit;
-        }
-    }
-
     public static class FlushOperation extends SystemOperation {
         private final PrintStream out;
 
