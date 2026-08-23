@@ -45,8 +45,13 @@ public final class WrapperTypeFw {
     }
 
     public static Type unwrapFully(Type type) {
-        while (type.asVal().type().equals(WrapperTypeFw.wrapperType))
-            type = type.asVal()._unpack(WrapperTypeFw.WrapperType.class).payloadType;
+        Type payload = FW.payloadType(type);
+        while (payload != null) {
+            type = payload;
+            payload = FW.payloadType(type);
+        }
+//        while (type.asVal().type().equals(WrapperTypeFw.wrapperType))
+//            type = type.asVal()._unpack(WrapperTypeFw.WrapperType.class).payloadType;
         return type;
     }
 

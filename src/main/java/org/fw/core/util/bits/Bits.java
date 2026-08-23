@@ -1,5 +1,7 @@
 package org.fw.core.util.bits;
 
+import org.fw.lib.memlib.MemUtils;
+
 import java.util.BitSet;
 
 public abstract class Bits {
@@ -79,7 +81,7 @@ public abstract class Bits {
     };
 
     public static Bits of(byte[] bytes) {
-        BitSet bs = BitSet.valueOf(bytes);
+        BitSet bs = BitSet.valueOf(MemUtils.reverseBytes(bytes));
         return of(bs, bytes.length * 8L);
     }
 
@@ -93,8 +95,19 @@ public abstract class Bits {
         return new long[]{getLong(0)};
     }
 
+    public byte[] toByteArray() {
+        long l = getLong(0);
+        byte[] result = new byte[8];
+        for (int i = 7; i >= 0; i--) {
+            result[i] = (byte)(l & 0xFF);
+            l >>= 8;
+        }
+        return result;
+    }
+
     public abstract Bits or(Bits bits);
     public abstract Bits and(Bits bits);
+
     public abstract Bits xor(Bits bits);
 
     @Override
@@ -102,7 +115,7 @@ public abstract class Bits {
         int size = Math.toIntExact(size());
         char[] chars = new char[size];
         for (int i = 0; i < size; i++) {
-            chars[i] = get(i) ? '1' : '0';
+            chars[i] = get(size - 1 - i) ? '1' : '0';
         }
         return String.valueOf(chars);
     }
@@ -113,5 +126,9 @@ public abstract class Bits {
         BitSet bs = BitSet.valueOf(toLongArray());
         BitSet sub = bs.get(Math.toIntExact(fromIndex), Math.toIntExact(toIndex)); // placeholder
         return of(sub, toIndex - fromIndex);
+    }
+
+    public final BitSet toBitSet() {
+        return BitSet.valueOf(toLongArray());
     }
 }

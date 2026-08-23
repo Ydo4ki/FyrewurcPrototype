@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist;
 
 public class Main {
 

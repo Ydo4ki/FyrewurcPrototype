@@ -3,14 +3,21 @@ package org.fw.lib.memlib.ints;
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
+import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.core.util.bits.Bits;
 import org.fw.lib.elib.*;
 import org.fw.lib.elib.constraint.ConstraintFw;
 import org.fw.lib.elib.expr.ExprFw;
 import org.fw.lib.elib.expr.ToExprFn;
+import org.fw.lib.memlib.MemUtils;
 import org.fw.lib.memlib.ReifiedTypeFw;
 import org.fw.lib.memlib.words.BitFw;
 import org.fw.core.util.FwUtils;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.BitSet;
 
 import static org.fw.core.FW.symbol;
 
@@ -38,54 +45,87 @@ public final class IntTypeFw {
         public static final Val trap = overflow.get("trap");
     }
 
-    public static final Type int_t_payload = StructFw.struct(
-            DeclarationFw.declaration(symbol("bitwidth"), ConstraintFw.toConstraint(DIntFw.dint)),
-            DeclarationFw.declaration(symbol("signedness"), ConstraintFw.toConstraint(signedness)),
-            DeclarationFw.declaration(symbol("endian"), ConstraintFw.toConstraint(endian)),
-            DeclarationFw.declaration(symbol("overflow"), ConstraintFw.toConstraint(overflow))
-    );
+//    public static final Type int_t_payload = StructFw.struct(
+//            DeclarationFw.declaration(symbol("bitwidth"), ConstraintFw.toConstraint(DIntFw.dint)),
+//            DeclarationFw.declaration(symbol("signedness"), ConstraintFw.toConstraint(signedness)),
+//            DeclarationFw.declaration(symbol("overflow"), ConstraintFw.toConstraint(overflow))
+//    );
 
 
-    public static final Type int_t = WrapperTypeFw.wrapperType(int_t_payload, FW.telephonist(instance -> FW.telephonist(raw_payload -> FW.telephonist(arg -> {
-        Type Int = instance.asType();
-        if (FwUtils.isTypeApiCall(arg, Int)) {
-            Val int_instance = Call.getVal(arg);
+    public static final Type int_t = FW.telephonist(arg -> {
+        if (FwUtils.isTypeApiCall(arg, IntTypeFw.int_t)) {
+            Val instance = Call.getVal(arg);
             arg = Call.getArg(arg);
+            IntType raw_payload = instance._unpack();
 
-            return null;
-        } else if (arg.type() == SymbolFw.symbol) {
-            String s = arg._unpack().toString();
-            switch (s) {
-                case "Payload": {
-                    long bitwidth = DIntFw.unwrap0(raw_payload.call(symbol("bitwidth"))).intValueExact();
-                    return TypePayloadInfo.wrap(ReifiedTypeFw.reifiedType(BitFw.bit, bitwidth));
+            Type Int = instance.asType();
+            if (FwUtils.isTypeApiCall(arg, Int)) {
+                Val int_instance = Call.getVal(arg);
+                arg = Call.getArg(arg);
+
+                return null;
+            } else if (arg.type() == SymbolFw.symbol) {
+                String s = arg._unpack().toString();
+                switch (s) {
+                    case "Payload": {
+                        long bitwidth = raw_payload.getBitWidth();
+                        return TypePayloadInfo.wrap(ReifiedTypeFw.reifiedType(BitFw.bit, bitwidth));
+                    }
+                    case "bitwidth": return DIntFw.dint(raw_payload.getBitWidth());
+                    case "signedness": return raw_payload.getSign();
+                    case "overflow": return raw_payload.getOverflow();
+                    case "construct": return FW.telephonist(arg1 -> {
+                        if (arg1.type() != DIntFw.dint)
+                            return null;
+
+                        BigInteger value = DIntFw.unwrap0(arg1);
+                        int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
+
+                        Bits bits;
+                        System.out.println("! " + Integer.toBinaryString(Short.toUnsignedInt(value.shortValue())));
+                        System.out.println("! " + value.toString(2));
+                        System.out.println("! " + Arrays.toString(value.toByteArray()));
+//                    if (endian == Endian.little) {
+//                        bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(value.toByteArray())), bitwidth);
+//                    } else {
+//                        bits = Bits.of(BitSet.valueOf(value.toByteArray()), bitwidth);
+//                    }
+                        bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(value.toByteArray())), bitwidth);
+
+                        return MemUtils.wrap(Int, bits);
+                    });
                 }
-                case "bitwidth": return raw_payload.call(symbol("bitwidth"));
-                case "signedness": return raw_payload.call(symbol("signedness"));
-                case "endian": return raw_payload.call(symbol("endian"));
-                case "overflow": return raw_payload.call(symbol("overflow"));
             }
+            return null;
         }
-        return null;
-    }))), FW.telephonist(arg -> {
         if (arg.type() == SymbolFw.symbol) {
             String s = arg._unpack().toString();
             switch (s) {
                 case "construct": {
-                    return wrapBuilder(int_t_payload.asVal().call(symbol("builder")));
+                    return FW.telephonist(bw -> {
+                        if (bw.type() != DIntFw.dint) return null;
+                        return FW.telephonist(sign -> {
+                            if (sign.type() != signedness) return null;
+                            return FW.telephonist(over -> {
+                                if (over.type() != overflow) return null;
+                                return Val.of(IntTypeFw.int_t, new IntType(DIntFw.unwrap0(bw).intValueExact(), sign, over));
+                            });
+                        });
+                    });
+//                    return wrapBuilder(int_t_payload.asVal().call(symbol("builder")));
                 }
             }
         }
         return null;
-    }));
+    }).asType();
 
-    private static Val wrapBuilder(Val val) {
-        return FW.telephonist(arg -> {
-            Val ret = val.call(arg);
-            if (ret.type() == int_t_payload) return Val.of(int_t, ret._unpack());
-            return wrapBuilder(ret);
-        });
-    }
+//    private static Val wrapBuilder(Val val) {
+//        return FW.telephonist(arg -> {
+//            Val ret = val.call(arg);
+//            if (ret.type() == int_t_payload) return Val.of(int_t, ret._unpack());
+//            return wrapBuilder(ret);
+//        });
+//    }
 
     public static final Val intToExpr = FW.telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)
@@ -104,6 +144,13 @@ public final class IntTypeFw {
                     arg.call(symbol("endian")).toExpr(toExpr),
                     arg.call(symbol("overflow")).toExpr(toExpr)
             ));
+        }
+        if (arg.type().asVal().type() == int_t) {
+            Type Int = arg.type();
+//            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
+            byte[] bytes = MemUtils.toBits(arg).toByteArray();
+            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
+            return ExprFw.wrap(Symbol.of(new BigInteger(bytes).toString()));
         }
         return null;
     });

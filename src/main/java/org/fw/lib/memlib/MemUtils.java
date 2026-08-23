@@ -56,4 +56,12 @@ public final class MemUtils {
 
         return Val.of(type, bits.toLongArray());
     }
+
+    public static byte[] reverseBytes(byte[] array) {
+        byte[] na = new byte[array.length];
+        for (int i = 0; i < array.length; i++) {
+            na[array.length - i - 1] = array[i];
+        }
+        return na;
+    }
 }
