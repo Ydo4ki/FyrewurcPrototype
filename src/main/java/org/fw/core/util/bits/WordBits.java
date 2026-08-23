@@ -5,9 +5,10 @@ public class WordBits extends Bits {
     private final int actualSize;
 
     public WordBits(short value, int actualSize) {
-        this.value = value;
         if (actualSize > 16)
             throw new IllegalArgumentException(actualSize + " must not be greater than 16");
+
+        this.value = (short) (value & ((1 << actualSize) - 1));
         this.actualSize = actualSize;
     }
 

@@ -88,7 +88,6 @@ public final class IntType {
             if (sign == IntTypeFw.Signedness.unsigned) {
                 return raw;
             } else {
-                // Signed wrap в two's complement
                 long signBit = 1L << (bitWidth - 1);
                 return (raw ^ signBit) - signBit;
             }

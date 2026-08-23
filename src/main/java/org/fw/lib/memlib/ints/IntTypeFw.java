@@ -82,9 +82,6 @@ public final class IntTypeFw {
                         int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
 
                         Bits bits;
-                        System.out.println("! " + Integer.toBinaryString(Short.toUnsignedInt(value.shortValue())));
-                        System.out.println("! " + value.toString(2));
-                        System.out.println("! " + Arrays.toString(value.toByteArray()));
 //                    if (endian == Endian.little) {
 //                        bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(value.toByteArray())), bitwidth);
 //                    } else {
@@ -150,7 +147,17 @@ public final class IntTypeFw {
 //            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
             byte[] bytes = MemUtils.toBits(arg).toByteArray();
             int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
-            return ExprFw.wrap(Symbol.of(new BigInteger(bytes).toString()));
+
+            BigInteger value = new BigInteger(bytes);
+
+            BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
+            value = value.and(mask);
+
+            if (value.testBit(bitwidth - 1)) {
+                value = value.subtract(BigInteger.ONE.shiftLeft(bitwidth));
+            }
+
+            return ExprFw.wrap(Symbol.of(value.toString()));
         }
         return null;
     });
