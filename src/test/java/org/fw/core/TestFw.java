@@ -4,11 +4,11 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.VitFw;
-import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.ExprCallOpFw;
-import org.fw.core.lib.expr.ExprFw;
+import org.fw.lib.elib.DIntFw;
+import org.fw.lib.elib.VitFw;
+import org.fw.lib.elib.expr.CompEnv;
+import org.fw.lib.elib.expr.ExprCallOpFw;
+import org.fw.lib.elib.expr.ExprFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.context.RtEnv;
@@ -25,22 +25,7 @@ import static org.fw.core.FW.symbol;
 
 public final class TestFw {
     public static final Type test = FW.telephonist("Test", (arg) -> {
-        if (arg.type().equals(ExprCallOpFw.exprCallOp)) {
-            Val size = arg.call(symbol("size"));
-            Val cEnv = arg.call(symbol("comp-env"));
-
-            int isize = size._unpack(BigInteger.class).intValue();
-
-            Vit[] vits = new Vit[isize];
-            for (int i = 0; i < isize; i++) {
-                Val argNVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(i))._unpack(), CompEnv.of(cEnv)));
-                if (!VitFw.isVit(argNVit.type()))
-                    return argNVit; // compile error idk
-
-                vits[i] = VitUtils.simplify(argNVit._unpack(Vit.class));
-            }
-            return VitFw.wrap(Vit.val(Val.of(TestFw.test, new TestRecord(vits))).call(symbol("complete")).call(Vit.var)); // nah
-        } else if (FwUtils.isTypeApiCall(arg, TestFw.test)) {
+        if (FwUtils.isTypeApiCall(arg, TestFw.test)) {
             TestRecord instance = Call.getVal(arg)._unpack();
             arg = Call.getArg(arg);
             if (arg.equals(symbol("complete"))) {

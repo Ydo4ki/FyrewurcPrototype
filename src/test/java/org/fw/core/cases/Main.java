@@ -5,23 +5,20 @@ import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
-import org.fw.core.jlib.JVMHandles;
-import org.fw.core.jlib.data.JCharFw;
-import org.fw.core.jlib.data.JLongFw;
-import org.fw.core.lib.*;
-import org.fw.core.lib.expr.*;
-import org.fw.core.memlib.MemLib;
-import org.fw.core.memlib.ReifiedTypeFw;
-import org.fw.core.memlib.ints.IntTypeFw;
-import org.fw.core.memlib.words.BinOperationsFw;
-import org.fw.core.memlib.words.BitFw;
-import org.fw.core.jlib.data.JIntFw;
-import org.fw.core.memlib.HeapFw;
-import org.fw.core.memlib.words.PrimitiveLayoutsFw;
+import org.fw.lib.elib.*;
+import org.fw.lib.elib.expr.CompEnv;
+import org.fw.lib.elib.expr.SyntaxResolveFw;
+import org.fw.lib.elib.expr.ToExprFn;
+import org.fw.lib.jlib._internal.JVMHandles;
+import org.fw.lib.jlib.data.JCharFw;
+import org.fw.lib.jlib.data.JLongFw;
+import org.fw.lib.memlib.MemLib;
+import org.fw.lib.jlib.data.JIntFw;
+import org.fw.lib.memlib.HeapFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
-import org.fw.core.lib.state.SystemOperation;
+import org.fw.lib.elib.state.SystemOperation;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -79,6 +76,7 @@ public class Main {
 
         List<Iterable<LocatedExpr<? extends Expr>>> additionals = new ArrayList<>();
         additionals.add(ExprOutput.valueOf(FW.class.getResourceAsStream("operationfns.fw")));
+        additionals.add(ExprOutput.valueOf(FW.class.getResourceAsStream("sysoperations.fw")));
 
         for (Iterable<LocatedExpr<? extends Expr>> additional1 : additionals) {
             CompEnv perFileCE = compEnv;

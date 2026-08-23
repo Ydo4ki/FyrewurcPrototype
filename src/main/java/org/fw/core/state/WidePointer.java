@@ -5,9 +5,9 @@ import org.fw.core.base.Call;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.state.array.CreateArrayOperation;
-import org.fw.core.lib.state.array.ValArrayObj;
+import org.fw.lib.elib.DIntFw;
+import org.fw.lib.elib.state.array.CreateArrayOperation;
+import org.fw.lib.elib.state.array.ValArrayObj;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 

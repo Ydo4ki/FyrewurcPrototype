@@ -3,7 +3,7 @@ package org.fw.core;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.lib.TypePayloadInfo;
+import org.fw.lib.elib.TypePayloadInfo;
 import org.fw.core.util.FwUtils;
 import org.fw.core.util.LazyObj;
 import org.fw.core.vit.Vit;

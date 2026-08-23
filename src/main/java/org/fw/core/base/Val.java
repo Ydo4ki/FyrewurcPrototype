@@ -2,7 +2,7 @@ package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.commons.PureCallable;
-import org.fw.core.lib.expr.ToExprFn;
+import org.fw.lib.elib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -64,6 +64,10 @@ public abstract class Val implements PureCallable<Val> {
     @SuppressWarnings("unused")
     public <T> T _unpack(Class<T> cls) {
         return _unpack();
+    }
+
+    public final Val get(String property) {
+        return call(symbol(property));
     }
 
     public static final class Box extends Val {

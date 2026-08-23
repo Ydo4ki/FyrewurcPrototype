@@ -3,7 +3,7 @@ package org.fw.core.vit;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.lib.VitFw;
+import org.fw.lib.elib.VitFw;
 import org.fw.core.state.obj.State;
 
 import java.util.ArrayList;

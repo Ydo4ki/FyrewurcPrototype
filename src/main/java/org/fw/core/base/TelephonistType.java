@@ -1,7 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.ast.Expr;
-import org.fw.core.lib.constraint._Constraint;
+import org.fw.lib.elib.constraint._Constraint;
 
 import java.util.Objects;
 import java.util.function.Supplier;

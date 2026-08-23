@@ -2,7 +2,7 @@ package org.fw.core;
 
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.core.lib.BoxFw;
+import org.fw.lib.elib.BoxFw;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;

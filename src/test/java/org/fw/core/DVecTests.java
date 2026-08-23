@@ -2,9 +2,9 @@ package org.fw.core;
 
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
-import org.fw.core.lib.DIntFw;
-import org.fw.core.lib.dvec.DVecBuilderFw;
-import org.fw.core.lib.StrFw;
+import org.fw.lib.elib.DIntFw;
+import org.fw.lib.elib.dvec.DVecBuilderFw;
+import org.fw.lib.elib.StrFw;
 import org.junit.jupiter.api.Test;
 
 import static org.fw.core.FW.symbol;

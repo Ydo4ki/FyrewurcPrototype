@@ -6,23 +6,15 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.jlib.JVMHandles;
-import org.fw.core.jlib.data.JCharFw;
-import org.fw.core.jlib.data.JIntFw;
-import org.fw.core.jlib.data.JLongFw;
-import org.fw.core.lib.*;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.lib.expr.CompEnv;
-import org.fw.core.lib.expr.SyntaxResolveFw;
-import org.fw.core.lib.state.IfOperation;
-import org.fw.core.lib.state.SystemOperation;
-import org.fw.core.lib.state.WhileOperation;
-import org.fw.core.memlib.HeapFw;
+import org.fw.lib.elib.*;
+import org.fw.lib.elib.expr.CompEnv;
+import org.fw.lib.elib.expr.SyntaxResolveFw;
+import org.fw.lib.elib.state.IfOperation;
+import org.fw.lib.elib.state.WhileOperation;
 import org.fw.core.state.LaserPointerFw;
 import org.fw.core.state.WidePointer;
 import org.fw.core.vit.Vit;
-
-import java.util.Scanner;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;

@@ -1,7 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.lib.constraint._Constraint;
+import org.fw.lib.elib.constraint._Constraint;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 

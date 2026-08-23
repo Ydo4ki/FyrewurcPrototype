@@ -2,8 +2,8 @@ package org.fw.core;
 
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
-import org.fw.core.lib.VitFw;
-import org.fw.core.lib.state.SystemOperation;
+import org.fw.lib.elib.VitFw;
+import org.fw.lib.elib.state.SystemOperation;
 import org.fw.core.vit.Vit;
 import org.junit.jupiter.api.Test;
 

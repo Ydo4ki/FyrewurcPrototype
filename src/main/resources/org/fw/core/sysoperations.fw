@@ -1,0 +1,19 @@
+(: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
+(: out ((call System.get-static-getter "out" "Ljava/io/PrintStream;")))
+
+(: println! (do
+ (: jprintln! (call out.get-method "println" "(Ljava/lang/String;)V"))
+
+ (fn [(= text)] !> (jprintln! (call _JvmEnv.str2jstring text)))
+))
+
+(: print! (do
+ (: jprint! (call out.get-method "print" "(Ljava/lang/String;)V"))
+
+ (fn [(= text)] !> (jprint! (call _JvmEnv.str2jstring text)))
+))
+
+(module
+ (: println! println!)
+ (: print! print!)
+)
