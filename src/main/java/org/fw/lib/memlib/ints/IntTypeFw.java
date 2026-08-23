@@ -81,13 +81,7 @@ public final class IntTypeFw {
                         BigInteger value = DIntFw.unwrap0(arg1);
                         int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
 
-                        Bits bits;
-//                    if (endian == Endian.little) {
-//                        bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(value.toByteArray())), bitwidth);
-//                    } else {
-//                        bits = Bits.of(BitSet.valueOf(value.toByteArray()), bitwidth);
-//                    }
-                        bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(value.toByteArray())), bitwidth);
+                        Bits bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(toBytes(value, bitwidth))), bitwidth);
 
                         return MemUtils.wrap(Int, bits);
                     });
@@ -116,6 +110,35 @@ public final class IntTypeFw {
         return null;
     }).asType();
 
+    static byte[] toBytes(BigInteger value, int bitwidth) {
+        int byteWidth = (bitwidth + 7) / 8;
+
+        BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
+        BigInteger normalized = value.and(mask);
+
+        byte[] result = normalized.toByteArray();
+
+        if (result.length > byteWidth) {
+            result = Arrays.copyOfRange(
+                    result,
+                    result.length - byteWidth,
+                    result.length
+            );
+        }
+
+        if (result.length < byteWidth) {
+            byte[] padded = new byte[byteWidth];
+            System.arraycopy(
+                    result, 0,
+                    padded, byteWidth - result.length,
+                    result.length
+            );
+            result = padded;
+        }
+
+        return result;
+    }
+
 //    private static Val wrapBuilder(Val val) {
 //        return FW.telephonist(arg -> {
 //            Val ret = val.call(arg);
@@ -143,21 +166,21 @@ public final class IntTypeFw {
             ));
         }
         if (arg.type().asVal().type() == int_t) {
-            Type Int = arg.type();
-//            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
-            byte[] bytes = MemUtils.toBits(arg).toByteArray();
-            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
-
-            BigInteger value = new BigInteger(bytes);
-
-            BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
-            value = value.and(mask);
-
-            if (value.testBit(bitwidth - 1)) {
-                value = value.subtract(BigInteger.ONE.shiftLeft(bitwidth));
-            }
-
-            return ExprFw.wrap(Symbol.of(value.toString()));
+            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
+//            Type Int = arg.type();
+//            byte[] bytes = MemUtils.toBits(arg).toByteArray();
+//            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
+//
+//            BigInteger value = new BigInteger(bytes);
+//
+//            BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
+//            value = value.and(mask);
+//
+//            if (value.testBit(bitwidth - 1)) {
+//                value = value.subtract(BigInteger.ONE.shiftLeft(bitwidth));
+//            }
+//
+//            return ExprFw.wrap(Symbol.of(value.toString()));
         }
         return null;
     });
