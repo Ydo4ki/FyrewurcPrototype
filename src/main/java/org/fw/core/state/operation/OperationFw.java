@@ -105,12 +105,13 @@ public final class OperationFw {
 
     public static final Lib lib = Lib.of(
             ModuleFw.module(
+                    DeclaredFw.declared(symbol("LaserPointer"), LaserPointerFw.laserPointer),
                     DeclaredFw.declared(symbol("_While"), WhileOperation._While),
                     DeclaredFw.declared(symbol("_If"), IfOperation._If),
-                    DeclaredFw.declared(symbol("_CreateNewObjectOperation"), LaserPointerFw._CreateNewObjectOperation),
                     DeclaredFw.declared(symbol("_CreateNewArrayOperation"), WidePointer._CreateNewArrayOperation),
-                    DeclaredFw.declared(symbol("_ReadOperation"), LaserPointerFw._ReadOperation),
-                    DeclaredFw.declared(symbol("_WriteOperation"), LaserPointerFw._WriteOperation),
+//                    DeclaredFw.declared(symbol("_CreateNewObjectOperation"), LaserPointerFw._CreateNewObjectOperation),
+//                    DeclaredFw.declared(symbol("_ReadOperation"), LaserPointerFw._ReadOperation),
+//                    DeclaredFw.declared(symbol("_WriteOperation"), LaserPointerFw._WriteOperation),
                     DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation),
                     DeclaredFw.declared(symbol("unit"), Operation.unit)
             ),

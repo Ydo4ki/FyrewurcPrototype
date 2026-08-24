@@ -1,10 +1,10 @@
 (module
  (: new! (fn [(= x)] !>
-  (invoke! (call _CreateNewObjectOperation x))))
+  (invoke! (call LaserPointer.new x))))
  (: read! (fn [(= o)] !>
-  (invoke! (call _ReadOperation o))))
+  (invoke! o.read)))
  (: write! (fn [(= o) (= x)] !>
-  (invoke! (call _WriteOperation o x))))
+  (invoke! (call o.write x))))
 
  (: == (fn [(= a)(= b)] ->
   (call eq a b)))

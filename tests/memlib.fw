@@ -1,9 +1,0 @@
-mem.byte
-mem.word
-mem.dword
-mem.qword
-
-//0xFF
-//0xFFFF
-//0xFFFFFFFF
-//0xFFFFFFFFFFFFFFFF

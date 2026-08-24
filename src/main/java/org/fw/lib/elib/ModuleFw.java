@@ -177,7 +177,8 @@ public final class ModuleFw {
                     case "module": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)));
+                            Expr expr1 = exprVal.call(DIntFw.dint(i))._unpack();
+                            Val val = compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.type()))
                                 return null;
 

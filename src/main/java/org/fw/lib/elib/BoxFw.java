@@ -16,7 +16,7 @@ public final class BoxFw {
             Val instance = Call.getVal(arg);
             Val cArg = Call.getArg(arg);
             return handleBoxTypeCall(instance.asType(), cArg);
-        } else if (arg.equals(symbol("constructor"))) {
+        } else if (arg.equals(symbol("construct"))) {
 //            return InstancerFw.mkInstancer(BoxFw.boxType, BoxFw.boxType.asVal(), "constructor");
             return FW.telephonist(arg1 -> Val.of(BoxFw.boxType, arg1));
         }
@@ -51,7 +51,7 @@ public final class BoxFw {
 //            return Val.of(type, key);
 //        }
 //            else
-        } else if (arg.equals(symbol("constructor"))) {
+        } else if (arg.equals(symbol("construct"))) {
 //            return InstancerFw.mkInstancer(type, type.asVal(), "constructor");
             return FW.telephonist((arg1) -> Val.of(type, arg1));
         }
@@ -64,6 +64,10 @@ public final class BoxFw {
     }
 
     public static Type newBoxType(Val key) {
-        return boxType.asVal().call(symbol("constructor")).call(key).asType();
+        return boxType.asVal().call(symbol("construct")).call(key).asType();
     }
+
+    public static final Lib lib = Lib.ofModule(ModuleFw.module(
+            DeclaredFw.declared(symbol("BoxType"), boxType)
+    ));
 }

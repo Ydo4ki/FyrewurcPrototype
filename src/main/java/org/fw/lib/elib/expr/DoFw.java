@@ -64,7 +64,7 @@ public final class DoFw {
 
                 Expr nameE = ((ExprList) line).get(1);
                 if (!(nameE instanceof Symbol))
-                    throw new VitCompilationException(null); // syntax error: symbol expected
+                    throw new VitCompilationException(nameE); // syntax error: symbol expected
                 String name = ((Symbol) nameE).getValue();
                 Expr valueE = ((ExprList) line).get(2);
                 Vit valueV = VitUtils.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv)))));

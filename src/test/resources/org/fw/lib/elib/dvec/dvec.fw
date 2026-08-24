@@ -1,0 +1,18 @@
+(assert! true)
+
+(do
+ (: a false)
+ (: b true)
+
+ (: vec [a b a])
+
+ (assert! (== (typeof vec) DVec))
+ (assert! (== vec (call dvecbf (call DVec.builder a b a))))
+
+ (assert! (== vec.iter-type.target vec))
+ (assert! (== (typeof vec.first) vec.iter-type))
+ (assert! (== vec.last vec.first.next.next))
+ (assert! (== vec.last.prev.prev vec.first))
+ (assert! (== vec.first.value a))
+ (assert! (== vec.first.next.value b))
+)

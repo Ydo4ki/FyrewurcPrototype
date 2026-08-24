@@ -24,6 +24,7 @@ public final class EssentiaLibstd {
             DoFw.lib,
             UseFw.lib,
             OperatorsFw.lib,
+            BoxFw.lib,
 
             OperationFw.lib
     ), "operationfns");

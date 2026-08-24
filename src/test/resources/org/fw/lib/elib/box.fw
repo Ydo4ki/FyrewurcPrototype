@@ -1,0 +1,12 @@
+(assert! true)
+
+(do
+ (: opBox (call BoxType.construct (symbol "my-box")))
+ (assert! (== (typeof opBox) BoxType))
+ (: toBox (symbol "+"))
+
+ (: boxedOp (call opBox.construct toBox))
+
+ (assert! (== (typeof boxedOp) opBox))
+ (assert! (== boxedOp.unbox toBox))
+)
