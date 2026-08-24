@@ -202,8 +202,7 @@ public final class FwUtils {
                     val = vit.eval(RtEnv.unspecified, state);
                     if (val.type() == DeclaredFw.declared) {
                         compEnv1 = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv1.asVal()));
-                    }
-                    if (val != Operation.unit)
+                    } else if (val != Operation.unit)
                         System.out.println(val.toExpr(ToExprFn.toExpr));
                 }
                 return val;

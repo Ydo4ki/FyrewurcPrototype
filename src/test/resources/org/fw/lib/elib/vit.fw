@@ -1,0 +1,41 @@
+(assert! true)
+
+(: v1 (new! unit))
+(: v2 (new! unit))
+(: c1 (call VitVal.constructor v1))
+(: c2 (call VitVal.constructor v2))
+
+(do
+ (assert! (== c1.val v1))
+
+ (do
+  (: vit (call VitCall.builder c1 c2))
+
+  (assert! (== vit.func.val v1))
+  (assert! (== vit.arg.val v2))
+ )
+
+ (do
+  (: codeThatCreatesVit (compile-vit (call VitCall.builder c1 c2)))
+  (: vit (call eval-vit codeThatCreatesVit unit))
+
+  (assert! (== vit.func.val v1))
+  (assert! (== vit.arg.val v2))
+ )
+)
+
+(do
+ (assert! (==
+  (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+")))
+  (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+")))))
+
+ (assert! (==
+  (get (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+"))) func)
+  (call VitVal.constructor 14)))
+
+ (assert! (==
+   (get (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+"))) arg)
+   (call VitVal.constructor (symbol "+"))))
+
+ (assert! (== (call type-get (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+")))) VitCall))
+)
