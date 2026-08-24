@@ -5,6 +5,7 @@ import org.fw.core.base.Val;
 import java.math.BigInteger;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
+import java.util.function.UnaryOperator;
 
 import static org.fw.lib.memlib.ints.Overflow.*;
 
@@ -17,10 +18,12 @@ public final class IntType {
     private final int bitWidth;
     private final Val sign;
     private final Val overflow;
+    public final UnaryOperator<Number> neg;
     public final BinaryOperator<Number> add;
     public final BinaryOperator<Number> sub;
     public final BinaryOperator<Number> mul;
     public final BinaryOperator<Number> div;
+    public final BinaryOperator<Number> mod;
 
     public IntType(int bitWidth, Val sign, Val overflow) {
         if (bitWidth <= 0 || bitWidth > 1024) {
@@ -29,14 +32,18 @@ public final class IntType {
         this.bitWidth = bitWidth;
         this.sign = sign;
         this.overflow = overflow;
+        this.neg = negOperator();
+
         this.add = addOperator();
         this.sub = subtractOperator();
         this.mul = multiplyOperator();
         this.div = divideOperator();
+        this.mod = modOperator();
     }
 
-    public BinaryOperator<Number> add() {
-        return add;
+    private UnaryOperator<Number> negOperator() {
+        if (bitWidth <= 64) return (a) -> applyOverflow(-a.longValue());
+        else return (a) -> applyOverflow(big(a).negate());
     }
 
     private BinaryOperator<Number> addOperator() {
@@ -73,14 +80,29 @@ public final class IntType {
             };
     }
 
+    private BinaryOperator<Number> modOperator() {
+        if (bitWidth <= 64)
+            return (a, b) -> {
+                long divisor = b.longValue();
+                if (divisor == 0) throw new ArithmeticException("Division by zero");
+                return applyOverflow(a.longValue() % divisor);
+            };
+        else
+            return (a, b) -> {
+                BigInteger divisor = big(b);
+                if (divisor.equals(BigInteger.ZERO)) throw new ArithmeticException("Division by zero");
+                return applyOverflow(big(a).mod(divisor));
+            };
+    }
+
     public static BigInteger big(Number n) {
         return (n instanceof BigInteger) ? (BigInteger) n : BigInteger.valueOf(n.longValue());
     }
 
 
     private Number applyOverflow(long value) {
-        long min = minValue().longValue();
-        long max = maxValue().longValue();
+        BigInteger min = big(minValue());
+        BigInteger max = big(maxValue());
 
         if (overflow.equals(wrap)) {
             long mask = (1L << bitWidth) - 1;
@@ -92,9 +114,9 @@ public final class IntType {
                 return (raw ^ signBit) - signBit;
             }
         } else if (overflow.equals(saturate)) {
-            return Math.max(min, Math.min(max, value));
+            return min.max(max.max(BigInteger.valueOf(value)));
         } else if (overflow.equals(trap)) {
-            if (value < min || value > max)
+            if (BigInteger.valueOf(value).compareTo(min) < 0 || BigInteger.valueOf(value).compareTo(max) > 0)
                 throw new ArithmeticException("Overflow: " + value);
             return value;
         }
@@ -137,12 +159,12 @@ public final class IntType {
 
     public Number minValue() {
         if (sign == Signedness.unsigned) return 0L;
-        return -1L << (bitWidth - 1);
+        return BigInteger.valueOf(-1).shiftLeft(bitWidth - 1);
     }
 
     public Number maxValue() {
-        if (sign == Signedness.unsigned) return (1L << bitWidth) - 1;
-        return (1L << (bitWidth - 1)) - 1;
+        if (sign == Signedness.unsigned) return BigInteger.valueOf(-1).shiftLeft(bitWidth).subtract(BigInteger.ONE);
+        return BigInteger.valueOf(-1).shiftLeft(bitWidth - 1).subtract(BigInteger.ONE);
     }
 
 //    @Override
@@ -178,8 +200,8 @@ public final class IntType {
             value = new BigInteger(input);
         }
 
-        BigInteger min = minValue() instanceof BigInteger ? (BigInteger) minValue() : BigInteger.valueOf(minValue().longValue());
-        BigInteger max = minValue() instanceof BigInteger ? (BigInteger) maxValue() : BigInteger.valueOf(maxValue().longValue());
+        BigInteger min = big(minValue());
+        BigInteger max = big(minValue());
 
         if (value.compareTo(min) < 0 || value.compareTo(max) > 0) {
             throw new ArithmeticException("Value out of range for " + this + ": " + value);
@@ -196,6 +218,10 @@ public final class IntType {
         } else {
             return value;
         }
+    }
+
+    public boolean isSigned() {
+        return getSign() == Signedness.signed;
     }
 
 //    public Val parseVal(String input) {

@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.function.BinaryOperator;
+import java.util.function.UnaryOperator;
 
 import static org.fw.core.FW.symbol;
 
@@ -39,7 +40,12 @@ public final class IntTypeFw {
                 if (arg.type() == SymbolFw.symbol) {
                     String s = arg._unpack().toString();
                     switch (s) {
-                        case "+": return bop(int_instance, instance.asType(), raw_payload.add());
+                        case "neg": return raw_payload.isSigned() ? uop(int_instance, instance.asType(), raw_payload.neg) : null;
+                        case "+": return bop(int_instance, instance.asType(), raw_payload.add);
+                        case "-": return bop(int_instance, instance.asType(), raw_payload.sub);
+                        case "*": return bop(int_instance, instance.asType(), raw_payload.mul);
+                        case "/": return bop(int_instance, instance.asType(), raw_payload.div);
+                        case "%": return bop(int_instance, instance.asType(), raw_payload.mod);
                     }
                 }
 
@@ -91,6 +97,12 @@ public final class IntTypeFw {
     }).asType();
 
 
+    private static Val uop(Val instance, Type Int, UnaryOperator<Number> operator) {
+        Number value = MemUtils.toBitsAsNumber(instance);
+        assert value != null;
+        Number ret = operator.apply(value);
+        return MemUtils.wrap(Int, ret);
+    }
     private static Val bop(Val instance, Type Int, BinaryOperator<Number> operator) {
         Number value = MemUtils.toBitsAsNumber(instance);
         assert value != null;
