@@ -2,8 +2,8 @@
 
 (: v1 (new! unit))
 (: v2 (new! unit))
-(: c1 (call VitVal.constructor v1))
-(: c2 (call VitVal.constructor v2))
+(: c1 (call VitVal.construct v1))
+(: c2 (call VitVal.construct v2))
 
 (do
  (assert! (== c1.val v1))
@@ -26,16 +26,17 @@
 
 (do
  (assert! (==
-  (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+")))
-  (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+")))))
+  (call VitCall.builder (call VitVal.construct 14) (call VitVal.construct (symbol "+")))
+  (call VitCall.builder (call VitVal.construct 14) (call VitVal.construct (symbol "+")))))
 
  (assert! (==
-  (get (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+"))) func)
-  (call VitVal.constructor 14)))
+  (get (call VitCall.builder (call VitVal.construct 14) (call VitVal.construct (symbol "+"))) func)
+  (call VitVal.construct 14)))
 
  (assert! (==
-   (get (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+"))) arg)
-   (call VitVal.constructor (symbol "+"))))
+   (get (call VitCall.builder (call VitVal.construct 14) (call VitVal.construct (symbol "+"))) arg)
+   (call VitVal.construct (symbol "+"))))
 
- (assert! (== (call type-get (call VitCall.builder (call VitVal.constructor 14) (call VitVal.constructor (symbol "+")))) VitCall))
+ (assert! (== (typeof (call VitCall.builder (call VitVal.construct 14) (call VitVal.construct (symbol "+")))) VitCall))
+ (call VitVal.construct 14)
 )

@@ -34,8 +34,8 @@ public final class VitFw {
                 return null;
         }
     }, (arg1) -> {
-        if (arg1.equals(symbol("constructor"))) {
-            return FW.telephonist(() -> "VitVal.constructor", (arg) -> {
+        if (arg1.equals(symbol("construct"))) {
+            return FW.telephonist(() -> "VitVal.construct", (arg) -> {
                 return wrap(Vit.val(arg));
             });
         }
@@ -51,8 +51,8 @@ public final class VitFw {
                 return null;
         }
     }, (arg1) -> {
-        if (arg1.equals(symbol("constructor"))) {
-            return FW.telephonist(() -> "VitInvoke.constructor", (arg) -> {
+        if (arg1.equals(symbol("construct"))) {
+            return FW.telephonist(() -> "VitInvoke.construct", (arg) -> {
                 if (!VitFw.isVit(arg.type()))
                     return null;
 

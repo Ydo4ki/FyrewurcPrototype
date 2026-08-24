@@ -2,6 +2,8 @@ package org.fw.lib.elib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.base.context.RtEnv;
+import org.fw.core.state.obj.State;
 import org.fw.lib.elib.expr.ExprFw;
 import org.fw.lib.elib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
@@ -11,6 +13,7 @@ import java.math.BigInteger;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.vit.Vit.val;
+import static org.fw.core.vit.Vit.var;
 
 // lmao I completely forgot we wanted to get rid of this
 public final class DIntFw {
@@ -99,10 +102,26 @@ public final class DIntFw {
     }
 
     public static final class ParseDIntCEnvFw {
-        public static final Val parseNumCenv = StrFw.ParseStrCEnvFw.symbolMapEnv(val(FW.telephonist("parseNum", (arg1) -> {
-            return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1))
-                    .eval();
-        })));
+        public static final Val parseNumCenv;
+
+        static {
+            Vit parseArg = val(FW.telephonist("parseNum", (arg1) -> {
+                return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1))
+                        .eval();
+            })).call(var.call(symbol("arg")).call(symbol("expr")));
+            // what the heck is this
+            // how's it suppose to work
+            // WHY IT WORKS
+            Vit body = FW.vIf(val(ValsFw.isUnspecified).call(parseArg).call(symbol("not")),
+                    Vit.val(VitFw.vitVal.asVal()).call(symbol("construct"))
+                            .call(parseArg),
+                    parseArg
+            );
+            parseNumCenv = State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(RtEnv.of(FW.telephonist((arg2) -> {
+                if (arg2.equals(symbol("arg"))) return arg1;
+                return null;
+            })), state)));
+        }
     }
 
     public static final Lib lib = Lib.of(

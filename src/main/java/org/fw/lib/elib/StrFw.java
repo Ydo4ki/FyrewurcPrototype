@@ -93,13 +93,14 @@ public final class StrFw {
         private static final Vit argExpr = arg.call(symbol("expr"));
         private static final Vit argCEnv = arg.call(symbol("comp-env"));
 
+        @Deprecated
         public static Val symbolMapEnv(Vit telemap) {
             Vit parseArg = telemap.call(argExpr);
             // what the heck is this
             // how's it suppose to work
             // WHY IT WORKS
             Vit body = FW.vIf(val(ValsFw.isUnspecified).call(parseArg).call(symbol("not")),
-                    Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))
+                    Vit.val(VitFw.vitVal.asVal()).call(symbol("construct"))
                             .call(parseArg),
                     parseArg
             );
