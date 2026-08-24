@@ -8,7 +8,7 @@ import org.fw.core.base.*;
 import org.fw.lib.elib.*;
 import org.fw.lib.elib.constraint.ConstraintFw;
 import org.fw.lib.elib.dvec.DVecFw;
-import org.fw.lib.memlib.ints.IntTypeFw;
+import com.ydo4ki.fyrewurc.lib.memlib.ints.IntTypeFw;
 
 import java.util.function.Supplier;
 
@@ -16,6 +16,7 @@ import static org.fw.core.FW.symbol;
 
 public class ToExprFn {
 
+    public static final Type toExprBox = BoxFw.newBoxType(symbol("to-expr"));
 
     public static final Type exprififier = ChainLinkFw.chainLinkType.asVal()
             .call(symbol("constructor"))

@@ -1,6 +1,6 @@
 package org.fw.core.util.bits;
 
-import org.fw.lib.memlib.MemUtils;
+import com.ydo4ki.fyrewurc.lib.memlib.MemUtils;
 
 import java.util.BitSet;
 
