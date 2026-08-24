@@ -3,6 +3,8 @@ package org.fw.lib.jlib._internal;
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.lib.devicelib.PrimitiveLayoutsFw;
+import org.fw.lib.jlib.data.JOopFw;
 import org.fw.lib.jlib.util.JvmUtils;
 import org.fw.lib.elib.StrFw;
 import org.fw.core.state.operation.Operation;
@@ -10,6 +12,9 @@ import org.fw.core.util.FwUtils;
 
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class JClassFw {
     public static final Type jClass = FW.telephonist((arg) -> {
@@ -108,6 +113,21 @@ public final class JClassFw {
                         return null;
                     return wrap(cls.getComponentType());
                 }
+                case "is-assignable-from": {
+                    return FW.telephonist(b -> {
+                        if (b.type() != JClassFw.jClass) return null;
+                        return BoolFw.wrap(cls.isAssignableFrom(b._unpack(Class.class)));
+                    });
+                }
+                case "Payload": {
+                    if (cls.isPrimitive()) {
+                        return JClassFw.PRIMITIVE_PAYLOADS.get(cls).asVal();
+                    }
+                    if (cls.isInterface() || (cls.getModifiers() & Modifier.ABSTRACT) != 0) {
+                        return null; // not a type
+                    }
+                    return JOopFw.jOop.asVal();
+                }
             }
 
             return null;
@@ -118,5 +138,19 @@ public final class JClassFw {
     public static Val wrap(Class<?> cls) {
         if (cls == null) return null;
         return Val.of(JClassFw.jClass, cls);
+    }
+
+    private static final Map<Class<?>, Type> PRIMITIVE_PAYLOADS = new HashMap<>();
+
+    static {
+        PRIMITIVE_PAYLOADS.put(void.class, null);
+        PRIMITIVE_PAYLOADS.put(byte.class, PrimitiveLayoutsFw.octet);
+        PRIMITIVE_PAYLOADS.put(boolean.class, BoolFw.bool);
+        PRIMITIVE_PAYLOADS.put(short.class, PrimitiveLayoutsFw.word);
+        PRIMITIVE_PAYLOADS.put(char.class, PrimitiveLayoutsFw.word);
+        PRIMITIVE_PAYLOADS.put(int.class, PrimitiveLayoutsFw.dword);
+        PRIMITIVE_PAYLOADS.put(float.class, PrimitiveLayoutsFw.dword);
+        PRIMITIVE_PAYLOADS.put(long.class, PrimitiveLayoutsFw.dqword);
+        PRIMITIVE_PAYLOADS.put(double.class, PrimitiveLayoutsFw.dqword);
     }
 }

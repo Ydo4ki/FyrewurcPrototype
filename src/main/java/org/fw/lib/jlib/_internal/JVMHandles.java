@@ -1,7 +1,6 @@
 package org.fw.lib.jlib._internal;
 
 import org.fw.core.FW;
-import org.fw.core.base.BoolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.elib.DeclaredFw;
@@ -106,7 +105,7 @@ public final class JVMHandles {
 
     static Val jwrap(Object jObj, Class<?> aClass) {
         if (aClass.isInstance(jObj)) return Val.of(JOopFw.jOop, jObj);
-        if (aClass == boolean.class && jObj instanceof Boolean) return BoolFw.wrap((Boolean) jObj);
+        if (aClass == boolean.class && jObj instanceof Boolean) return JBooleanFw.wrap((Boolean) jObj);
         if (aClass == byte.class && jObj instanceof Byte) return JByteFw.wrap((Byte) jObj);
         if (aClass == char.class && jObj instanceof Character) return JCharFw.wrap((Character) jObj);
         if (aClass == short.class && jObj instanceof Short) return JShortFw.wrap((Short) jObj);
@@ -121,7 +120,7 @@ public final class JVMHandles {
     public static Object junwrap(Val val) {
         Type type = val.type();
         if (type == JOopFw.jOop) return val._unpack();
-        if (type == BoolFw.bool) return val._unpack(Boolean.class);
+        if (type == JBooleanFw.jboolean) return val._unpack(Boolean.class);
         if (type == JByteFw.jbyte) return JByteFw.unwrap(val);
         if (type == JCharFw.jchar) return (char)(short)JCharFw.unwrap(val);
         if (type == JShortFw.jshort) return JShortFw.unwrap(val);

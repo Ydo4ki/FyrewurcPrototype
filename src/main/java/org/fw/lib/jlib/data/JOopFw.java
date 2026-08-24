@@ -6,6 +6,7 @@ import org.fw.core.base.Call;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.lib.jlib._internal.JClassFw;
 import org.fw.lib.jlib._internal.JMethodFw;
 import org.fw.lib.jlib._internal.JVMHandles;
 import org.fw.lib.elib.StrFw;
@@ -44,6 +45,15 @@ public final class JOopFw {
                     });
                 }
                 // todo: find-method-polymorphic
+                case "get-class": {
+                    return JClassFw.wrap(oop.getClass());
+                }
+                case "identity-hash-code": {
+                    return JIntFw.wrap(System.identityHashCode(oop));
+                }
+                case "typed": {
+                    return Val.of(JClassFw.wrap(oop.getClass()).asType(), oop);
+                }
             }
 
             return null;
