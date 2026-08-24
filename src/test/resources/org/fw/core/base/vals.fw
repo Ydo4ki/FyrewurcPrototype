@@ -1,0 +1,12 @@
+(assert! true)
+
+
+(do
+ (assert! (== Telephonist Telephonist))
+
+ (assert! (call eq eq eq))
+
+ (assert! (not (call is-unspecified is-unspecified)))
+
+ (assert! (call is-unspecified (call true false)))
+)

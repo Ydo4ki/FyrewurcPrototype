@@ -1,5 +1,7 @@
 package org.fw.core.base;
 
+import org.fw.core.FW;
+
 import java.util.Objects;
 
 import static org.fw.core.FW.*;
@@ -20,9 +22,9 @@ public final class Call {
             if (cArg.equals(symbol("arg"))) return meCall.arg();
             if (cArg.equals(symbol("val"))) return meCall.val();
         }
-//        else if (arg.equals(symbol("builder"))) {
-//            return FW.telephonist("Call.builder", (func) -> FW.telephonist((argument) -> fwCall(func, argument)));
-//        }
+        else if (arg.equals(symbol("construct"))) {
+            return FW.telephonist("Call.construct", (func) -> FW.telephonist((argument) -> fwCall(func, argument)));
+        }
         return null;
     }).asType();
 

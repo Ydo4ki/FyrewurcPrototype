@@ -1,10 +1,11 @@
 package org.fw.core.cases;
 
 import org.fw.core.FW;
+import org.fw.core.Tester;
 import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
-import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
+import org.fw.core.util.FwUtils;
 import org.fw.lib.devicelib.DeviceLib;
 import org.fw.lib.elib.*;
 import org.fw.lib.elib.expr.CompEnv;
@@ -16,16 +17,13 @@ import org.fw.lib.jlib.data.JLongFw;
 import org.fw.lib.memlib.MemLib;
 import org.fw.lib.jlib.data.JIntFw;
 import org.fw.lib.memlib.HeapFw;
-import org.fw.core.state.operation.Operation;
-import org.fw.core.state.operation.OperationFw;
 import org.fw.core.state.obj.State;
 import org.fw.lib.elib.state.SystemOperation;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.Scanner;
 
 import static org.fw.core.FW.symbol;
@@ -36,19 +34,18 @@ public class Main {
             DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExpr)
     ));
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-memory.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-arrays.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-dvec.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-error0000000.fw"));
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-internal.fw"));
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-int.fw"));
+
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-naive-fibonachi.fw"));
 
         State state = SystemOperation.systemState;
-        CompEnv compEnv;
-        compEnv = CompEnv.of(CompEnv.compEnv(
+        CompEnv compEnv = CompEnv.of(CompEnv.compEnv(
                 EssentiaLibstd.lib.exports(),
                 MemLib.lib.exports(),
                 DeviceLib.lib.exports(),
@@ -67,6 +64,7 @@ public class Main {
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
                 directivesCenv.asVal(),
+                Tester.testDirectivesCenv.asVal(),
 
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(
@@ -75,33 +73,13 @@ public class Main {
                 ))
         ));
 
-        List<Iterable<LocatedExpr<? extends Expr>>> additionals = new ArrayList<>();
-        additionals.add(ExprOutput.valueOf(FW.class.getResourceAsStream("operationfns.fw")));
-        additionals.add(ExprOutput.valueOf(FW.class.getResourceAsStream("sysoperations.fw")));
+        compEnv = CompEnv.of(CompEnv.compEnv(
+                compEnv.asVal(),
+                ModuleFw.ModuleCEnvFw.compEnv(FwUtils.getOperation(FW.class, "sysoperations", compEnv).apply(state))
+        ));
 
-        for (Iterable<LocatedExpr<? extends Expr>> additional1 : additionals) {
-            CompEnv perFileCE = compEnv;
-            for (LocatedExpr<? extends Expr> locatedExpression : additional1) {
-                Expr expression = locatedExpression.getExpr();
-                Vit vit;
-                try {
-                    vit = perFileCE.compile(expression);
-                } catch (VitCompilationException e) {
-                    System.err.println(expression);
-                    throw new RuntimeException(e);
-                }
-                Val val = vit.eval(rtEnv, state);
-                if (val.type() == DeclaredFw.declared) {
-                    perFileCE = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), perFileCE.asVal()));
-                } else {
-                    compEnv = CompEnv.of(CompEnv.compEnv(
-                            compEnv.asVal(),
-                            ModuleFw.ModuleCEnvFw.compEnv(val)
-                    ));
-                }
-            }
-        }
-
+//        Tester.testFw(FW.class, "test-int", compEnv);
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-int.fw"));
         for (LocatedExpr<? extends Expr> locatedExpression : expressions) {
             Expr expression = locatedExpression.getExpr();
             Vit vit;
@@ -130,18 +108,6 @@ public class Main {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
-                    case "assert!": {
-                        if (isize != 2)
-                            return null;
-
-                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(condition.type()))
-                            return null;
-                        Vit vitOperation = Vit.call(OperationFw._VitOperation, condition).call(Vit.var);
-                        Vit assertOperation = Vit.call(FW.telephonist(arg1 ->
-                                new AssertOperation(arg1._unpack(Operation.class)).asVal()), vitOperation);
-                        return VitFw.wrap(Vit.invoke(assertOperation));
-                    }
                     case "jint": {
                         if (isize != 2)
                             return null;
@@ -199,23 +165,4 @@ public class Main {
         return null;
     }));
 
-    static class AssertOperation extends Operation {
-        private final Operation _assert;
-
-        AssertOperation(Operation anAssert) {
-            _assert = anAssert;
-        }
-
-        @Override
-        public Val apply(State state) {
-            Val ret = _assert.apply(state);
-            if (ret == BoolFw._true) return Operation.unit;
-            else throw new AssertionError(_assert.toString());
-        }
-
-        @Override
-        protected boolean isPure0() {
-            return false;
-        }
-    }
 }

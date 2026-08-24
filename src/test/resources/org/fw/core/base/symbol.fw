@@ -1,0 +1,7 @@
+(assert! true)
+
+(do
+ (assert! (== Symbol (typeof (symbol "a"))))
+ (assert! (== (symbol "a") (symbol "a")))
+ (assert! (!= (symbol "a") (symbol "b")))
+)

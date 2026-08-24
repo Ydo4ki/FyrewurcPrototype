@@ -142,13 +142,16 @@ public final class ModuleFw {
                     Val compEnv = arg.call(symbol("comp-env"));
                     Expr expr = exprVal._unpack();
                     if (expr instanceof Symbol) {
+                        if (payload.type() == ModuleFw.module) {
+                            if (module.asVal().call(symbol("contains-key")).call(payload).call(exprVal) == BoolFw._true) {
+                                Val value = payload.call(exprVal);
+                                return VitFw.wrap(Vit.val(value));
+                            }
+                        }
                         Val value = payload.call(exprVal);
-                        if (Unspecified.isUnspecified(value)) return null;
+                        if (Unspecified.isUnspecified(value))
+                            return null;
                         return VitFw.wrap(Vit.val(value));
-//                        if (module.asVal().call(symbol("contains-key")).call(payload).call(exprVal) == BoolFw._true) {
-//                            Val value = payload.call(exprVal);
-//                            return VitFw.wrap(Vit.val(value));
-//                        }
                     }
                     return null;
                 }

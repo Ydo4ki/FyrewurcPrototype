@@ -1,0 +1,9 @@
+(assert! true)
+
+(do
+ (: a 10) (: b 15)
+ (: c (call Call.construct a b))
+
+ (assert! (== c.val a))
+ (assert! (== c.arg b))
+)

@@ -1,0 +1,27 @@
+(assert! true)
+
+(do
+ (: F false)
+ (: T true)
+
+ (assert! (== (typeof T) Bool))
+ (assert! (== (typeof F) Bool))
+
+ (assert! (== (not T) F))
+ (assert! (== (not F) T))
+
+ (assert! (== (and T T) T))
+ (assert! (== (and T F) F))
+ (assert! (== (and F T) F))
+ (assert! (== (and F F) F))
+
+ (assert! (== (or T T) T))
+ (assert! (== (or T F) T))
+ (assert! (== (or F T) T))
+ (assert! (== (or F F) F))
+
+ (assert! (== (xor T T) F))
+ (assert! (== (xor T F) T))
+ (assert! (== (xor F T) T))
+ (assert! (== (xor F F) F))
+)

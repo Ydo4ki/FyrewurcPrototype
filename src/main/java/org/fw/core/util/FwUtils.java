@@ -11,6 +11,8 @@ import org.fw.core.base.*;
 import org.fw.core.base.BoolFw;
 import org.fw.lib.elib.DeclaredFw;
 import org.fw.core.base.ValsFw;
+import org.fw.lib.elib.Lib;
+import org.fw.lib.elib.ModuleFw;
 import org.fw.lib.elib.VitFw;
 import org.fw.lib.elib.constraint._Constraint;
 import org.fw.lib.elib.expr.CompEnv;
@@ -19,9 +21,12 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
+import org.fw.lib.elib.expr.ToExprFn;
+import org.fw.lib.elib.state.SystemOperation;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Predicate;
@@ -168,6 +173,63 @@ public final class FwUtils {
 //                        parseArg,
 //                        val(null)
 //                ), symbol("arg"), InternalSystemContext.context);
+    }
+
+    public static Operation getOperation(Class<?> cls, String filename, final CompEnv compEnv) throws IOException {
+        return getOperation(cls.getPackage().getName().replace(".", "/") + "/" + filename, compEnv);
+    }
+
+    public static Operation getOperation(String filename, final CompEnv compEnv) throws IOException {
+        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename + ".fw");
+        if (in == null)
+            throw new IOException("Source not found: " + filename + ".fw");
+
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(in);
+        return new Operation() {
+            @Override
+            public Val apply(State state) {
+                CompEnv compEnv1 = compEnv;
+                Val val = Operation.unit;
+                for (LocatedExpr<? extends Expr> locatedExpression : expressions) {
+                    Expr expression = locatedExpression.getExpr();
+                    Vit vit;
+                    try {
+                        vit = compEnv1.compile(expression);
+                    } catch (VitCompilationException e) {
+                        System.err.println(expression);
+                        throw new RuntimeException(e);
+                    }
+                    val = vit.eval(RtEnv.unspecified, state);
+                    if (val.type() == DeclaredFw.declared) {
+                        compEnv1 = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv1.asVal()));
+                    }
+                    if (val != Operation.unit)
+                        System.out.println(val.toExpr(ToExprFn.toExpr));
+                }
+                return val;
+            }
+
+            @Override
+            protected boolean isPure0() {
+                return false;
+            }
+        };
+    }
+
+    public static Lib l(Class<?> caller, Lib lib0, String... files) {
+        try {
+            for (String file : files) {
+                lib0 = Lib.combine(lib0,
+                        Lib.ofCEnv(ModuleFw.ModuleCEnvFw.compEnv(
+                                getOperation(caller, file, CompEnv.of(lib0.exports()))
+                                        .apply(SystemOperation.systemState)))
+                );
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return lib0;
     }
 
     @FunctionalInterface

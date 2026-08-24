@@ -290,6 +290,14 @@ public final class VitFw {
                         if (isize != 2)
                             return null;
 
+                        return VitFw.wrap(VitUtils.simplify(Vit.val(
+                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)))
+                        )));
+                    }
+                    case "compile-vit-fast": {
+                        if (isize != 2)
+                            return null;
+
                         return VitFw.wrap(Vit.val(
                                 compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)))
                         ));

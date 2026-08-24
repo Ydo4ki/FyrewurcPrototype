@@ -27,6 +27,10 @@ public final class OperatorsFw {
                     String name = ((Symbol) f).getValue();
                     switch (name) {
                         // accumulators
+                        case "and":
+                        case "or":
+                        case "xor":
+
                         case "+":
                         case "-":
                         case "*":

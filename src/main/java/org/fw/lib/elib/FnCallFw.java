@@ -5,6 +5,7 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
+import org.fw.core.vit.VitUtils;
 import org.fw.lib.elib.dvec.DVecBuilderFw;
 import org.fw.lib.elib.expr.CompEnv;
 import org.fw.lib.elib.expr.SyntaxResolveFw;
@@ -34,7 +35,7 @@ public final class FnCallFw {
                 }
                 varValuesV = Vit.val(DVecBuilderFw.dvecbf).call(varValuesV);
 
-                return VitFw.wrap(Vit.invoke(fv.call(symbol("fn-call")).call(varValuesV)));
+                return VitFw.wrap(Vit.invoke(fv.call(symbol("fn-call")).call(VitUtils.simplify(varValuesV))));
             }
         }
         return null;

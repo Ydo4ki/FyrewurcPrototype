@@ -64,7 +64,7 @@ public final class VitUtils {
         }
 
         if (vit instanceof VitInvoke) {
-            return vit; // you can't really simplify this one without runtime context
+            return new VitInvoke(simplify(((VitInvoke) vit).operation()));
         }
 
         throw new IllegalStateException("Unknown Vit: " + vit);

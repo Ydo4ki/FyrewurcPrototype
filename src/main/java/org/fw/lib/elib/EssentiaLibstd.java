@@ -1,5 +1,6 @@
 package org.fw.lib.elib;
 
+import org.fw.core.util.FwUtils;
 import org.fw.lib.elib.dvec.DVecFw;
 import org.fw.lib.elib.expr.DoFw;
 import org.fw.lib.elib.expr.ExprFw;
@@ -7,7 +8,7 @@ import org.fw.lib.elib.expr.ExprGetFw;
 import org.fw.core.state.operation.OperationFw;
 
 public final class EssentiaLibstd {
-    public static final Lib lib = Lib.combine(
+    public static final Lib lib = FwUtils.l(EssentiaLibstd.class, Lib.combine(
             BaseFw.lib,
             VitFw.lib,
             ExprGetFw.lib,
@@ -25,5 +26,5 @@ public final class EssentiaLibstd {
             OperatorsFw.lib,
 
             OperationFw.lib
-    );
+    ), "operationfns");
 }
