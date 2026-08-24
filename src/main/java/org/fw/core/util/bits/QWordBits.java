@@ -5,9 +5,10 @@ public class QWordBits extends Bits {
     private final int actualSize;
 
     public QWordBits(long value, int actualSize) {
-        this.value = value;
         if (actualSize > 64)
             throw new IllegalArgumentException(actualSize + " must not be greater than 64");
+
+        this.value = value & ((1L << actualSize) - 1L);
         this.actualSize = actualSize;
     }
 

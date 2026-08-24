@@ -1,10 +1,11 @@
-package org.fw.lib.memlib.words;
+package org.fw.lib.devicelib;
 
 import org.fw.core.base.Type;
 import org.fw.lib.elib.DeclaredFw;
 import org.fw.lib.elib.Lib;
 import org.fw.lib.elib.ModuleFw;
 import org.fw.lib.memlib.ReifiedTypeFw;
+import org.fw.lib.memlib.words.BitFw;
 
 import static org.fw.core.FW.symbol;
 

@@ -7,10 +7,10 @@ import java.util.function.Function;
 
 public final class Lib {
 
-    public static Lib combine(Lib... libs) {
-        Lib actual = libs[0];
-        for (int i = 1; i < libs.length; i++) {
-            actual = combine(actual, libs[i]);
+    public static Lib combine(Lib first, Lib... libs) {
+        Lib actual = first;
+        for (Lib lib : libs) {
+            actual = combine(actual, lib);
         }
         return actual;
     }

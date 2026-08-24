@@ -7,7 +7,6 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.util.bits.Bits;
 import org.fw.lib.elib.*;
-import org.fw.lib.elib.constraint.ConstraintFw;
 import org.fw.lib.elib.expr.ExprFw;
 import org.fw.lib.elib.expr.ToExprFn;
 import org.fw.lib.memlib.MemUtils;
@@ -18,39 +17,11 @@ import org.fw.core.util.FwUtils;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.function.BinaryOperator;
 
 import static org.fw.core.FW.symbol;
 
 public final class IntTypeFw {
-
-    public static final Type signedness = EnumFw.enumeration("signed", "unsigned");
-
-    public static final class Signedness { private Signedness() {}
-        public static final Val signed = signedness.get("signed");
-        public static final Val unsigned = signedness.get("unsigned");
-    }
-
-    public static final Type endian = EnumFw.enumeration("big", "little");
-
-    public static final class Endian { private Endian() {}
-        public static final Val big = endian.get("big");
-        public static final Val little = endian.get("little");
-    }
-
-    public static final Type overflow = EnumFw.enumeration("wrap", "saturate", "trap");
-
-    public static final class Overflow { private Overflow() {}
-        public static final Val wrap = overflow.get("wrap");
-        public static final Val saturate = overflow.get("saturate");
-        public static final Val trap = overflow.get("trap");
-    }
-
-//    public static final Type int_t_payload = StructFw.struct(
-//            DeclarationFw.declaration(symbol("bitwidth"), ConstraintFw.toConstraint(DIntFw.dint)),
-//            DeclarationFw.declaration(symbol("signedness"), ConstraintFw.toConstraint(signedness)),
-//            DeclarationFw.declaration(symbol("overflow"), ConstraintFw.toConstraint(overflow))
-//    );
-
 
     public static final Type int_t = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, IntTypeFw.int_t)) {
@@ -62,6 +33,15 @@ public final class IntTypeFw {
             if (FwUtils.isTypeApiCall(arg, Int)) {
                 Val int_instance = Call.getVal(arg);
                 arg = Call.getArg(arg);
+
+                Bits bits = MemUtils.toBits(int_instance);
+
+                if (arg.type() == SymbolFw.symbol) {
+                    String s = arg._unpack().toString();
+                    switch (s) {
+                        case "+": return bop(int_instance, instance.asType(), raw_payload.add());
+                    }
+                }
 
                 return null;
             } else if (arg.type() == SymbolFw.symbol) {
@@ -96,9 +76,9 @@ public final class IntTypeFw {
                     return FW.telephonist(bw -> {
                         if (bw.type() != DIntFw.dint) return null;
                         return FW.telephonist(sign -> {
-                            if (sign.type() != signedness) return null;
+                            if (sign.type() != Signedness.signedness) return null;
                             return FW.telephonist(over -> {
-                                if (over.type() != overflow) return null;
+                                if (over.type() != Overflow.overflow) return null;
                                 return Val.of(IntTypeFw.int_t, new IntType(DIntFw.unwrap0(bw).intValueExact(), sign, over));
                             });
                         });
@@ -109,6 +89,20 @@ public final class IntTypeFw {
         }
         return null;
     }).asType();
+
+
+    private static Val bop(Val instance, Type Int, BinaryOperator<Number> operator) {
+        Number value = MemUtils.toBitsAsNumber(instance);
+        assert value != null;
+        return FW.telephonist((arg1) -> {
+            if (arg1.type().equals(Int)) {
+                Number v2 = MemUtils.toBitsAsNumber(instance);
+                Number ret = operator.apply(value, v2);
+                return MemUtils.wrap(Int, ret);
+            }
+            return null;
+        });
+    }
 
     static byte[] toBytes(BigInteger value, int bitwidth) {
         int byteWidth = (bitwidth + 7) / 8;
@@ -166,21 +160,21 @@ public final class IntTypeFw {
             ));
         }
         if (arg.type().asVal().type() == int_t) {
-            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
-//            Type Int = arg.type();
-//            byte[] bytes = MemUtils.toBits(arg).toByteArray();
-//            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
-//
-//            BigInteger value = new BigInteger(bytes);
-//
-//            BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
-//            value = value.and(mask);
-//
-//            if (value.testBit(bitwidth - 1)) {
-//                value = value.subtract(BigInteger.ONE.shiftLeft(bitwidth));
-//            }
-//
-//            return ExprFw.wrap(Symbol.of(value.toString()));
+//            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
+            Type Int = arg.type();
+            byte[] bytes = MemUtils.toBits(arg).toByteArray();
+            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
+
+            BigInteger value = new BigInteger(bytes);
+
+            BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
+            value = value.and(mask);
+
+            if (value.testBit(bitwidth - 1)) {
+                value = value.subtract(BigInteger.ONE.shiftLeft(bitwidth));
+            }
+
+            return ExprFw.wrap(Symbol.of(value.toString()));
         }
         return null;
     });
@@ -188,9 +182,9 @@ public final class IntTypeFw {
     public static final Lib lib = Lib.of(
             ModuleFw.module(
                     DeclaredFw.declared(symbol("IntType"), IntTypeFw.int_t),
-                    DeclaredFw.declared(symbol("Signedness"), IntTypeFw.signedness),
-                    DeclaredFw.declared(symbol("Endian"), IntTypeFw.endian),
-                    DeclaredFw.declared(symbol("Overflow"), IntTypeFw.overflow)
+                    DeclaredFw.declared(symbol("Signedness"), Signedness.signedness),
+                    DeclaredFw.declared(symbol("Endian"), Endian.endian),
+                    DeclaredFw.declared(symbol("Overflow"), Overflow.overflow)
             ),
             var -> ChainLinkFw.chain(ToExprFn.exprififier,
                     intToExpr,

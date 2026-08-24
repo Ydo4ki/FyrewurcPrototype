@@ -5,9 +5,10 @@ public class DWordBits extends Bits {
     private final int actualSize;
 
     public DWordBits(int value, int actualSize) {
-        this.value = value;
         if (actualSize > 32)
             throw new IllegalArgumentException(actualSize + " must not be greater than 32");
+
+        this.value = value & ((1 << actualSize) - 1);
         this.actualSize = actualSize;
     }
 

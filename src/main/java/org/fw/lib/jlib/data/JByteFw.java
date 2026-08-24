@@ -6,7 +6,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.elib.WrapperTypeFw;
-import org.fw.lib.memlib.words.PrimitiveLayoutsFw;
+import org.fw.lib.devicelib.PrimitiveLayoutsFw;
 
 public final class JByteFw {
     public static final Type jbyte = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.octet, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {

@@ -5,9 +5,10 @@ public class OctetBits extends Bits {
     private final int actualSize;
 
     public OctetBits(byte value, int actualSize) {
-        this.value = value;
         if (actualSize > 8)
             throw new IllegalArgumentException(actualSize + " must not be greater than 8");
+
+        this.value = (byte) (value & ((1 << actualSize) - 1));
         this.actualSize = actualSize;
     }
 

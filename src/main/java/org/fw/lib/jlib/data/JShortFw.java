@@ -6,7 +6,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.elib.WrapperTypeFw;
-import org.fw.lib.memlib.words.PrimitiveLayoutsFw;
+import org.fw.lib.devicelib.PrimitiveLayoutsFw;
 
 public final class JShortFw {
     public static final Type jshort = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.word, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {

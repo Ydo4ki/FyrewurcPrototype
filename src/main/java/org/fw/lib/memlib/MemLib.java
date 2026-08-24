@@ -13,7 +13,7 @@ import org.fw.lib.elib.expr.SyntaxResolveFw;
 import org.fw.lib.memlib.ints.IntTypeFw;
 import org.fw.lib.memlib.words.BinOperationsFw;
 import org.fw.lib.memlib.words.BitFw;
-import org.fw.lib.memlib.words.PrimitiveLayoutsFw;
+import org.fw.lib.devicelib.PrimitiveLayoutsFw;
 import org.fw.core.util.bits.Bits;
 import org.fw.core.vit.Vit;
 
@@ -86,7 +86,6 @@ public final class MemLib {
                     ),
                     parseReifiedBits
             ),
-            IntTypeFw.lib,
-            PrimitiveLayoutsFw.lib
+            IntTypeFw.lib
     );
 }

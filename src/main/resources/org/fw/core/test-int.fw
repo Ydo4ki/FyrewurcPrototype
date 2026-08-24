@@ -5,4 +5,6 @@
 
  (: uint16 (call IntType.construct 16 Signedness.signed Overflow.wrap))
  (assert! (== (call uint16.construct 65535) (call uint16.construct -1)))
+
+ (+ (call uint16.construct 16) (call uint16.construct 16))
 )

@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 
-import static org.fw.lib.memlib.ints.IntTypeFw.Overflow.*;
+import static org.fw.lib.memlib.ints.Overflow.*;
 
 /**
  * @author Sulphuris
@@ -73,7 +73,7 @@ public final class IntType {
             };
     }
 
-    private BigInteger big(Number n) {
+    public static BigInteger big(Number n) {
         return (n instanceof BigInteger) ? (BigInteger) n : BigInteger.valueOf(n.longValue());
     }
 
@@ -85,7 +85,7 @@ public final class IntType {
         if (overflow.equals(wrap)) {
             long mask = (1L << bitWidth) - 1;
             long raw = value & mask;
-            if (sign == IntTypeFw.Signedness.unsigned) {
+            if (sign == Signedness.unsigned) {
                 return raw;
             } else {
                 long signBit = 1L << (bitWidth - 1);
@@ -108,7 +108,7 @@ public final class IntType {
         if (overflow.equals(wrap)) {
             BigInteger modulo = BigInteger.ONE.shiftLeft(bitWidth);
             value = value.mod(modulo);
-            if (sign == IntTypeFw.Signedness.signed && value.compareTo(max) > 0)
+            if (sign == Signedness.signed && value.compareTo(max) > 0)
                 value = value.subtract(modulo);
             return value.bitLength() <= 63 ? value.longValue() : value;
         } else if (overflow.equals(saturate)) {
@@ -136,12 +136,12 @@ public final class IntType {
     }
 
     public Number minValue() {
-        if (sign == IntTypeFw.Signedness.unsigned) return 0L;
+        if (sign == Signedness.unsigned) return 0L;
         return -1L << (bitWidth - 1);
     }
 
     public Number maxValue() {
-        if (sign == IntTypeFw.Signedness.unsigned) return (1L << bitWidth) - 1;
+        if (sign == Signedness.unsigned) return (1L << bitWidth) - 1;
         return (1L << (bitWidth - 1)) - 1;
     }
 

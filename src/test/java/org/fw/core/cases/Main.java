@@ -5,6 +5,7 @@ import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
+import org.fw.lib.devicelib.DeviceLib;
 import org.fw.lib.elib.*;
 import org.fw.lib.elib.expr.CompEnv;
 import org.fw.lib.elib.expr.SyntaxResolveFw;
@@ -50,6 +51,7 @@ public class Main {
         compEnv = CompEnv.of(CompEnv.compEnv(
                 EssentiaLibstd.lib.exports(),
                 MemLib.lib.exports(),
+                DeviceLib.lib.exports(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
