@@ -1,13 +1,28 @@
 package org.fw.lib.elib;
 
+import org.fw.core.FW;
+import org.fw.core.ast.BracketsTypes;
+import org.fw.core.ast.ExprList;
+import org.fw.core.ast.Symbol;
+import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 import org.fw.lib.elib.dvec.DVecFw;
-import org.fw.lib.elib.expr.DoFw;
-import org.fw.lib.elib.expr.ExprFw;
-import org.fw.lib.elib.expr.ExprGetFw;
+import org.fw.lib.elib.expr.*;
 import org.fw.core.state.operation.OperationFw;
 
 public final class EssentiaLibstd {
+    private static final CompEnv somethingToExpr = CompEnv.of(FW.telephonist(arg -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val.equals(Val.ofTelephonist(0))) {
+                return ExprFw.wrap(Symbol.of("*"));
+            }
+            return ExprFw.wrap(ExprList.of(BracketsTypes.braces, val.type().asVal().toExpr(CompEnv.of(compEnv))));
+        }
+        return null;
+    }));
+
     public static final Lib lib = FwUtils.l(EssentiaLibstd.class, Lib.combine(
             BaseFw.lib,
             VitFw.lib,
@@ -26,6 +41,8 @@ public final class EssentiaLibstd {
             OperatorsFw.lib,
             BoxFw.lib,
 
-            OperationFw.lib
+            OperationFw.lib,
+            Lib.ofCEnv(EssentiaLibstd.somethingToExpr.asVal())
     ), "operationfns");
+
 }

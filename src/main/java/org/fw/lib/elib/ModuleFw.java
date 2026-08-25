@@ -82,6 +82,22 @@ public final class ModuleFw {
         return ExprFw.wrap(arg._unpack(ModuleFw.Module.class).toExpr(toExpr));
     }
 
+    public static Val invert(Val module) {
+        if (module == null) return null;
+        if (module.type() != ModuleFw.module)
+            return null;
+
+        Module m = module._unpack();
+        Val[] newd = new Val[m.declareds.length];
+        for (int i = 0; i < m.declareds.length; i++) {
+            newd[i] = DeclaredFw.declared(
+                    DeclaredFw.getValue(m.declareds[i]),
+                    DeclaredFw.getKey(m.declareds[i])
+            );
+        }
+        return Val.of(module.type(), new Module(newd));
+    }
+
     // todo: replace with map, order shouldn't matter
     private static final class Module {
         private final Val[] declareds;
@@ -159,8 +175,39 @@ public final class ModuleFw {
             return null;
         }).asType();
 
+        public static final Type moduleCompEnvToExpr = FW.telephonist("ModuleCEnvToExprFn", (arg) -> {
+            if (arg.equals(symbol("constructor"))) {
+                return FW.telephonist(ModuleCEnvFw::toExprCompEnv);
+            }
+            if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnvToExpr)) {
+                Val instance = Call.getVal(arg);
+                arg = Call.getArg(arg);
+                Val payload = instance._unpack(Val.class);
+                if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+                    Val val = arg.call(symbol("passing"));
+                    Val compEnv = arg.call(symbol("chain"));
+
+                    if (payload.type() == ModuleFw.module) {
+                        if (module.asVal().call(symbol("contains-key")).call(payload).call(val) == BoolFw._true) {
+                            return payload.call(val);
+                        }
+                    }
+                    Val value = payload.call(val);
+                    if (!ExprFw.isExpr(value))
+                        return null;
+//                    if (Unspecified.isUnspecified(value))
+//                        return null;
+                    return value;
+                }
+            }
+            return null;
+        }).asType();
+
         public static Val compEnv(Val module) {
             return Val.of(moduleCompEnv, module);
+        }
+        public static Val toExprCompEnv(Val module) {
+            return Val.of(moduleCompEnvToExpr, module);
         }
     }
 

@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.lib.elib.ChainResolveFw;
 import org.fw.lib.elib.WrapperTypeFw;
+import org.fw.lib.elib.constraint.ConstraintFw;
 
 import static org.fw.core.FW.symbol;
 
@@ -24,6 +25,9 @@ public final class SyntaxResolveFw {
             }))), FW.telephonist(arg -> {
                 return null;
             }));
+
+    public static final Type toExprResolve = ChainResolveFw.chainResolveType(ConstraintFw.isSpecified);
+
     public static final Val syntaxResolveToExpr = FW.telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)
             return null;

@@ -1,6 +1,7 @@
 package org.fw.lib.elib.expr;
 
 import org.fw.core.FW;
+import org.fw.core.ast.Expr;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.Call;
 import org.fw.core.base.Type;
@@ -38,12 +39,13 @@ public final class OperatorExprFw {
             if (isize != 1)
                 return null;
 
-            Val argNVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
+            Expr eee = arg.call(DIntFw.dint(0))._unpack();
+            Val argNVit = cEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(cEnv)));
             if (!VitFw.isVit(argNVit.type()))
                 return argNVit; // compile error idk
             Vit argVit = null;
             try {
-                argVit = VitFw.unwrap(argNVit);
+                argVit = VitFw.unwrap(argNVit, eee);
             } catch (VitCompilationException e) {
                 throw new RuntimeException(e);
             }
@@ -58,13 +60,14 @@ public final class OperatorExprFw {
             if (isize != 1)
                 return null;
 
-            Val retVit = cEnv.call(CompEnv.syntaxResolve(arg.call(DIntFw.dint(0))._unpack(), CompEnv.of(cEnv)));
+            Expr eee = arg.call(DIntFw.dint(0))._unpack();
+            Val retVit = cEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(cEnv)));
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
             Vit v = null;
             try {
-                v = Vit.val(OperatorExprFw.exprOperator.asVal()).call(FW.symbol("constructor")).call(VitFw.unwrap(retVit));
+                v = Vit.val(OperatorExprFw.exprOperator.asVal()).call(FW.symbol("constructor")).call(VitFw.unwrap(retVit, eee));
             } catch (VitCompilationException e) {
                 throw new RuntimeException(e);
             }

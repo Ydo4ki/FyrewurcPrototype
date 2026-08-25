@@ -181,12 +181,13 @@ public final class ExprFw {
                         Vit ctor = Vit.val(DVecBuilderFw.emptyBuilder);
 
                         for (int i = 1; i < isize + 1; i++) {
-                            Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)));
+                            Expr eee = exprVal.call(DIntFw.dint(i))._unpack();
+                            Val retVit = compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(retVit.type()))
                                 return retVit; // compile error idk
 
                             try {
-                                ctor = ctor.call(VitFw.unwrap(retVit));
+                                ctor = ctor.call(VitFw.unwrap(retVit, eee));
                             } catch (VitCompilationException e) {
                                 throw new RuntimeException(e);
                             }
@@ -209,4 +210,10 @@ public final class ExprFw {
             ),
             ExprFw.directivesCenv.asVal()
     );
+
+    public static Expr unwrap(Val v) {
+        if (v.type() == exprList) return v._unpack(ExprList.class);
+        if (v.type() == SymbolFw.symbol) return v._unpack(Symbol.class);
+        return null;
+    }
 }

@@ -38,5 +38,4 @@
    (call VitVal.construct (symbol "+"))))
 
  (assert! (== (typeof (call VitCall.builder (call VitVal.construct 14) (call VitVal.construct (symbol "+")))) VitCall))
- (call VitVal.construct 14)
 )

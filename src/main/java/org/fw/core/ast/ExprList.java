@@ -60,7 +60,7 @@ public final class ExprList extends Expr implements Iterable<Expr> {
 	
 	@Override
 	public String toString() {
-		return getBracketsType().open() + elements.stream().map(Expr::toString).collect(Collectors.joining(" ")) + getBracketsType().close();
+		return getBracketsType().open() + elements.stream().map(String::valueOf).collect(Collectors.joining(" ")) + getBracketsType().close();
 	}
 	
 	@Override

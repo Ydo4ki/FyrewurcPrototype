@@ -41,11 +41,20 @@ public final class CompEnv extends AbstractValAdapted {
 
     public Vit compile(Val expr) throws VitCompilationException {
         Val v = asVal().call(syntaxResolve(expr._unpack(), this));
-        return VitFw.unwrap(v);
+        return VitFw.unwrap(v, expr._unpack());
     }
 
     public static Val syntaxResolve(Expr expr, CompEnv env) {
         return Val.of(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(ExprFw.wrap(expr), env.asVal()));
+    }
+
+    public Expr toExpr(Val val) {
+        Val v = asVal().call(toExprResolve(val, this));
+        return ExprFw.unwrap(v);
+    }
+
+    public static Val toExprResolve(Val val, CompEnv env) {
+        return Val.of(SyntaxResolveFw.toExprResolve, new ChainResolveFw.ChainResolve(val, env.asVal()));
     }
 
     public static Val compEnv(Val resolver, Val parentCEnv) {

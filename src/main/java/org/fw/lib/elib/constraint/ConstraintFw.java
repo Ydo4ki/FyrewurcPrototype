@@ -47,7 +47,7 @@ public final class ConstraintFw {
     public static final Val constraintBuilder = FW.telephonist("Constraint.constructor", (arg1) -> {
         if (!VitFw.isVit(arg1.type()))
             return null;
-        return Val.of(ConstraintFw.constraint, VitFw.unwrap(arg1));
+        return Val.of(ConstraintFw.constraint, arg1._unpack());
     });
 
     public static final Type constraint = FW.telephonist("Constraint", (arg) -> {

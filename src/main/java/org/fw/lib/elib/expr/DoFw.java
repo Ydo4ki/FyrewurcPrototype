@@ -67,7 +67,7 @@ public final class DoFw {
                     throw new VitCompilationException(nameE); // syntax error: symbol expected
                 String name = ((Symbol) nameE).getValue();
                 Expr valueE = ((ExprList) line).get(2);
-                Vit valueV = VitUtils.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv)))));
+                Vit valueV = VitUtils.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv))), valueE));
 
                 // OK FINE
                 Val newRtGetter = FW.telephonist((oldRt) -> FW.telephonist((varValue) -> {
@@ -100,7 +100,7 @@ public final class DoFw {
                 break;
             } else {
                 Val compiled = compEnv.call(CompEnv.syntaxResolve(line, CompEnv.of(compEnv)));
-                Vit cv = VitFw.unwrap(compiled);
+                Vit cv = VitFw.unwrap(compiled, line);
                 execution = execution.call(cv);
             }
         }

@@ -122,7 +122,7 @@ public final class DVecFw {
 
                         Vit vit = null;
                         try {
-                            vit = VitFw.unwrap(elVitVal);
+                            vit = VitFw.unwrap(elVitVal, f);
                         } catch (VitCompilationException e) {
                             throw new RuntimeException(e);
                         }

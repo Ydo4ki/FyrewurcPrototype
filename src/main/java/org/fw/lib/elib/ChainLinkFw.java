@@ -84,6 +84,8 @@ public final class ChainLinkFw {
     public static Val chain(Type type, Val... links) {
         Val actual = links[0];
         for (int i = 1; i < links.length; i++) {
+            if (links[i] == null)
+                continue;
             actual = chain(type, actual, links[i]);
         }
         return actual;

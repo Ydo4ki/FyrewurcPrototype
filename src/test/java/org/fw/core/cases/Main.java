@@ -9,6 +9,7 @@ import org.fw.core.util.FwUtils;
 import com.ydo4ki.fyrewurc.lib.devicelib.DeviceLib;
 import org.fw.lib.elib.*;
 import org.fw.lib.elib.expr.CompEnv;
+import org.fw.lib.elib.expr.ExprFw;
 import org.fw.lib.elib.expr.SyntaxResolveFw;
 import org.fw.lib.elib.expr.ToExprFn;
 import com.ydo4ki.fyrewurc.lib.jlib._internal.JVMHandles;
@@ -46,9 +47,14 @@ public class Main {
 
         State state = SystemOperation.systemState;
         CompEnv compEnv = CompEnv.of(CompEnv.compEnv(
-                EssentiaLibstd.lib.exports(),
-                MemLib.lib.exports(),
-                DeviceLib.lib.exports(),
+                ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                        DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(
+                                DeclaredFw.declared(symbol("test-value"), DIntFw.dint(94))
+                        ))
+                )),
+
+                Tester.testDirectivesCenv.asVal(),
+                directivesCenv.asVal(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
@@ -63,14 +69,9 @@ public class Main {
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
-                directivesCenv.asVal(),
-                Tester.testDirectivesCenv.asVal(),
-
-                ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
-                        DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(
-                                DeclaredFw.declared(symbol("test-value"), DIntFw.dint(94))
-                        ))
-                ))
+                EssentiaLibstd.lib.exports(),
+                MemLib.lib.exports(),
+                DeviceLib.lib.exports()
         ));
 
         compEnv = CompEnv.of(CompEnv.compEnv(
@@ -93,13 +94,20 @@ public class Main {
             if (val.type() == DeclaredFw.declared) {
                 compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asVal()));
             } else {
-                System.out.println(val.toExpr(rtEnv));
+                System.out.println(val.toExpr(compEnv));
 //                System.out.println(val);
             }
         }
     }
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val.type() == DIntFw.dint) {
+                return ExprFw.wrap(Symbol.of(val._unpack().toString()));
+            }
+        }
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

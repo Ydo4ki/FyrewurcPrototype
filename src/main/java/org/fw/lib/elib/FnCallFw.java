@@ -27,11 +27,12 @@ public final class FnCallFw {
                 Val fvv = compEnv.call(CompEnv.syntaxResolve(f, CompEnv.of(compEnv)));
                 if (!VitFw.isVit(fvv.type()))
                     return null;
-                Vit fv = VitFw.unwrap(fvv);
+                Vit fv = VitFw.unwrap(fvv, f);
 
                 Vit varValuesV = Vit.val(DVecBuilderFw.emptyBuilder);
                 for (int i = 1; i < isize; i++) {
-                    varValuesV = varValuesV.call(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)))));
+                    Expr eee = exprVal.call(DIntFw.dint(i))._unpack();
+                    varValuesV = varValuesV.call(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv))), eee));
                 }
                 varValuesV = Vit.val(DVecBuilderFw.dvecbf).call(varValuesV);
 

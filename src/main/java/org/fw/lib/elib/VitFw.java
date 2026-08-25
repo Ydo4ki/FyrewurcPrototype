@@ -102,7 +102,7 @@ public final class VitFw {
                         return null;
                     }
                     try {
-                        return wrap(Vit.call(unwrap(func), unwrap(arg)));
+                        return wrap(Vit.call(unwrap(func, null), unwrap(arg, null)));
                     } catch (VitCompilationException e) {
                         throw new RuntimeException(e);
                     }
@@ -211,7 +211,7 @@ public final class VitFw {
         throw new IllegalStateException("Unknown Vit implementation: " + vit.getClass());
     }
 
-    public static Vit unwrap(Val vit) throws VitCompilationException {
+    public static Vit unwrap(Val vit, Expr expr) throws VitCompilationException {
         if (
                 vit.type().equals(vitVal)
                         || vit.type().equals(vitVar)
@@ -220,7 +220,9 @@ public final class VitFw {
         ) {
             return vit._unpack();
         }
-        throw new VitCompilationException(vit);
+        if (expr == null)
+            throw new VitCompilationException(vit);
+        throw new VitCompilationException(expr);
     }
 
     @Deprecated // nafiga you did this, _unpack exists, its just one function spodifoisdfoiusiodfuiu
@@ -256,17 +258,19 @@ public final class VitFw {
                         if (isize == 1) {
                             return null;
                         }
-                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        Expr eee = exprVal.call(DIntFw.dint(1))._unpack();
+                        Val retVit = compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.type()))
                             return retVit; // compile error idk
 
                         for (int i = 1; i < (isize - 1); i++) {
-                            Val argNVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i + 1))._unpack(), CompEnv.of(compEnv)));
+                            Expr eeeN = exprVal.call(DIntFw.dint(i + 1))._unpack();
+                            Val argNVit = compEnv.call(CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(argNVit.type()))
                                 return argNVit; // compile error idk
 
                             try {
-                                retVit = VitFw.wrap(VitFw.unwrap(retVit).call(VitFw.unwrap(argNVit)));
+                                retVit = VitFw.wrap(VitFw.unwrap(retVit, eee).call(VitFw.unwrap(argNVit, eeeN)));
                             } catch (VitCompilationException e) {
                                 throw new RuntimeException(e);
                             }

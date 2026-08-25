@@ -23,11 +23,15 @@ public final class Lib {
             module = over.module;
         } else {
             module = ChainLinkFw.chain(ExtendedFw.extended, over.module, parent.module);
-//            module = FW.telephonist(arg -> {
-//                Val ret = over.module.call(arg);
-//                if (Unspecified.isUnspecified(ret)) ret = parent.module.call(arg);
-//                return ret;
-//            });
+        }
+
+        Val moduleInverted;
+        if (over.moduleInverted == null) {
+            moduleInverted = parent.moduleInverted;
+        } else if (parent.moduleInverted == null) {
+            moduleInverted = over.moduleInverted;
+        } else {
+            moduleInverted = ChainLinkFw.chain(ExtendedFw.extended, over.moduleInverted, parent.moduleInverted);
         }
 
         Val extraCEnv;
@@ -39,18 +43,10 @@ public final class Lib {
             extraCEnv = CompEnv.compEnv(over.extraCEnv, parent.extraCEnv);
         }
 
-        Function<Val, Val> rtEnvAdjuster;
-        if (over.rtEnvAdjuster == null) {
-            rtEnvAdjuster = parent.rtEnvAdjuster;
-        } else if (parent.rtEnvAdjuster == null) {
-            rtEnvAdjuster = over.rtEnvAdjuster;
-        } else {
-            rtEnvAdjuster = over.rtEnvAdjuster.andThen(parent.rtEnvAdjuster);
-        }
         return of(
                 module,
-                extraCEnv,
-                rtEnvAdjuster
+                moduleInverted,
+                extraCEnv
         );
     }
 
@@ -63,42 +59,40 @@ public final class Lib {
     }
 
     public static Lib of(Val module, Val extraCEnv) {
-        return Lib.of(module, extraCEnv, null);
+        return new Lib(module, ModuleFw.invert(module), extraCEnv);
     }
 
     public static Lib of(Val module, Function<Val, Val> rtEnvAdjuster) {
-        return Lib.of(module, null, rtEnvAdjuster);
+        return Lib.of(module, (Val)null);
     }
 
     public static Lib of(Val module, Val extraCEnv, Function<Val, Val> rtEnvAdjuster) {
-        return new Lib(module, extraCEnv, rtEnvAdjuster);
+        return of(module, ModuleFw.invert(module), extraCEnv);
+    }
+
+    public static Lib of(Val module, Val moduleInverted, Val extraCEnv) {
+        return new Lib(module, moduleInverted, extraCEnv);
     }
 
     private final Val module;
+    private final Val moduleInverted;
     private final Val extraCEnv;
-    private final Function<Val, Val> rtEnvAdjuster;
-    private final Val exports;
 
-    private Lib(Val module, Val extraCEnv, Function<Val, Val> rtEnvAdjuster) {
+    private final Val m_exports;
+
+    private Lib(Val module, Val moduleInverted, Val extraCEnv) {
         this.module = module;
+        this.moduleInverted = moduleInverted;
         this.extraCEnv = extraCEnv;
-        this.rtEnvAdjuster = rtEnvAdjuster;
-        if (extraCEnv == null) {
-            exports = ModuleFw.ModuleCEnvFw.compEnv(module);
-        } else {
-            if (module == null) {
-                exports = extraCEnv;
-            } else {
-                exports = CompEnv.compEnv(
-                        ModuleFw.ModuleCEnvFw.compEnv(module),
-                        extraCEnv
-                );
-            }
-        }
+        m_exports = CompEnv.compEnv(
+                ModuleFw.ModuleCEnvFw.compEnv(module),
+                ModuleFw.ModuleCEnvFw.toExprCompEnv(moduleInverted),
+                extraCEnv
+        );
     }
 
     public Val exports() {
-        return exports;
+        return m_exports;
     }
 
     public Val module() {
@@ -107,9 +101,5 @@ public final class Lib {
 
     public Val extraCEnv() {
         return extraCEnv;
-    }
-
-    public Function<Val, Val> getRtEnvAdjuster() {
-        return rtEnvAdjuster;
     }
 }

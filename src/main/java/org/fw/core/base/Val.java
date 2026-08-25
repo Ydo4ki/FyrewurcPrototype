@@ -2,6 +2,7 @@ package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.commons.PureCallable;
+import org.fw.lib.elib.expr.CompEnv;
 import org.fw.lib.elib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -27,11 +28,17 @@ public abstract class Val implements PureCallable<Val> {
         return type().callInstance(this, arg);
     }
 
+    public Expr toExpr(CompEnv compEnv) {
+        return compEnv.toExpr(this);
+    }
+
+    @Deprecated
     public Expr toExpr(RtEnv rtEnv) {
         Val toExpr = rtEnv.get(symbol("to-expr"));
         return toExpr(toExpr);
     }
 
+    @Deprecated
     public Expr toExpr(Val toExpr) {
         if (type().equals(Call.call_t)) return ExprList.of(
                 BracketsTypes.round,
