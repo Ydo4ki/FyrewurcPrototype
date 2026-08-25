@@ -1,8 +1,11 @@
 package org.fw.lib.elib;
 
 import org.fw.core.FW;
+import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.lib.elib.expr.CompEnv;
 import org.fw.lib.elib.expr.ExprFw;
+import org.fw.lib.elib.expr.SyntaxResolveFw;
 import org.fw.lib.elib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -33,20 +36,22 @@ public final class BoxFw {
         return null;
     }).asType();
 
-    public static final Val boxToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
+    public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
 
-        Type type = arg.type();
-        if (type.equals(boxType)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(toExpr), unbox(arg).toExpr(toExpr)));
-        } else if (type.asVal().type().equals(boxType)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr), unbox(arg).toExpr(toExpr)));
+            arg = arg.call(symbol("passing"));
+
+            Type type = arg.type();
+            if (type.equals(boxType)) {
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(compEnv), unbox(arg).toExpr(compEnv)));
+            } else if (type.asVal().type().equals(boxType)) {
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv), unbox(arg).toExpr(compEnv)));
+            }
+            return null;
         }
         return null;
-    });
+    }));
 
     // the only operation that doesn't need context xd
     public static Val unbox(Val arg) {
@@ -57,7 +62,9 @@ public final class BoxFw {
         return boxType.asVal().call(symbol("construct")).call(key).asType();
     }
 
-    public static final Lib lib = Lib.ofModule(ModuleFw.module(
-            DeclaredFw.declared(symbol("BoxType"), boxType)
-    ));
+    public static final Lib lib = Lib.of(ModuleFw.module(
+                    DeclaredFw.declared(symbol("BoxType"), boxType)
+            ),
+            box2exprCenv.asVal()
+    );
 }

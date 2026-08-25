@@ -90,7 +90,6 @@ public class ToExprFn {
             ChainLinkFw.chainLinkToExpr,
             StructFw.structToExpr,
             TraitFw.traitToExpr,
-            BoxFw.boxToExpr,
             IntTypeFw.intToExpr,
             toExprRest
     );
