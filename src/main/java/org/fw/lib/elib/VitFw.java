@@ -111,32 +111,33 @@ public final class VitFw {
         }
         return null;
     })).asType();
-    public static final Val vitToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
+
+    public static final CompEnv vit2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            arg = arg.get("passing");
+
+            Type type = arg.type();
+            if (type.equals(vitVal)) {
+                VitVal vitVal = arg._unpack();
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv), vitVal.val().toExpr(compEnv)));
+            } else if (type.equals(vitVar)) {
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv)));
+            } else if (type.equals(vitCall)) {
+                VitCall vitVal = arg._unpack();
+                List<Expr> elements = new ArrayList<>();
+                elements.add(type.asVal().toExpr(compEnv));
+                elements.addAll(vitVal.exprs(compEnv));
+
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
+            } else if (type.equals(vitInvoke)) {
+                VitInvoke vitInvoke = arg._unpack();
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv), wrap(vitInvoke.operation()).toExpr(compEnv)));
+            }
             return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-
-        Type type = arg.type();
-        if (type.equals(vitVal)) {
-            VitVal vitVal = arg._unpack();
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr), vitVal.val().toExpr(toExpr)));
-        } else if (type.equals(vitVar)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr)));
-        } else if (type.equals(vitCall)) {
-            VitCall vitVal = arg._unpack();
-            List<Expr> elements = new ArrayList<>();
-            elements.add(type.asVal().toExpr(toExpr));
-            elements.addAll(vitVal.exprs(toExpr));
-
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
-        } else if (type.equals(vitInvoke)) {
-            VitInvoke vitInvoke = arg._unpack();
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(toExpr), wrap(vitInvoke.operation()).toExpr(toExpr)));
         }
         return null;
-    });
+    }));
 
     public static final Val evalVit = FW.telephonist("eval-vit", (arg) -> {
         if (isVit(arg.type())) {
@@ -320,6 +321,9 @@ public final class VitFw {
                     DeclaredFw.declared(symbol("VitInvoke"), VitFw.vitInvoke.asVal()),
                     DeclaredFw.declared(symbol("eval-vit"), VitFw.evalVit)
             ),
-            VitFw.directivesCenv.asVal()
+            CompEnv.compEnv(
+                    vit2exprCenv.asVal(),
+                    VitFw.directivesCenv.asVal()
+            )
     );
 }

@@ -39,3 +39,15 @@
 
  (assert! (== (typeof (call VitCall.builder (call VitVal.construct 14) (call VitVal.construct (symbol "+")))) VitCall))
 )
+
+(do
+ (assert! (== (to-expr VitVal) (symbol "VitVal")))
+ (assert! (== (to-expr VitVar) (symbol "VitVar")))
+ (assert! (== (to-expr VitCall) (symbol "VitCall")))
+ (assert! (== (to-expr VitInvoke) (symbol "VitInvoke")))
+
+ (assert! (== (to-expr (call VitVal.construct false)) (expr (VitVal false))))
+ (assert! (==
+  (to-expr (call VitCall.builder (call VitVal.construct false) (call VitVal.construct true)))
+  (expr (VitCall (VitVal false) (VitVal true)))))
+)

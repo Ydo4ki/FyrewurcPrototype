@@ -5,6 +5,7 @@ import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 import org.fw.lib.elib.VitFw;
 import org.fw.core.state.obj.State;
+import org.fw.lib.elib.expr.CompEnv;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,14 +28,14 @@ public final class VitCall extends Vit {
         return "(VitCall " + func + " " + arg + ")";
     }
 
-    public Collection<? extends Expr> exprs(Val toExpr) {
+    public Collection<? extends Expr> exprs(CompEnv compEnv) {
         List<Expr> elements = new ArrayList<>();
         if (func() instanceof VitCall) {
-            elements.addAll(((VitCall) func()).exprs(toExpr));
+            elements.addAll(((VitCall) func()).exprs(compEnv));
         } else {
-            elements.add(VitFw.wrap(func()).toExpr(toExpr));
+            elements.add(VitFw.wrap(func()).toExpr(compEnv));
         }
-        elements.add(VitFw.wrap(arg()).toExpr(toExpr));
+        elements.add(VitFw.wrap(arg()).toExpr(compEnv));
         return elements;
     }
 
