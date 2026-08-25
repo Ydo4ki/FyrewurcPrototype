@@ -24,6 +24,7 @@ public final class EssentiaLibstd {
     }));
 
     public static final Lib lib = FwUtils.l(EssentiaLibstd.class, Lib.combine(
+            Lib.ofCEnv(EssentiaLibstd.somethingToExpr.asVal()),
             BaseFw.lib,
             VitFw.lib,
             ExprGetFw.lib,
@@ -40,9 +41,9 @@ public final class EssentiaLibstd {
             UseFw.lib,
             OperatorsFw.lib,
             BoxFw.lib,
+            ToExprFw.lib,
 
-            OperationFw.lib,
-            Lib.ofCEnv(EssentiaLibstd.somethingToExpr.asVal())
+            OperationFw.lib
     ), "operationfns");
 
 }

@@ -1,6 +1,8 @@
 (assert! true)
 
-0
+(to-expr 0)
+(to-expr (symbol "aaa"))
+(expr (symbol "aaa"))
 
 (do
  (: uint16 (call IntType.construct 16 Signedness.signed Overflow.wrap))

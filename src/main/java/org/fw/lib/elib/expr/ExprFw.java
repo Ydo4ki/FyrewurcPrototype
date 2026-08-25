@@ -93,28 +93,6 @@ public final class ExprFw {
             Vit.val(FW.telephonist(passingArg
                     -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList))))
     );
-    public static final Val esastToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.type();
-        if (type.equals(exprList)) {
-            List<Expr> content = new ArrayList<>();
-            content.add(type.asVal().toExpr(toExpr));
-            ExprList el = arg._unpack();
-            for (Expr expr : el) {
-                content.add(wrap(expr).toExpr(toExpr));
-            }
-            return wrap(ExprList.of(BracketsTypes.round, content));
-        } else if (type.equals(SymbolFw.symbol)) {
-            String str = arg._unpack().toString();
-            str = str.replace("\"", "\\\"");
-            return wrap(ExprList.of(BracketsTypes.round, Symbol.of("symbol"), Symbol.of('"' + str + '"')));
-        }
-        return null;
-    });
 
     public static final Type bracketsType = FW.telephonist("BracketsType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ExprFw.bracketsType)) {
@@ -202,13 +180,41 @@ public final class ExprFw {
         return null;
     }));
 
+    public static final CompEnv esast2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+
+            Type type = val.type();
+            if (type.equals(exprList)) {
+                List<Expr> content = new ArrayList<>();
+//                content.add(type.asVal().toExpr(CompEnv.of(compEnv)));
+                content.add(Symbol.of("expr-list"));
+                ExprList el = val._unpack();
+                for (Expr expr : el) {
+                    content.add(wrap(expr).toExpr(CompEnv.of(compEnv)));
+                }
+                return wrap(ExprList.of(BracketsTypes.round, content));
+            } else if (type.equals(SymbolFw.symbol)) {
+                String str = val._unpack().toString();
+                str = str.replace("\"", "\\\"");
+                return wrap(ExprList.of(BracketsTypes.round, Symbol.of("symbol"), Symbol.of('"' + str + '"')));
+            }
+            return null;
+        }
+        return null;
+    }));
+
     public static final Lib lib = Lib.of(
             ModuleFw.module(
                     DeclaredFw.declared(symbol("Symbol"), SymbolFw.symbol.asVal()),
                     DeclaredFw.declared(symbol("ExprList"), exprList.asVal()),
                     DeclaredFw.declared(symbol("BracketsType"), bracketsType.asVal())
             ),
-            ExprFw.directivesCenv.asVal()
+            CompEnv.compEnv(
+                    ExprFw.directivesCenv.asVal(),
+                    esast2exprCenv.asVal()
+            )
     );
 
     public static Expr unwrap(Val v) {
