@@ -1,10 +1,13 @@
 package org.fw.lib.elib;
 
 import org.fw.core.FW;
+import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
+import org.fw.lib.elib.expr.CompEnv;
 import org.fw.lib.elib.expr.ExprFw;
+import org.fw.lib.elib.expr.SyntaxResolveFw;
 import org.fw.lib.elib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
@@ -59,18 +62,16 @@ public final class DIntFw {
         }
         return null;
     }).asType();
-    public static final Val dintToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.type();
-        if (type.equals(dint)) {
-            return symbol(arg._unpack().toString());
+    public static final CompEnv dint2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val.type() == dint) {
+                return ExprFw.wrap(Symbol.of(val._unpack().toString()));
+            }
         }
         return null;
-    });
+    }));
 
     private static Val bop(Val instance, FwUtils.BigBinaryOperator operator) {
         BigInteger value = unwrap(instance);
@@ -129,6 +130,9 @@ public final class DIntFw {
                     DeclaredFw.declared(symbol("DInt"), DIntFw.dint.asVal()),
                     DeclaredFw.declared(symbol("parseDIntCEnv"), ParseDIntCEnvFw.parseNumCenv)
             ),
-            ParseDIntCEnvFw.parseNumCenv
+            CompEnv.compEnv(
+                    ParseDIntCEnvFw.parseNumCenv,
+                    dint2exprCenv.asVal()
+            )
     );
 }

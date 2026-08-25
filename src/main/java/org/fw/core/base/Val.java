@@ -147,6 +147,10 @@ public abstract class Val implements PureCallable<Val> {
             this.depth = depth;
         }
 
+        public int getDepth() {
+            return depth;
+        }
+
         @Override
         public Type type() {
             return of(depth + 1).asType();

@@ -32,7 +32,7 @@ import static org.fw.core.FW.symbol;
 public class Main {
 
     public static final RtEnv rtEnv = RtEnv.of(ModuleFw.module(
-            DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExprBox)
+            DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExpr)
     ));
 
     public static void main(String[] args) throws IOException {

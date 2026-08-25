@@ -15,8 +15,8 @@ public final class EssentiaLibstd {
         if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
-            if (val.equals(Val.ofTelephonist(0))) {
-                return ExprFw.wrap(Symbol.of("*"));
+            if (val instanceof Val.TelephonistVal) {
+                return ExprFw.wrap(Symbol.of("Telephonist" + ((Val.TelephonistVal) val).getDepth()));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.braces, val.type().asVal().toExpr(CompEnv.of(compEnv))));
         }
