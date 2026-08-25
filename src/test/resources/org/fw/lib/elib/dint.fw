@@ -26,5 +26,6 @@
 
 // esast
 (do
- (assert! (== (to-expr 0) (symbol "0")))
+ (assert! (== (to-expr 12) (symbol "12")))
+ (assert! (== (to-expr 12.neg) (symbol "-12")))
 )

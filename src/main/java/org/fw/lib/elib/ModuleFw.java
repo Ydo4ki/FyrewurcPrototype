@@ -57,18 +57,20 @@ public final class ModuleFw {
 
         return null;
     }).asType();
-    public static final Val moduleToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
 
-        Type type = arg.type();
-        if (type.equals(module)) {
-            return toExpr(arg, toExpr);
+    public static final CompEnv module2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            arg = arg.get("passing");
+
+            Type type = arg.type();
+            if (type.equals(module)) {
+                return toExpr(arg, compEnv);
+            }
+            return null;
         }
         return null;
-    });
+    }));
 
     public static Val module(Val... values) {
         for (Val value : values) {
@@ -78,8 +80,8 @@ public final class ModuleFw {
         return Val.of(ModuleFw.module, new Module(values));
     }
 
-    public static Val toExpr(Val arg, Val toExpr) {
-        return ExprFw.wrap(arg._unpack(ModuleFw.Module.class).toExpr(toExpr));
+    public static Val toExpr(Val arg, CompEnv compEnv) {
+        return ExprFw.wrap(arg._unpack(ModuleFw.Module.class).toExpr(compEnv));
     }
 
     public static Val invert(Val module) {
@@ -110,13 +112,23 @@ public final class ModuleFw {
             return declareds;
         }
 
-        public Expr toExpr(Val toExpr) {
+        public Expr toExpr(CompEnv compEnv) {
+            List<Expr> elements0 = new ArrayList<>();
+            elements0.add(ModuleFw.module.asVal().toExpr(compEnv));
             List<Expr> elements = new ArrayList<>();
-            elements.add(ModuleFw.module.asVal().toExpr(toExpr));
             for (Val declared : declareds) {
-                elements.add(declared.toExpr(toExpr));
+                Val key = DeclaredFw.getKey(declared);
+                if (key.type() == SymbolFw.symbol) {
+                    elements.add(ExprList.of(BracketsTypes.round, Symbol.of(":"),
+                            ExprFw.unwrap(key),
+                            DeclaredFw.getValue(declared).toExpr(compEnv)
+                            ));
+                } else {
+                    elements.add(declared.toExpr(compEnv));
+                }
             }
-            return ExprList.of(BracketsTypes.round, elements);
+            elements0.add(ExprList.of(BracketsTypes.square, elements));
+            return ExprList.of(BracketsTypes.round, elements0);
         }
 
         public boolean containsKey(Val key) {
@@ -246,6 +258,9 @@ public final class ModuleFw {
                     DeclaredFw.declared(symbol("Module"), ModuleFw.module.asVal()),
                     DeclaredFw.declared(symbol("ModuleCompEnv"), ModuleFw.ModuleCEnvFw.moduleCompEnv.asVal())
             ),
-            directivesCenv
+            CompEnv.compEnv(
+                    directivesCenv,
+                    module2exprCenv.asVal()
+            )
     );
 }

@@ -81,7 +81,6 @@ public class ToExprFn {
     });
 
     public static final Val toExpr = ChainLinkFw.chain(exprififier,
-            ModuleFw.moduleToExpr,
             DeclaredFw.declaredToExpr,
             DeclarationFw.declarationToExpr,
             StrFw.strToExpr,
