@@ -88,13 +88,10 @@ public class ToExprFn {
             StrFw.strToExpr,
             SyntaxResolveFw.syntaxResolveToExpr,
             ChainLinkFw.chainLinkToExpr,
-            BaseFw.boolToExpr,
-            DVecFw.dvecToExpr,
             StructFw.structToExpr,
             TraitFw.traitToExpr,
             BoxFw.boxToExpr,
             IntTypeFw.intToExpr,
-//            unknownToExpr,
             toExprRest
     );
 }

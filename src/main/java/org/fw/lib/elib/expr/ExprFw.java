@@ -209,7 +209,9 @@ public final class ExprFw {
             ModuleFw.module(
                     DeclaredFw.declared(symbol("Symbol"), SymbolFw.symbol.asVal()),
                     DeclaredFw.declared(symbol("ExprList"), exprList.asVal()),
-                    DeclaredFw.declared(symbol("BracketsType"), bracketsType.asVal())
+                    DeclaredFw.declared(symbol("BracketsType"), bracketsType.asVal()),
+                    DeclaredFw.declared(symbol("symbolToStr"), symbolToString),
+                    DeclaredFw.declared(symbol("strToSymbol"), symbolConstructor)
             ),
             CompEnv.compEnv(
                     ExprFw.directivesCenv.asVal(),

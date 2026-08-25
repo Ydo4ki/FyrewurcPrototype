@@ -7,6 +7,7 @@
  (: vec [a b a])
 
  (assert! (== (typeof vec) DVec))
+ (assert! (== (typeof DVec.builder) DVecBuilder))
  (assert! (== vec (call dvecbf (call DVec.builder a b a))))
 
  (assert! (== vec.iter-type.target vec))
@@ -16,3 +17,12 @@
  (assert! (== vec.first.value a))
  (assert! (== vec.first.next.value b))
 )
+
+(do
+ (assert! (== (to-expr DVec) (symbol "DVec")))
+ (assert! (== (to-expr DVecBuilder) (symbol "DVecBuilder")))
+ (assert! (== (to-expr dvecbf) (symbol "dvecbf")))
+
+ (assert! (== (to-expr [1 2 1]) (expr [1 2 1])))
+)
+

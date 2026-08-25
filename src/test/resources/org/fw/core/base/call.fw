@@ -7,3 +7,7 @@
  (assert! (== c.val a))
  (assert! (== c.arg b))
 )
+
+(do
+ (assert! (== (to-expr Call) (symbol "Call")))
+)

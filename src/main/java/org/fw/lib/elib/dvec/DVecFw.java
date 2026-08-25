@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
+import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.lib.elib.*;
 import org.fw.lib.elib.expr.CompEnv;
@@ -65,31 +66,32 @@ public final class DVecFw {
         return null;
     }).asType();
 
-    public static final Val dvecToExpr = telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
+    public static final CompEnv dvec2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            arg = arg.get("passing");
 
-        Type type = arg.type();
-        if (type.equals(dVec)) {
-            Val[] vec = arg._unpack();
-            List<Expr> elements = new ArrayList<>();
-            for (Val val : vec) {
-                elements.add(val.toExpr(toExpr));
+            Type type = arg.type();
+            if (type.equals(dVec)) {
+                Val[] vec = arg._unpack();
+                List<Expr> elements = new ArrayList<>();
+                for (Val val : vec) {
+                    elements.add(val.toExpr(compEnv));
+                }
+                return ExprFw.wrap(ExprList.of(BracketsTypes.square, elements));
+            } else if (type.equals(DVecBuilderFw.dVecBuilder)) {
+                Val[] vec = arg._unpack();
+                List<Expr> elements = new ArrayList<>();
+                elements.add(type.asVal().toExpr(compEnv));
+                for (Val val : vec) {
+                    elements.add(val.toExpr(compEnv));
+                }
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
             }
-            return ExprFw.wrap(ExprList.of(BracketsTypes.square, elements));
-        } else if (type.equals(DVecBuilderFw.dVecBuilder)) {
-            Val[] vec = arg._unpack();
-            List<Expr> elements = new ArrayList<>();
-            elements.add(type.asVal().toExpr(toExpr));
-            for (Val val : vec) {
-                elements.add(val.toExpr(toExpr));
-            }
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
+            return null;
         }
         return null;
-    });
+    }));
 
     public static <T> T[] arAppended(T[] value, T arg) {
         int i = value.length;
@@ -144,6 +146,9 @@ public final class DVecFw {
                     DeclaredFw.declared(symbol("DVecBuilder"), DVecBuilderFw.dVecBuilder.asVal()),
                     DeclaredFw.declared(symbol("dvecbf"), DVecBuilderFw.dvecbf)
             ),
-            DVecConstructorCEnvFw.dVecConstructorCenv
+            CompEnv.compEnv(
+                    DVecConstructorCEnvFw.dVecConstructorCenv,
+                    dvec2exprCenv.asVal()
+            )
     );
 }

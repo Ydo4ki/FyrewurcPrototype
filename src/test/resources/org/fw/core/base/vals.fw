@@ -10,3 +10,18 @@
 
  (assert! (call is-unspecified (call true false)))
 )
+
+(do
+ (assert! (== (to-expr eq) (symbol "eq")))
+ (assert! (== (to-expr Telephonist) (symbol "Telephonist")))
+ (assert! (== (to-expr is-unspecified) (symbol "is-unspecified")))
+
+ (: tele (fn [(= n)] ->
+  (if (== n 0)
+   Telephonist
+  else
+   (typeof ((get (var) %self%) (- n 1)))
+  )))
+
+ (assert! (== (to-expr (tele 3)) (symbol "Telephonist3")))
+)

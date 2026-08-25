@@ -39,28 +39,11 @@ public final class BaseFw {
     });
 
 
-    public static final Val boolToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.type();
-        if (type.equals(BoolFw.bool)) {
-            return symbol(arg._unpack().toString());
-        }
-        return null;
-    });
-
-    public static final Lib boolLib = Lib.of(
+    public static final Lib boolLib = Lib.ofModule(
             ModuleFw.module(
                     DeclaredFw.declared(symbol("true"), BoolFw._true),
                     DeclaredFw.declared(symbol("false"), BoolFw._false),
                     DeclaredFw.declared(symbol("Bool"), BoolFw.bool)
-            ),
-            var -> ChainLinkFw.chain(ToExprFn.exprififier,
-                    boolToExpr,
-                    var.call(symbol("to-expr"))
             )
     );
 

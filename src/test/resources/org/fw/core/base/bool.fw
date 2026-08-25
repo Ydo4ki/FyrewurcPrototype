@@ -25,3 +25,9 @@
  (assert! (== (xor F T) T))
  (assert! (== (xor F F) F))
 )
+
+(do
+ (assert! (== (to-expr true) (symbol "true")))
+ (assert! (== (to-expr false) (symbol "false")))
+ (assert! (== (to-expr Bool) (symbol "Bool")))
+)

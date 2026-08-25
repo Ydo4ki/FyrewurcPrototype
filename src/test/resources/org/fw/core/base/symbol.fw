@@ -4,4 +4,10 @@
  (assert! (== Symbol (typeof (symbol "a"))))
  (assert! (== (symbol "a") (symbol "a")))
  (assert! (!= (symbol "a") (symbol "b")))
+ (assert! (== (symbol "a") (call strToSymbol "a")))
 )
+
+(do
+ (assert! (== (to-expr Symbol) (symbol "Symbol")))
+)
+
