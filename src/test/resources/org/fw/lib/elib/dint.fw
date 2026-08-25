@@ -1,0 +1,30 @@
+(assert! true)
+
+(: n 20)
+
+(do
+ (assert! (== (call n.+ 50) 70))
+ (assert! (== (call n.- 10) 10))
+ (assert! (== (call n.* 50) 1000))
+ (assert! (== (call n./ 3) 6))
+ (assert! (== n.neg -20))
+)
+
+// operators
+(do
+ (assert! (== (+ n 50) 70))
+ (assert! (== (- n 10) 10))
+ (assert! (== (* n 50) 1000))
+ (assert! (== (/ n 3) 6))
+ (assert! (== (neg n) -20))
+)
+
+// parse
+(do
+ (assert! (== (call DInt.parse "553") 553))
+)
+
+// esast
+(do
+ (assert! (== (to-expr 0) (symbol "0")))
+)

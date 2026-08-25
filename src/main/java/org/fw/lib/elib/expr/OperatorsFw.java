@@ -1,4 +1,4 @@
-package org.fw.lib.elib;
+package org.fw.lib.elib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
@@ -6,8 +6,9 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.expr.CompEnv;
-import org.fw.lib.elib.expr.SyntaxResolveFw;
+import org.fw.lib.elib.DIntFw;
+import org.fw.lib.elib.Lib;
+import org.fw.lib.elib.VitFw;
 import org.fw.core.vit.Vit;
 
 import static org.fw.core.FW.symbol;
@@ -67,6 +68,7 @@ public final class OperatorsFw {
                         }
                         // senders
                         case "not":
+                        case "neg":
                         case "~": {
                             if (isize != 2)
                                 return null;
