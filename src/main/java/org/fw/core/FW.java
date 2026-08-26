@@ -3,14 +3,14 @@ package org.fw.core;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.lib.elib.TypePayloadInfo;
+import org.fw.lib.stdlib.TypePayloadInfo;
 import org.fw.core.util.FwUtils;
 import org.fw.core.util.LazyObj;
 import org.fw.core.vit.Vit;
 
 import java.util.function.Supplier;
 
-import static org.fw.core.base.ValsFw.eq;
+import static org.fw.core.base.EqFw.eq;
 import static org.fw.core.vit.Vit.val;
 
 public final class FW {

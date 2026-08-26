@@ -8,8 +8,8 @@ import static org.fw.core.FW.symbol;
 public final class BoolFw {
     public static final Type bool = FW.telephonist("Bool", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoolFw.bool)) {
-            Val instance = Call.getVal(arg);
-            Val cArg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            Val cArg = CallFw.getArg(arg);
 
             boolean value = instance._unpack(Boolean.class);
             if (cArg.equals(symbol("not"))) {

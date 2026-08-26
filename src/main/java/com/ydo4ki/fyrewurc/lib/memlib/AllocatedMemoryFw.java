@@ -1,7 +1,7 @@
 package com.ydo4ki.fyrewurc.lib.memlib;
 
 import org.fw.core.FW;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
@@ -14,8 +14,8 @@ import org.fw.core.util.FwUtils;
 public final class AllocatedMemoryFw {
     public static final Type allocatedMemory = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, AllocatedMemoryFw.allocatedMemory)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
 
             AllocatedMemoryObj amo = instance._unpack();
 

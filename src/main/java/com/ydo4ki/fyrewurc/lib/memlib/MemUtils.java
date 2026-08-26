@@ -2,7 +2,7 @@ package com.ydo4ki.fyrewurc.lib.memlib;
 
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.WrapperTypeFw;
+import org.fw.lib.stdlib.WrapperTypeFw;
 import org.fw.core.util.bits.*;
 import com.ydo4ki.fyrewurc.lib.memlib.ints.IntType;
 import com.ydo4ki.fyrewurc.lib.memlib.words.BitFw;

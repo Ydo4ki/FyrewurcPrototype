@@ -1,0 +1,14 @@
+(module)
+(module
+ (: new! (fn [(= x)] !>
+  (invoke! (call LaserPointer.new x))))
+ (: read! (fn [(= o)] !>
+  (invoke! o.read)))
+ (: write! (fn [(= o) (= x)] !>
+  (invoke! (call o.write x))))
+
+ (: == (fn [(= a)(= b)] ->
+  (call eq a b)))
+ (: != (fn [(= a)(= b)] ->
+  (not (call eq a b))))
+)

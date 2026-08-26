@@ -6,6 +6,7 @@ import org.fw.core.base.Val;
 import org.fw.core.state.obj.State;
 
 // but I have no idea how would you use it
+@Deprecated
 public final class GetLocalStateOperation extends Operation {
 
     private static final GetLocalStateOperation instance = new GetLocalStateOperation();

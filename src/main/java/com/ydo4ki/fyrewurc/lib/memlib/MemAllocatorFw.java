@@ -1,11 +1,11 @@
 package com.ydo4ki.fyrewurc.lib.memlib;
 
 import org.fw.core.FW;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.DIntFw;
+import org.fw.lib.stdlib.DIntFw;
 import com.ydo4ki.fyrewurc.lib.memlib.obj.AllocatedMemoryObj;
 import com.ydo4ki.fyrewurc.lib.memlib.obj.HeapObj;
 import org.fw.core.state.obj.State;
@@ -18,9 +18,9 @@ public final class MemAllocatorFw {
 
     public static final Type heapAllocator = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, MemAllocatorFw.heapAllocator)) {
-            Val instance = Call.getVal(arg);
+            Val instance = CallFw.getVal(arg);
             HeapObj heap = instance._unpack();
-            arg = Call.getArg(arg);
+            arg = CallFw.getArg(arg);
 
 
             if (arg.type() == SymbolFw.symbol) {

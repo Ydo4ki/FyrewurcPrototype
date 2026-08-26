@@ -4,10 +4,10 @@ import com.ydo4ki.fyrewurc.lib.jlib.data.*;
 import org.fw.core.FW;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.DeclaredFw;
-import org.fw.lib.elib.ModuleFw;
-import org.fw.lib.elib.StrFw;
-import org.fw.lib.elib.state.SystemOperation;
+import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.ModuleFw;
+import org.fw.lib.stdlib.StrFw;
+import org.fw.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
 
 import java.lang.invoke.MethodHandle;

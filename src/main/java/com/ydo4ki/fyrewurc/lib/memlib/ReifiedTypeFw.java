@@ -1,12 +1,12 @@
 package com.ydo4ki.fyrewurc.lib.memlib;
 
 import org.fw.core.FW;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.DIntFw;
-import org.fw.lib.elib.dvec.DVecFw;
+import org.fw.lib.stdlib.DIntFw;
+import org.fw.lib.stdlib.dvec.DVecFw;
 import com.ydo4ki.fyrewurc.lib.memlib.words.BitFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -18,8 +18,8 @@ import java.util.WeakHashMap;
 public final class ReifiedTypeFw {
     public static final Type reifiedType = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, ReifiedTypeFw.reifiedType)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
 
             Type type = instance.asType();
             ReifiedType rt = instance._unpack();
@@ -159,8 +159,8 @@ public final class ReifiedTypeFw {
 
     private static final Type rtBuilder = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, ReifiedTypeFw.rtBuilder)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
 
             RtBuilder builder = instance._unpack();
             ReifiedType rt = builder.rt.asVal()._unpack(ReifiedType.class);

@@ -7,11 +7,11 @@ import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 import com.ydo4ki.fyrewurc.lib.devicelib.DeviceLib;
-import org.fw.lib.elib.*;
-import org.fw.lib.elib.expr.CompEnv;
-import org.fw.lib.elib.expr.ExprFw;
-import org.fw.lib.elib.expr.SyntaxResolveFw;
-import org.fw.lib.elib.expr.ToExprFn;
+import org.fw.lib.stdlib.*;
+import org.fw.lib.stdlib.expr.CompEnv;
+import org.fw.lib.stdlib.expr.ExprFw;
+import org.fw.lib.stdlib.expr.SyntaxResolveFw;
+import org.fw.lib.stdlib.expr.ToExprFn;
 import com.ydo4ki.fyrewurc.lib.jlib._internal.JVMHandles;
 import com.ydo4ki.fyrewurc.lib.jlib.data.JCharFw;
 import com.ydo4ki.fyrewurc.lib.jlib.data.JLongFw;
@@ -19,7 +19,7 @@ import com.ydo4ki.fyrewurc.lib.memlib.MemLib;
 import com.ydo4ki.fyrewurc.lib.jlib.data.JIntFw;
 import com.ydo4ki.fyrewurc.lib.memlib.HeapFw;
 import org.fw.core.state.obj.State;
-import org.fw.lib.elib.state.SystemOperation;
+import org.fw.lib.stdlib.state.SystemOperation;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -69,7 +69,7 @@ public class Main {
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
-                EssentiaLibstd.lib.exports(),
+                StdLib.lib.exports(),
                 MemLib.lib.exports(),
                 DeviceLib.lib.exports()
         ));

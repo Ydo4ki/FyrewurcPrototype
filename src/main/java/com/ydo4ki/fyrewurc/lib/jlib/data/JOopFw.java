@@ -2,14 +2,14 @@ package com.ydo4ki.fyrewurc.lib.jlib.data;
 
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import com.ydo4ki.fyrewurc.lib.jlib._internal.JClassFw;
 import com.ydo4ki.fyrewurc.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fyrewurc.lib.jlib._internal.JVMHandles;
-import org.fw.lib.elib.StrFw;
+import org.fw.lib.stdlib.StrFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
@@ -18,8 +18,8 @@ import java.lang.invoke.MethodType;
 public final class JOopFw {
     public static final Type jOop = FW.telephonist((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JOopFw.jOop)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
             if (arg.type() != SymbolFw.symbol)
                 return null;
 

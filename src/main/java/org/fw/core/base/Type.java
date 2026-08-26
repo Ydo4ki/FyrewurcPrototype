@@ -24,7 +24,7 @@ public abstract class Type implements ValAdapter {
 
         @Override
         public Val callInstance(Val instance, Val arg) {
-            return asVal.call(Call.fwCall(instance, arg));
+            return asVal.call(CallFw.fwCall(instance, arg));
         }
 
         @Override

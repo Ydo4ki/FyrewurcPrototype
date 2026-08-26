@@ -1,7 +1,7 @@
 package com.ydo4ki.fyrewurc.lib.memlib.words;
 
 import org.fw.core.FW;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
@@ -11,8 +11,8 @@ import static org.fw.core.FW.symbol;
 public final class BitFw {
     public static final Type bit = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, BitFw.bit)) {
-            Val instance = Call.getVal(arg);
-            Val cArg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            Val cArg = CallFw.getArg(arg);
 
             boolean value = instance._unpack(Boolean.class);
             if (cArg.equals(symbol("~"))) {

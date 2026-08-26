@@ -1,13 +1,13 @@
 package org.fw.core.state;
 
 import org.fw.core.FW;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.DIntFw;
-import org.fw.lib.elib.state.array.CreateArrayOperation;
-import org.fw.lib.elib.state.array.ValArrayObj;
+import org.fw.lib.stdlib.DIntFw;
+import org.fw.lib.stdlib.state.array.CreateArrayOperation;
+import org.fw.lib.stdlib.state.array.ValArrayObj;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 
@@ -16,8 +16,8 @@ import static org.fw.core.FW.telephonist;
 public final class WidePointer {
     public static final Type widePointer = FW.telephonist("WidePointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, WidePointer.widePointer)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
 
             ValArrayObj vao = instance._unpack();
             if (arg.type() == SymbolFw.symbol) {

@@ -4,8 +4,8 @@ import org.fw.core.FW;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.DIntFw;
-import org.fw.lib.elib.WrapperTypeFw;
+import org.fw.lib.stdlib.DIntFw;
+import org.fw.lib.stdlib.WrapperTypeFw;
 
 import java.time.Instant;
 import java.time.temporal.ChronoField;

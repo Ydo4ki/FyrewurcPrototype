@@ -1,9 +1,9 @@
 package com.ydo4ki.fyrewurc.lib.devicelib;
 
 import org.fw.core.base.Type;
-import org.fw.lib.elib.DeclarationFw;
-import org.fw.lib.elib.StructFw;
-import org.fw.lib.elib.constraint.ConstraintFw;
+import org.fw.lib.stdlib.DeclarationFw;
+import org.fw.lib.stdlib.StructFw;
+import org.fw.lib.stdlib.constraint.ConstraintFw;
 
 import static org.fw.core.FW.symbol;
 

@@ -1,6 +1,6 @@
 package com.ydo4ki.fyrewurc.lib.memlib.obj;
 
-import org.fw.lib.elib.state.SystemOperation;
+import org.fw.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.obj.AbstractObj;
 import org.fw.core.state.obj.State;
 

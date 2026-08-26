@@ -1,7 +1,7 @@
 package org.fw.core.state;
 
 import org.fw.core.FW;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
@@ -16,8 +16,8 @@ import static org.fw.core.FW.telephonist;
 public final class LaserPointerFw {
     public static final Type laserPointer = FW.telephonist("LaserPointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, LaserPointerFw.laserPointer)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
 
             Obj obj = instance._unpack();
 

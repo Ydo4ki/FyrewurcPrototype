@@ -3,7 +3,7 @@ package com.ydo4ki.fyrewurc.lib.memlib;
 import org.fw.core.FW;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.elib.WrapperTypeFw;
+import org.fw.lib.stdlib.WrapperTypeFw;
 
 public final class RawCastFw {
     public static final Val rawcast = FW.telephonist(v -> FW.telephonist(targetType -> {

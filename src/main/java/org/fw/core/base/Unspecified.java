@@ -6,10 +6,11 @@ import org.fw.core.util.FwUtils;
 import java.util.Objects;
 
 public final class Unspecified {
+    public static final Val isUnspecified = FwUtils.valify(Unspecified::isUnspecified);
     private static final Type unspecified_t = FW.telephonist((arg) -> {
         if (FwUtils.isTypeApiCall(arg, Unspecified.unspecified_t)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
             return unspecified(instance, arg); // accumulate
         } else if (arg.type() == SymbolFw.symbol) {
             String v = arg._unpack().toString();

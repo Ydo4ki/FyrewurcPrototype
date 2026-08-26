@@ -1,8 +1,8 @@
 package com.ydo4ki.fyrewurc.lib.devicelib;
 
-import org.fw.lib.elib.DeclaredFw;
-import org.fw.lib.elib.Lib;
-import org.fw.lib.elib.ModuleFw;
+import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.Lib;
+import org.fw.lib.stdlib.ModuleFw;
 
 import static org.fw.core.FW.symbol;
 

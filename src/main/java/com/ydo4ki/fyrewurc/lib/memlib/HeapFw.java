@@ -1,7 +1,7 @@
 package com.ydo4ki.fyrewurc.lib.memlib;
 
 import org.fw.core.FW;
-import org.fw.core.base.Call;
+import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
@@ -17,8 +17,8 @@ public final class HeapFw {
 
     public static final Type heap = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, HeapFw.heap)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
 
             if (arg.type() == SymbolFw.symbol) {
                 String sym = arg._unpack().toString();

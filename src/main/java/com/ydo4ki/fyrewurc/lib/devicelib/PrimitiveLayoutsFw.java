@@ -1,9 +1,9 @@
 package com.ydo4ki.fyrewurc.lib.devicelib;
 
 import org.fw.core.base.Type;
-import org.fw.lib.elib.DeclaredFw;
-import org.fw.lib.elib.Lib;
-import org.fw.lib.elib.ModuleFw;
+import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.Lib;
+import org.fw.lib.stdlib.ModuleFw;
 import com.ydo4ki.fyrewurc.lib.memlib.ReifiedTypeFw;
 import com.ydo4ki.fyrewurc.lib.memlib.words.BitFw;
 

@@ -1,0 +1,19 @@
+(assert! true)
+
+(: m (module
+ (: abc 943)
+ (: valid false)
+))
+
+(do
+ (assert! (== (typeof m) Module))
+
+ (assert! (== (call m (symbol "valid")) false))
+
+ (assert! (== (get m abc) 943))
+)
+
+(do
+ (assert! (== (to-expr Module) (symbol "Module")))
+ (assert! (== (to-expr m) (expr (Module [(: abc 943) (: valid false)]))))
+)

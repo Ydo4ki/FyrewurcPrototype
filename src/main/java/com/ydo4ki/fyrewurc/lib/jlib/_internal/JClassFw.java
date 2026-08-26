@@ -6,7 +6,7 @@ import org.fw.core.base.*;
 import com.ydo4ki.fyrewurc.lib.devicelib.PrimitiveLayoutsFw;
 import com.ydo4ki.fyrewurc.lib.jlib.data.JOopFw;
 import com.ydo4ki.fyrewurc.lib.jlib.util.JvmUtils;
-import org.fw.lib.elib.StrFw;
+import org.fw.lib.stdlib.StrFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
@@ -19,8 +19,8 @@ import java.util.Map;
 public final class JClassFw {
     public static final Type jClass = FW.telephonist((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JClassFw.jClass)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
             if (arg.type() != SymbolFw.symbol)
                 return null;
 

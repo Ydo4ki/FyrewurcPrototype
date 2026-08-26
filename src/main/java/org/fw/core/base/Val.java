@@ -2,8 +2,8 @@ package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.commons.PureCallable;
-import org.fw.lib.elib.expr.CompEnv;
-import org.fw.lib.elib.expr.ToExprFn;
+import org.fw.lib.stdlib.expr.CompEnv;
+import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -40,11 +40,11 @@ public abstract class Val implements PureCallable<Val> {
 
     @Deprecated
     public Expr toExpr(Val toExpr) {
-        if (type().equals(Call.call_t)) return ExprList.of(
+        if (type().equals(CallFw.call_t)) return ExprList.of(
                 BracketsTypes.round,
                 Symbol.of("Call"),
-                Call.getVal(this).toExpr(toExpr),
-                Call.getArg(this).toExpr(toExpr)
+                CallFw.getVal(this).toExpr(toExpr),
+                CallFw.getArg(this).toExpr(toExpr)
         ); // huh
         Val result = toExpr.call(ToExprFn.toExprResolve(this, toExpr));
         if (result._unpack() instanceof Expr)
@@ -160,8 +160,8 @@ public abstract class Val implements PureCallable<Val> {
         public Object value() {
             if (value == null) value = new TelephonistType.Telephonist(() -> Symbol.of(this.toString()), (arg) -> {
                 if (FwUtils.isTypeApiCall(arg, asType())) {
-                    Val instance = Call.getVal(arg);
-                    Val cArg = Call.getArg(arg);
+                    Val instance = CallFw.getVal(arg);
+                    Val cArg = CallFw.getArg(arg);
 
                     return instance.call(cArg); // so here we're going in the opposite direction
                 }

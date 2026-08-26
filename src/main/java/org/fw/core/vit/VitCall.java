@@ -3,9 +3,9 @@ package org.fw.core.vit;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.lib.elib.VitFw;
+import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
-import org.fw.lib.elib.expr.CompEnv;
+import org.fw.lib.stdlib.expr.CompEnv;
 
 import java.util.ArrayList;
 import java.util.Collection;

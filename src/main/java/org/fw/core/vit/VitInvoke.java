@@ -2,7 +2,7 @@ package org.fw.core.vit;
 
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.lib.elib.VitFw;
+import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;

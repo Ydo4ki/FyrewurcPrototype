@@ -6,9 +6,9 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.util.bits.Bits;
-import org.fw.lib.elib.*;
-import org.fw.lib.elib.expr.ExprFw;
-import org.fw.lib.elib.expr.ToExprFn;
+import org.fw.lib.stdlib.*;
+import org.fw.lib.stdlib.expr.ExprFw;
+import org.fw.lib.stdlib.expr.ToExprFn;
 import com.ydo4ki.fyrewurc.lib.memlib.MemUtils;
 import com.ydo4ki.fyrewurc.lib.memlib.ReifiedTypeFw;
 import com.ydo4ki.fyrewurc.lib.memlib.words.BitFw;
@@ -26,14 +26,14 @@ public final class IntTypeFw {
 
     public static final Type int_t = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, IntTypeFw.int_t)) {
-            Val instance = Call.getVal(arg);
-            arg = Call.getArg(arg);
+            Val instance = CallFw.getVal(arg);
+            arg = CallFw.getArg(arg);
             IntType raw_payload = instance._unpack();
 
             Type Int = instance.asType();
             if (FwUtils.isTypeApiCall(arg, Int)) {
-                Val int_instance = Call.getVal(arg);
-                arg = Call.getArg(arg);
+                Val int_instance = CallFw.getVal(arg);
+                arg = CallFw.getArg(arg);
 
                 Bits bits = MemUtils.toBits(int_instance);
 
