@@ -1,6 +1,7 @@
 package org.fw.lib.stdlib.state;
 
 import org.fw.core.base.Val;
+import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.StrFw;
@@ -23,14 +24,14 @@ public abstract class SystemOperation extends Operation {
         if (state != systemState) {
             return Operation.unit;
         }
-        return execute0();
+        return apply0();
     }
 
-    protected abstract Val execute0();
+    protected abstract Val apply0();
 
     @Override
-    protected boolean isPure0() {
-        return false;
+    public InvokeContract contract() {
+        return InvokeContract.unknown();
     }
 
     public static class FlushOperation extends SystemOperation {
@@ -41,7 +42,7 @@ public abstract class SystemOperation extends Operation {
         }
 
         @Override
-        protected Val execute0() {
+        protected Val apply0() {
             out.flush();
             return Operation.unit;
         }
@@ -55,7 +56,7 @@ public abstract class SystemOperation extends Operation {
         }
 
         @Override
-        protected Val execute0() {
+        protected Val apply0() {
             return StrFw.str(scanner.nextLine());
         }
     }
@@ -68,7 +69,7 @@ public abstract class SystemOperation extends Operation {
         }
 
         @Override
-        protected Val execute0() {
+        protected Val apply0() {
             try {
                 Thread.sleep(millis, 0);
             } catch (InterruptedException e) {
@@ -80,14 +81,14 @@ public abstract class SystemOperation extends Operation {
 
     public static final Operation currentTimeMillis = new SystemOperation() {
         @Override
-        protected Val execute0() {
+        protected Val apply0() {
             return DIntFw.dint(System.currentTimeMillis());
         }
     };
 
     public static final Operation nanoTime = new SystemOperation() {
         @Override
-        protected Val execute0() {
+        protected Val apply0() {
             return DIntFw.dint(System.nanoTime());
         }
     };

@@ -9,6 +9,7 @@ import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.*;
 import org.fw.core.base.BoolFw;
+import org.fw.core.contract.InvokeContract;
 import org.fw.lib.stdlib.DeclaredFw;
 import org.fw.core.base.TypeGetFw;
 import org.fw.lib.stdlib.Lib;
@@ -208,8 +209,8 @@ public final class FwUtils {
             }
 
             @Override
-            protected boolean isPure0() {
-                return false;
+            public InvokeContract contract() {
+                return InvokeContract.unknown();
             }
         };
     }

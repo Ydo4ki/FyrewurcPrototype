@@ -5,6 +5,7 @@ import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.core.contract.InvokeContract;
 import org.fw.lib.stdlib.DIntFw;
 import com.ydo4ki.fw.lib.memlib.obj.AllocatedMemoryObj;
 import com.ydo4ki.fw.lib.memlib.obj.HeapObj;
@@ -42,8 +43,8 @@ public final class MemAllocatorFw {
                 }
 
                 @Override
-                protected boolean isPure0() {
-                    return false;
+                public InvokeContract contract() {
+                    return InvokeContract.unknown();
                 }
             }.asVal();
         }

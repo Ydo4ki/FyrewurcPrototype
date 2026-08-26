@@ -3,9 +3,10 @@ package org.fw.core.state.operation;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Val;
+import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 
-// but I have no idea how would you use it
+// todo: return scopes
 @Deprecated
 public final class GetLocalStateOperation extends Operation {
 
@@ -26,12 +27,17 @@ public final class GetLocalStateOperation extends Operation {
     }
 
     @Override
+    public InvokeContract contract() {
+        return InvokeContract.unknown(); // it reads the state object from itself
+    }
+
+    @Override
     public Expr toExpr() {
         return Symbol.of("GetLocalStateOperation");
     }
 
-    @Override
-    protected boolean isPure0() {
-        return false;
-    }
+//    @Override
+//    protected boolean isPure0() {
+//        return false;
+//    }
 }

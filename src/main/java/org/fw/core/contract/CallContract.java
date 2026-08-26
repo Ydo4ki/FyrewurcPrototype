@@ -4,6 +4,7 @@ import org.fw.core.base.Val;
 
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class CallContract extends Contract {
 
@@ -17,15 +18,19 @@ public final class CallContract extends Contract {
         return UNKNOWN;
     }
 
+    public static CallContract constant(Supplier<Val> val) {
+        return new CallContract(c -> _Constraint.equals(val.get()), val);
+    }
+
     public static CallContract constant(Val val) {
         final _Constraint c0 = _Constraint.equals(val);
-        return new CallContract(c -> c0, val);
+        return new CallContract(c -> c0, () -> val);
     }
 
     private final Function<_Constraint, _Constraint> m_resultConstraint;
-    private final Val concreteValueIfImplied;
+    private final Supplier<Val> concreteValueIfImplied;
 
-    CallContract(Function<_Constraint, _Constraint> resultConstraint, Val concreteValueIfImplied) {
+    CallContract(Function<_Constraint, _Constraint> resultConstraint, Supplier<Val> concreteValueIfImplied) {
         this.m_resultConstraint = resultConstraint;
         this.concreteValueIfImplied = concreteValueIfImplied;
     }
@@ -55,6 +60,6 @@ public final class CallContract extends Contract {
     }
 
     public Val concreteValueIfImplied() {
-        return concreteValueIfImplied;
+        return concreteValueIfImplied.get();
     }
 }

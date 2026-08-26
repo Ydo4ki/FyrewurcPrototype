@@ -7,6 +7,8 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.contract.CallContract;
+import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.ValObj;
 import org.fw.core.vit.Vit;
@@ -19,9 +21,11 @@ public abstract class Operation implements ValAdapter {
     // just without negative connotation
     // upd: ok nevermind it has kinda negative connotation now since unspecified is now very strict
     // maybe I should make a separate unspecified type for failed operations :hmm:
-    public static final Val unit = FW.telephonist("unit", (arg) -> Operation.unit);
+    public static final Val unit = FW.telephonist((arg) -> Operation.unit, CallContract.constant(() -> Operation.unit));
 
     public abstract Val apply(State state);
+
+    public abstract InvokeContract contract();
 
     private final Val asVal;
     private Boolean isPure = null;
@@ -57,11 +61,9 @@ public abstract class Operation implements ValAdapter {
         return asVal;
     }
 
-    protected abstract boolean isPure0();
-
     public final boolean operationAreYouPureQuestionMark() {
         if (isPure == null) {
-            isPure = isPure0();
+            isPure = contract().isPure();
         }
         return isPure;
     }

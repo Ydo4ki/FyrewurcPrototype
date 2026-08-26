@@ -1,6 +1,8 @@
 package org.fw.lib.stdlib.state.array;
 
 import org.fw.core.base.Val;
+import org.fw.core.contract.InvokeContract;
+import org.fw.core.contract._Constraint;
 import org.fw.core.state.WidePointer;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -28,7 +30,7 @@ public final class CreateArrayOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure0() {
-        return false;
+    public InvokeContract contract() {
+        return InvokeContract.returnsBrandNew(_Constraint.of(WidePointer.widePointer), true, false);
     }
 }

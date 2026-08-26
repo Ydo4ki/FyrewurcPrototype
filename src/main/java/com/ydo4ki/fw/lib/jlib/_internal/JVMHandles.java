@@ -47,7 +47,7 @@ public final class JVMHandles {
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
                     @Override
-                    protected Val execute0() {
+                    protected Val apply0() {
                         Class<?> cls = findType(descriptor);
                         return Val.of(JClassFw.jClass, cls);
                     }
@@ -59,7 +59,7 @@ public final class JVMHandles {
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
                     @Override
-                    protected Val execute0() {
+                    protected Val apply0() {
                         Class<?> elementType = findType(descriptor);
                         MethodHandle arrayCtor;
                         try {
@@ -81,7 +81,7 @@ public final class JVMHandles {
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
                     @Override
-                    protected Val execute0() {
+                    protected Val apply0() {
                         Class<?> arrayClass = findType(descriptor);
 
                         return Val.of(JMethodFw.jMethod, MethodHandles.arrayElementSetter(arrayClass));
@@ -94,7 +94,7 @@ public final class JVMHandles {
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
                     @Override
-                    protected Val execute0() {
+                    protected Val apply0() {
                         Class<?> arrayClass = findType(descriptor);
 
                         return Val.of(JMethodFw.jMethod, MethodHandles.arrayElementGetter(arrayClass));

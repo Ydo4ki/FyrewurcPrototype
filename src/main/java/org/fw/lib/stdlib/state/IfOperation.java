@@ -3,6 +3,7 @@ package org.fw.lib.stdlib.state;
 import org.fw.core.FW;
 import org.fw.core.base.Val;
 import org.fw.core.base.BoolFw;
+import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
@@ -47,7 +48,13 @@ public final class IfOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure0() {
-        return condition.operationAreYouPureQuestionMark() && ifTrue.operationAreYouPureQuestionMark() && ifFalse.operationAreYouPureQuestionMark();
+    public InvokeContract contract() {
+        return InvokeContract.unknown();
     }
+
+    // todo:
+//    @Override
+//    protected boolean isPure0() {
+//        return condition.operationAreYouPureQuestionMark() && ifTrue.operationAreYouPureQuestionMark() && ifFalse.operationAreYouPureQuestionMark();
+//    }
 }

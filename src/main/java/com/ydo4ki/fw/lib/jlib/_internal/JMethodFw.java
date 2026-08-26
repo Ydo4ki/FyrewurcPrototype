@@ -38,7 +38,7 @@ public final class JMethodFw {
                         }
                         return new SystemOperation() {
                             @Override
-                            protected Val execute0() {
+                            protected Val apply0() {
                                 try {
                                     return JVMHandles.jwrap(method.invokeWithArguments((Object[]) jArgs), method.type().returnType());
                                 } catch (Throwable e) {

@@ -1,10 +1,13 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.base.Val;
+import org.fw.core.contract.InvokeContract;
+import org.fw.core.contract._Constraint;
 import org.fw.core.state.LaserPointerFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.ValObj;
 
+// todo: return scopes and add it to them
 public final class CreateObjectOperation extends Operation {
 
     private final Val initialValue;
@@ -20,7 +23,7 @@ public final class CreateObjectOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure0() {
-        return false;
+    public InvokeContract contract() {
+        return InvokeContract.returnsBrandNew(_Constraint.of(LaserPointerFw.laserPointer), true, false);
     }
 }

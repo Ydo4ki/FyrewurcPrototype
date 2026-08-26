@@ -7,6 +7,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import com.ydo4ki.fw.lib.memlib.obj.AllocatedMemoryObj;
 import com.ydo4ki.fw.lib.jlib.data.JIntFw;
+import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -35,8 +36,8 @@ public final class AllocatedMemoryFw {
                                 }
 
                                 @Override
-                                protected boolean isPure0() {
-                                    return false;
+                                public InvokeContract contract() {
+                                    return InvokeContract.unknown();
                                 }
                             }.asVal();
                         });

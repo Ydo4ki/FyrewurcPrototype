@@ -2,6 +2,7 @@ package org.fw.lib.stdlib.state;
 
 import org.fw.core.FW;
 import org.fw.core.base.Val;
+import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.base.BoolFw;
@@ -39,8 +40,14 @@ public final class WhileOperation extends Operation {
     }
 
     @Override
-    protected boolean isPure0() {
-        return condition.operationAreYouPureQuestionMark() && body.operationAreYouPureQuestionMark(); // I don't know why would you use while in this case, but still
+    public InvokeContract contract() {
+        return InvokeContract.unknown();
     }
+
+    // todo:
+//    @Override
+//    protected boolean isPure0() {
+//        return condition.operationAreYouPureQuestionMark() && body.operationAreYouPureQuestionMark(); // I don't know why would you use while in this case, but still
+//    }
 }
 
