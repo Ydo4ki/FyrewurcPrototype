@@ -2,6 +2,7 @@ package org.fw.core.vit;
 
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.contract.CallContract;
 import org.fw.core.state.obj.State;
 
 import java.util.Objects;
@@ -31,6 +32,11 @@ public final class VitVal extends Vit {
     @Override
     public boolean isPure() {
         return true;
+    }
+
+    @Override
+    public CallContract evalContract() {
+        return CallContract.constant(this.eval());
     }
 
     @Override

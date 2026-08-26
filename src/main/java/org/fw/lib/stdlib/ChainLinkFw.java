@@ -9,7 +9,6 @@ import org.fw.core.base.BoolFw;
 import org.fw.core.base.CallFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
 import org.fw.lib.stdlib.expr.ExprFw;
 import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;

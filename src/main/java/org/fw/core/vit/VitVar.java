@@ -2,6 +2,7 @@ package org.fw.core.vit;
 
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.contract.CallContract;
 import org.fw.core.state.obj.State;
 
 public final class VitVar extends Vit {
@@ -25,6 +26,13 @@ public final class VitVar extends Vit {
     public boolean isPure() {
         return true;
     }
+
+    @Override
+    public CallContract evalContract() {
+        return contract;
+    }
+
+    private static final CallContract contract = CallContract.c(c -> c);
 
     @Override
     public String toString() {

@@ -1,11 +1,10 @@
 package org.fw.core.base;
 
-import org.fw.core.ast.Expr;
 import org.fw.core.commons.ValAdapter;
-import org.fw.lib.stdlib.constraint._Constraint;
+import org.fw.core.contract.CallContract;
+import org.fw.core.contract._Constraint;
 
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public abstract class Type implements ValAdapter {
 
@@ -16,6 +15,8 @@ public abstract class Type implements ValAdapter {
     }
 
     abstract Val callInstance(Val instance, Val arg);
+
+    abstract CallContract instanceContract(Val instance);
 
     public abstract Val asVal();
 
@@ -30,6 +31,11 @@ public abstract class Type implements ValAdapter {
         @Override
         public Val callInstance(Val instance, Val arg) {
             return asVal.call(CallFw.fwCall(instance, arg));
+        }
+
+        @Override
+        CallContract instanceContract(Val instance) {
+            return CallContract.unknown();
         }
 
         @Override
@@ -79,6 +85,11 @@ public abstract class Type implements ValAdapter {
         }
 
         @Override
+        CallContract instanceContract(Val instance) {
+            return instance._unpack(Telephonist.class).contract();
+        }
+
+        @Override
         public Val asVal() {
             return val;
         }
@@ -97,41 +108,32 @@ public abstract class Type implements ValAdapter {
         }
 
         public static final class Telephonist {
-            private final Supplier<Expr> representation;
             private final CallFunction function;
+            private final CallContract contract;
 
-            public Telephonist(Supplier<Expr> representation, CallFunction function) {
-                this.representation = representation;
+            public Telephonist(CallFunction function, CallContract contract) {
                 this.function = function;
-            }
-
-            public Supplier<Expr> representation() {
-                return representation;
+                this.contract = contract;
             }
 
             public CallFunction function() {
                 return function;
             }
 
+            public CallContract contract() {
+                return contract;
+            }
+
             @Override
-            public boolean equals(Object obj) {
-                if (obj == this) return true;
-                if (obj == null || obj.getClass() != this.getClass()) return false;
-                Telephonist that = (Telephonist) obj;
-                return Objects.equals(this.representation, that.representation) &&
-                        Objects.equals(this.function, that.function);
+            public boolean equals(Object o) {
+                if (o == null || getClass() != o.getClass()) return false;
+                Telephonist that = (Telephonist) o;
+                return Objects.equals(function, that.function) && Objects.equals(contract, that.contract);
             }
 
             @Override
             public int hashCode() {
-                return Objects.hash(representation, function);
-            }
-
-            @Override
-            public String toString() {
-                return "Telephonist[" +
-                        "representation=" + representation + ", " +
-                        "function=" + function + ']';
+                return Objects.hash(function, contract);
             }
         }
     }

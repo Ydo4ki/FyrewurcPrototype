@@ -1,10 +1,9 @@
-package org.fw.lib.stdlib.constraint;
+package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Symbol;
-import org.fw.lib.stdlib.VitFw;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 

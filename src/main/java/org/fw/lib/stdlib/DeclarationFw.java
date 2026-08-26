@@ -9,7 +9,6 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
 
 import java.util.Objects;
 

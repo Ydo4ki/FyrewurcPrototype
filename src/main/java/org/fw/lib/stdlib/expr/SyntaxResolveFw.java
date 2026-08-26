@@ -4,7 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.ChainResolveFw;
 import org.fw.lib.stdlib.WrapperTypeFw;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
+import org.fw.lib.stdlib.ConstraintFw;
 
 import static org.fw.core.FW.symbol;
 

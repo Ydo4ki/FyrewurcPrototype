@@ -6,7 +6,6 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ExprFw;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;

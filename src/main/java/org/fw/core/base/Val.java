@@ -2,6 +2,7 @@ package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.commons.PureCallable;
+import org.fw.core.contract.CallContract;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
@@ -24,8 +25,12 @@ public abstract class Val implements PureCallable<Val> {
     public abstract Type asType();
 
     @Override
-    public Val call(Val arg) {
+    public final Val call(Val arg) {
         return type().callInstance(this, arg);
+    }
+
+    public CallContract callContract() {
+        return type().instanceContract(this);
     }
 
     public Expr toExpr(CompEnv compEnv) {
@@ -126,9 +131,7 @@ public abstract class Val implements PureCallable<Val> {
         @Override
         public String toString() {
             if (type == Val.ofTelephonist(0).asType()) {
-                Type.TelephonistType.Telephonist value = this._unpack();
-                if (value.representation() == null || value.representation().get() == null) return "*";
-                return value.representation().get().toString();
+                return "*";
             }
             return "Val[" +
                     "type=" + type.asVal() + ", " +
@@ -158,7 +161,7 @@ public abstract class Val implements PureCallable<Val> {
 
         @Override
         public Object value() {
-            if (value == null) value = new Type.TelephonistType.Telephonist(() -> Symbol.of(this.toString()), (arg) -> {
+            if (value == null) value = new Type.TelephonistType.Telephonist((arg) -> {
                 if (FwUtils.isTypeApiCall(arg, asType())) {
                     Val instance = CallFw.getVal(arg);
                     Val cArg = CallFw.getArg(arg);
@@ -167,7 +170,7 @@ public abstract class Val implements PureCallable<Val> {
                 }
                 throw new RuntimeException("I have no idea when is this suppose to happen so if you see this message now you know");
 //                return Unspecified.unspecified; // idk
-            });
+            }, CallContract.unknown());
             return value;
         }
 

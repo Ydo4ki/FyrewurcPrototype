@@ -1,7 +1,6 @@
 package org.fw.lib.stdlib;
 
 import org.fw.core.base.Type;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
 
 import static org.fw.core.FW.symbol;
 

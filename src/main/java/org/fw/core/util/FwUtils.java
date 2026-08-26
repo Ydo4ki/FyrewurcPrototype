@@ -14,7 +14,7 @@ import org.fw.core.base.TypeGetFw;
 import org.fw.lib.stdlib.Lib;
 import org.fw.lib.stdlib.ModuleFw;
 import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.constraint._Constraint;
+import org.fw.core.contract._Constraint;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;

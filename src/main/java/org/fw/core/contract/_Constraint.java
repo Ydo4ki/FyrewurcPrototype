@@ -1,4 +1,4 @@
-package org.fw.lib.stdlib.constraint;
+package org.fw.core.contract;
 
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;

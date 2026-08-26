@@ -6,7 +6,7 @@ import org.fw.core.commons.AbstractValAdapted;
 import org.fw.core.ast.Expr;
 import org.fw.lib.stdlib.ChainResolveFw;
 import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
+import org.fw.lib.stdlib.ConstraintFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 

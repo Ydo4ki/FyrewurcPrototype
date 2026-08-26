@@ -6,7 +6,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.*;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
+import org.fw.lib.stdlib.ConstraintFw;
 import com.ydo4ki.fw.lib.memlib.ints.IntTypeFw;
 
 import java.util.function.Supplier;
@@ -46,12 +46,6 @@ public class ToExprFn {
         arg = arg.call(symbol("passing"));
 
         Type type = arg.type();
-        if (type.equals(Val.ofTelephonist(0).asType())) {
-            Type.TelephonistType.Telephonist tele = arg._unpack();
-            Supplier<Expr> r = tele.representation();
-            if (r != null)
-                return ExprFw.wrap(r.get());
-        }
 
         if (type.equals(OperatorExprFw.exprOperator) || type.equals(SenderExprFw.exprSender)) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,

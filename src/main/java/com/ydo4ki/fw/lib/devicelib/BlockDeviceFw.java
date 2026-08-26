@@ -3,7 +3,7 @@ package com.ydo4ki.fw.lib.devicelib;
 import org.fw.core.base.Type;
 import org.fw.lib.stdlib.DeclarationFw;
 import org.fw.lib.stdlib.StructFw;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
+import org.fw.lib.stdlib.ConstraintFw;
 
 import static org.fw.core.FW.symbol;
 

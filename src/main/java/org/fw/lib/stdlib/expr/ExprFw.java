@@ -3,7 +3,7 @@ package org.fw.lib.stdlib.expr;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.*;
-import org.fw.lib.stdlib.constraint.ConstraintFw;
+import org.fw.lib.stdlib.ConstraintFw;
 import org.fw.lib.stdlib.dvec.DVecBuilderFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.core.util.FwUtils;

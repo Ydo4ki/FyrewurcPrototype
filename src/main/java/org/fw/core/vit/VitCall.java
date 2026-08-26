@@ -3,6 +3,9 @@ package org.fw.core.vit;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.contract.CallContract;
+import org.fw.core.contract._Constraint;
+import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.expr.CompEnv;
@@ -20,6 +23,8 @@ public final class VitCall extends Vit {
 
     @Override
     public Val eval(RtEnv rtEnv, State state) {
+        if (isConst != null)
+            return isConst;
         return func.eval(rtEnv, state).call(arg.eval(rtEnv, state));
     }
 
@@ -41,16 +46,22 @@ public final class VitCall extends Vit {
 
     private final Vit func;
     private final Vit arg;
-    private final boolean isConst;
+    private final Val isConst;
     private final boolean isPure;
+    private CallContract contract;
 
     private VitCall(Vit func, Vit arg, boolean isConst, boolean isPure) {
         Objects.requireNonNull(func);
         Objects.requireNonNull(arg);
         this.func = func;
         this.arg = arg;
-        this.isConst = isConst;
         this.isPure = isPure;
+        if (isConst) {
+            this.isConst = func.eval().call(arg.eval());
+        } else {
+            this.isConst = null;
+        }
+
     }
 
     public Vit func() {
@@ -62,7 +73,7 @@ public final class VitCall extends Vit {
     }
 
     public boolean isConst() {
-        return isConst;
+        return isConst != null;
     }
 
     public boolean isPure() {
@@ -70,18 +81,28 @@ public final class VitCall extends Vit {
     }
 
     @Override
+    public CallContract evalContract() {
+        if (contract == null) {
+            if (isConst()) {
+                contract = CallContract.constant(this.isConst);
+            } else {
+                contract = CallContract.unknown();
+            }
+        }
+        return contract;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         VitCall that = (VitCall) obj;
-        return this.isConst == that.isConst &&
-                this.isPure == that.isPure &&
-                Objects.equals(this.func, that.func) &&
+        return  Objects.equals(this.func, that.func) &&
                 Objects.equals(this.arg, that.arg);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(func, arg, isConst, isPure);
+        return Objects.hash(func, arg);
     }
 }
