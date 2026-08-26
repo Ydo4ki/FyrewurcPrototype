@@ -7,7 +7,7 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.*;
 import org.fw.lib.stdlib.constraint.ConstraintFw;
-import com.ydo4ki.fyrewurc.lib.memlib.ints.IntTypeFw;
+import com.ydo4ki.fw.lib.memlib.ints.IntTypeFw;
 
 import java.util.function.Supplier;
 
@@ -47,7 +47,7 @@ public class ToExprFn {
 
         Type type = arg.type();
         if (type.equals(Val.ofTelephonist(0).asType())) {
-            TelephonistType.Telephonist tele = arg._unpack();
+            Type.TelephonistType.Telephonist tele = arg._unpack();
             Supplier<Expr> r = tele.representation();
             if (r != null)
                 return ExprFw.wrap(r.get());
@@ -73,7 +73,7 @@ public class ToExprFn {
             return arg._unpack(); // it was supposed to be a symbol
         }
 
-        if (type instanceof TelephonistType) {
+        if (type instanceof Type.TelephonistType) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.braces));
         }
         return null;

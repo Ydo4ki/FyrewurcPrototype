@@ -54,7 +54,7 @@ public abstract class Val implements PureCallable<Val> {
     }
 
     public static Val of(Type type, Object value) {
-        if (type instanceof TelephonistType && !(value instanceof TelephonistType.Telephonist))
+        if (type instanceof Type.TelephonistType && !(value instanceof Type.TelephonistType.Telephonist))
             throw new Error();
         return new Box(Objects.requireNonNull(type), value);
     }
@@ -126,7 +126,7 @@ public abstract class Val implements PureCallable<Val> {
         @Override
         public String toString() {
             if (type == Val.ofTelephonist(0).asType()) {
-                TelephonistType.Telephonist value = this._unpack();
+                Type.TelephonistType.Telephonist value = this._unpack();
                 if (value.representation() == null || value.representation().get() == null) return "*";
                 return value.representation().get().toString();
             }
@@ -140,7 +140,7 @@ public abstract class Val implements PureCallable<Val> {
     public static final class TelephonistVal extends Val {
 
         private final int depth;
-        private TelephonistType asType;
+        private Type.TelephonistType asType;
         private Object value;
 
         TelephonistVal(int depth) {
@@ -158,7 +158,7 @@ public abstract class Val implements PureCallable<Val> {
 
         @Override
         public Object value() {
-            if (value == null) value = new TelephonistType.Telephonist(() -> Symbol.of(this.toString()), (arg) -> {
+            if (value == null) value = new Type.TelephonistType.Telephonist(() -> Symbol.of(this.toString()), (arg) -> {
                 if (FwUtils.isTypeApiCall(arg, asType())) {
                     Val instance = CallFw.getVal(arg);
                     Val cArg = CallFw.getArg(arg);
@@ -173,7 +173,7 @@ public abstract class Val implements PureCallable<Val> {
 
         @Override
         public Type asType() {
-            if (asType == null) asType = new TelephonistType(this);
+            if (asType == null) asType = new Type.TelephonistType(this);
             return asType;
         }
 

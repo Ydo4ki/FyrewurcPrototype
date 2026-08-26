@@ -15,29 +15,29 @@ import static org.fw.core.vit.Vit.val;
 
 public final class FW {
     // I changed my mind (partially)
-    public static Val telephonist(String name, TelephonistType.CallFunction call) {
+    public static Val telephonist(String name, Type.TelephonistType.CallFunction call) {
         return telephonistE(() -> FwUtils.parse(name).getExpr(), call);
     }
 
-    public static Val telephonist(TelephonistType.CallFunction call, TelephonistType.ConstraintCallFunction constraintCall) {
+    public static Val telephonist(Type.TelephonistType.CallFunction call, Type.TelephonistType.ConstraintCallFunction constraintCall) {
         return telephonist(call);
     }
 
-    public static Val telephonist(TelephonistType.CallFunction call) {
-        return Val.of(Val.ofTelephonist(0).asType(), new TelephonistType.Telephonist(null, call));
+    public static Val telephonist(Type.TelephonistType.CallFunction call) {
+        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(null, call));
     }
 
-    public static Val telephonist(Supplier<String> name, TelephonistType.CallFunction call) {
+    public static Val telephonist(Supplier<String> name, Type.TelephonistType.CallFunction call) {
         return telephonistE(() -> FwUtils.parse(name.get()).getExpr(), call);
     }
 
-    public static Val telephonist(Expr representation, TelephonistType.CallFunction call) {
-        return Val.of(Val.ofTelephonist(0).asType(), new TelephonistType.Telephonist(() -> representation, call));
+    public static Val telephonist(Expr representation, Type.TelephonistType.CallFunction call) {
+        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(() -> representation, call));
     }
 
-    public static Val telephonistE(Supplier<Expr> representation, TelephonistType.CallFunction call) {
+    public static Val telephonistE(Supplier<Expr> representation, Type.TelephonistType.CallFunction call) {
 //        System.out.println("# New Telephonist: " + representation);
-        return Val.of(Val.ofTelephonist(0).asType(), new TelephonistType.Telephonist(LazyObj.of(representation), call));
+        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(LazyObj.of(representation), call));
     }
 
     public static Val symbol(String value) {
