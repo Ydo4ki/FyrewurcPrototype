@@ -26,7 +26,44 @@ public final class SyntaxResolveFw {
                 return null;
             }));
 
-    public static final Type toExprResolve = ChainResolveFw.chainResolveType(ConstraintFw.isSpecified);
+    private static final Type crtcis = ChainResolveFw.chainResolveType(ConstraintFw.isSpecified);
+
+//    public static final Type toExprResolve = crtcis;
+
+    public static final Type toExprResolve = WrapperTypeFw.wrapperType(crtcis,
+            FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(rawPayload::call))), FW.telephonist(arg -> {
+                if (arg.equals(symbol("builder"))) {
+                    return FW.telephonist((passingArg) -> {
+                        if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
+                            return null;
+
+                        return FW.telephonist((chain) -> {
+                            return Val.of(SyntaxResolveFw.toExprResolve, new ChainResolveFw.ChainResolve(passingArg, chain));
+                        });
+                    });
+                }
+                return null;
+            }));
+    public static final Type toFnResolve = WrapperTypeFw.wrapperType(crtcis,
+            FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(rawPayload::call))), FW.telephonist(arg -> {
+                if (arg.equals(symbol("builder"))) {
+                    return FW.telephonist((passingArg) -> {
+                        if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
+                            return null;
+
+                        return FW.telephonist((chain) -> {
+                            return Val.of(SyntaxResolveFw.toFnResolve, new ChainResolveFw.ChainResolve(passingArg, chain));
+                        });
+                    });
+                }
+                return null;
+            }));
+
+    // ehh we really need something like MarkedType that would do the same as its payload but contain something to distinguish
+    static {
+        if (toExprResolve.equals(toFnResolve))
+            throw new AssertionError("RIP");
+    }
 
     public static final Val syntaxResolveToExpr = FW.telephonist((arg) -> {
         if (arg.type() != ToExprFn.toExprResolve)

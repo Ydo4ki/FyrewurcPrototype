@@ -1,4 +1,3 @@
-(module)
 (module
  (: new! (fn [(= x)] !>
   (invoke! (call LaserPointer.new x))))

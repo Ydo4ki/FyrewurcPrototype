@@ -1,4 +1,4 @@
-package org.fw.lib.stdlib;
+package org.fw.lib.stdlib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
@@ -6,16 +6,25 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
 import org.fw.core.vit.VitUtils;
+import org.fw.lib.stdlib.DIntFw;
+import org.fw.lib.stdlib.FunctionFw;
+import org.fw.lib.stdlib.Lib;
+import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.dvec.DVecBuilderFw;
-import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.core.vit.Vit;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
 public final class FnCallFw {
-    public static final Val fnCallCenv = FW.telephonist((arg) -> {
+    public static final Val fnCallCEnv = FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val.type() == FunctionFw.function) {
+                return val.get("fn-call");
+            }
+        }
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
@@ -36,11 +45,14 @@ public final class FnCallFw {
                 }
                 varValuesV = Vit.val(DVecBuilderFw.dvecbf).call(varValuesV);
 
-                return VitFw.wrap(Vit.invoke(fv.call(symbol("fn-call")).call(VitUtils.simplify(varValuesV))));
+//                Vit getop = fv.call(symbol("fn-call")).call(VitUtils.simplify(varValuesV));
+                Vit getop = Vit.val(compEnv).call(CompEnv.toFnResolve(fv, CompEnv.of(compEnv)))
+                        .call(VitUtils.simplify(varValuesV));
+                return VitFw.wrap(Vit.invoke(getop));
             }
         }
         return null;
     });
 
-    public static final Lib lib = Lib.ofCEnv(fnCallCenv);
+    public static final Lib lib = Lib.ofCEnv(fnCallCEnv);
 }

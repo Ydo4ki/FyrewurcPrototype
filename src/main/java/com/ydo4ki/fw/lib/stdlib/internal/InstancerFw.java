@@ -1,4 +1,4 @@
-package org.fw.lib.stdlib.telephonist;
+package com.ydo4ki.fw.lib.stdlib.internal;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;

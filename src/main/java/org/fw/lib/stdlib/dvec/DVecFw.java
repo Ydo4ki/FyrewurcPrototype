@@ -32,10 +32,8 @@ public final class DVecFw {
             if (cArg.type().equals(SymbolFw.symbol)) {
                 String text = cArg._unpack().toString();
                 switch (text) {
-                    case "size":
+                    case "size": // ???
                         return DIntFw.dint(vec.length);
-                    // errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-                    // that's probably it
                     case "iter-type":
                         return DVecIterFw.iterType(instance).asVal();
                     case "first":
@@ -46,18 +44,19 @@ public final class DVecFw {
             } else
                 // deprecated (probably)
                 if (cArg.type().equals(DIntFw.dint)) {
-                BigInteger v = DIntFw.unwrap0(cArg);
-                // perhaps its better to use boxes for results of this
-                // otherwise there's no way to distinguish "out of range" result from a proper one
-                // except for duplicating range checks
-                // todo
-                if (v.bitLength() > 32)
-                    return null; // out of range
-                int i = v.intValue();
-                if (i < 0 || i >= vec.length)
-                    return null; // out of range
-                return vec[i];
-            }
+                    BigInteger v = DIntFw.unwrap0(cArg);
+                    // perhaps its better to use boxes for results of this
+                    // otherwise there's no way to distinguish "out of range" result from a proper one
+                    // except for duplicating range checks
+                    // nevermind we just moved to iterators, just move this to a separate value later
+                    // also I feel like we're still 30 years before finishing this as a usable language
+                    if (v.bitLength() > 32)
+                        return null; // out of range
+                    int i = v.intValue();
+                    if (i < 0 || i >= vec.length)
+                        return null; // out of range
+                    return vec[i];
+                }
         } else if (arg.equals(symbol("builder"))) {
             return DVecBuilderFw.emptyBuilder;
         }

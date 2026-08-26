@@ -30,7 +30,7 @@ public final class _Constraint {
         return a.eval(RtEnv.of(val)).equals(BoolFw._true);
     }
 
-    // constraint of call result
+    // constraint of the call result
     public _Constraint call(_Constraint constraint) {
         return of(
                 VitUtils.substitude(a, constraint.a)

@@ -1,4 +1,4 @@
-package org.fw.lib.stdlib;
+package org.fw.lib.stdlib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
@@ -7,9 +7,9 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Val;
 import org.fw.core.vit.Vit;
-import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.ExprFw;
-import org.fw.lib.stdlib.expr.SyntaxResolveFw;
+import org.fw.lib.stdlib.DIntFw;
+import org.fw.lib.stdlib.Lib;
+import org.fw.lib.stdlib.VitFw;
 
 import static org.fw.core.FW.symbol;
 

@@ -7,6 +7,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.dvec.DVecFw;
+import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -24,7 +25,6 @@ public final class JMethodFw {
             MethodHandle method = instance._unpack();
 
             switch (arg._unpack(Symbol.class).getValue()) {
-                case "fn-call":
                 case "invoke-method": {
                     return FW.telephonist(argumentsVec -> {
                         if (argumentsVec.type() != DVecFw.dVec)
@@ -55,4 +55,16 @@ public final class JMethodFw {
         }
         return null;
     }).asType();
+
+
+    public static final Val methodCallCEnv = FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val.type() == JMethodFw.jMethod) {
+                return val.get("invoke-method");
+            }
+        }
+        return null;
+    });
 }
