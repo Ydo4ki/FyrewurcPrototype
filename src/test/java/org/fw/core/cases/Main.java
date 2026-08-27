@@ -82,7 +82,7 @@ public class Main {
         ));
 
 //        Tester.testFw(FW.class, "test-int", compEnv);
-        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-int.fw"));
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(Main.class.getResourceAsStream("test-int.fw"));
         for (LocatedExpr<? extends Expr> locatedExpression : expressions) {
             Expr expression = locatedExpression.getExpr();
             Vit vit;

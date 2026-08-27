@@ -56,7 +56,7 @@ public final class VitCall extends Vit {
         this.func = func;
         this.arg = arg;
         this.isPure = isPure;
-        if (isConst) {
+        if (isConst && isPure) {
             this.isConst = func.eval().call(arg.eval());
         } else {
             this.isConst = null;

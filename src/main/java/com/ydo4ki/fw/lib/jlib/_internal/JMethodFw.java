@@ -6,6 +6,7 @@ import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
+import org.fw.lib.stdlib.FunctionFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.lib.stdlib.state.SystemOperation;

@@ -39,8 +39,6 @@ public final class FnCallFw {
                 Vit fv = VitFw.unwrap(fvv, f);
 
                 Vit varValuesV = Vit.val(DVecBuilderFw.emptyBuilder);
-                if (isize == 1)
-                    System.out.println("!!!!");
                 for (int i = 1; i < isize; i++) {
                     Expr eee = exprVal.call(DIntFw.dint(i))._unpack();
                     varValuesV = varValuesV.call(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv))), eee));

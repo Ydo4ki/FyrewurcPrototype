@@ -10,6 +10,7 @@ import org.fw.lib.stdlib.StrFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
@@ -65,7 +66,8 @@ public final class JClassFw {
                             if (!arg1.type().equals(StrFw.str)) return null;
                             String descriptor = arg1._unpack();
                             try {
-                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStaticGetter(cls, name, JVMHandles.findType(descriptor)));
+                                MethodHandle mh = JVMHandles.lookup.findStaticGetter(cls, name, JVMHandles.findType(descriptor));
+                                return Val.of(JMethodFw.jMethod, mh);
                             } catch (IllegalAccessException e) {
                                 return Operation.unit;
                             }
