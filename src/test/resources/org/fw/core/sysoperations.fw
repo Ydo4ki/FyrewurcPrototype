@@ -1,4 +1,5 @@
 (: System (invoke! (call _JvmEnv.find-type "Ljava/lang/System;")))
+(call (get (call System.get-static-getter "out" "Ljava/io/PrintStream;") invoke-method) [])
 (: out ((call System.get-static-getter "out" "Ljava/io/PrintStream;")))
 
 (: println! (do

@@ -25,7 +25,7 @@ public final class CreateArrayOperation extends Operation {
         for (int i = 0; i < value.length; i++) {
             value[i] = initialize.apply(i).apply(state);
         }
-        ValArrayObj obj = new ValArrayObj(value, state);
+        ValArrayObj obj = new ValArrayObj(value, state.scope());
         return Val.of(WidePointer.widePointer, obj);
     }
 

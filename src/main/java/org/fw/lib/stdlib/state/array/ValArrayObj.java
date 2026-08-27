@@ -1,15 +1,13 @@
 package org.fw.lib.stdlib.state.array;
 
 import org.fw.core.base.Val;
-import org.fw.core.state.obj.AbstractObj;
-import org.fw.core.state.obj.State;
-import org.fw.core.state.obj.ValObj;
+import org.fw.core.state.obj.*;
 import org.fw.core.state.operation.Operation;
 
 public final class ValArrayObj extends AbstractObj {
     private final Val[] value;
 
-    public ValArrayObj(Val[] value, State owner) {
+    public ValArrayObj(Val[] value, Scope owner) {
         super(owner);
         this.value = value;
     }
@@ -56,6 +54,11 @@ public final class ValArrayObj extends AbstractObj {
         @Override
         public State state() {
             return valArrayObj.state();
+        }
+
+        @Override
+        public Obj partOf() {
+            return valArrayObj;
         }
     }
 }

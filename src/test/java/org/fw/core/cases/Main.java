@@ -1,5 +1,6 @@
 package org.fw.core.cases;
 
+import com.ydo4ki.fw.lib.jlib._internal.JMethodFw;
 import org.fw.core.FW;
 import org.fw.core.Tester;
 import org.fw.core.ast.*;
@@ -71,7 +72,8 @@ public class Main {
                 )),
                 StdLib.lib.exports(),
                 MemLib.lib.exports(),
-                DeviceLib.lib.exports()
+                DeviceLib.lib.exports(),
+                JMethodFw.methodCallCEnv
         ));
 
         compEnv = CompEnv.of(CompEnv.compEnv(

@@ -6,8 +6,6 @@ import org.fw.core.base.Val;
 import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 
-// todo: return scopes
-@Deprecated
 public final class GetLocalStateOperation extends Operation {
 
     private static final GetLocalStateOperation instance = new GetLocalStateOperation();
@@ -35,9 +33,4 @@ public final class GetLocalStateOperation extends Operation {
     public Expr toExpr() {
         return Symbol.of("GetLocalStateOperation");
     }
-
-//    @Override
-//    protected boolean isPure0() {
-//        return false;
-//    }
 }

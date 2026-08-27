@@ -7,6 +7,8 @@ public interface Obj {
 
     State state();
 
+    Obj partOf();
+
     default void shmert() {
 
     }

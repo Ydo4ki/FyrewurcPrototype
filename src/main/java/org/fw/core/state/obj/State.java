@@ -3,12 +3,10 @@ package org.fw.core.state.obj;
 import org.fw.core.base.Val;
 import org.fw.core.state.LaserPointerFw;
 
-import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.function.Function;
 
 public final class State implements Obj {
-    private final Map<Obj, Obj> objects = new WeakHashMap<>();
+    private final Scope scope = new Scope(this);
 
     public static State eternal() {
         return new State();
@@ -23,19 +21,22 @@ public final class State implements Obj {
         return ret;
     }
 
-    public void shmert() {
-        for (Obj obj : objects.values()) {
-            obj.shmert();
-        }
+    public Scope scope() {
+        return scope;
     }
 
-    void add(Obj obj) {
-        objects.put(obj, obj);
+    public void shmert() {
+        scope.shmert();
     }
 
     @Override
     public State state() {
         return this;
+    }
+
+    @Override
+    public Obj partOf() {
+        return null;
     }
 
     private final Val asVal = Val.of(LaserPointerFw.laserPointer, this);

@@ -8,13 +8,13 @@ import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
+import org.fw.core.state.obj.AtomObj;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.AccumulatorsExprFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.LaserPointerFw;
-import org.fw.core.state.obj.ValObj;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
@@ -54,7 +54,7 @@ class CompEnvTest {
     static {
 //        testValsMap.put("Test", TestFw.test.asVal());
         testValsMap.put("+", Val.of(AccumulatorsExprFw.exprAccumulator, symbol("+")));
-        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, ValObj.of(DIntFw.dint(14), SystemOperation.systemState)));
+        testValsMap.put("test-obj", Val.of(LaserPointerFw.laserPointer, AtomObj.of(DIntFw.dint(14), SystemOperation.systemState.scope())));
 //        testValsMap.put("obj-stream", Val.of(StateHoleFw.statehole, new ObjStream(Val.unspecified, context.scope())));
     }
 

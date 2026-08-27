@@ -28,6 +28,11 @@ public final class AllocatedMemoryObj implements Obj {
         return heap.state();
     }
 
+    @Override
+    public Obj partOf() {
+        return heap;
+    }
+
     public ByteBuffer buffer() {
         return directMemoryBuffer;
     }
