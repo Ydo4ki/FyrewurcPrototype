@@ -97,7 +97,7 @@ public abstract class Val implements PureCallable<Val> {
 
         Box(Type type, Object value) {
             this.type = type;
-            this.value = value;
+            this.value = Objects.requireNonNull(value);
         }
 
         @Override

@@ -6,6 +6,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
@@ -56,7 +57,7 @@ public final class DoFw {
     }));
 
     private static Vit compileDo(Val exprVal, int start, int isize, Val compEnv) throws VitCompilationException {
-        Vit execution = Vit.val(Val.of(DoFw.unaryStoreType, null));
+        Vit execution = Vit.val(Val.of(DoFw.unaryStoreType, Operation.unit));
         for (int i = start; i < isize - 1; i++) {
             Expr line = exprVal.call(DIntFw.dint(i + 1))._unpack();
             if (line instanceof ExprList && ((ExprList) line).size() == 3 && ((ExprList) line).get(0).toString().equals(":")) {
@@ -109,7 +110,7 @@ public final class DoFw {
 
     public static final Lib lib = Lib.of(
             ModuleFw.module(
-                    DeclaredFw.declared(symbol("unary-store"), Val.of(DoFw.unaryStoreType, null)),
+                    DeclaredFw.declared(symbol("unary-store"), Val.of(DoFw.unaryStoreType, Operation.unit)),
                     DeclaredFw.declared(symbol("unary-store-last"), DoFw.usLast)
             ),
             DoFw.directivesCenv.asVal()

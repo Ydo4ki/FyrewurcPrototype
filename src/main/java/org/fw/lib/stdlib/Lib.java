@@ -47,7 +47,7 @@ public final class Lib {
                 module,
                 moduleInverted,
                 extraCEnv
-//                , CompEnv.compEnv(parent.exports(), over.exports())
+                , CompEnv.compEnv(parent.exports(), over.exports())
         );
     }
 
@@ -87,8 +87,8 @@ public final class Lib {
         this.extraCEnv = extraCEnv;
         m_exports = CompEnv.compEnv(
                 extraCEnv,
-                ModuleFw.ModuleCEnvFw.toExprCompEnv(moduleInverted),
-                ModuleFw.ModuleCEnvFw.compEnv(module)
+                moduleInverted == null ? null : ModuleFw.ModuleCEnvFw.toExprCompEnv(moduleInverted),
+                module == null ? null : ModuleFw.ModuleCEnvFw.compEnv(module)
         );
     }
 

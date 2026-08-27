@@ -42,7 +42,9 @@ public final class ChainLinkFw {
 
 //                    if (Unspecified.isUnspecified(ret))
                 if (typeInfo.constraint.call(symbol("check")).call(ret) != BoolFw._true)
-                    return instance.parentCEnv().call(cArg);
+                    return instance
+                            .parentCEnv()
+                            .call(cArg);
 
                 return ret;
 //                if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
@@ -81,8 +83,13 @@ public final class ChainLinkFw {
 
 
     public static Val chain(Type type, Val... links) {
-        Val actual = links[0];
-        for (int i = 1; i < links.length; i++) {
+        int i = 0;
+        Val actual = links[i++];
+        while (actual == null) {
+            if (i == links.length) return FW.telephonist(a -> null);
+            actual = links[i++];
+        }
+        for (; i < links.length; i++) {
             if (links[i] == null)
                 continue;
             actual = chain(type, actual, links[i]);
@@ -116,7 +123,7 @@ public final class ChainLinkFw {
 
         ChainLinkRecord(Val primary, Val parent) {
             this.primary = primary;
-            this.parent = parent;
+            this.parent = Objects.requireNonNull(parent);
         }
 
         public Val resolver() {

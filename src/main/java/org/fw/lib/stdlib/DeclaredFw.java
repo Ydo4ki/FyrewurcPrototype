@@ -151,17 +151,17 @@ public final class DeclaredFw {
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
                     case ":": {
                         if (isize != 3)
-                            return null;
+                            return VitErrorFw.rrror(f, "3 elements expected");
 
                         Val name = exprVal.call(DIntFw.dint(1));
                         if (!name.type().equals(SymbolFw.symbol))
-                            return null; // symbol expected
+                            return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
                         Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(value.type()))
                             return value; // error idk
 
-                        return VitFw.wrap(Vit.val(declared.asVal()).call(symbol("builder")).call(name).call(VitFw.unwrap0(value)));
+                        return VitFw.wrap(Vit.val(declared.asVal()).call(symbol("builder")).call(name).call(value._unpack(Vit.class)));
                     }
                 }
             }
