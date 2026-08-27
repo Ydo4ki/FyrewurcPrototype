@@ -24,6 +24,7 @@ public final class StdLib {
     }));
 
     public static final Lib lib = FwUtils.l(StdLib.class, Lib.combine(
+            Lib.ofCEnv(VitErrorFw.cantResolveAnythingCenv),
             Lib.ofCEnv(StdLib.somethingToExpr.asVal()),
             BaseFw.lib,
             VitFw.lib,

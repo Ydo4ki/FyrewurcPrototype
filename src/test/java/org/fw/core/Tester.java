@@ -26,9 +26,9 @@ public final class Tester {
 
     public static void testFw(Class<?> cls, String filename, CompEnv compEnv) throws IOException {
         Operation op = FwUtils.getOperation(cls, filename, CompEnv.of(CompEnv.compEnv(
-                        testDirectivesCenv.asVal(),
-                        compEnv.asVal()
-                )));
+                compEnv.asVal(),
+                testDirectivesCenv.asVal()
+        )));
         op.apply(SystemOperation.systemState);
     }
 
@@ -65,7 +65,7 @@ public final class Tester {
 
                     Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(condition.type()))
-                        return null;
+                        return condition;
                     Vit vitOperation = Vit.call(OperationFw._VitOperation, condition).call(Vit.var);
                     Vit assertOperation = Vit.call(FW.telephonist(arg1 ->
                             new AssertOperation(arg1._unpack(Operation.class)).asVal()), vitOperation);

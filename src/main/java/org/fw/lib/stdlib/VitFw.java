@@ -14,6 +14,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.core.vit.*;
+import org.fw.lib.stdlib.expr.VitErrorFw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,6 +220,10 @@ public final class VitFw {
         ) {
             return vit._unpack();
         }
+        if (vit.type().equals(VitErrorFw.vitError))
+            //noinspection DataFlowIssue
+            throw new VitCompilationException(ExprFw.unwrap(vit.get("expr")), vit.get("message")._unpack());
+
         if (expr == null)
             throw new VitCompilationException(vit);
         throw new VitCompilationException(expr);

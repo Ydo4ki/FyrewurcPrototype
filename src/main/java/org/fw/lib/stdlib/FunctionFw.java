@@ -12,6 +12,7 @@ import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.*;
+import org.fw.lib.stdlib.expr.VitErrorFw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,7 @@ public final class FunctionFw {
                 if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
                     case "fn": {
                         if (isize != 4)
-                            return null;
+                            return VitErrorFw.rrror(expr, "4 arguments expected");
                         Expr arrow = exprVal.call(DIntFw.dint(2))._unpack();
                         boolean pure;
                         if (arrow instanceof Symbol) {
@@ -95,20 +96,26 @@ public final class FunctionFw {
                         } else return null;
 
                         Expr paramsE = exprVal.call(DIntFw.dint(1))._unpack();
-                        if (!(paramsE instanceof ExprList) || ((ExprList) paramsE).getBracketsType() != BracketsTypes.square) {
-                            return null;
+                        if (!(paramsE instanceof ExprList)) {
+                            return VitErrorFw.rrror(paramsE, "ExprList expected");
+                        }
+                        if (((ExprList) paramsE).getBracketsType() != BracketsTypes.square) {
+                            return VitErrorFw.rrror(paramsE, "Squared bracket ExprList expected");
                         }
                         ExprList params = ((ExprList) paramsE);
                         List<FnParam> paramsList = new ArrayList<>();
                         for (Expr param : params) {
-                            if (!(param instanceof ExprList) || !((ExprList) param).get(0).toString().equals("="))
-                                return null;
+                            if (!(param instanceof ExprList)) {
+                                return VitErrorFw.rrror(param, "ExprList expected");
+                            }
+                            if (!((ExprList) param).get(0).toString().equals("="))
+                                return VitErrorFw.rrror(((ExprList) param).get(0), "'=' expected");
                             if (((ExprList) param).size() != 2)
-                                return null;
+                                return VitErrorFw.rrror(param, "2 elements expected");
 
                             Expr name = ((ExprList) param).get(1);
                             if (!(name instanceof Symbol))
-                                return null;
+                                return VitErrorFw.rrror(name, "Symbol expected");;
 
                             paramsList.add(new FnParam(((Symbol) name), null));
                         }
@@ -139,7 +146,7 @@ public final class FunctionFw {
 
                         Val body = newCompEnv.call(CompEnv.syntaxResolve(bodyE, CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(body.type()))
-                            return null;
+                            return body;
 
                         Vit varValuesV = Vit.var.call(symbol("%"));
 

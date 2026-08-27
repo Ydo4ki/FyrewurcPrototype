@@ -90,6 +90,10 @@ public final class ExprFw {
         });
     }).asType(); // bruh
     public static final Val isExpr = ConstraintFw.constraint(
+            Vit.val(FW.telephonist(a -> BoolFw.wrap(isExpr(a)))).call(Vit.var)
+    );
+    @Deprecated
+    public static final Val isExprBugged = ConstraintFw.constraint(
             Vit.val(FW.telephonist(passingArg
                     -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList))))
     );

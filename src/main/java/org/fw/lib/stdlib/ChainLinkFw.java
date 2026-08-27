@@ -75,7 +75,7 @@ public final class ChainLinkFw {
     });
 
 
-    public static Val chain(Type type, Val primary, Val parent) {
+    public static Val chain(Type type, Val parent, Val primary) {
         return type.asVal().call(symbol("builder")).call(primary).call(parent);
     }
 

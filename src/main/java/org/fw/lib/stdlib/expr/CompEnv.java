@@ -65,8 +65,8 @@ public final class CompEnv extends AbstractValAdapted {
         return Vit.val(SyntaxResolveFw.toFnResolve.asVal()).call(symbol("builder")).call(val).call(env.asVal());
     }
 
-    public static Val compEnv(Val resolver, Val parentCEnv) {
-        return ChainLinkFw.chain(compEnv, resolver, parentCEnv);
+    public static Val compEnv(Val parentCEnv, Val resolver) {
+        return ChainLinkFw.chain(compEnv, parentCEnv, resolver);
     }
 
     public static Val compEnv(Val... resolvers) {

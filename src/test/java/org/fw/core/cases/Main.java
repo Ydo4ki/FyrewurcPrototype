@@ -48,6 +48,9 @@ public class Main {
 
         State state = SystemOperation.systemState;
         CompEnv compEnv = CompEnv.of(CompEnv.compEnv(
+                StdLib.lib.exports(),
+                MemLib.lib.exports(),
+                DeviceLib.lib.exports(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(
                                 DeclaredFw.declared(symbol("test-value"), DIntFw.dint(94))
@@ -70,9 +73,6 @@ public class Main {
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
-                StdLib.lib.exports(),
-                MemLib.lib.exports(),
-                DeviceLib.lib.exports(),
                 JMethodFw.methodCallCEnv
         ));
 

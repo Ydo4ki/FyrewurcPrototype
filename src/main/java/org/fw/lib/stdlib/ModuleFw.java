@@ -238,7 +238,7 @@ public final class ModuleFw {
                             Expr expr1 = exprVal.call(DIntFw.dint(i))._unpack();
                             Val val = compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.type()))
-                                return null;
+                                return val;
 
                             builder = builder.call(val._unpack(Vit.class));
                         }

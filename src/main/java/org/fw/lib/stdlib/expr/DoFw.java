@@ -46,7 +46,7 @@ public final class DoFw {
                         try {
                             return VitFw.wrap(compileDo(exprVal, 0, isize, compEnv));
                         } catch (VitCompilationException e) {
-                            return e.getValue();
+                            return VitErrorFw.rrror(ExprFw.unwrap(e.getValue()), e.getString());
                         }
                     }
                 }
@@ -64,7 +64,7 @@ public final class DoFw {
 
                 Expr nameE = ((ExprList) line).get(1);
                 if (!(nameE instanceof Symbol))
-                    throw new VitCompilationException(nameE); // syntax error: symbol expected
+                    throw new VitCompilationException(nameE, "Symbol expected");
                 String name = ((Symbol) nameE).getValue();
                 Expr valueE = ((ExprList) line).get(2);
                 Vit valueV = VitUtils.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv))), valueE));
@@ -81,7 +81,7 @@ public final class DoFw {
                 // this looks cryptic as hell
                 // still probably conceptually the best way to do this
 
-                Val newCompEnv = CompEnv.compEnv(FW.telephonist((arg) -> {
+                Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
                     if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
                         Val exprVal0 = arg.call(symbol("expr"));
                         Expr expr = exprVal0._unpack();
@@ -90,7 +90,7 @@ public final class DoFw {
                         }
                     }
                     return null;
-                }), compEnv);
+                }));
 
                 Vit rest = compileDo(exprVal, i + 1, isize, newCompEnv);
 

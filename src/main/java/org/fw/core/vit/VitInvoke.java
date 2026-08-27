@@ -3,10 +3,12 @@ package org.fw.core.vit;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.contract.CallContract;
+import org.fw.lib.stdlib.StdLib;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.operation.OperationFw;
+import org.fw.lib.stdlib.expr.CompEnv;
 
 import java.util.Objects;
 
@@ -29,7 +31,8 @@ public final class VitInvoke extends Vit {
         Operation op = OperationFw.unwrap(operationVal(rtEnv, state));
         if (op == null) {
             // temp
-            throw new IllegalStateException(operation.eval(rtEnv, state).toExpr(rtEnv.get(symbol("to-expr"))).toString() + " from " + VitFw.wrap(operation).toExpr(rtEnv.get(symbol("to-expr"))));
+            CompEnv toExpr = CompEnv.of(StdLib.lib.exports());
+            throw new IllegalStateException(operation.eval(rtEnv, state).toExpr(toExpr).toString() + " from " + VitFw.wrap(operation).toExpr(toExpr));
         }
 //        if (!Operation.isLocal(op, context.scope(), context))
 //            return Val.unspecified;

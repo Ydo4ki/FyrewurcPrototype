@@ -22,7 +22,7 @@ public final class Lib {
         } else if (parent.module == null) {
             module = over.module;
         } else {
-            module = ChainLinkFw.chain(ExtendedFw.extended, over.module, parent.module);
+            module = ChainLinkFw.chain(ExtendedFw.extended, parent.module, over.module);
         }
 
         Val moduleInverted;
@@ -31,7 +31,7 @@ public final class Lib {
         } else if (parent.moduleInverted == null) {
             moduleInverted = over.moduleInverted;
         } else {
-            moduleInverted = ChainLinkFw.chain(ExtendedFw.extended, over.moduleInverted, parent.moduleInverted);
+            moduleInverted = ChainLinkFw.chain(ExtendedFw.extended, parent.moduleInverted, over.moduleInverted);
         }
 
         Val extraCEnv;
@@ -40,13 +40,14 @@ public final class Lib {
         } else if (parent.extraCEnv == null) {
             extraCEnv = over.extraCEnv;
         } else {
-            extraCEnv = CompEnv.compEnv(over.extraCEnv, parent.extraCEnv);
+            extraCEnv = CompEnv.compEnv(parent.extraCEnv, over.extraCEnv);
         }
 
-        return of(
+        return new Lib(
                 module,
                 moduleInverted,
                 extraCEnv
+//                , CompEnv.compEnv(parent.exports(), over.exports())
         );
     }
 
@@ -75,9 +76,9 @@ public final class Lib {
     }
 
     private final Val module;
+
     private final Val moduleInverted;
     private final Val extraCEnv;
-
     private final Val m_exports;
 
     private Lib(Val module, Val moduleInverted, Val extraCEnv) {
@@ -85,10 +86,17 @@ public final class Lib {
         this.moduleInverted = moduleInverted;
         this.extraCEnv = extraCEnv;
         m_exports = CompEnv.compEnv(
-                ModuleFw.ModuleCEnvFw.compEnv(module),
+                extraCEnv,
                 ModuleFw.ModuleCEnvFw.toExprCompEnv(moduleInverted),
-                extraCEnv
+                ModuleFw.ModuleCEnvFw.compEnv(module)
         );
+    }
+
+    private Lib(Val module, Val moduleInverted, Val extraCEnv, Val mExports) {
+        this.module = module;
+        this.moduleInverted = moduleInverted;
+        this.extraCEnv = extraCEnv;
+        m_exports = mExports;
     }
 
     public Val exports() {

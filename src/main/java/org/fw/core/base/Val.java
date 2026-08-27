@@ -29,6 +29,14 @@ public abstract class Val implements PureCallable<Val> {
         return type().callInstance(this, arg);
     }
 
+    public final Val call(Val arg, Val... rest) {
+        Val ret = this.call(arg);
+        for (Val val : rest) {
+            ret = ret.call(val);
+        }
+        return ret;
+    }
+
     public CallContract callContract() {
         return type().instanceContract(this);
     }
