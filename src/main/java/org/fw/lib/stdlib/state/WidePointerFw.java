@@ -1,4 +1,4 @@
-package org.fw.core.state;
+package org.fw.lib.stdlib.state;
 
 import org.fw.core.FW;
 import org.fw.core.base.CallFw;
@@ -8,14 +8,13 @@ import org.fw.core.base.Val;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.state.array.CreateArrayOperation;
 import org.fw.lib.stdlib.state.array.ValArrayObj;
-import org.fw.core.state.operation.OperationFw;
 import org.fw.core.util.FwUtils;
 
 import static org.fw.core.FW.telephonist;
 
-public final class WidePointer {
+public final class WidePointerFw {
     public static final Type widePointer = FW.telephonist("WidePointer", (arg) -> {
-        if (FwUtils.isTypeApiCall(arg, WidePointer.widePointer)) {
+        if (FwUtils.isTypeApiCall(arg, WidePointerFw.widePointer)) {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
 

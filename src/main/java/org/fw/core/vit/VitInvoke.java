@@ -7,12 +7,10 @@ import org.fw.lib.stdlib.StdLib;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.state.operation.OperationFw;
+import org.fw.lib.stdlib.state.OperationFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 
 import java.util.Objects;
-
-import static org.fw.core.FW.symbol;
 
 public final class VitInvoke extends Vit {
 

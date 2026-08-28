@@ -7,7 +7,7 @@ import org.fw.core.base.Val;
 import org.fw.lib.stdlib.DeclaredFw;
 import org.fw.lib.stdlib.ModuleFw;
 import org.fw.lib.stdlib.StrFw;
-import org.fw.lib.stdlib.state.SystemOperation;
+import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
 
 import java.lang.invoke.MethodHandle;

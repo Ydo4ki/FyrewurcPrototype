@@ -1,7 +1,8 @@
 package org.fw.core.state.obj;
 
 import org.fw.core.base.Val;
-import org.fw.core.state.LaserPointerFw;
+import org.fw.lib.stdlib.state.LaserPointerFw;
+import org.fw.lib.stdlib.state.StatePointerFw;
 
 import java.util.function.Function;
 
@@ -39,8 +40,9 @@ public final class State implements Obj {
         return null;
     }
 
-    private final Val asVal = Val.of(LaserPointerFw.laserPointer, this);
+    private final Val asVal = Val.of(StatePointerFw.statePointer, this);
 
+    @Override
     public Val asVal() {
         return asVal;
     }

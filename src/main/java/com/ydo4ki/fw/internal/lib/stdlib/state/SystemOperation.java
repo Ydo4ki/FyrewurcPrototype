@@ -1,4 +1,4 @@
-package org.fw.lib.stdlib.state;
+package com.ydo4ki.fw.internal.lib.stdlib.state;
 
 import org.fw.core.base.Val;
 import org.fw.core.contract.InvokeContract;

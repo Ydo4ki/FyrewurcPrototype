@@ -1,0 +1,11 @@
+(assert! true)
+
+Operation
+(do
+ (: scope (get (invoke! StatePointer.current) scope))
+ (: o1 (invoke! (call scope.new 17)))
+ (: o2 (new! 17))
+
+ (assert! (== o1.owner o2.owner))
+)
+

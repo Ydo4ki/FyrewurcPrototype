@@ -3,17 +3,19 @@ package org.fw.lib.stdlib.state.array;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.*;
 import org.fw.core.state.operation.Operation;
+import org.fw.lib.stdlib.state.LaserPointerFw;
+import org.fw.lib.stdlib.state.WidePointerFw;
 
 public final class ValArrayObj extends AbstractObj {
-    private final Val[] value;
+    private final Val[] value; // todo: nested arrays
 
     public ValArrayObj(Val[] value, Scope owner) {
         super(owner);
         this.value = value;
     }
 
-    public ValObj getRef(int index) {
-        return new ReferenceValObj(this, index);
+    public AtomObj getRef(int index) {
+        return new ReferenceAtomObj(this, index);
     }
 
     public Val read(State state, int index) {
@@ -32,11 +34,18 @@ public final class ValArrayObj extends AbstractObj {
         return value.length;
     }
 
-    private static class ReferenceValObj implements ValObj {
+    private final Val asVal = Val.of(WidePointerFw.widePointer, this);
+
+    @Override
+    public Val asVal() {
+        return asVal;
+    }
+
+    private static final class ReferenceAtomObj implements AtomObj {
         private final ValArrayObj valArrayObj;
         private final int index;
 
-        ReferenceValObj(ValArrayObj valArrayObj, int index) {
+        ReferenceAtomObj(ValArrayObj valArrayObj, int index) {
             this.valArrayObj = valArrayObj;
             this.index = index;
         }
@@ -59,6 +68,13 @@ public final class ValArrayObj extends AbstractObj {
         @Override
         public Obj partOf() {
             return valArrayObj;
+        }
+
+        private final Val asVal = Val.of(LaserPointerFw.laserPointer, this);
+
+        @Override
+        public Val asVal() {
+            return asVal;
         }
     }
 }

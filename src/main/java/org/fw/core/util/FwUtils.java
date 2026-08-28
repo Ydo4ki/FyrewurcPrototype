@@ -22,7 +22,7 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
-import org.fw.lib.stdlib.state.SystemOperation;
+import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 
 import java.io.File;
 import java.io.IOException;

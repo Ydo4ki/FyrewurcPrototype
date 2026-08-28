@@ -10,10 +10,11 @@ import org.fw.core.base.context.RtEnv;
 import org.fw.core.contract.CallContract;
 import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
-import org.fw.core.state.obj.ValObj;
+import org.fw.core.state.obj.AtomObj;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
 import org.fw.core.vit.VitVal;
+import org.fw.lib.stdlib.state.OperationFw;
 
 public abstract class Operation implements ValAdapter {
     // a Val symbolizing successful completion of the operation
@@ -34,17 +35,21 @@ public abstract class Operation implements ValAdapter {
         this.asVal = Val.of(OperationFw.operation, this);
     }
 
-    public static Operation read(ValObj obj) {
+    public static Operation read(AtomObj obj) {
         return new ReadOperation(obj);
     }
 
-    public static Operation write(ValObj obj, Val x) {
+    public static Operation write(AtomObj obj, Val x) {
         return new WriteOperation(obj, x);
     }
 
     public static Operation vit(Vit vit, RtEnv rtEnv) {
-        if (vit instanceof VitInvoke && ((VitInvoke) vit).operation() instanceof VitVal)
-            return OperationFw.unwrap(((VitVal) ((VitInvoke) vit).operation()).val());
+        if (vit instanceof VitInvoke) {
+            Vit v = ((VitInvoke) vit).operation();
+            if (v.isConst() && v.isPure()) {
+                return OperationFw.unwrap(v.eval());
+            }
+        }
         return new VitOperation(vit, rtEnv);
     }
 

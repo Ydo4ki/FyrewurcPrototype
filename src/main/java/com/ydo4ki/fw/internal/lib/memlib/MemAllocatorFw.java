@@ -28,7 +28,7 @@ public final class MemAllocatorFw {
                 String sym = arg._unpack().toString();
                 switch (sym) {
                     case "heap":
-                        return Val.of(HeapFw.heap, heap);
+                        return heap.asVal();
                 }
             }
             if (!arg.type().equals(DIntFw.dint))
@@ -39,7 +39,7 @@ public final class MemAllocatorFw {
                 public Val apply(State state) {
                     if (state != heap.state())
                         return Operation.unit;
-                    return Val.of(AllocatedMemoryFw.allocatedMemory, new AllocatedMemoryObj(heap, size));
+                    return new AllocatedMemoryObj(heap, size).asVal();
                 }
 
                 @Override

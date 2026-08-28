@@ -5,21 +5,23 @@ import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitUtils;
 
+import static org.fw.core.FW.symbol;
+
 public final class _Constraint {
     private final Vit a;
 
-    public static final _Constraint free = _Constraint.of(Vit.val(BoolFw._true));
+    public static final _Constraint free = _Constraint.type(Vit.val(BoolFw._true));
 
-    public static _Constraint of(Vit vit) {
+    public static _Constraint type(Vit vit) {
         return new _Constraint(vit);
     }
 
-    public static _Constraint of(Type type) {
-        return of(Vit.val(EqFw.eq).call(Vit.val(type.asVal())).call(Vit.call(TypeGetFw.typeGet, Vit.var)));
+    public static _Constraint type(Type type) {
+        return type(Vit.val(EqFw.eq).call(Vit.val(type.asVal())).call(Vit.call(TypeGetFw.typeGet, Vit.var)));
     }
 
     public static _Constraint equals(Val val) {
-        return of(Vit.val(EqFw.eq).call(Vit.val(val)).call(Vit.var));
+        return type(Vit.val(EqFw.eq).call(Vit.val(val)).call(Vit.var));
     }
 
     private _Constraint(Vit a) {
@@ -32,9 +34,17 @@ public final class _Constraint {
 
     // constraint of the call result
     public _Constraint call(_Constraint constraint) {
-        return of(
+        return type(
                 VitUtils.substitude(a, constraint.a)
         );
+    }
+
+    public _Constraint call(Val val) {
+        return call(equals(val));
+    }
+
+    public _Constraint get(String property) {
+        return call(symbol(property));
     }
 
     public boolean implies(_Constraint constraint) {

@@ -3,7 +3,7 @@ package org.fw.lib.stdlib.state.array;
 import org.fw.core.base.Val;
 import org.fw.core.contract.InvokeContract;
 import org.fw.core.contract._Constraint;
-import org.fw.core.state.WidePointer;
+import org.fw.lib.stdlib.state.WidePointerFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 
@@ -26,11 +26,11 @@ public final class CreateArrayOperation extends Operation {
             value[i] = initialize.apply(i).apply(state);
         }
         ValArrayObj obj = new ValArrayObj(value, state.scope());
-        return Val.of(WidePointer.widePointer, obj);
+        return Val.of(WidePointerFw.widePointer, obj);
     }
 
     @Override
     public InvokeContract contract() {
-        return InvokeContract.returnsBrandNew(_Constraint.of(WidePointer.widePointer), true, false);
+        return InvokeContract.returnsBrandNew(_Constraint.type(WidePointerFw.widePointer), true, false);
     }
 }

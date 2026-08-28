@@ -1,4 +1,4 @@
-package org.fw.core.state.operation;
+package org.fw.lib.stdlib.state;
 
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
@@ -7,13 +7,10 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
+import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.*;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
-import org.fw.lib.stdlib.state.IfOperation;
-import org.fw.lib.stdlib.state.WhileOperation;
-import org.fw.core.state.LaserPointerFw;
-import org.fw.core.state.WidePointer;
 import org.fw.core.vit.Vit;
 
 import static org.fw.core.FW.symbol;
@@ -105,13 +102,13 @@ public final class OperationFw {
 
     public static final Lib lib = Lib.of(
             ModuleFw.module(
+                    DeclaredFw.declared(symbol("StatePointer"), StatePointerFw.statePointer),
+                    DeclaredFw.declared(symbol("ScopePointer"), ScopeFw.scopePointer),
                     DeclaredFw.declared(symbol("LaserPointer"), LaserPointerFw.laserPointer),
+                    DeclaredFw.declared(symbol("Operation"), operation),
                     DeclaredFw.declared(symbol("_While"), WhileOperation._While),
                     DeclaredFw.declared(symbol("_If"), IfOperation._If),
-                    DeclaredFw.declared(symbol("_CreateNewArrayOperation"), WidePointer._CreateNewArrayOperation),
-//                    DeclaredFw.declared(symbol("_CreateNewObjectOperation"), LaserPointerFw._CreateNewObjectOperation),
-//                    DeclaredFw.declared(symbol("_ReadOperation"), LaserPointerFw._ReadOperation),
-//                    DeclaredFw.declared(symbol("_WriteOperation"), LaserPointerFw._WriteOperation),
+                    DeclaredFw.declared(symbol("_CreateNewArrayOperation"), WidePointerFw._CreateNewArrayOperation),
                     DeclaredFw.declared(symbol("_VitOperation"), OperationFw._VitOperation),
                     DeclaredFw.declared(symbol("unit"), Operation.unit)
             ),

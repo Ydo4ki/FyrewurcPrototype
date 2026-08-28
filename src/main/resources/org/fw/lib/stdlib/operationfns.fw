@@ -1,6 +1,6 @@
 (module
  (: new! (fn [(= x)] !>
-  (invoke! (call LaserPointer.new x))))
+  (invoke! (call (get (invoke! StatePointer.current) scope new) x))))
  (: read! (fn [(= o)] !>
   (invoke! o.read)))
  (: write! (fn [(= o) (= x)] !>

@@ -20,7 +20,7 @@ import com.ydo4ki.fw.internal.lib.memlib.MemLib;
 import com.ydo4ki.fw.internal.lib.jlib.data.JIntFw;
 import com.ydo4ki.fw.internal.lib.memlib.HeapFw;
 import org.fw.core.state.obj.State;
-import org.fw.lib.stdlib.state.SystemOperation;
+import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;

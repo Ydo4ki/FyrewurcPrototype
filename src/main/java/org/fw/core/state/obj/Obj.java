@@ -9,6 +9,8 @@ public interface Obj {
 
     Obj partOf();
 
+    Val asVal();
+
     default void shmert() {
 
     }

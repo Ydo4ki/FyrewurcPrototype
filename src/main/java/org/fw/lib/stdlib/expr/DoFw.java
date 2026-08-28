@@ -7,7 +7,7 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.state.operation.OperationFw;
+import org.fw.lib.stdlib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;

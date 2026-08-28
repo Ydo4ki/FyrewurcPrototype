@@ -10,7 +10,7 @@ public final class EqFw {
 
     public static final Val eq = FW.telephonist(
             (arg) -> Val.of(EqFw.eqChecker, arg)
-            , CallContract.c((arg) -> _Constraint.of(Vit.call(EqFw.eq, Vit.call(TypeGetFw.typeGet, Vit.var)).call(EqFw.eqChecker.asVal())))
+            , CallContract.c((arg) -> _Constraint.type(Vit.call(EqFw.eq, Vit.call(TypeGetFw.typeGet, Vit.var)).call(EqFw.eqChecker.asVal())))
     );
     public static final Type eqChecker = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, EqFw.eqChecker)) {
@@ -23,7 +23,7 @@ public final class EqFw {
         return null;
     }, CallContract.c(arg -> {
         if (FwUtils.isTypeApiCall(arg, EqFw.eqChecker)) {
-            return _Constraint.of(BoolFw.bool);
+            return _Constraint.type(BoolFw.bool);
         }
         return _Constraint.free;
     })).asType();

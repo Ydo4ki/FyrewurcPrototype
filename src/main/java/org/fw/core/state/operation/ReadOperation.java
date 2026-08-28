@@ -4,12 +4,12 @@ import org.fw.core.base.Val;
 import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
-import org.fw.core.state.obj.ValObj;
+import org.fw.core.state.obj.AtomObj;
 
 public final class ReadOperation extends Operation {
-    private final ValObj obj;
+    private final AtomObj obj;
 
-    ReadOperation(ValObj obj) {
+    ReadOperation(AtomObj obj) {
         this.obj = obj;
     }
 

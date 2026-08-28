@@ -2,7 +2,6 @@ package org.fw.core.contract;
 
 import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import org.fw.core.state.obj.Obj;
-import org.fw.core.state.obj.ValObj;
 
 public final class InvokeContract {
     private static final InvokeContract UNKNOWN = new InvokeContract(_Constraint.free, true, true, OptionalBoolean.ANY);

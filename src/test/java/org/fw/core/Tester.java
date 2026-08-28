@@ -6,14 +6,14 @@ import org.fw.core.base.Val;
 import org.fw.core.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.state.operation.OperationFw;
+import org.fw.lib.stdlib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
-import org.fw.lib.stdlib.state.SystemOperation;
+import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 
 import java.io.IOException;
 

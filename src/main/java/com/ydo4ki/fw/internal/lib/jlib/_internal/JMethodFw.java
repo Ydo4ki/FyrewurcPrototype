@@ -8,7 +8,7 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
-import org.fw.lib.stdlib.state.SystemOperation;
+import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 

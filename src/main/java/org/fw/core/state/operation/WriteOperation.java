@@ -5,13 +5,13 @@ import org.fw.core.contract.InvokeContract;
 import org.fw.core.contract._Constraint;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
-import org.fw.core.state.obj.ValObj;
+import org.fw.core.state.obj.AtomObj;
 
 public final class WriteOperation extends Operation {
-    private final ValObj obj;
+    private final AtomObj obj;
     private final Val x;
 
-    WriteOperation(ValObj obj, Val x) {
+    WriteOperation(AtomObj obj, Val x) {
         this.obj = obj;
         this.x = x;
     }

@@ -1,5 +1,7 @@
 package com.ydo4ki.fw.internal.lib.memlib.obj;
 
+import com.ydo4ki.fw.internal.lib.memlib.AllocatedMemoryFw;
+import org.fw.core.base.Val;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
 
@@ -35,6 +37,13 @@ public final class AllocatedMemoryObj implements Obj {
 
     public ByteBuffer buffer() {
         return directMemoryBuffer;
+    }
+
+    private final Val asVal = Val.of(AllocatedMemoryFw.allocatedMemory, this);
+
+    @Override
+    public Val asVal() {
+        return asVal;
     }
 
     @Override

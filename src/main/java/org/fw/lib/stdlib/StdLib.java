@@ -8,7 +8,7 @@ import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.*;
-import org.fw.core.state.operation.OperationFw;
+import org.fw.lib.stdlib.state.OperationFw;
 
 public final class StdLib {
     private static final CompEnv somethingToExpr = CompEnv.of(FW.telephonist(arg -> {
