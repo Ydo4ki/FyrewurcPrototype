@@ -4,6 +4,8 @@ import org.fw.core.commons.ValAdapter;
 import org.fw.core.base.contract.CallContract;
 import org.fw.core.base.contract.Constraint;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Type implements ValAdapter {
@@ -63,10 +65,12 @@ public abstract class Type implements ValAdapter {
     }
 
     public static final class TelephonistType extends Type {
+        private final int depth;
         private final Val val;
 
-        TelephonistType(Val.TelephonistVal val) {
+        TelephonistType(int depth, Val.TelephonistVal val) {
             super();
+            this.depth = depth;
             this.val = val;
         }
 
@@ -96,7 +100,11 @@ public abstract class Type implements ValAdapter {
 
         @Override
         public String toString() {
-            return val.toString();
+            return "Telephonist" + (depth == 0 ? "" : depth);
+        }
+
+        public int getDepth() {
+            return depth;
         }
 
         public interface CallFunction {
@@ -105,6 +113,15 @@ public abstract class Type implements ValAdapter {
 
         public interface ConstraintCallFunction {
             Constraint call(Constraint arg) throws Exception;
+        }
+
+        private static final List<TelephonistType> preTelephonists = new ArrayList<>();
+        public static TelephonistType of(int depth) {
+            int cs;
+            while ((cs = preTelephonists.size()) <= depth) {
+                preTelephonists.add((TelephonistType) new Val.TelephonistVal(cs).asType());
+            }
+            return preTelephonists.get(depth);
         }
 
         public static final class Telephonist {

@@ -73,7 +73,7 @@ public abstract class Val implements PureCallable<Val> {
     }
 
     public static Val ofTelephonist(int depth) {
-        return TelephonistVal.of(depth);
+        return Type.TelephonistType.of(depth).asVal();
     }
 
     @SuppressWarnings("unchecked")
@@ -150,21 +150,20 @@ public abstract class Val implements PureCallable<Val> {
     // todo: merge this with TelephonistType and make Val final class/record
     public static final class TelephonistVal extends Val {
 
-        private final int depth;
-        private Type.TelephonistType asType;
+        private final Type.TelephonistType asType;
         private Object value;
 
         TelephonistVal(int depth) {
-            this.depth = depth;
+            asType = new Type.TelephonistType(depth, this);
         }
 
         public int getDepth() {
-            return depth;
+            return asType.getDepth();
         }
 
         @Override
         public Type type() {
-            return of(depth + 1).asType();
+            return Type.TelephonistType.of(getDepth() + 1);
         }
 
         @Override
@@ -176,30 +175,19 @@ public abstract class Val implements PureCallable<Val> {
 
                     return instance.call(cArg); // so here we're going in the opposite direction
                 }
-                throw new RuntimeException("I have no idea when is this suppose to happen so if you see this message now you know");
-//                return Unspecified.unspecified; // idk
+                return null;
             }, CallContract.unknown());
             return value;
         }
 
         @Override
         public Type asType() {
-            if (asType == null) asType = new Type.TelephonistType(this);
             return asType;
         }
 
         @Override
         public String toString() {
-            return "Telephonist" + (depth == 0 ? "" : depth);
-        }
-
-        private static final List<TelephonistVal> preTelephonists = new ArrayList<>();
-        public static TelephonistVal of(int depth) {
-            int cs;
-            while ((cs = preTelephonists.size()) <= depth) {
-                preTelephonists.add(new TelephonistVal(cs));
-            }
-            return preTelephonists.get(depth);
+            return asType.toString();
         }
     }
 }
