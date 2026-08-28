@@ -12,7 +12,7 @@ public abstract class Type implements ValAdapter {
 
     Type() {}
 
-    public static Type of(Val.Box val) {
+    static Type of(Val.Box val) {
         return new ValType(val);
     }
 
@@ -66,12 +66,11 @@ public abstract class Type implements ValAdapter {
 
     public static final class TelephonistType extends Type {
         private final int depth;
-        private final Val val;
+        private Val val;
 
-        TelephonistType(int depth, Val.TelephonistVal val) {
+        TelephonistType(int depth) {
             super();
             this.depth = depth;
-            this.val = val;
         }
 
         @Override
@@ -95,6 +94,9 @@ public abstract class Type implements ValAdapter {
 
         @Override
         public Val asVal() {
+            if (val == null) {
+                this.val = new Val.TelephonistVal(this);
+            }
             return val;
         }
 
@@ -119,7 +121,7 @@ public abstract class Type implements ValAdapter {
         public static TelephonistType of(int depth) {
             int cs;
             while ((cs = preTelephonists.size()) <= depth) {
-                preTelephonists.add((TelephonistType) new Val.TelephonistVal(cs).asType());
+                preTelephonists.add(new TelephonistType(cs));
             }
             return preTelephonists.get(depth);
         }

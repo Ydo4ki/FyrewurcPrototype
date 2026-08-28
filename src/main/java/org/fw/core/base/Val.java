@@ -1,7 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.commons.PureCallable;
+import org.fw.core.base.contract.Constraint;
 import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ToExprFn;
@@ -15,7 +15,7 @@ import java.util.*;
 
 import static org.fw.core.FW.symbol;
 
-public abstract class Val implements PureCallable<Val> {
+public abstract class Val {
     Val() {}
 
     public abstract Type type();
@@ -24,7 +24,6 @@ public abstract class Val implements PureCallable<Val> {
 
     public abstract Type asType();
 
-    @Override
     public final Val call(Val arg) {
         return type().callInstance(this, arg);
     }
@@ -90,7 +89,7 @@ public abstract class Val implements PureCallable<Val> {
         return call(symbol(property));
     }
 
-    public static final class Box extends Val {
+    static final class Box extends Val {
         private final Type type;
         private final Object value;
         private Type _asType;
@@ -147,14 +146,32 @@ public abstract class Val implements PureCallable<Val> {
         }
     }
 
-    // todo: merge this with TelephonistType and make Val final class/record
-    public static final class TelephonistVal extends Val {
+    static final class TelephonistVal extends Val {
 
+        private final Type type;
         private final Type.TelephonistType asType;
-        private Object value;
+        private final Object value;
 
-        TelephonistVal(int depth) {
-            asType = new Type.TelephonistType(depth, this);
+        TelephonistVal(Type.TelephonistType asType) {
+            this.asType = asType;
+            this.value = new Type.TelephonistType.Telephonist((arg) -> {
+                if (FwUtils.isTypeApiCall(arg, asType())) {
+                    Val instance = CallFw.getVal(arg);
+                    Val cArg = CallFw.getArg(arg);
+
+                    return instance.call(cArg); // so here we're going in the opposite direction
+                }
+                return null;
+            }, CallContract.c(arg -> {
+                if (FwUtils.isTypeApiCall(arg, asType())) {
+                    Constraint instance = CallFw.getVal(arg);
+                    Constraint cArg = CallFw.getArg(arg);
+
+                    return instance.call(cArg);
+                }
+                return null;
+            }));
+            this.type = Type.TelephonistType.of(getDepth() + 1);
         }
 
         public int getDepth() {
@@ -163,20 +180,11 @@ public abstract class Val implements PureCallable<Val> {
 
         @Override
         public Type type() {
-            return Type.TelephonistType.of(getDepth() + 1);
+            return type;
         }
 
         @Override
         public Object value() {
-            if (value == null) value = new Type.TelephonistType.Telephonist((arg) -> {
-                if (FwUtils.isTypeApiCall(arg, asType())) {
-                    Val instance = CallFw.getVal(arg);
-                    Val cArg = CallFw.getArg(arg);
-
-                    return instance.call(cArg); // so here we're going in the opposite direction
-                }
-                return null;
-            }, CallContract.unknown());
             return value;
         }
 

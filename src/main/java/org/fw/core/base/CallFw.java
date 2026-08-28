@@ -1,6 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
+import org.fw.core.base.contract.Constraint;
 
 import java.util.Objects;
 
@@ -37,6 +38,14 @@ public final class CallFw {
     }
 
     public static Val getArg(Val call) {
+        return call.get("arg");
+    }
+
+    public static Constraint getVal(Constraint call) {
+        return call.get("val");
+    }
+
+    public static Constraint getArg(Constraint call) {
         return call.get("arg");
     }
 
