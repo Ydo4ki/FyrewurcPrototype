@@ -46,7 +46,7 @@ public final class ExprFw {
             }
             if (symbol.equals("brackets-type")) {
                 BracketsType bt = list.getBracketsType();
-                return StrFw.str(bt.toString());
+                return Val.of(ExprFw.bracketsType, bt);
             }
             return null; // unknown property
         }, (instance, arg1) -> {
@@ -63,12 +63,11 @@ public final class ExprFw {
             return ExprFw.wrap(list.get(index));
         }, (arg) -> {
             if (arg.equals(symbol("constructor"))) {
-                return FW.telephonist("ExprList.constructor", (valuesDvec) -> {
-                    if (!valuesDvec.type().equals(DVecFw.dVec))
+                return FW.telephonist("ExprList.constructor", (bt) -> {
+                    if (!bt.type().equals(ExprFw.bracketsType))
                         return null;
-
-                    return FW.telephonist((bt) -> {
-                        if (!bt.type().equals(ExprFw.bracketsType))
+                    return FW.telephonist((valuesDvec) -> {
+                        if (!valuesDvec.type().equals(DVecFw.dVec))
                             return null;
 
                         Val[] values = valuesDvec._unpack();
@@ -85,6 +84,7 @@ public final class ExprFw {
                         return ExprFw.wrap(result);
                     });
                 });
+
             }
             return null;
         });
@@ -161,9 +161,17 @@ public final class ExprFw {
                     }
                     case "expr-list": {
                         Vit ctor = Vit.val(DVecBuilderFw.emptyBuilder);
+                        if (isize < 2)
+                            return VitErrorFw.rrror(expr, "2 or more elements expected");
 
-                        for (int i = 1; i < isize + 1; i++) {
-                            Expr eee = exprVal.call(DIntFw.dint(i))._unpack();
+                        Expr bracketsSource = ((ExprList) expr).get(1);
+                        if (!(bracketsSource instanceof ExprList) || ((ExprList) bracketsSource).size() > 0)
+                            return VitErrorFw.rrror(bracketsSource, "Empty ExprList expected");
+
+                        BracketsType bt = ((ExprList) bracketsSource).getBracketsType();
+
+                        for (int i = 2; i < isize; i++) {
+                            Expr eee = ((ExprList) expr).get(i);
                             Val retVit = compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(retVit.type()))
                                 return retVit; // compile error idk
@@ -176,7 +184,7 @@ public final class ExprFw {
                         }
 
                         ctor = Vit.val(DVecBuilderFw.dvecbf).call(ctor);
-                        return VitFw.wrap(Vit.val(ExprFw.exprList.asVal()).call(symbol("constructor")).call(ctor).call(roundBrackets));
+                        return VitFw.wrap(Vit.val(ExprFw.exprList.asVal()).call(symbol("constructor")).call(Val.of(bracketsType, bt)).call(ctor));
                     }
                 }
             }
@@ -195,6 +203,7 @@ public final class ExprFw {
 //                content.add(type.asVal().toExpr(CompEnv.of(compEnv)));
                 content.add(Symbol.of("expr-list"));
                 ExprList el = val._unpack();
+                content.add(ExprList.of(el.getBracketsType()));
                 for (Expr expr : el) {
                     content.add(wrap(expr).toExpr(CompEnv.of(compEnv)));
                 }

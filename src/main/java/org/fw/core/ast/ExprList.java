@@ -62,19 +62,19 @@ public final class ExprList extends Expr implements Iterable<Expr> {
 	public String toString() {
 		return getBracketsType().open() + elements.stream().map(String::valueOf).collect(Collectors.joining(" ")) + getBracketsType().close();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) return false;
-		ExprList exprList = (ExprList) o;
-		return Objects.equals(elements, exprList.elements);
+		ExprList exprs = (ExprList) o;
+		return Objects.equals(bracketsType, exprs.bracketsType) && Objects.equals(elements, exprs.elements);
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(getBracketsType(), elements);
+		return Objects.hash(bracketsType, elements);
 	}
-	
+
 	@SuppressWarnings("unchecked")
     @Override
 	public Iterator<Expr> iterator() {

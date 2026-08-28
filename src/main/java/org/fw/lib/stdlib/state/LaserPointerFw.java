@@ -13,6 +13,7 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
 public final class LaserPointerFw {
+    // todo: make them predetermined for each scope, otherwise its possible to do a(b) != a(b)
     public static final Type laserPointer = FW.telephonist("LaserPointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, LaserPointerFw.laserPointer)) {
             Val instance = CallFw.getVal(arg);

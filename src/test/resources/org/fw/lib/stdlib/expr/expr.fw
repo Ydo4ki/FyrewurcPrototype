@@ -1,0 +1,21 @@
+(assert! true)
+
+(do
+ (assert! (== (expr Hi) (symbol "Hi")))
+ (assert! (== (call strToSymbol "Hi") (symbol "Hi")))
+ (assert! (== (call symbolToStr (call strToSymbol "Hi")) "Hi"))
+)
+
+(do
+ (: list (expr-list [] (symbol "a") (symbol "b")))
+ (assert! (!=
+  (call ExprList.constructor BracketsType.round [(symbol "a") (symbol "b")]) list
+ ))
+ (assert! (==
+  (call ExprList.constructor BracketsType.square [(symbol "a") (symbol "b")]) list
+ ))
+ (assert! (== list.size 2))
+ (assert! (== list.brackets-type BracketsType.square))
+ (assert! (== (call list 0) (symbol "a")))
+ (assert! (== (call list 1) (symbol "b")))
+)
