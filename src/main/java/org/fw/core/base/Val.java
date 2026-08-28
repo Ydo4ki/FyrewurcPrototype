@@ -2,7 +2,7 @@ package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.commons.PureCallable;
-import org.fw.core.contract.CallContract;
+import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;

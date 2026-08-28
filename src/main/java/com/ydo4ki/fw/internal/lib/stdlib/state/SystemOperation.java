@@ -1,7 +1,7 @@
 package com.ydo4ki.fw.internal.lib.stdlib.state;
 
 import org.fw.core.base.Val;
-import org.fw.core.contract.InvokeContract;
+import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.StrFw;

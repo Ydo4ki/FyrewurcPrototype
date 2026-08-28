@@ -1,4 +1,4 @@
-package org.fw.core.contract;
+package org.fw.core.base.contract;
 
 public abstract class Contract {
 

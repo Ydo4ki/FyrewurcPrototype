@@ -3,7 +3,7 @@ package org.fw.core;
 import org.fw.core.ast.*;
 import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
-import org.fw.core.contract.InvokeContract;
+import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.state.OperationFw;

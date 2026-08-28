@@ -1,10 +1,10 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.contract.CallContract;
+import org.fw.core.base.contract.CallContract;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
-import org.fw.core.contract.Constraint;
+import org.fw.core.base.contract.Constraint;
 
 public final class EqFw {
 

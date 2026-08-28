@@ -2,7 +2,7 @@ package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.core.contract.Constraint;
+import org.fw.core.base.contract.Constraint;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.context.RtEnv;

@@ -7,13 +7,12 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.contract.CallContract;
-import org.fw.core.contract.InvokeContract;
+import org.fw.core.base.contract.CallContract;
+import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
-import org.fw.core.vit.VitVal;
 import org.fw.lib.stdlib.state.OperationFw;
 
 public abstract class Operation implements ValAdapter {

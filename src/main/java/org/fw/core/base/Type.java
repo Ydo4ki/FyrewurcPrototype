@@ -1,8 +1,8 @@
 package org.fw.core.base;
 
 import org.fw.core.commons.ValAdapter;
-import org.fw.core.contract.CallContract;
-import org.fw.core.contract.Constraint;
+import org.fw.core.base.contract.CallContract;
+import org.fw.core.base.contract.Constraint;
 
 import java.util.Objects;
 

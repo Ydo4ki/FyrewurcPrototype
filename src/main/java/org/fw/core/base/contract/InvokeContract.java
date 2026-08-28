@@ -1,4 +1,4 @@
-package org.fw.core.contract;
+package org.fw.core.base.contract;
 
 import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import org.fw.core.state.obj.Obj;

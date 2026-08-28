@@ -1,7 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.contract.CallContract;
+import org.fw.core.base.contract.CallContract;
 
 public final class TypeGetFw {
     public static final Val typeGet = FW.telephonist(

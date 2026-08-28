@@ -1,8 +1,8 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.base.Val;
-import org.fw.core.contract.InvokeContract;
-import org.fw.core.contract.Constraint;
+import org.fw.core.base.contract.InvokeContract;
+import org.fw.core.base.contract.Constraint;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.state.obj.State;

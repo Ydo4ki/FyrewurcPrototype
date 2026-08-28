@@ -1,4 +1,4 @@
-package org.fw.core.contract;
+package org.fw.core.base.contract;
 
 import org.fw.core.base.Val;
 

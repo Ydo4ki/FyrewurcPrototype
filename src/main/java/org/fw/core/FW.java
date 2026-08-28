@@ -3,7 +3,7 @@ package org.fw.core;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.contract.CallContract;
+import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.TypePayloadInfo;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;

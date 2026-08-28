@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
+import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 import org.fw.lib.stdlib.dvec.DVecFw;
@@ -15,8 +16,8 @@ public final class StdLib {
         if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
-            if (val instanceof Val.TelephonistVal) {
-                return ExprFw.wrap(Symbol.of("Telephonist" + ((Val.TelephonistVal) val).getDepth()));
+            if (val.asType() instanceof Type.TelephonistType) {
+                return ExprFw.wrap(Symbol.of(val.asType().toString()));
             }
             return ExprFw.wrap(ExprList.of(BracketsTypes.braces, val.type().asVal().toExpr(CompEnv.of(compEnv))));
         }

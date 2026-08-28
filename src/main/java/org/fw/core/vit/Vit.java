@@ -3,7 +3,7 @@ package org.fw.core.vit;
 import org.fw.core.FW;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.contract.CallContract;
+import org.fw.core.base.contract.CallContract;
 import org.fw.core.state.obj.State;
 
 import static org.fw.core.FW.telephonist;

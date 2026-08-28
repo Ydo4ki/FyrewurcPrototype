@@ -2,7 +2,7 @@ package org.fw.core.vit;
 
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.contract.CallContract;
+import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.StdLib;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
