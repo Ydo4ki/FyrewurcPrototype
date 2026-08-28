@@ -2,7 +2,7 @@ package org.fw.core.state.operation;
 
 import org.fw.core.base.Val;
 import org.fw.core.contract.InvokeContract;
-import org.fw.core.contract._Constraint;
+import org.fw.core.contract.Constraint;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.state.obj.State;
@@ -30,7 +30,7 @@ public final class CreateObjectOperation extends Operation {
 
     @Override
     public InvokeContract contract() {
-        return InvokeContract.returnsBrandNew(_Constraint.type(LaserPointerFw.laserPointer), true, false);
+        return InvokeContract.returnsBrandNew(Constraint.type(LaserPointerFw.laserPointer), true, false);
     }
 
     @Override

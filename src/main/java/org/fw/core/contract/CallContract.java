@@ -8,9 +8,9 @@ import java.util.function.Supplier;
 
 public final class CallContract extends Contract {
 
-    public static final CallContract UNKNOWN = c(c -> _Constraint.free);
+    public static final CallContract UNKNOWN = c(c -> Constraint.free);
 
-    public static CallContract c(Function<_Constraint, _Constraint> function) {
+    public static CallContract c(Function<Constraint, Constraint> function) {
         return new CallContract(function, null);
     }
 
@@ -19,18 +19,18 @@ public final class CallContract extends Contract {
     }
 
     public static CallContract constant(Supplier<Val> val) {
-        return new CallContract(c -> _Constraint.equals(val.get()), val);
+        return new CallContract(c -> Constraint.equals(val.get()), val);
     }
 
     public static CallContract constant(Val val) {
-        final _Constraint c0 = _Constraint.equals(val);
+        final Constraint c0 = Constraint.equals(val);
         return new CallContract(c -> c0, () -> val);
     }
 
-    private final Function<_Constraint, _Constraint> m_resultConstraint;
+    private final Function<Constraint, Constraint> m_resultConstraint;
     private final Supplier<Val> concreteValueIfImplied;
 
-    CallContract(Function<_Constraint, _Constraint> resultConstraint, Supplier<Val> concreteValueIfImplied) {
+    CallContract(Function<Constraint, Constraint> resultConstraint, Supplier<Val> concreteValueIfImplied) {
         this.m_resultConstraint = resultConstraint;
         this.concreteValueIfImplied = concreteValueIfImplied;
     }
@@ -39,12 +39,12 @@ public final class CallContract extends Contract {
         return concreteValueIfImplied != null;
     }
 
-    public _Constraint resultConstraint(_Constraint constraint) {
+    public Constraint resultConstraint(Constraint constraint) {
         return m_resultConstraint.apply(constraint);
     }
 
-    public _Constraint constraintOfResult() {
-        return resultConstraint(_Constraint.free);
+    public Constraint constraintOfResult() {
+        return resultConstraint(Constraint.free);
     }
 
     @Override

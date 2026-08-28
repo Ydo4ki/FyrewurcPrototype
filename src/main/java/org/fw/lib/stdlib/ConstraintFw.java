@@ -2,6 +2,7 @@ package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.core.contract.Constraint;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.context.RtEnv;
@@ -31,6 +32,21 @@ public final class ConstraintFw {
         });
     });
 
+    public static Val wrap(Constraint constraint) {
+        return Val.of(ConstraintFw.constraint, constraint);
+    }
+
+    public static Constraint unwrap(Val constraint) {
+        if (constraint.type() == ConstraintFw.constraint) {
+            return unwrap0(constraint);
+        }
+        return null;
+    }
+
+    public static Constraint unwrap0(Val constraint) {
+        return constraint._unpack(Constraint.class);
+    }
+
     public static Val toConstraint(Val val) {
         return to_constraint.call(val);
     }
@@ -42,7 +58,7 @@ public final class ConstraintFw {
     public static final Val constraintBuilder = FW.telephonist("Constraint.constructor", (arg1) -> {
         if (!VitFw.isVit(arg1.type()))
             return null;
-        return Val.of(ConstraintFw.constraint, arg1._unpack());
+        return Val.of(ConstraintFw.constraint, Constraint.of(arg1._unpack(Vit.class)));
     });
 
     public static final Type constraint = FW.telephonist("Constraint", (arg) -> {
@@ -58,7 +74,7 @@ public final class ConstraintFw {
         return null;
     }).asType();
 
-    private static Val handleInstanceCall(Val instance, Vit payload, Val arg) {
+    private static Val handleInstanceCall(Val instance, Constraint payload, Val arg) {
         if (arg.type().equals(SymbolFw.symbol)) {
             String val = arg._unpack(Symbol.class).getValue();
             switch (val) {
@@ -68,10 +84,10 @@ public final class ConstraintFw {
 
                         // we might as well do it in parallel
 
-                        return BoolFw.wrap(payload.eval(rtEnv) == BoolFw._true);
+                        return BoolFw.wrap(payload.check(rtEnv.asVal()));
                     });
-                case "vit":
-                    return VitFw.wrap(payload);
+//                case "vit":
+//                    return VitFw.wrap(payload);
 //                case "b":
 //                    return VitFw.wrap(payload.b());
             }
@@ -79,14 +95,14 @@ public final class ConstraintFw {
         return null;
     }
 
-    public static final Val free = constraint(Vit.val(BoolFw._true));
+    public static final Val free = wrap(Constraint.free);
 
     public static boolean isConstraint(Val val) {
         return val.type().equals(ConstraintFw.constraint);
     }
 
     public static Val constraint(Vit a) {
-        return Val.of(ConstraintFw.constraint, a);
+        return Val.of(ConstraintFw.constraint, Constraint.of(a));
     }
 
     public static final Val isSpecified = constraint(

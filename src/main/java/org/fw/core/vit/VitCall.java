@@ -4,8 +4,6 @@ import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.contract.CallContract;
-import org.fw.core.contract._Constraint;
-import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.expr.CompEnv;

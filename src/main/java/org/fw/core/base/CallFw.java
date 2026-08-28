@@ -33,11 +33,11 @@ public final class CallFw {
     }
 
     public static Val getVal(Val call) {
-        return call.call(symbol("val"));
+        return call.get("val");
     }
 
     public static Val getArg(Val call) {
-        return call.call(symbol("arg"));
+        return call.get("arg");
     }
 
     private static final class CallRecord {

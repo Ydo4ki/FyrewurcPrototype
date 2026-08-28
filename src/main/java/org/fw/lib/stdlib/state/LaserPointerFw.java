@@ -6,7 +6,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.contract.CallContract;
-import org.fw.core.contract._Constraint;
+import org.fw.core.contract.Constraint;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.state.operation.Operation;
@@ -29,7 +29,7 @@ public final class LaserPointerFw {
                         return Operation.read((AtomObj) obj).asVal();
                     case "write":
                         return FW.telephonist((arg1) -> Operation.write((AtomObj) obj, arg1).asVal(),
-                                CallContract.c(c -> _Constraint.type(OperationFw.operation)));
+                                CallContract.c(c -> Constraint.type(OperationFw.operation)));
                 }
             }
             return null;

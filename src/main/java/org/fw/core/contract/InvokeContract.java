@@ -4,34 +4,34 @@ import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import org.fw.core.state.obj.Obj;
 
 public final class InvokeContract {
-    private static final InvokeContract UNKNOWN = new InvokeContract(_Constraint.free, true, true, OptionalBoolean.ANY);
+    private static final InvokeContract UNKNOWN = new InvokeContract(Constraint.free, true, true, OptionalBoolean.ANY);
 
     public static InvokeContract unknown() {
         return UNKNOWN;
     }
 
-    private final _Constraint resultingConstraint;
+    private final Constraint resultingConstraint;
     private final boolean modifiesState;
     private final boolean readsState;
     private final OptionalBoolean returnsBrandNew;
 
 
-    InvokeContract(_Constraint resultingConstraint, boolean mayModifyState, boolean mayReadState, OptionalBoolean returnsBrandNew) {
+    InvokeContract(Constraint resultingConstraint, boolean mayModifyState, boolean mayReadState, OptionalBoolean returnsBrandNew) {
         this.resultingConstraint = resultingConstraint;
         this.modifiesState = mayModifyState;
         this.readsState = mayReadState;
         this.returnsBrandNew = returnsBrandNew;
     }
 
-    public static InvokeContract returnsBrandNew(_Constraint resultingConstraint, boolean mayModifyState, boolean mayReadState) {
+    public static InvokeContract returnsBrandNew(Constraint resultingConstraint, boolean mayModifyState, boolean mayReadState) {
         return new InvokeContract(resultingConstraint, mayModifyState, mayReadState, OptionalBoolean.TRUE);
     }
 
     public static InvokeContract readsOnly(Obj obj) {
-        return new InvokeContract(_Constraint.free, false, true, OptionalBoolean.FALSE);
+        return new InvokeContract(Constraint.free, false, true, OptionalBoolean.FALSE);
     }
 
-    public static InvokeContract writesOnly(_Constraint constraint, Obj obj) {
+    public static InvokeContract writesOnly(Constraint constraint, Obj obj) {
         return new InvokeContract(constraint, true, false, OptionalBoolean.FALSE);
     }
 
@@ -43,7 +43,7 @@ public final class InvokeContract {
         return readsState;
     }
 
-    public _Constraint getResultingConstraint() {
+    public Constraint getResultingConstraint() {
         return resultingConstraint;
     }
 

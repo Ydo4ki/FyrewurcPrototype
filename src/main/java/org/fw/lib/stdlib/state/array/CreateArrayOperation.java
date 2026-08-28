@@ -2,7 +2,7 @@ package org.fw.lib.stdlib.state.array;
 
 import org.fw.core.base.Val;
 import org.fw.core.contract.InvokeContract;
-import org.fw.core.contract._Constraint;
+import org.fw.core.contract.Constraint;
 import org.fw.lib.stdlib.state.WidePointerFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -31,6 +31,6 @@ public final class CreateArrayOperation extends Operation {
 
     @Override
     public InvokeContract contract() {
-        return InvokeContract.returnsBrandNew(_Constraint.type(WidePointerFw.widePointer), true, false);
+        return InvokeContract.returnsBrandNew(Constraint.type(WidePointerFw.widePointer), true, false);
     }
 }

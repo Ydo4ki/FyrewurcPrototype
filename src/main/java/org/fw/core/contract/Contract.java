@@ -4,5 +4,5 @@ public abstract class Contract {
 
     Contract() {}
 
-    public abstract  _Constraint constraintOfResult();
+    public abstract Constraint constraintOfResult();
 }

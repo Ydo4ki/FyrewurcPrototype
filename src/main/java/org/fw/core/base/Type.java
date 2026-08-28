@@ -2,7 +2,7 @@ package org.fw.core.base;
 
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.contract.CallContract;
-import org.fw.core.contract._Constraint;
+import org.fw.core.contract.Constraint;
 
 import java.util.Objects;
 
@@ -104,7 +104,7 @@ public abstract class Type implements ValAdapter {
         }
 
         public interface ConstraintCallFunction {
-            _Constraint call(_Constraint arg) throws Exception;
+            Constraint call(Constraint arg) throws Exception;
         }
 
         public static final class Telephonist {

@@ -6,7 +6,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.contract.CallContract;
-import org.fw.core.contract._Constraint;
+import org.fw.core.contract.Constraint;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.state.operation.CreateObjectOperation;
 import org.fw.core.util.FwUtils;
@@ -33,7 +33,7 @@ public final class ScopeFw {
         return null;
     }, CallContract.c(arg -> {
         if (FwUtils.isTypeApiCall(arg, ScopeFw.scopePointer)) {
-            _Constraint instance = arg.get("val");
+            Constraint instance = arg.get("val");
             arg = arg.get("arg");
 
 //            if (arg.implies(_Constraint.type(SymbolFw.symbol))) {
@@ -42,8 +42,8 @@ public final class ScopeFw {
 //                }
 //            }
 
-            return _Constraint.free;
+            return Constraint.free;
         }
-        return _Constraint.free;
+        return Constraint.free;
     })).asType();
 }
