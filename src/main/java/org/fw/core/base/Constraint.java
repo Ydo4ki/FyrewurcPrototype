@@ -1,6 +1,5 @@
-package org.fw.core.base.contract;
+package org.fw.core.base;
 
-import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitUtils;

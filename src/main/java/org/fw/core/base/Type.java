@@ -2,7 +2,6 @@ package org.fw.core.base;
 
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.base.contract.CallContract;
-import org.fw.core.base.contract.Constraint;
 
 import java.util.ArrayList;
 import java.util.List;

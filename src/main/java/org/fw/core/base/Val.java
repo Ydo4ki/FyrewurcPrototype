@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.base.contract.Constraint;
 import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ToExprFn;

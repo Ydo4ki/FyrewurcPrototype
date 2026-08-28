@@ -14,6 +14,9 @@
  (assert! (==
   (call ExprList.constructor BracketsType.square [(symbol "a") (symbol "b")]) list
  ))
+ (assert! (==
+  (expr [a b]) list
+ ))
  (assert! (== list.size 2))
  (assert! (== list.brackets-type BracketsType.square))
  (assert! (== (call list 0) (symbol "a")))

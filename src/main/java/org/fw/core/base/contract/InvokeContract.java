@@ -1,6 +1,7 @@
 package org.fw.core.base.contract;
 
 import com.sun.javafx.scene.control.behavior.OptionalBoolean;
+import org.fw.core.base.Constraint;
 import org.fw.core.state.obj.Obj;
 
 public final class InvokeContract {

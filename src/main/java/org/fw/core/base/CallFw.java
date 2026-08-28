@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.base.contract.Constraint;
 
 import java.util.Objects;
 

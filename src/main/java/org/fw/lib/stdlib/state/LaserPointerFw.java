@@ -6,7 +6,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.base.contract.CallContract;
-import org.fw.core.base.contract.Constraint;
+import org.fw.core.base.Constraint;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.state.operation.Operation;
