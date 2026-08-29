@@ -1,11 +1,10 @@
 package org.fw.core.base.contract;
 
-import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import org.fw.core.base.Constraint;
 import org.fw.core.state.obj.Obj;
 
 public final class InvokeContract {
-    private static final InvokeContract UNKNOWN = new InvokeContract(Constraint.free, true, true, OptionalBoolean.ANY);
+    private static final InvokeContract UNKNOWN = new InvokeContract(Constraint.free, true, true, false);
 
     public static InvokeContract unknown() {
         return UNKNOWN;
@@ -14,10 +13,10 @@ public final class InvokeContract {
     private final Constraint resultingConstraint;
     private final boolean modifiesState;
     private final boolean readsState;
-    private final OptionalBoolean returnsBrandNew;
+    private final boolean returnsBrandNew;
 
 
-    InvokeContract(Constraint resultingConstraint, boolean mayModifyState, boolean mayReadState, OptionalBoolean returnsBrandNew) {
+    InvokeContract(Constraint resultingConstraint, boolean mayModifyState, boolean mayReadState, boolean returnsBrandNew) {
         this.resultingConstraint = resultingConstraint;
         this.modifiesState = mayModifyState;
         this.readsState = mayReadState;
@@ -25,15 +24,15 @@ public final class InvokeContract {
     }
 
     public static InvokeContract returnsBrandNew(Constraint resultingConstraint, boolean mayModifyState, boolean mayReadState) {
-        return new InvokeContract(resultingConstraint, mayModifyState, mayReadState, OptionalBoolean.TRUE);
+        return new InvokeContract(resultingConstraint, mayModifyState, mayReadState, true);
     }
 
     public static InvokeContract readsOnly(Obj obj) {
-        return new InvokeContract(Constraint.free, false, true, OptionalBoolean.FALSE);
+        return new InvokeContract(Constraint.free, false, true, false);
     }
 
     public static InvokeContract writesOnly(Constraint constraint, Obj obj) {
-        return new InvokeContract(constraint, true, false, OptionalBoolean.FALSE);
+        return new InvokeContract(constraint, true, false, false);
     }
 
     public boolean mayModifyState() {
