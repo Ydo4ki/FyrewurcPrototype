@@ -9,10 +9,7 @@ import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 import com.ydo4ki.fw.internal.lib.devicelib.DeviceLib;
 import org.fw.lib.stdlib.*;
-import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.ExprFw;
-import org.fw.lib.stdlib.expr.SyntaxResolveFw;
-import org.fw.lib.stdlib.expr.ToExprFn;
+import org.fw.lib.stdlib.expr.*;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;
 import com.ydo4ki.fw.internal.lib.jlib.data.JCharFw;
 import com.ydo4ki.fw.internal.lib.jlib.data.JLongFw;
@@ -78,7 +75,7 @@ public class Main {
 
         compEnv = CompEnv.of(CompEnv.compEnv(
                 compEnv.asVal(),
-                ModuleFw.ModuleCEnvFw.compEnv(FwUtils.getOperation(FW.class, "sysoperations", compEnv).apply(state))
+                ModuleFw.ModuleCEnvFw.compEnv(FwUtils.getOperation(FW.class, "sysoperations", compEnv, true).apply(state))
         ));
 
 //        Tester.testFw(FW.class, "test-int", compEnv);

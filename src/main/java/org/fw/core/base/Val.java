@@ -2,6 +2,7 @@ package org.fw.core.base;
 
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.base.contract.CallContract;
+import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
@@ -136,6 +137,7 @@ public abstract class Val {
 
         @Override
         public String toString() {
+            if (type == DVecFw.dVec) return Arrays.toString((Object[]) value);
             if (type == Val.ofTelephonist(0).asType()) {
                 return "*";
             }

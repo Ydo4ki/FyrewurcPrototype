@@ -12,7 +12,7 @@ import org.fw.core.base.BoolFw;
 import org.fw.core.base.contract.InvokeContract;
 import org.fw.lib.stdlib.DeclaredFw;
 import org.fw.core.base.TypeGetFw;
-import org.fw.lib.stdlib.Lib;
+import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.ModuleFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.base.Constraint;
@@ -175,11 +175,11 @@ public final class FwUtils {
 //                ), symbol("arg"), InternalSystemContext.context);
     }
 
-    public static Operation getOperation(Class<?> cls, String filename, final CompEnv compEnv) throws IOException {
-        return getOperation(cls.getPackage().getName().replace(".", "/") + "/" + filename, compEnv);
+    public static Operation getOperation(Class<?> cls, String filename, final CompEnv compEnv, boolean debug) throws IOException {
+        return getOperation(cls.getPackage().getName().replace(".", "/") + "/" + filename, compEnv, debug);
     }
 
-    public static Operation getOperation(String filename, final CompEnv compEnv) throws IOException {
+    public static Operation getOperation(String filename, final CompEnv compEnv, boolean debug) throws IOException {
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename + ".fw");
         if (in == null)
             throw new IOException("Source not found: " + filename + ".fw");
@@ -203,7 +203,7 @@ public final class FwUtils {
                     if (val.type() == DeclaredFw.declared) {
                         compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asVal(), ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
                     } else if (val != Operation.unit)
-                        System.out.println(val.toExpr(compEnv));
+                        if (debug) System.out.println(val.toExpr(compEnv));
                 }
                 return val;
             }
@@ -220,7 +220,7 @@ public final class FwUtils {
             for (String file : files) {
                 lib0 = Lib.combine(lib0,
                         Lib.ofCEnv(ModuleFw.ModuleCEnvFw.compEnv(
-                                getOperation(caller, file, CompEnv.of(lib0.exports()))
+                                getOperation(caller, file, CompEnv.of(lib0.exports()), false)
                                         .apply(SystemOperation.systemState)))
                 );
             }

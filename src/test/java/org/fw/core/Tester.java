@@ -28,7 +28,7 @@ public final class Tester {
         Operation op = FwUtils.getOperation(cls, filename, CompEnv.of(CompEnv.compEnv(
                 compEnv.asVal(),
                 testDirectivesCenv.asVal()
-        )));
+        )), true);
         op.apply(SystemOperation.systemState);
     }
 

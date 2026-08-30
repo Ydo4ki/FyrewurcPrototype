@@ -6,7 +6,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.DeclaredFw;
-import org.fw.lib.stdlib.Lib;
+import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.ModuleFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;

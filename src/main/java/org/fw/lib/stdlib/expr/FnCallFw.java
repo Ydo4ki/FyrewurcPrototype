@@ -8,7 +8,6 @@ import org.fw.core.base.Val;
 import org.fw.core.vit.VitUtils;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.FunctionFw;
-import org.fw.lib.stdlib.Lib;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.dvec.DVecBuilderFw;
 import org.fw.core.vit.Vit;
@@ -16,6 +15,7 @@ import org.fw.core.vit.Vit;
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
 
+// todo: make this generate a code that constructs vit so we can make old cenv static instead of storing it with the function
 public final class FnCallFw {
     public static final Val fnCallCEnv = FW.telephonist((arg) -> {
         if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {

@@ -7,6 +7,7 @@ import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ExprFw;
+import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;

@@ -1,0 +1,35 @@
+(do
+ (: running (new! true))
+ (while (read! running) (do
+  (print! "> ")
+  (: line (readln!))
+  (if (== line "exit")
+   (write! running false)
+  else (do
+   (: exprs (call parse-placeholder line))
+
+//   (call _Debug.Print exprs)
+
+   (: iter (new! exprs.first))
+   (: next (new! true))
+   (while (read! next) (do
+    (: vit (call comp-env (call SyntaxResolve.builder (get (read! iter) value) comp-env)))
+    (: vt (typeof vit))
+    (if (or (== vt VitVal) (== vt VitVar) (== vt VitCall) (== vt VitInvoke))
+     (println! (call expr2string (to-expr (call eval-vit vit unit))))
+    else
+     (if (== vt VitError)
+      (println! (+ vit.message ": " (call expr2string vit.expr)))
+     else
+      (println! (+ "Unknown Error: " line))
+     )
+    )
+    (if (specified (get (read! iter) next))
+     (write! iter (get (read! iter) next))
+    else
+     (write! next false)
+    )
+   ))
+  ))
+ ))
+)

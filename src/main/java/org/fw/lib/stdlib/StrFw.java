@@ -7,6 +7,7 @@ import static org.fw.core.vit.Vit.var;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.expr.ExprFw;
+import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;

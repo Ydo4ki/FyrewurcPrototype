@@ -2,9 +2,7 @@ package org.fw.lib.stdlib.expr;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.lib.stdlib.ChainResolveFw;
-import org.fw.lib.stdlib.WrapperTypeFw;
-import org.fw.lib.stdlib.ConstraintFw;
+import org.fw.lib.stdlib.*;
 
 import static org.fw.core.FW.symbol;
 
@@ -23,6 +21,11 @@ public final class SyntaxResolveFw {
                 }
                 return null;
             }))), FW.telephonist(arg -> {
+                if (arg.equals(symbol("builder"))) return FW.telephonist(arg1 -> {
+                    return FW.telephonist(arg2 -> {
+                        return Val.of(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(arg1, arg2));
+                    });
+                });
                 return null;
             }));
 
@@ -78,4 +81,9 @@ public final class SyntaxResolveFw {
         return null;
     });
 
+    public static final Lib lib = Lib.ofModule(
+            ModuleFw.module(
+                    DeclaredFw.declared(symbol("SyntaxResolve"), syntaxResolve)
+            )
+    );
 }

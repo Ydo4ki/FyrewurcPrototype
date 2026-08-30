@@ -8,7 +8,6 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.DIntFw;
-import org.fw.lib.stdlib.Lib;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;

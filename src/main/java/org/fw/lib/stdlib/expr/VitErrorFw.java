@@ -28,4 +28,8 @@ public final class VitErrorFw {
         }
         return null;
     });
+
+    public static final Lib lib = Lib.ofModule(ModuleFw.module(
+            DeclaredFw.declared(symbol("VitError"), vitError)
+    ));
 }

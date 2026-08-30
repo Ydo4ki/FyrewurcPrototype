@@ -5,6 +5,7 @@ import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.dvec.DVecBuilderFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
+import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
@@ -97,6 +98,13 @@ public final class ModuleFw {
             );
         }
         return Val.of(module.type(), new Module(newd));
+    }
+
+    public static Val merge(Val module, Val... modules) {
+        for (Val val : modules) {
+            module = ChainLinkFw.chain(ExtendedFw.extended, module, val);
+        }
+        return module;
     }
 
     // todo: replace with map, order shouldn't matter

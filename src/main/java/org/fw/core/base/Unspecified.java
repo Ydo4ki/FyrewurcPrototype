@@ -2,6 +2,7 @@ package org.fw.core.base;
 
 import org.fw.core.FW;
 import org.fw.core.util.FwUtils;
+import org.fw.lib.stdlib.expr.CompEnv;
 
 import java.util.Objects;
 
@@ -41,6 +42,14 @@ public final class Unspecified {
 
     public static boolean isUnspecified(Val val) {
         return val.type() == unspecified_t;
+    }
+
+    public static Val getVal(Val val) {
+        return val._unpack(UnspecifiedRecord.class).val;
+    }
+
+    public static Val getArg(Val val) {
+        return val._unpack(UnspecifiedRecord.class).arg;
     }
 
     private static final class UnspecifiedRecord {

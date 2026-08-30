@@ -14,7 +14,10 @@
  (fn [(= text)] !> (jprint! (call _JvmEnv.str2jstring text)))
 ))
 
+(: readln! (fn [] !> (call _JvmEnv.jstring2str ((call bufr.get-method "readLine" "()Ljava/lang/String;")))))
+
 (module
  (: println! println!)
  (: print! print!)
+ (: readln! readln!)
 )

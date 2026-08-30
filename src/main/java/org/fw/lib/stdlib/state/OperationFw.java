@@ -10,8 +10,10 @@ import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.*;
 import org.fw.lib.stdlib.expr.CompEnv;
+import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.core.vit.Vit;
+import org.fw.lib.stdlib.expr.VitErrorFw;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -64,10 +66,14 @@ public final class OperationFw {
                     }
                     case "while": {
                         if (isize != 3)
-                            return null;
+                            return VitErrorFw.rrror(expr, "3 elements expected");
 
                         Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        if (!VitFw.isVit(condition.type()))
+                            return condition;
                         Val body = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
+                        if (!VitFw.isVit(body.type()))
+                            return body;
 
                         Vit ret = Vit.invoke(Vit.val(WhileOperation._While)
                                 .call(Vit.call(OperationFw._VitOperation, condition).call(Vit.var))

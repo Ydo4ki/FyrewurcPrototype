@@ -4,6 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ExprFw;
+import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
