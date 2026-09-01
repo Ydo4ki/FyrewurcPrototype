@@ -62,7 +62,7 @@ public final class ExprFw {
 
             return ExprFw.wrap(list.get(index));
         }, (arg) -> {
-            if (arg.equals(symbol("constructor"))) {
+            if (arg.equals(symbol("construct"))) {
                 return FW.telephonist("ExprList.constructor", (bt) -> {
                     if (!bt.type().equals(ExprFw.bracketsType))
                         return null;
@@ -184,7 +184,7 @@ public final class ExprFw {
                         }
 
                         ctor = Vit.val(DVecBuilderFw.dvecbf).call(ctor);
-                        return VitFw.wrap(Vit.val(ExprFw.exprList.asVal()).call(symbol("constructor")).call(Val.of(bracketsType, bt)).call(ctor));
+                        return VitFw.wrap(Vit.val(ExprFw.exprList.asVal()).call(symbol("construct")).call(Val.of(bracketsType, bt)).call(ctor));
                     }
                 }
             }

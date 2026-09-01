@@ -56,9 +56,9 @@ public final class SenderExprFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Vit v = Vit.val(SenderExprFw.exprSender.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit));
+            Vit v = Vit.val(SenderExprFw.exprSender.asVal()).call(symbol("construct")).call(VitFw.unwrap0(retVit));
             return VitFw.wrap(v);
-        } else if (arg.equals(symbol("constructor"))) {
+        } else if (arg.equals(symbol("construct"))) {
             return FW.telephonist((argument) -> {
                 return Val.of(SenderExprFw.exprSender, argument);
             });

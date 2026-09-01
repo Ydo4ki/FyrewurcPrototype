@@ -59,9 +59,9 @@ public final class AccumulatorsExprFw {
             if (!VitFw.isVit(retVit.type()))
                 return retVit; // compile error idk
 
-            Vit v = Vit.val(AccumulatorsExprFw.exprAccumulator.asVal()).call(symbol("constructor")).call(VitFw.unwrap0(retVit));
+            Vit v = Vit.val(AccumulatorsExprFw.exprAccumulator.asVal()).call(symbol("construct")).call(VitFw.unwrap0(retVit));
             return VitFw.wrap(v);
-        } else if (arg.equals(symbol("constructor"))) {
+        } else if (arg.equals(symbol("construct"))) {
             return telephonist((argument) -> {
                 return Val.of(AccumulatorsExprFw.exprAccumulator, argument);
             });

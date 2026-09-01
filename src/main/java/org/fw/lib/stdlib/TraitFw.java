@@ -42,7 +42,7 @@ public final class TraitFw {
 //                return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
 //            }
         }
-        if (arg.equals(symbol("constructor"))) {
+        if (arg.equals(symbol("construct"))) {
             return FW.telephonist("Trait.constructor", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;

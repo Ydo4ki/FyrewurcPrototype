@@ -1,5 +1,7 @@
 (do
  (: running (new! true))
+ (: cenv (new! comp-env))
+
  (while (read! running) (do
   (print! "> ")
   (: line (readln!))
@@ -13,8 +15,10 @@
    (: iter (new! exprs.first))
    (: next (new! true))
    (while (read! next) (do
+    (: comp-env (read! cenv))
     (: vit (call comp-env (call SyntaxResolve.builder (get (read! iter) value) comp-env)))
     (: vt (typeof vit))
+
     (if (or (== vt VitVal) (== vt VitVar) (== vt VitCall) (== vt VitInvoke))
      (println! (call expr2string (to-expr (call eval-vit vit unit))))
     else

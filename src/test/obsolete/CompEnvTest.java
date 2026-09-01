@@ -37,7 +37,7 @@ class CompEnvTest {
 //                                            .call(argExpr.call(DIntFw.dint(0)))
 //                                            .call(argCEnv)
 //                            ))
-//                            .call(Vit.val(VitFw.vitVal.asVal()).call(symbol("constructor"))
+//                            .call(Vit.val(VitFw.vitVal.asVal()).call(symbol("construct"))
 //                                    .call(val(ExprCallOpFw.exprCallOp.asVal()).call(symbol("of-expr-list"))
 //                                            .call(argExpr).call(argCEnv)
 //                                    )
@@ -116,12 +116,12 @@ class CompEnvTest {
 ////        String source = "+";
 //        String source = """
 //                (call 5 (Symbol "+") 9)
-//                (call 5 (call (call Symbol (Symbol "constructor")) "+") 9)
-//                "constructor"
+//                (call 5 (call (call Symbol (Symbol "construct")) "+") 9)
+//                "construct"
 //
 //                toExpr
-//                (call BoxType (Symbol "constructor") (Symbol "to-expr"))
-//                (call eq toExpr (call BoxType (Symbol "constructor") (Symbol "to-expr")))
+//                (call BoxType (Symbol "construct") (Symbol "to-expr"))
+//                (call eq toExpr (call BoxType (Symbol "construct") (Symbol "to-expr")))
 //                """;
 //        Iterable<Expr> expressions = new ExprOutput(new TokenOutput(source, null, BracketsTypes.bracketsTypes));
 //

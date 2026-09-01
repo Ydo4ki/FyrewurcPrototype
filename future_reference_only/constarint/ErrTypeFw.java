@@ -37,10 +37,10 @@ public final class ErrTypeFw {
                 Vit ctor = VitFw.unwrap(ctorVal);
                 assert ctor != null;
 
-                ctor = Vit.val(instance).call(symbol("constructor")).call(ctor);
+                ctor = Vit.val(instance).call(symbol("construct")).call(ctor);
 
                 return VitFw.wrap(ctor);
-            } else if (arg.equals(symbol("constructor"))) {
+            } else if (arg.equals(symbol("construct"))) {
                 return FW.telephonist(instance.toExpr(context) + ".constructor", (arg1, context1) -> {
                     if (!arg1.type().equals(wn.original().asType()))
                         return Val.unspecified;

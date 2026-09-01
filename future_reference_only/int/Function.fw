@@ -43,7 +43,7 @@
             )
         )
         ))))
-        (if (== arg (Symbol "constructor"))
+        (if (== arg (Symbol "construct"))
             (let ctor (get (var) private instancer)
                 (telephonist arg2
                     (if (== (typeof arg2) FunctionPayload)

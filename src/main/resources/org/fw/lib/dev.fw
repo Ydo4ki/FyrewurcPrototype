@@ -1,0 +1,22 @@
+(: Octet (ReifiedType Bit 8))
+(: Word (ReifiedType Octet 2))
+(: QWord (ReifiedType Word 4))
+
+(module
+ (: Octet Octet)
+ (: Word Word)
+ (: DWord (ReifiedType Word 2))
+ (: QWord QWord)
+ (: DQWord (ReifiedType QWord 2))
+ (: OWord (ReifiedType Word 8))
+ (: YWord (ReifiedType Octet 32))
+ (: ZWord (ReifiedType Octet 64))
+ (: VWord (ReifiedType Octet 128))
+ (: HWord (ReifiedType Octet 256))
+ (: XWord (ReifiedType Octet 512))
+
+ (: Nibble (ReifiedType Bit 4))
+ (: Triad (ReifiedType Octet 3))
+ (: FWord (ReifiedType Word 3))
+ (: TWord (ReifiedType Octet 10))
+)

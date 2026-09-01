@@ -9,10 +9,10 @@
 (do
  (: list (expr-list [] (symbol "a") (symbol "b")))
  (assert! (!=
-  (call ExprList.constructor BracketsType.round [(symbol "a") (symbol "b")]) list
+  (call ExprList.construct BracketsType.round [(symbol "a") (symbol "b")]) list
  ))
  (assert! (==
-  (call ExprList.constructor BracketsType.square [(symbol "a") (symbol "b")]) list
+  (call ExprList.construct BracketsType.square [(symbol "a") (symbol "b")]) list
  ))
  (assert! (==
   (expr [a b]) list

@@ -67,7 +67,7 @@ public final class ConstraintFw {
             return handleInstanceCall(instance, instance._unpack(), CallFw.getArg(arg));
         } else if (arg.type().equals(SymbolFw.symbol)) {
             String value = arg._unpack(Symbol.class).getValue();
-            if (value.equals("constructor")) {
+            if (value.equals("construct")) {
                 return constraintBuilder;
             }
         }
@@ -108,4 +108,5 @@ public final class ConstraintFw {
     public static final Val isSpecified = constraint(
             Vit.val(Unspecified.isUnspecified).call(Vit.var).call(symbol("not"))
     );
+
 }

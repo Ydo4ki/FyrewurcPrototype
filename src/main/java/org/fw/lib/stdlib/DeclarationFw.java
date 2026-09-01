@@ -2,14 +2,22 @@ package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
-import org.fw.lib.stdlib.expr.ExprFw;
-import org.fw.lib.stdlib.expr.ToExprFn;
+import org.fw.core.state.operation.Operation;
+import org.fw.core.vit.Vit;
+import org.fw.core.vit.VitCall;
+import org.fw.core.vit.VitInvoke;
+import org.fw.core.vit.VitVal;
+import org.fw.lib.stdlib.dvec.DVecFw;
+import org.fw.lib.stdlib.expr.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
+import org.fw.lib.stdlib.state.OperationFw;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
@@ -112,4 +120,66 @@ public final class DeclarationFw {
                     "constraint=" + constraint + ']';
         }
     }
+
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            arg = arg.get("passing");
+
+            Type type = arg.type();
+            if (type.equals(DeclarationFw.declaration)) {
+                return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv),
+                        arg.get("key").toExpr(compEnv),
+                        arg.get("constraint").toExpr(compEnv)));
+            }
+            return null;
+        } else if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val == DeclarationFw.declaration.asVal()) {
+                return FW.telephonist(c -> {
+                    if (c.type() != DVecFw.dVec)
+                        return null;
+                    Val[] args = c._unpack();
+                    Val b = val.get("builder");
+                    for (Val arg1 : args) {
+                        b = b.call(arg1);
+                    }
+                    return Operation.pure(b).asVal();
+                });
+            }
+        } else if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+            Val exprVal = arg.call(symbol("expr"));
+            Val compEnv = arg.call(symbol("comp-env"));
+            Expr expr = exprVal._unpack();
+            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
+                Expr f = ((ExprList) expr).get(0);
+                int isize = ((ExprList) expr).size();
+                if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
+                    case "=": {
+                        if (isize != 3)
+                            return VitErrorFw.rrror(f, "3 elements expected");
+
+                        Val name = exprVal.call(DIntFw.dint(1));
+                        if (!name.type().equals(SymbolFw.symbol))
+                            return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
+
+                        Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
+                        if (!VitFw.isVit(value.type()))
+                            return value; // error idk
+
+                        return VitFw.wrap(Vit.val(declaration.asVal()).call(symbol("builder")).call(name).call(value._unpack(Vit.class)));
+                    }
+                }
+            }
+        }
+        return null;
+    }));
+
+    public static final Lib lib = Lib.of(
+            ModuleFw.module(
+                    DeclaredFw.declared(symbol("Declaration"), declaration.asVal())
+            ),
+            directivesCenv.asVal()
+    );
 }

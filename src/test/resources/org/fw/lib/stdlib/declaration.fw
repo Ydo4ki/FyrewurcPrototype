@@ -1,0 +1,15 @@
+(assert! true)
+
+(: l (= loc ?))
+
+(do
+ (assert! (== l (call Declaration.builder (symbol "loc") ?)))
+ (assert! (== l (Declaration (symbol "loc") ?)))
+ (assert! (== l.key (symbol "loc")))
+ (assert! (== l.constraint ?))
+)
+
+(do
+ (assert! (== (to-expr Declaration) (symbol "Declaration")))
+ (assert! (== (to-expr l) (expr (Declaration (symbol "loc") ?))))
+)

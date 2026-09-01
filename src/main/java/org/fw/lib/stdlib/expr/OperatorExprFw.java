@@ -67,12 +67,12 @@ public final class OperatorExprFw {
 
             Vit v = null;
             try {
-                v = Vit.val(OperatorExprFw.exprOperator.asVal()).call(FW.symbol("constructor")).call(VitFw.unwrap(retVit, eee));
+                v = Vit.val(OperatorExprFw.exprOperator.asVal()).call(FW.symbol("construct")).call(VitFw.unwrap(retVit, eee));
             } catch (VitCompilationException e) {
                 throw new RuntimeException(e);
             }
             return VitFw.wrap(v);
-        } else if (arg.equals(symbol("constructor"))) {
+        } else if (arg.equals(symbol("construct"))) {
             return FW.telephonist((argument) -> {
                 return Val.of(OperatorExprFw.exprOperator, argument);
             });

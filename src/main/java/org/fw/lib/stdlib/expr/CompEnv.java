@@ -15,7 +15,7 @@ import static org.fw.core.FW.symbol;
 public final class CompEnv extends AbstractValAdapted {
 
     public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
-            .call(symbol("constructor"))
+            .call(symbol("construct"))
             .call(ConstraintFw.isSpecified)
             .asType();
 

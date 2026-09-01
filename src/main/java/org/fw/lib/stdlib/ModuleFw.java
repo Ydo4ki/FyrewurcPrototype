@@ -34,7 +34,7 @@ public final class ModuleFw {
                     return DeclaredFw.getValue(declared);
                 }
             }
-        } else if (arg.equals(symbol("constructor"))) {
+        } else if (arg.equals(symbol("construct"))) {
             return FW.telephonist("Module.constructor", (arg1) -> {
                 if (!arg1.type().equals(DVecFw.dVec))
                     return null;
@@ -102,6 +102,7 @@ public final class ModuleFw {
 
     public static Val merge(Val module, Val... modules) {
         for (Val val : modules) {
+            if (val == null) continue;
             module = ChainLinkFw.chain(ExtendedFw.extended, module, val);
         }
         return module;
@@ -165,7 +166,7 @@ public final class ModuleFw {
 
     public static final class ModuleCEnvFw {
         public static final Type moduleCompEnv = FW.telephonist("ModuleCEnvFn", (arg) -> {
-            if (arg.equals(symbol("constructor"))) {
+            if (arg.equals(symbol("construct"))) {
                 return FW.telephonist(ModuleCEnvFw::compEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv)) {
@@ -195,7 +196,7 @@ public final class ModuleFw {
         }).asType();
 
         public static final Type moduleCompEnvToExpr = FW.telephonist("ModuleCEnvToExprFn", (arg) -> {
-            if (arg.equals(symbol("constructor"))) {
+            if (arg.equals(symbol("construct"))) {
                 return FW.telephonist(ModuleCEnvFw::toExprCompEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnvToExpr)) {
@@ -252,7 +253,7 @@ public final class ModuleFw {
                         }
                         builder = Vit.call(DVecBuilderFw.dvecbf, builder);
 
-                        return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("constructor")).call(builder));
+                        return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("construct")).call(builder));
                     }
                 }
             }

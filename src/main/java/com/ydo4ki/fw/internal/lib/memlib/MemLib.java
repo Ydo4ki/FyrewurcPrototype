@@ -1,11 +1,13 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
+import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import org.fw.core.FW;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.ModuleFw;
 import org.fw.lib.stdlib.VitFw;
@@ -74,6 +76,17 @@ public final class MemLib {
         return null;
     });
 
+    public static final Val constructReifiedType = FW.telephonist((arg) -> {
+        if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val.asType() == ReifiedTypeFw.reifiedType) {
+                return val.get("fn-call");
+            }
+        }
+        return null;
+    });
+
     public static final Lib lib = Lib.combine(
             Lib.of(
                     ModuleFw.module(
@@ -84,7 +97,10 @@ public final class MemLib {
                             DeclaredFw.declared(symbol("bitxor"), BinOperationsFw.xor),
                             DeclaredFw.declared(symbol("bitnot"), BinOperationsFw.not)
                     ),
-                    parseReifiedBits
+                    CompEnv.compEnv(
+                            parseReifiedBits,
+                            constructReifiedType
+                    )
             ),
             IntTypeFw.lib
     );

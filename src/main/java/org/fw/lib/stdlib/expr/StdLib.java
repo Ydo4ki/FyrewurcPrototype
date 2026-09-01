@@ -47,6 +47,7 @@ public final class StdLib {
             FnCallFw.lib,
             FunctionFw.lib,
             DeclaredFw.lib,
+            DeclarationFw.lib,
             CompEnvLib.lib,
             DoFw.lib,
             UseFw.lib,
@@ -55,6 +56,8 @@ public final class StdLib {
             ToExprFw.lib,
             SyntaxResolveFw.lib,
             VitErrorFw.lib,
+            ConstraintLib.lib,
+            StructFw.lib,
 
             OperationFw.lib
     ), "operationfns");

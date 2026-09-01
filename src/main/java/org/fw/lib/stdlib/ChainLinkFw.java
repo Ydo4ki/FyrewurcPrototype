@@ -20,7 +20,7 @@ import static org.fw.core.FW.symbol;
 // for things like CompEnv
 public final class ChainLinkFw {
     public static final Type chainLinkType = FW.telephonist((arg) -> {
-        if (arg.equals(symbol("constructor"))) {
+        if (arg.equals(symbol("construct"))) {
             return FW.telephonist((arg1) -> {
                 if (!ConstraintFw.isConstraint(arg1))
                     return null;
@@ -122,7 +122,7 @@ public final class ChainLinkFw {
         private final Val parent;
 
         ChainLinkRecord(Val primary, Val parent) {
-            this.primary = primary;
+            this.primary = Objects.requireNonNull(primary);
             this.parent = Objects.requireNonNull(parent);
         }
 

@@ -220,7 +220,7 @@
 //                )
             ) cenv) (VitCall
                     (VitVal Function)
-                    (VitVal (Symbol "constructor"))
+                    (VitVal (Symbol "construct"))
                     (VitCall
                         (VitVal FunctionPayload)
                         (VitVal (Symbol "builder"))

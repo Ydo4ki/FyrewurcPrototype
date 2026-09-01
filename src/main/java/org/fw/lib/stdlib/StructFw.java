@@ -1,14 +1,16 @@
 package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
+import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
+import org.fw.core.vit.Vit;
+import org.fw.lib.stdlib.dvec.DVecBuilderFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
-import org.fw.lib.stdlib.expr.ToExprFn;
+import org.fw.lib.stdlib.expr.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
-import org.fw.lib.stdlib.expr.ExprFw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public final class StructFw {
             } else if (arg.equals(symbol("builder"))) {
                 return structBuilder(struct, instance);
             }
-        } else if (arg.equals(symbol("constructor"))) {
+        } else if (arg.equals(symbol("construct"))) {
             return FW.telephonist("Struct.constructor", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;
@@ -148,6 +150,42 @@ public final class StructFw {
         }
         return null;
     }).asType();
+
+
+//    public static final Val directivesCenv = FW.telephonist((arg) -> {
+//        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+//            Val exprVal = arg.call(symbol("expr"));
+//            Val compEnv = arg.call(symbol("comp-env"));
+//            Expr expr = exprVal._unpack();
+//            if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
+//                Expr f = ((ExprList) expr).get(0);
+//                int isize = ((ExprList) expr).size();
+//                if (f instanceof Symbol) switch (((Symbol) f).getValue()) {
+//                    case "struct": {
+//                        Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
+//                        for (int i = 1; i < isize; i++) {
+//                            Expr expr1 = exprVal.call(DIntFw.dint(i))._unpack();
+//                            Val val = compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
+//                            if (!VitFw.isVit(val.type()))
+//                                return val;
+//
+//                            builder = builder.call(val._unpack(Vit.class));
+//                        }
+//                        builder = Vit.call(DVecBuilderFw.dvecbf, builder);
+//
+//                        return VitFw.wrap(Vit.val(ModuleFw.module.asVal()).call(symbol("construct")).call(builder));
+//                    }
+//                }
+//            }
+//        }
+//        return null;
+//    });
+
+    public static final Val module = ModuleFw.module(
+            DeclaredFw.declared(symbol("Struct"), struct)
+    );
+
+    public static final Lib lib = Lib.ofModule(module);
 }
 // wow it actually worked from the first try
 // but constraints are meaningless for now

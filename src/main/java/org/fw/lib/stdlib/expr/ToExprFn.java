@@ -14,7 +14,7 @@ import static org.fw.core.FW.symbol;
 public class ToExprFn {
 
     public static final Type exprififier = ChainLinkFw.chainLinkType.asVal()
-            .call(symbol("constructor"))
+            .call(symbol("construct"))
             .call(ConstraintFw.isSpecified)
             .asType();
 

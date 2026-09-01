@@ -17,8 +17,8 @@
     (== (call type-get (telephonist x (telephonist y x))) VitiateTelephonist)
 )
 
-//(call Symbol (Symbol "constructor"))
-//(call (typeof Symbol) (Call Symbol (Symbol "constructor")))
-//(call (typeof (typeof Symbol)) (Call (typeof Symbol) (Call Symbol (Symbol "constructor"))))
+//(call Symbol (Symbol "construct"))
+//(call (typeof Symbol) (Call Symbol (Symbol "construct")))
+//(call (typeof (typeof Symbol)) (Call (typeof Symbol) (Call Symbol (Symbol "construct"))))
 //
 //(typeof Symbol)

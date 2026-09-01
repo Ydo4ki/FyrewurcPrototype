@@ -1,10 +1,7 @@
 package org.fw.core.util;
 
 import org.fw.core.FW;
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.LocatedExpr;
-import org.fw.core.ast.Symbol;
+import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.*;
@@ -27,6 +24,7 @@ import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Predicate;
@@ -229,6 +227,40 @@ public final class FwUtils {
         }
 
         return lib0;
+    }
+
+    public static void prettyPrintln(PrintStream out, Expr expr) {
+        prettyPrint(out, expr, "");
+        out.println();
+    }
+    public static void prettyPrint(PrintStream out, Expr expr, String tab) {
+        if (expr instanceof Symbol) out.print(expr);
+        else {
+            ExprList list = (ExprList) expr;
+            if (isFlat(list)) out.print(expr);
+            else {
+                out.print(list.getBracketsType().open());
+                int i = 0;
+                if (list.getBracketsType() == BracketsTypes.round) {
+                    prettyPrint(out, list.get(i++), tab);
+                }
+                for (; i < list.size(); i++) {
+                    Expr e = list.get(i);
+                    out.println();
+                    out.print(tab);
+                    prettyPrint(out, e, tab + " ");
+                }
+                out.println();
+                out.print(list.getBracketsType().close());
+            }
+        }
+    }
+
+    private static boolean isFlat(ExprList list) {
+        for (Expr expr : list) {
+            if (expr instanceof ExprList && ((ExprList) expr).size() > 1) return false;
+        }
+        return true;
     }
 
     @FunctionalInterface
