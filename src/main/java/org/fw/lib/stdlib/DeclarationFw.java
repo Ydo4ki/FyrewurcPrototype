@@ -128,9 +128,18 @@ public final class DeclarationFw {
 
             Type type = arg.type();
             if (type.equals(DeclarationFw.declaration)) {
+                Val key = arg.get("key");
+                if (key._unpack() instanceof Symbol) {
+
+                    return ExprFw.wrap(ExprList.of(BracketsTypes.round, Symbol.of("="),
+                            key._unpack(Symbol.class),
+                            arg.get("constraint").toExpr(compEnv))
+                    );
+                }
                 return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv),
-                        arg.get("key").toExpr(compEnv),
-                        arg.get("constraint").toExpr(compEnv)));
+                        key.toExpr(compEnv),
+                        arg.get("constraint").toExpr(compEnv))
+                );
             }
             return null;
         } else if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
@@ -141,6 +150,8 @@ public final class DeclarationFw {
                     if (c.type() != DVecFw.dVec)
                         return null;
                     Val[] args = c._unpack();
+                    if (args.length > 2)
+                        return null;
                     Val b = val.get("builder");
                     for (Val arg1 : args) {
                         b = b.call(arg1);

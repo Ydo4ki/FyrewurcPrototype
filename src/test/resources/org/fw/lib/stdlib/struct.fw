@@ -1,0 +1,28 @@
+(assert! true)
+
+(: Loc (Struct [(= x ?) (= y ?)]))
+
+(do
+ (assert! (== Struct (typeof Loc)))
+
+ (assert! (== Loc.fields [(= x ?) (= y ?)]))
+)
+
+(do
+ (assert! (== Loc (call Struct.construct [(= x ?) (= y ?)])))
+ (assert! (== Loc (struct (= x ?) (= y ?))))
+)
+
+(: l (call Loc.builder 14 51))
+
+(do
+ (assert! (== Loc (typeof l)))
+
+ (assert! (== 14 l.x))
+ (assert! (== 51 l.y))
+)
+
+(do
+ (assert! (== l (Loc 14 51)))
+ (assert! (== l (call (Loc 14) 51)))
+)

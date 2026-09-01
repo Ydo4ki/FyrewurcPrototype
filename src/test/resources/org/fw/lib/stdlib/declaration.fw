@@ -3,13 +3,20 @@
 (: l (= loc ?))
 
 (do
- (assert! (== l (call Declaration.builder (symbol "loc") ?)))
- (assert! (== l (Declaration (symbol "loc") ?)))
+ (assert! (== Declaration (typeof l)))
+
  (assert! (== l.key (symbol "loc")))
  (assert! (== l.constraint ?))
 )
 
 (do
+ (assert! (== l (call Declaration.builder (symbol "loc") ?)))
+ (assert! (== l (Declaration (symbol "loc") ?)))
+ (assert! (== l (call (Declaration (symbol "loc")) ?)))
+)
+
+(do
  (assert! (== (to-expr Declaration) (symbol "Declaration")))
- (assert! (== (to-expr l) (expr (Declaration (symbol "loc") ?))))
+ (assert! (== (to-expr l) (expr (= loc ?))))
+ (assert! (== (to-expr (Declaration unit ?)) (expr (Declaration unit ?))))
 )
