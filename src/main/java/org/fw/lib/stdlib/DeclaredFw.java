@@ -50,12 +50,12 @@ public final class DeclaredFw {
             arg = CallFw.getArg(arg);
 
             Declared decl = instance._unpack();
-            if (arg.equals(symbol("key"))) {
+            if (arg.equalsSymbol("key")) {
                 return decl.key();
-            } else if (arg.equals(symbol("value"))) {
+            } else if (arg.equalsSymbol("value")) {
                 return decl.value();
             }
-        } else if (arg.equals(symbol("builder"))) {
+        } else if (arg.equalsSymbol("builder")) {
             return FW.telephonist("Declared.builder",
                     (name) -> FW.telephonist(
                             (value) -> declared(name, value)));

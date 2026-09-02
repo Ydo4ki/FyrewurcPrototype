@@ -34,7 +34,7 @@ public final class ModuleFw {
                     return DeclaredFw.getValue(declared);
                 }
             }
-        } else if (arg.equals(symbol("construct"))) {
+        } else if (arg.equalsSymbol("construct")) {
             return FW.telephonist("Module.constructor", (arg1) -> {
                 if (!arg1.type().equals(DVecFw.dVec))
                     return null;
@@ -47,7 +47,7 @@ public final class ModuleFw {
 
                 return Val.of(ModuleFw.module, new Module(values));
             });
-        } else if (arg.equals(symbol("contains-key"))) {
+        } else if (arg.equalsSymbol("contains-key")) {
             return FW.telephonist("Module.contains-key", (arg1) -> {
                 if (!arg1.type().equals(ModuleFw.module)) return null;
                 Module mod = arg1._unpack();
@@ -166,7 +166,7 @@ public final class ModuleFw {
 
     public static final class ModuleCEnvFw {
         public static final Type moduleCompEnv = FW.telephonist("ModuleCEnvFn", (arg) -> {
-            if (arg.equals(symbol("construct"))) {
+            if (arg.equalsSymbol("construct")) {
                 return FW.telephonist(ModuleCEnvFw::compEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv)) {
@@ -196,7 +196,7 @@ public final class ModuleFw {
         }).asType();
 
         public static final Type moduleCompEnvToExpr = FW.telephonist("ModuleCEnvToExprFn", (arg) -> {
-            if (arg.equals(symbol("construct"))) {
+            if (arg.equalsSymbol("construct")) {
                 return FW.telephonist(ModuleCEnvFw::toExprCompEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnvToExpr)) {

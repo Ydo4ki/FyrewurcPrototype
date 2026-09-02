@@ -34,12 +34,12 @@ public final class StructFw {
                 int index = struct.indexOf(arg);
                 if (index == -1) return null;
                 return values[index];
-            } else if (arg.equals(symbol("builder"))) {
+            } else if (arg.equalsSymbol("builder")) {
                 return structBuilder(struct, instance);
-            } else if (arg.equals(symbol("fields"))) {
+            } else if (arg.equalsSymbol("fields")) {
                 return DVecFw.vec(struct.fields);
             }
-        } else if (arg.equals(symbol("construct"))) {
+        } else if (arg.equalsSymbol("construct")) {
             return FW.telephonist("Struct.construct", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;
@@ -53,20 +53,6 @@ public final class StructFw {
         }
         return null;
     }).asType();
-    public static final Val structToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.type();
-        if (type.equals(struct)) {
-//            return toExpr(arg, toExpr);
-        } else if (type.asVal().type().equals(struct)) {
-            return instanceToExpr(arg, toExpr);
-        }
-        return null;
-    });
 
     public static Val toExpr(Val arg, CompEnv toExpr) {
         StructFw.Struct value = arg._unpack();
@@ -80,7 +66,7 @@ public final class StructFw {
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
     }
 
-    public static Val instanceToExpr(Val arg, Val toExpr) {
+    public static Val instanceToExpr(Val arg, CompEnv toExpr) {
         Val[] value = arg._unpack();
         List<Expr> elements = new ArrayList<>();
         elements.add(arg.type().asVal().toExpr(toExpr));
@@ -177,6 +163,8 @@ public final class StructFw {
             Type type = arg.type();
             if (type == struct) {
                 return toExpr(arg, compEnv);
+            } else if (type.asVal().type() == struct) {
+                return instanceToExpr(arg, compEnv);
             }
             return null;
         } else if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {

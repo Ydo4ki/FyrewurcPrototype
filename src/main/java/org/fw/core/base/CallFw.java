@@ -19,10 +19,10 @@ public final class CallFw {
             Val me = call.val();
             Val cArg = call.arg();
             CallFw.CallRecord meCall = me._unpack();
-            if (cArg.equals(symbol("arg"))) return meCall.arg();
-            if (cArg.equals(symbol("val"))) return meCall.val();
+            if (cArg.equalsSymbol("arg")) return meCall.arg();
+            if (cArg.equalsSymbol("val")) return meCall.val();
         }
-        else if (arg.equals(symbol("construct"))) {
+        else if (arg.equalsSymbol("construct")) {
             return FW.telephonist("Call.construct", (func) -> FW.telephonist((argument) -> fwCall(func, argument)));
         }
         return null;

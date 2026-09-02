@@ -15,19 +15,19 @@ public final class BitFw {
             Val cArg = CallFw.getArg(arg);
 
             boolean value = instance._unpack(Boolean.class);
-            if (cArg.equals(symbol("~"))) {
+            if (cArg.equalsSymbol("~")) {
                 return wrap(!value);
-            } else if (cArg.equals(symbol("&"))) { // and
+            } else if (cArg.equalsSymbol("&")) { // and
                 return bop(value, (a, b) -> a && b);
-            } else if (cArg.equals(symbol("|"))) { // or
+            } else if (cArg.equalsSymbol("|")) { // or
                 return bop(value, (a, b) -> a || b);
-            } else if (cArg.equals(symbol("^"))) { // xor
+            } else if (cArg.equalsSymbol("^")) { // xor
                 return bop(value, (a, b) -> a != b);
-            } else if (cArg.equals(symbol("~&"))) { // nand
+            } else if (cArg.equalsSymbol("~&")) { // nand
                 return bop(value, (a, b) -> !(a && b));
-            } else if (cArg.equals(symbol("~|"))) { // nor
+            } else if (cArg.equalsSymbol("~|")) { // nor
                 return bop(value, (a, b) -> !(a || b));
-            } else if (cArg.equals(symbol("~^"))) { // xnor
+            } else if (cArg.equalsSymbol("~^")) { // xnor
                 return bop(value, (a, b) -> a == b);
             }
         }

@@ -25,8 +25,8 @@ public final class EnumFw {
             }
             return null;
         }
-        if (arg.equals(symbol("construct"))) {
-            return FW.telephonist("Enum.constructor", (payload) -> {
+        if (arg.equalsSymbol("construct")) {
+            return FW.telephonist("Enum.construct", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;
                 Val[] keys = payload._unpack();

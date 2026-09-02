@@ -14,7 +14,7 @@ public final class CurrentCompEnvCEnvFw {
         if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            if (exprVal.equals(symbol("comp-env"))) {
+            if (exprVal.equalsSymbol("comp-env")) {
                 return VitFw.wrap(Vit.val(compEnv));
             }
         }

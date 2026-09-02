@@ -89,6 +89,10 @@ public abstract class Val {
         return call(symbol(property));
     }
 
+    public boolean equalsSymbol(String symbol) {
+        return this.type() == SymbolFw.symbol && this._unpack().toString().equals(symbol);
+    }
+
     static final class Box extends Val {
         private final Type type;
         private final Object value;

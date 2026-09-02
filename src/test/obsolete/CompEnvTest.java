@@ -11,7 +11,6 @@ import org.fw.core.cases.Main;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.expr.AccumulatorsExprFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.lib.stdlib.state.LaserPointerFw;

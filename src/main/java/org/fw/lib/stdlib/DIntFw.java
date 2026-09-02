@@ -27,26 +27,30 @@ public final class DIntFw {
 
             BigInteger value = unwrap(instance);
             assert value != null;
-            if (cArg.equals(symbol("neg"))) {
-                return dint(value.negate());
-            } else if (cArg.equals(symbol("+"))) {
-                return bop(instance, BigInteger::add);
-            } else if (cArg.equals(symbol("-"))) {
-                return bop(instance, BigInteger::subtract);
-            } else if (cArg.equals(symbol("*"))) {
-                return bop(instance, BigInteger::multiply);
-            } else if (cArg.equals(symbol("/"))) {
-                return bop(instance, BigInteger::divide);
-            } else if (cArg.equals(symbol("%"))) {
-                return bop(instance, BigInteger::mod);
-            } else if (cArg.equals(symbol("<<"))) {
-                return bop(instance, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftLeft(b.intValue()));
-            } else if (cArg.equals(symbol(">>"))) {
-                return bop(instance, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftRight(b.intValue()));
-            } else if (cArg.equals(symbol("<=>"))) {
-                return bop(instance, (a, b) -> BigInteger.valueOf(a.compareTo(b)));
+            if (cArg.type() == SymbolFw.symbol) {
+                String sym = cArg._unpack().toString();
+                switch (sym) {
+                    case "neg":
+                        return dint(value.negate());
+                    case "+":
+                        return bop(instance, BigInteger::add);
+                    case "-":
+                        return bop(instance, BigInteger::subtract);
+                    case "*":
+                        return bop(instance, BigInteger::multiply);
+                    case "/":
+                        return bop(instance, BigInteger::divide);
+                    case "%":
+                        return bop(instance, BigInteger::mod);
+                    case "<<":
+                        return bop(instance, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftLeft(b.intValue()));
+                    case ">>":
+                        return bop(instance, (a, b) -> b.bitLength() > 32 ? BigInteger.ZERO : a.shiftRight(b.intValue()));
+                    case "<=>":
+                        return bop(instance, (a, b) -> BigInteger.valueOf(a.compareTo(b)));
+                }
             }
-        } else if (arg.equals(symbol("parse"))) {
+        } else if (arg.equalsSymbol("parse")) {
             return FW.telephonist((arg1) -> {
                 if (arg1.type().equals(StrFw.str)) {
                     String string = arg1._unpack();
@@ -120,7 +124,7 @@ public final class DIntFw {
                     parseArg
             );
             parseNumCenv = State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(RtEnv.of(FW.telephonist((arg2) -> {
-                if (arg2.equals(symbol("arg"))) return arg1;
+                if (arg2.equalsSymbol("arg")) return arg1;
                 return null;
             })), state)));
         }

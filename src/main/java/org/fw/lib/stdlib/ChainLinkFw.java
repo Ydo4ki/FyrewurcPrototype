@@ -20,7 +20,7 @@ import static org.fw.core.FW.symbol;
 // for things like CompEnv
 public final class ChainLinkFw {
     public static final Type chainLinkType = FW.telephonist((arg) -> {
-        if (arg.equals(symbol("construct"))) {
+        if (arg.equalsSymbol("construct")) {
             return FW.telephonist((arg1) -> {
                 if (!ConstraintFw.isConstraint(arg1))
                     return null;
@@ -50,7 +50,7 @@ public final class ChainLinkFw {
 //                if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
 //
 //                }
-            } else if (arg.equals(symbol("builder"))) {
+            } else if (arg.equalsSymbol("builder")) {
                 return FW.telephonist("*.builder", (resolver) -> {
                     return FW.telephonist((parentCEnv) -> {
                         return Val.of(type, new ChainLinkFw.ChainLinkRecord(resolver, parentCEnv));

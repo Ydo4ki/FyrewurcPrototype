@@ -30,7 +30,7 @@ public final class VitFw {
                 return null;
         }
     }, (arg1) -> {
-        if (arg1.equals(symbol("construct"))) {
+        if (arg1.equalsSymbol("construct")) {
             return FW.telephonist(() -> "VitVal.construct", (arg) -> {
                 return wrap(Vit.val(arg));
             });
@@ -47,7 +47,7 @@ public final class VitFw {
                 return null;
         }
     }, (arg1) -> {
-        if (arg1.equals(symbol("construct"))) {
+        if (arg1.equalsSymbol("construct")) {
             return FW.telephonist(() -> "VitInvoke.construct", (arg) -> {
                 if (!VitFw.isVit(arg.type()))
                     return null;
@@ -69,7 +69,7 @@ public final class VitFw {
                 return null;
         }
     }, (arg1) -> {
-        if (arg1.equals(symbol("instance"))) {
+        if (arg1.equalsSymbol("instance")) {
             return wrap(Vit.var);
         }
         return null;
@@ -87,7 +87,7 @@ public final class VitFw {
                 return null;
         }
     }, (arg1) -> {
-        if (arg1.equals(symbol("builder"))) {
+        if (arg1.equalsSymbol("builder")) {
             return telephonist(repr, (func) -> {
                 if (!isVit(func.type())) {
                     return null;

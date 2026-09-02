@@ -58,7 +58,7 @@ public final class DVecFw {
                         return null; // out of range
                     return vec[i];
                 }
-        } else if (arg.equals(symbol("builder"))) {
+        } else if (arg.equalsSymbol("builder")) {
             return DVecBuilderFw.emptyBuilder;
         }
         return null;

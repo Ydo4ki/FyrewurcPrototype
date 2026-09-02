@@ -13,6 +13,7 @@
  (assert! (== l (call Declaration.builder (symbol "loc") ?)))
  (assert! (== l (Declaration (symbol "loc") ?)))
  (assert! (== l (call (Declaration (symbol "loc")) ?)))
+ (assert! (== l (call (Declaration) (symbol "loc") ?)))
 )
 
 (do

@@ -62,7 +62,7 @@ public final class ExprFw {
 
             return ExprFw.wrap(list.get(index));
         }, (arg) -> {
-            if (arg.equals(symbol("construct"))) {
+            if (arg.equalsSymbol("construct")) {
                 return FW.telephonist("ExprList.constructor", (bt) -> {
                     if (!bt.type().equals(ExprFw.bracketsType))
                         return null;

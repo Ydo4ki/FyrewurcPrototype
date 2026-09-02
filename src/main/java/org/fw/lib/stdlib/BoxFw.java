@@ -22,14 +22,14 @@ public final class BoxFw {
             if (FwUtils.isTypeApiCall(arg, type)) {
                 instance = CallFw.getVal(arg);
                 Val cArg = CallFw.getArg(arg);
-                if (cArg.equals(symbol("unbox"))) {
+                if (cArg.equalsSymbol("unbox")) {
                     return unbox(instance);
                 }
-            } else if (arg.equals(symbol("construct"))) {
+            } else if (arg.equalsSymbol("construct")) {
                 return FW.telephonist((arg1) -> Val.of(type, arg1));
             }
             return null;
-        } else if (arg.equals(symbol("construct"))) {
+        } else if (arg.equalsSymbol("construct")) {
             return FW.telephonist(arg1 -> Val.of(BoxFw.boxType, arg1));
         }
         return null;

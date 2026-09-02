@@ -25,7 +25,7 @@ public final class TraitFw {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
             Trait trait = instance._unpack();
-            if (arg.equals(symbol("to-constraint"))) {
+            if (arg.equalsSymbol("to-constraint")) {
                 return trait.constraint();
             }
 //            if (arg.type().equals(ExprFw.toExpr)) {
@@ -42,7 +42,7 @@ public final class TraitFw {
 //                return ExprFw.wrap(ExprList.of(BracketsTypes.round, elements));
 //            }
         }
-        if (arg.equals(symbol("construct"))) {
+        if (arg.equalsSymbol("construct")) {
             return FW.telephonist("Trait.constructor", (payload) -> {
                 if (!payload.type().equals(DVecFw.dVec))
                     return null;

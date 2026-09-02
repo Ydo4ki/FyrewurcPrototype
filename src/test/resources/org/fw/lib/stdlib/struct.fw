@@ -13,6 +13,8 @@
  (assert! (== Loc (struct (= x ?) (= y ?))))
 )
 
+(assert! (== (to-expr Loc) (expr (Struct [(= x ?) (= y ?)]))))
+
 (: l (call Loc.builder 14 51))
 
 (do
@@ -25,4 +27,7 @@
 (do
  (assert! (== l (Loc 14 51)))
  (assert! (== l (call (Loc 14) 51)))
+ (assert! (== l (call (Loc) 14 51)))
 )
+
+(assert! (== (to-expr l) (expr ((Struct [(= x ?) (= y ?)]) 14 51))))

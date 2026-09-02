@@ -21,7 +21,7 @@ public final class SyntaxResolveFw {
                 }
                 return null;
             }))), FW.telephonist(arg -> {
-                if (arg.equals(symbol("builder"))) return FW.telephonist(arg1 -> {
+                if (arg.equalsSymbol("builder")) return FW.telephonist(arg1 -> {
                     return FW.telephonist(arg2 -> {
                         return Val.of(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(arg1, arg2));
                     });
@@ -35,7 +35,7 @@ public final class SyntaxResolveFw {
 
     public static final Type toExprResolve = WrapperTypeFw.wrapperType(crtcis,
             FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(rawPayload::call))), FW.telephonist(arg -> {
-                if (arg.equals(symbol("builder"))) {
+                if (arg.equalsSymbol("builder")) {
                     return FW.telephonist((passingArg) -> {
                         if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
                             return null;
@@ -49,7 +49,7 @@ public final class SyntaxResolveFw {
             }));
     public static final Type toFnResolve = WrapperTypeFw.wrapperType(crtcis,
             FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(rawPayload::call))), FW.telephonist(arg -> {
-                if (arg.equals(symbol("builder"))) {
+                if (arg.equalsSymbol("builder")) {
                     return FW.telephonist((passingArg) -> {
                         if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
                             return null;

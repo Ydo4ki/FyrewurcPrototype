@@ -44,20 +44,6 @@ public class ToExprFn {
 
         Type type = arg.type();
 
-        if (type.equals(OperatorExprFw.exprOperator) || type.equals(SenderExprFw.exprSender)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    type.asVal().toExpr(toExpr),
-                    arg.call(symbol("operator")).toExpr(toExpr)
-            ));
-        }
-
-        if (type.equals(AccumulatorsExprFw.exprAccumulator)) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    AccumulatorsExprFw.exprAccumulator.asVal().toExpr(toExpr),
-                    arg.call(symbol("operator")).toExpr(toExpr)
-            ));
-        }
-
         if (type.equals(EnumFw.enumeration)) {
             return EnumFw.toExpr(arg, toExpr);
         } else if (type.asVal().type().equals(EnumFw.enumeration)) {
@@ -72,11 +58,9 @@ public class ToExprFn {
 
     public static final Val toExpr = ChainLinkFw.chain(exprififier,
             DeclaredFw.declaredToExpr,
-            DeclarationFw.declarationToExpr,
             StrFw.strToExpr,
             SyntaxResolveFw.syntaxResolveToExpr,
             ChainLinkFw.chainLinkToExpr,
-            StructFw.structToExpr,
             TraitFw.traitToExpr,
             IntTypeFw.intToExpr,
             toExprRest

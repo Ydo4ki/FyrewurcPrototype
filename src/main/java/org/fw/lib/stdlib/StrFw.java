@@ -106,7 +106,7 @@ public final class StrFw {
                     parseArg
             );
             return State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(RtEnv.of(FW.telephonist((arg2) -> {
-                if (arg2.equals(symbol("arg"))) return arg1;
+                if (arg2.equalsSymbol("arg")) return arg1;
                 return null;
             })), state)));
         }

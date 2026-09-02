@@ -19,14 +19,14 @@ public final class ChainResolveFw {
                 arg = CallFw.getArg(arg);
 
                 ChainResolve cr = instance._unpack();
-                if (arg.equals(symbol("passing"))) {
+                if (arg.equalsSymbol("passing")) {
                     return cr.passing();
-                } else if (arg.equals(symbol("chain"))) {
+                } else if (arg.equalsSymbol("chain")) {
                     return cr.chain();
                 }
-            } else if (arg.equals(symbol("builder"))) {
+            } else if (arg.equalsSymbol("builder")) {
                 return FW.telephonist((passingArg) -> {
-                    if (constraint.call(symbol("check")).call(passingArg) != BoolFw._true)
+                    if (constraint.get("check").call(passingArg) != BoolFw._true)
                         return null;
 
                     return FW.telephonist((chain) -> {
@@ -35,7 +35,7 @@ public final class ChainResolveFw {
                 });
             }
             return null;
-        } else if (arg.equals(symbol("builder"))) {
+        } else if (arg.equalsSymbol("builder")) {
             return FW.telephonist((constraint) -> {
                 if (!ConstraintFw.isConstraint(constraint))
                     return null;

@@ -41,24 +41,24 @@ public final class FunctionFw {
             if (cArg.type().equals(SymbolFw.symbol)) {
                 switch (cArg._unpack(Symbol.class).getValue()) {
                     case "fn-call":
-                        Val constraint = value.call(symbol("arg-constraint"));
-                        Vit body = value.call(symbol("body"))._unpack();
+                        Val constraint = value.get("arg-constraint");
+                        Vit body = value.get("body")._unpack();
                         return FW.telephonist((arg1) -> {
-                            boolean qualifies = constraint.call(symbol("check")).call(arg1) == BoolFw._true;
+                            boolean qualifies = constraint.get("check").call(arg1) == BoolFw._true;
                             if (!qualifies) {
                                 return null;
                             }
 
                             // this is questionable
-                            Val oldRtEnv = value.call(symbol("rt-env"));
+                            Val oldRtEnv = value.get("rt-env");
 //                            Val newRtEnv = FW.telephonist((arg2, context2) -> {
 //                                Val ret0 = arg1.call(arg2, context2);
 //                                if (Unspecified.isUnspecified(ret0)) return oldRtEnv.call(arg2, context2);
 //                                return ret0;
 //                            });
                             Val newRtEnv = FW.telephonist((arg2) -> {
-                                if (arg2.equals(symbol("%"))) return arg1;
-                                if (arg2.equals(symbol("%self%"))) return instance;
+                                if (arg2.equalsSymbol("%")) return arg1;
+                                if (arg2.equalsSymbol("%self%")) return instance;
                                 else return oldRtEnv.call(arg2);
                             });
                             return OperationFw._VitOperation

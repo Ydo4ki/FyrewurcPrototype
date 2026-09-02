@@ -12,15 +12,15 @@ public final class BoolFw {
             Val cArg = CallFw.getArg(arg);
 
             boolean value = instance._unpack(Boolean.class);
-            if (cArg.equals(symbol("not"))) {
+            if (cArg.equalsSymbol("not")) {
                 return wrap(!value);
-            } else if (cArg.equals(symbol("and"))) {
+            } else if (cArg.equalsSymbol("and")) {
                 return bop(instance, (a, b) -> a && b);
-            } else if (cArg.equals(symbol("or"))) {
+            } else if (cArg.equalsSymbol("or")) {
                 return bop(instance, (a, b) -> a || b);
-            } else if (cArg.equals(symbol("xor"))) {
+            } else if (cArg.equalsSymbol("xor")) {
                 return bop(instance, (a, b) -> a != b);
-            } else if (cArg.equals(symbol("if"))) {
+            } else if (cArg.equalsSymbol("if")) {
                 return FW.telephonist((arg1) -> { // probably one of the weirdest if implementations ever
                     if (value) return FW.telephonist((arg2) -> arg1);
                     else return FW.telephonist((arg2) -> arg2);

@@ -40,7 +40,7 @@ public final class ErrTypeFw {
                 ctor = Vit.val(instance).call(symbol("construct")).call(ctor);
 
                 return VitFw.wrap(ctor);
-            } else if (arg.equals(symbol("construct"))) {
+            } else if (arg.equalsSymbol("construct")) {
                 return FW.telephonist(instance.toExpr(context) + ".constructor", (arg1, context1) -> {
                     if (!arg1.type().equals(wn.original().asType()))
                         return Val.unspecified;
@@ -80,7 +80,7 @@ public final class ErrTypeFw {
                     .call(VitFw.unwrap(origRetVit))
                     .call(VitFw.unwrap(nameVit))
             );
-        } else if (arg.equals(symbol("builder"))) {
+        } else if (arg.equalsSymbol("builder")) {
             return FW.telephonist("ErrType.builder", (originalVal, context1)
                     -> FW.telephonist(() -> "(ErrType.builder " + originalVal.toExpr(context1) + ")", (name, context2) -> {
                 if (!ExprFw.isExpr(name)) {

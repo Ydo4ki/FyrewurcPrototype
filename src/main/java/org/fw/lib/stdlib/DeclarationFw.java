@@ -31,50 +31,40 @@ public final class DeclarationFw {
             arg = CallFw.getArg(arg);
 
             Declaration decl = instance._unpack();
-            if (arg.equals(symbol("key"))) {
+            if (arg.equalsSymbol("key")) {
                 return decl.key();
-            } else if (arg.equals(symbol("constraint"))) {
+            } else if (arg.equalsSymbol("constraint")) {
                 return decl.constraint();
             }
-        } else if (arg.equals(symbol("builder"))) {
+        } else if (arg.equalsSymbol("builder")) {
             return FW.telephonist("Declaration.builder", (key) -> {
                 return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint) -> {
-                    if (!ConstraintFw.isConstraint(constraint)) return null;
+                    if (!ConstraintFw.isConstraint(constraint))
+                        return null;
+
                     return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
                 });
             });
         }
         return null;
     }).asType();
-    public static final Val declarationToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.type();
-        if (type.equals(declaration)) {
-            Expr expr = toExpr(arg, toExpr); // todo
-            return ExprFw.wrap(expr);
-        }
-        return null;
-    });
 
     public static Val getKey(Val declaration) {
-        return declaration.call(symbol("key"));
+        return declaration.get("key");
     }
 
     public static Val getConstraint(Val declaration) {
-        return declaration.call(symbol("constraint"));
+        return declaration.get("constraint");
     }
 
     public static Val declaration(Val key, Val constraint) {
         if (!ConstraintFw.isConstraint(constraint))
             throw new IllegalArgumentException();
+
         return Val.of(declaration, new Declaration(key, constraint));
     }
 
-    public static Expr toExpr(Val arg, Val toExpr) {
+    public static Expr toExpr(Val arg, CompEnv toExpr) {
         return arg._unpack(DeclarationFw.Declaration.class).toExpr(toExpr);
     }
 
@@ -87,7 +77,9 @@ public final class DeclarationFw {
             this.constraint = constraint;
         }
 
-        public Expr toExpr(Val toExpr) {
+        public Expr toExpr(CompEnv toExpr) {
+            if (key.type() == SymbolFw.symbol)
+                return ExprList.of(BracketsTypes.round, Symbol.of("="), key._unpack(Symbol.class), constraint.toExpr(toExpr));
             return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(toExpr), constraint.toExpr(toExpr));
         }
 
@@ -129,17 +121,7 @@ public final class DeclarationFw {
             Type type = arg.type();
             if (type.equals(DeclarationFw.declaration)) {
                 Val key = arg.get("key");
-                if (key._unpack() instanceof Symbol) {
-
-                    return ExprFw.wrap(ExprList.of(BracketsTypes.round, Symbol.of("="),
-                            key._unpack(Symbol.class),
-                            arg.get("constraint").toExpr(compEnv))
-                    );
-                }
-                return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv),
-                        key.toExpr(compEnv),
-                        arg.get("constraint").toExpr(compEnv))
-                );
+                return ExprFw.wrap(toExpr(arg, compEnv));
             }
             return null;
         } else if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
