@@ -13,7 +13,7 @@ import java.util.function.LongBinaryOperator;
 public final class JLongFw {
     public static final Type jlong = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Long value = unwrap(rawPayload);
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap(-value);
@@ -41,7 +41,7 @@ public final class JLongFw {
 
     private static Val bopLIL(Long value, LongIntLongOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JIntFw.jint)) {
+            if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = JIntFw.unwrap(arg1);
                 return wrap(operator.apply(value, v2));
             }
@@ -55,7 +55,7 @@ public final class JLongFw {
 
     private static Val bopLLL(Long value, LongBinaryOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JLongFw.jlong)) {
+            if (arg1.getType().equals(JLongFw.jlong)) {
                 Long v2 = unwrap(arg1);
                 return wrap(operator.applyAsLong(value, v2));
             }

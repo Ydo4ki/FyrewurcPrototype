@@ -30,19 +30,19 @@ public final class JVMHandles {
             // let's just assume find-X is an operation and get-X is pure
             // that would be more intuitive
             DeclaredFw.declared(symbol("str2jstring"), FW.telephonist((arg) -> {
-                if (!arg.type().equals(StrFw.str))
+                if (!arg.getType().equals(StrFw.str))
                     return null;
                 String string = arg._unpack();
                 return jwrap(string, String.class);
             })),
             DeclaredFw.declared(symbol("jstring2str"), FW.telephonist((arg) -> {
-                if (!arg.type().equals(JOopFw.jOop) || !(arg._unpack() instanceof String))
+                if (!arg.getType().equals(JOopFw.jOop) || !(arg._unpack() instanceof String))
                     return null;
                 String string = arg._unpack();
                 return StrFw.str(string);
             })),
             DeclaredFw.declared(symbol("find-type"), FW.telephonist((arg) -> {
-                if (!arg.type().equals(StrFw.str))
+                if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
@@ -54,7 +54,7 @@ public final class JVMHandles {
                 }.asVal();
             })),
             DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist((arg) -> {
-                if (!arg.type().equals(StrFw.str))
+                if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
@@ -76,7 +76,7 @@ public final class JVMHandles {
                 }.asVal();
             })),
             DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist((arg) -> {
-                if (!arg.type().equals(StrFw.str))
+                if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
@@ -89,7 +89,7 @@ public final class JVMHandles {
                 }.asVal();
             })),
             DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist((arg) -> {
-                if (!arg.type().equals(StrFw.str))
+                if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._unpack();
                 return new SystemOperation() {
@@ -118,7 +118,7 @@ public final class JVMHandles {
     }
 
     public static Object junwrap(Val val) {
-        Type type = val.type();
+        Type type = val.getType();
         if (type == JOopFw.jOop) return val._unpack();
         if (type == JBooleanFw.jboolean) return val._unpack(Boolean.class);
         if (type == JByteFw.jbyte) return JByteFw.unwrap(val);

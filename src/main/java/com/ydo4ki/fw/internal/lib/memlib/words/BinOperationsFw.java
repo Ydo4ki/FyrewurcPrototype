@@ -18,7 +18,7 @@ public final class BinOperationsFw {
         if (size <= 0)
             return null;
         return FW.telephonist(arg -> {
-            if (!arg.type().equals(type))
+            if (!arg.getType().equals(type))
                 return null;
 
             Bits bits = MemUtils.toBits(arg);
@@ -37,7 +37,7 @@ public final class BinOperationsFw {
             if (size <= 0)
                 return null;
             return FW.telephonist(arg -> {
-                if (!arg.type().equals(type))
+                if (!arg.getType().equals(type))
                     return null;
 
                 Bits bits = MemUtils.toBits(arg);
@@ -46,7 +46,7 @@ public final class BinOperationsFw {
                     return null;
 
                 return FW.telephonist(arg1 -> {
-                    if (!arg1.type().equals(type))
+                    if (!arg1.getType().equals(type))
                         return null;
 
                     Bits bits1 = MemUtils.toBits(arg1);

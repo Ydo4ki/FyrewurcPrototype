@@ -10,8 +10,8 @@ public final class TelephonistTests {
     @Test
     public void test() {
         Val v = FW.telephonist(a -> null, CallContract.unknown());
-        assertEquals(Val.ofTelephonist(2), v.type().asVal().type().asVal().type().asVal());
+        assertEquals(Val.ofTelephonist(2), v.getType().asVal().getType().asVal().getType().asVal());
         assertEquals("Telephonist14", Val.ofTelephonist(14).toString());
-        assertEquals("Telephonist2", v.type().asVal().type().asVal().type().toString());
+        assertEquals("Telephonist2", v.getType().asVal().getType().asVal().getType().toString());
     }
 }

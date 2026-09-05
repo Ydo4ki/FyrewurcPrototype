@@ -30,7 +30,7 @@ public final class DVecFw {
             Val cArg = CallFw.getArg(arg);
             Val[] vec = instance._unpack();
 
-            if (cArg.type().equals(SymbolFw.symbol)) {
+            if (cArg.getType().equals(SymbolFw.symbol)) {
                 String text = cArg._unpack().toString();
                 switch (text) {
                     case "size": // ???
@@ -44,7 +44,7 @@ public final class DVecFw {
                 }
             } else
                 // deprecated (probably)
-                if (cArg.type().equals(DIntFw.dint)) {
+                if (cArg.getType().equals(DIntFw.dint)) {
                     BigInteger v = DIntFw.unwrap0(cArg);
                     // perhaps its better to use boxes for results of this
                     // otherwise there's no way to distinguish "out of range" result from a proper one
@@ -65,11 +65,11 @@ public final class DVecFw {
     }).asType();
 
     public static final CompEnv dvec2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
 
-            Type type = arg.type();
+            Type type = arg.getType();
             if (type.equals(dVec)) {
                 Val[] vec = arg._unpack();
                 List<Expr> elements = new ArrayList<>();
@@ -104,7 +104,7 @@ public final class DVecFw {
 
     public static final class DVecConstructorCEnvFw {
         public static final Val dVecConstructorCenv = telephonist(() -> "dVecConstructorCenv", (arg) -> {
-            if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+            if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                 Val exprVal = arg.call(symbol("expr"));
                 Val compEnv = arg.call(symbol("comp-env"));
                 Expr expr = exprVal._unpack();
@@ -117,7 +117,7 @@ public final class DVecFw {
                     for (int i = 0; i < list.size(); i++) {
                         Expr f = list.get(i);
                         Val elVitVal = CompEnv.of(compEnv).compileV(ExprFw.wrap(f));
-                        if (!VitFw.isVit(elVitVal.type()))
+                        if (!VitFw.isVit(elVitVal.getType()))
                             return elVitVal;
 
                         Vit vit = null;

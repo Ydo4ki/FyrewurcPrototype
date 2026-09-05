@@ -15,14 +15,14 @@ import static org.fw.core.FW.symbol;
 public final class ToExprFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
-            if (val.type() == DIntFw.dint) {
+            if (val.getType() == DIntFw.dint) {
                 return ExprFw.wrap(Symbol.of(val._unpack().toString()));
             }
         }
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -34,7 +34,7 @@ public final class ToExprFw {
                         return null;
 
                     Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                    if (!VitFw.isVit(condition.type()))
+                    if (!VitFw.isVit(condition.getType()))
                         return null;
                     Vit v = condition._unpack();
                     return VitFw.wrap(Vit.val(compEnv).call(CompEnv.toExprResolve(v, CompEnv.of(compEnv))));

@@ -2,7 +2,6 @@ package org.fw.core.base;
 
 import org.fw.core.FW;
 import org.fw.core.util.FwUtils;
-import org.fw.lib.stdlib.expr.CompEnv;
 
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ public final class Unspecified {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
             return unspecified(instance, arg); // accumulate
-        } else if (arg.type() == SymbolFw.symbol) {
+        } else if (arg.getType() == SymbolFw.symbol) {
             String v = arg._unpack().toString();
             switch (v) {
                 case "builder":
@@ -41,7 +40,7 @@ public final class Unspecified {
     }
 
     public static boolean isUnspecified(Val val) {
-        return val.type() == unspecified_t;
+        return val.getType() == unspecified_t;
     }
 
     public static Val getVal(Val val) {

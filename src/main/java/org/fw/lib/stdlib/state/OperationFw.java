@@ -25,7 +25,7 @@ public final class OperationFw {
     }).asType();
 
     public static final Val _VitOperation = FW.telephonist((arg) -> {
-        if (!VitFw.isVit(arg.type()))
+        if (!VitFw.isVit(arg.getType()))
             return null;
 
         Vit vit = arg._unpack();
@@ -38,14 +38,14 @@ public final class OperationFw {
     }
 
     public static Operation unwrap(Val operation) {
-        if (operation.type() == OperationFw.operation)
+        if (operation.getType() == OperationFw.operation)
             return operation._unpack(Operation.class);
         return null;
     }
 
 
     public static final Val directivesCenv = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -59,7 +59,7 @@ public final class OperationFw {
 
 
                         Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(val.type()))
+                        if (!VitFw.isVit(val.getType()))
                             return null;
 
                         return VitFw.wrap(Vit.val(OperationFw._VitOperation).call(val).call(Vit.var));
@@ -69,10 +69,10 @@ public final class OperationFw {
                             return VitErrorFw.rrror(expr, "3 elements expected");
 
                         Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(condition.type()))
+                        if (!VitFw.isVit(condition.getType()))
                             return condition;
                         Val body = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(body.type()))
+                        if (!VitFw.isVit(body.getType()))
                             return body;
 
                         Vit ret = Vit.invoke(Vit.val(WhileOperation._While)

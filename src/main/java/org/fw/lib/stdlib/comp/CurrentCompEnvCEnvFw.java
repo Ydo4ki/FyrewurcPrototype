@@ -11,7 +11,7 @@ import static org.fw.core.FW.telephonist;
 
 public final class CurrentCompEnvCEnvFw {
     public static final Val currentCompEnvCenv = FW.telephonist("currentCompEnvCenv", (arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             if (exprVal.equalsSymbol("comp-env")) {

@@ -52,7 +52,7 @@ public final class Tester {
 
 
     public static final CompEnv testDirectivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -64,7 +64,7 @@ public final class Tester {
                         return null;
 
                     Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                    if (!VitFw.isVit(condition.type()))
+                    if (!VitFw.isVit(condition.getType()))
                         return condition;
                     Vit vitOperation = Vit.call(OperationFw._VitOperation, condition).call(Vit.var);
                     Vit assertOperation = Vit.call(FW.telephonist(arg1 ->

@@ -29,7 +29,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.fw.core.FW.symbol;
@@ -45,7 +44,7 @@ public final class Shell {
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("bufr"), Val.of(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
                         DeclaredFw.declared(symbol("parse-placeholder"), FW.telephonist(arg -> {
-                            if (!arg.type().equals(StrFw.str)) return null;
+                            if (!arg.getType().equals(StrFw.str)) return null;
                             String str = arg._unpack();
                             Iterable<LocatedExpr<?>> exprs = new ExprOutput(new TokenOutput(str, null, BracketsTypes.bracketsTypes));
                             List<Val> vals = new ArrayList<>();

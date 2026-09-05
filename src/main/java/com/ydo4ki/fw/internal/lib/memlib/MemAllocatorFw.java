@@ -24,14 +24,14 @@ public final class MemAllocatorFw {
             arg = CallFw.getArg(arg);
 
 
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String sym = arg._unpack().toString();
                 switch (sym) {
                     case "heap":
                         return heap.asVal();
                 }
             }
-            if (!arg.type().equals(DIntFw.dint))
+            if (!arg.getType().equals(DIntFw.dint))
                 return null;
             long size = DIntFw.unwrap0(arg).longValueExact();
             return new Operation() {

@@ -19,7 +19,7 @@ public final class VitErrorFw {
     }
 
     public static final Val cantResolveAnythingCenv = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();

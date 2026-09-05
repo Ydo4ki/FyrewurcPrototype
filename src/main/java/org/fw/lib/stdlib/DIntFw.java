@@ -27,7 +27,7 @@ public final class DIntFw {
 
             BigInteger value = unwrap(instance);
             assert value != null;
-            if (cArg.type() == SymbolFw.symbol) {
+            if (cArg.getType() == SymbolFw.symbol) {
                 String sym = cArg._unpack().toString();
                 switch (sym) {
                     case "neg":
@@ -52,7 +52,7 @@ public final class DIntFw {
             }
         } else if (arg.equalsSymbol("parse")) {
             return FW.telephonist((arg1) -> {
-                if (arg1.type().equals(StrFw.str)) {
+                if (arg1.getType().equals(StrFw.str)) {
                     String string = arg1._unpack();
                     try {
                         BigInteger i = new BigInteger(string);
@@ -68,10 +68,10 @@ public final class DIntFw {
     }).asType();
 
     public static final CompEnv dint2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
-            if (val.type() == dint) {
+            if (val.getType() == dint) {
                 return ExprFw.wrap(Symbol.of(val._unpack().toString()));
             }
         }
@@ -82,7 +82,7 @@ public final class DIntFw {
         BigInteger value = unwrap(instance);
         assert value != null;
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(DIntFw.dint)) {
+            if (arg1.getType().equals(DIntFw.dint)) {
                 BigInteger v2 = unwrap(arg1);
                 return dint(operator.apply(value, v2));
             }
@@ -99,7 +99,7 @@ public final class DIntFw {
     }
 
     public static BigInteger unwrap(Val dint) {
-        if (dint.type().equals(DIntFw.dint)) return unwrap0(dint);
+        if (dint.getType().equals(DIntFw.dint)) return unwrap0(dint);
         throw new IllegalArgumentException(dint.toString());
     }
 

@@ -19,7 +19,7 @@ public final class JMethodFw {
         if (FwUtils.isTypeApiCall(arg, JMethodFw.jMethod)) {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
-            if (arg.type() != SymbolFw.symbol)
+            if (arg.getType() != SymbolFw.symbol)
                 return null;
 
             MethodHandle method = instance._unpack();
@@ -27,7 +27,7 @@ public final class JMethodFw {
             switch (arg._unpack(Symbol.class).getValue()) {
                 case "invoke-method": {
                     return FW.telephonist(argumentsVec -> {
-                        if (argumentsVec.type() != DVecFw.dVec)
+                        if (argumentsVec.getType() != DVecFw.dVec)
                             return null;
 
                         Val[] arguments = argumentsVec._unpack();
@@ -58,10 +58,10 @@ public final class JMethodFw {
 
 
     public static final Val methodCallCEnv = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
-            if (val.type() == JMethodFw.jMethod) {
+            if (val.getType() == JMethodFw.jMethod) {
                 return val.get("invoke-method");
             }
         }

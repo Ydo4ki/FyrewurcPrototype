@@ -5,7 +5,7 @@ import org.fw.core.base.contract.CallContract;
 
 public final class TypeGetFw {
     public static final Val typeGet = FW.telephonist(
-            (arg) -> arg.type().asVal()
+            (arg) -> arg.getType().asVal()
             , CallContract.unknown()
     );
 }

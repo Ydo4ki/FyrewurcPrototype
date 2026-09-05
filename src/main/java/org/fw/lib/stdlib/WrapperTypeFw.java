@@ -26,7 +26,7 @@ public final class WrapperTypeFw {
                 Val staticCallsHandler = wt.staticCallsHandler;
                 Val ret = staticCallsHandler.call(arg);
                 if (!Unspecified.isUnspecified(ret)) return ret;
-                if (arg.type() == SymbolFw.symbol) {
+                if (arg.getType() == SymbolFw.symbol) {
                     String sym = arg._unpack().toString();
                     switch (sym) {
                         case "Payload":
@@ -56,8 +56,8 @@ public final class WrapperTypeFw {
     }
 
     public static Val unwrapFully(Val val) {
-        Type type = unwrapFully(val.type());
-        if (type != val.type())
+        Type type = unwrapFully(val.getType());
+        if (type != val.getType())
             return Val.of(type, val._unpack());
         return val;
     }

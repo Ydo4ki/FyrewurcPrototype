@@ -11,7 +11,7 @@ import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 public final class JShortFw {
     public static final Type jshort = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.word, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Short value = unwrap(rawPayload);
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap((short) -value);
@@ -52,7 +52,7 @@ public final class JShortFw {
 
     private static Val bopSIS(Short value, ShortIntShortOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JIntFw.jint)) {
+            if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = JIntFw.unwrap(arg1);
                 return wrap(operator.apply(value, v2));
             }
@@ -70,7 +70,7 @@ public final class JShortFw {
 
     private static Val bopSSS(Short value, ShortBinaryOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JShortFw.jshort)) {
+            if (arg1.getType().equals(JShortFw.jshort)) {
                 Short v2 = unwrap(arg1);
                 return wrap(operator.applyAsShort(value, v2));
             }

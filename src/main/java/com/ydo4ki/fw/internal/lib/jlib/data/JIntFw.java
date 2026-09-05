@@ -14,7 +14,7 @@ public final class JIntFw {
     public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Integer value = unwrap(rawPayload);
         assert value != null;
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap(-value);
@@ -43,7 +43,7 @@ public final class JIntFw {
 
     private static Val bop(Integer value, IntBinaryOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JIntFw.jint)) {
+            if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = unwrap(arg1);
                 return wrap(operator.applyAsInt(value, v2));
             }

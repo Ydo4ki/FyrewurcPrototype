@@ -11,7 +11,7 @@ final class UnpackerFw {
             Val cArg = CallFw.getArg(arg);
 
             Type targetType = instance._unpack();
-            if (!cArg.type().equals(targetType) || !(cArg._unpack() instanceof Val)) {
+            if (!cArg.getType().equals(targetType) || !(cArg._unpack() instanceof Val)) {
                 return null; // wrong unpacker / unsupported value / consider using boxes
             }
             return cArg._unpack(Val.class);

@@ -20,7 +20,7 @@ import static org.fw.core.FW.telephonist;
 
 public final class ExprFw {
     public static final Val symbolConstructor = FW.telephonist("stringToSymbol", (arg1) -> {
-        if (!arg1.type().equals(StrFw.str))
+        if (!arg1.getType().equals(StrFw.str))
             return null;
 
         String value = arg1._unpack();
@@ -32,7 +32,7 @@ public final class ExprFw {
     });
 
     public static final Val symbolToString = FW.telephonist("symbolToString", (arg) -> {
-        if (arg.type() == SymbolFw.symbol) {
+        if (arg.getType() == SymbolFw.symbol) {
             return StrFw.str(arg._unpack(Symbol.class).getValue());
         }
         return null;
@@ -64,10 +64,10 @@ public final class ExprFw {
         }, (arg) -> {
             if (arg.equalsSymbol("construct")) {
                 return FW.telephonist("ExprList.constructor", (bt) -> {
-                    if (!bt.type().equals(ExprFw.bracketsType))
+                    if (!bt.getType().equals(ExprFw.bracketsType))
                         return null;
                     return FW.telephonist((valuesDvec) -> {
-                        if (!valuesDvec.type().equals(DVecFw.dVec))
+                        if (!valuesDvec.getType().equals(DVecFw.dVec))
                             return null;
 
                         Val[] values = valuesDvec._unpack();
@@ -95,7 +95,7 @@ public final class ExprFw {
     @Deprecated
     public static final Val isExprBugged = ConstraintFw.constraint(
             Vit.val(FW.telephonist(passingArg
-                    -> BoolFw.wrap(!passingArg.type().equals(SymbolFw.symbol) && !passingArg.type().equals(exprList))))
+                    -> BoolFw.wrap(!passingArg.getType().equals(SymbolFw.symbol) && !passingArg.getType().equals(exprList))))
     );
 
     public static final Type bracketsType = FW.telephonist("BracketsType", (arg) -> {
@@ -103,14 +103,14 @@ public final class ExprFw {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
             BracketsType bt = instance._unpack();
-            if (arg.type() == SymbolFw.symbol) switch (arg._unpack(Symbol.class).getValue()) {
+            if (arg.getType() == SymbolFw.symbol) switch (arg._unpack(Symbol.class).getValue()) {
                 case "open":
                     return StrFw.str(String.valueOf(bt.open()));
                 case "close":
                     return StrFw.str(String.valueOf(bt.close()));
             }
         } else {
-            if (arg.type() == SymbolFw.symbol) switch (arg._unpack(Symbol.class).getValue()) {
+            if (arg.getType() == SymbolFw.symbol) switch (arg._unpack(Symbol.class).getValue()) {
                 case "round":
                     return ExprFw.roundBrackets;
                 case "square":
@@ -138,11 +138,11 @@ public final class ExprFw {
     }
 
     public static boolean isExpr(Val val) {
-        return val.type().equals(exprList) || val.type().equals(SymbolFw.symbol);
+        return val.getType().equals(exprList) || val.getType().equals(SymbolFw.symbol);
     }
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -154,7 +154,7 @@ public final class ExprFw {
                         if (isize != 2) return null;
 
                         Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(retVit.type()))
+                        if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
                         return VitFw.wrap(Vit.val(ExprFw.symbolConstructor).call(retVit._unpack(Vit.class)));
@@ -173,7 +173,7 @@ public final class ExprFw {
                         for (int i = 2; i < isize; i++) {
                             Expr eee = ((ExprList) expr).get(i);
                             Val retVit = compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
-                            if (!VitFw.isVit(retVit.type()))
+                            if (!VitFw.isVit(retVit.getType()))
                                 return retVit; // compile error idk
 
                             try {
@@ -193,11 +193,11 @@ public final class ExprFw {
     }));
 
     public static final CompEnv esast2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
 
-            Type type = val.type();
+            Type type = val.getType();
             if (type.equals(exprList)) {
                 List<Expr> content = new ArrayList<>();
 //                content.add(type.asVal().toExpr(CompEnv.of(compEnv)));
@@ -233,8 +233,8 @@ public final class ExprFw {
     );
 
     public static Expr unwrap(Val v) {
-        if (v.type() == exprList) return v._unpack(ExprList.class);
-        if (v.type() == SymbolFw.symbol) return v._unpack(Symbol.class);
+        if (v.getType() == exprList) return v._unpack(ExprList.class);
+        if (v.getType() == SymbolFw.symbol) return v._unpack(Symbol.class);
         return null;
     }
 }

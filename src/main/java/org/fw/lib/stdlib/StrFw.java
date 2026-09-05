@@ -25,17 +25,17 @@ public final class StrFw {
 
             String value = instance._unpack();
             assert value != null;
-            if (cArg.type() == SymbolFw.symbol) {
+            if (cArg.getType() == SymbolFw.symbol) {
                 String s = cArg._unpack().toString();
                 switch (s) {
                     case "sub": {
                         return FW.telephonist((start) -> {
-                            if (start.type() != DIntFw.dint)
+                            if (start.getType() != DIntFw.dint)
                                 return null;
                             int st = start._unpack(BigInteger.class).intValue();
 
                             return FW.telephonist((end) -> {
-                                if (end.type() != DIntFw.dint)
+                                if (end.getType() != DIntFw.dint)
                                     return null;
                                 int e = end._unpack(BigInteger.class).intValue();
 
@@ -63,7 +63,7 @@ public final class StrFw {
         String value = instance._unpack();
         assert value != null;
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(StrFw.str)) {
+            if (arg1.getType().equals(StrFw.str)) {
                 String v2 = arg1._unpack();
                 return str(operator.apply(value, v2));
             }
@@ -73,12 +73,12 @@ public final class StrFw {
 
 
     public static final Val strToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
+        if (arg.getType() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
         arg = arg.call(symbol("passing"));
 
-        Type type = arg.type();
+        Type type = arg.getType();
         if (type.equals(str)) {
             return symbol('"' + arg._unpack(String.class) + '"');
         }
@@ -113,7 +113,7 @@ public final class StrFw {
 
         public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1) -> {
             Val str = ExprFw.symbolToString.call(arg1);
-            if (!str.type().equals(StrFw.str))
+            if (!str.getType().equals(StrFw.str))
                 return null;
 
             String s = str._unpack();

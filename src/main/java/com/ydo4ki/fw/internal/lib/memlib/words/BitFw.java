@@ -6,8 +6,6 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.symbol;
-
 public final class BitFw {
     public static final Type bit = FW.telephonist(arg -> {
         if (FwUtils.isTypeApiCall(arg, BitFw.bit)) {
@@ -40,7 +38,7 @@ public final class BitFw {
 
     private static Val bop(boolean value, BooleanBinaryOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(BitFw.bit)) {
+            if (arg1.getType().equals(BitFw.bit)) {
                 boolean v2 = arg1._unpack();
                 return wrap(operator.applyAsInt(value, v2));
             }

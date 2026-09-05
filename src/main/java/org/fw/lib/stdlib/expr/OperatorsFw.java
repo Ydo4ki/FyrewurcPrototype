@@ -16,7 +16,7 @@ import static org.fw.core.FW.telephonist;
 public final class OperatorsFw {
 
     public static final Val exports = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -58,7 +58,7 @@ public final class OperatorsFw {
 
                             for (int i = 1; i < isize; i++) {
                                 Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(), CompEnv.of(compEnv)));
-                                if (!VitFw.isVit(term.type()))
+                                if (!VitFw.isVit(term.getType()))
                                     return null;
                                 if (vit == null) vit = term._unpack(Vit.class);
                                 else vit = vit.call(symbol(name)).call(term._unpack(Vit.class));
@@ -73,7 +73,7 @@ public final class OperatorsFw {
                                 return null;
 
                             Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                            if (!VitFw.isVit(term.type()))
+                            if (!VitFw.isVit(term.getType()))
                                 return null;
                             return VitFw.wrap(term._unpack(Vit.class).call(symbol(name)));
                         }

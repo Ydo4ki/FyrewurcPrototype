@@ -20,7 +20,7 @@ public final class HeapFw {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
 
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String sym = arg._unpack().toString();
                 switch (sym) {
                     case "allocator":

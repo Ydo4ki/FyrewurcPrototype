@@ -11,11 +11,11 @@ import static org.fw.core.FW.telephonist;
 
 public final class WhileOperation extends Operation {
     public static final Val _While = FW.telephonist((condition) -> {
-        if (condition.type() != OperationFw.operation)
+        if (condition.getType() != OperationFw.operation)
             return null;
 
         return FW.telephonist((body) -> {
-            if (body.type() != OperationFw.operation)
+            if (body.getType() != OperationFw.operation)
                 return null;
 
             return new WhileOperation(condition._unpack(), body._unpack()).asVal();

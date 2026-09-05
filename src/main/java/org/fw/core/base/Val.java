@@ -12,6 +12,7 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 import static org.fw.core.FW.symbol;
 
@@ -20,8 +21,8 @@ public final class Val implements ValAdapter {
     private final Object value;
     private Type _asType;
 
-    Val(Type type, Object value, Type _asType) {
-        this.type = type;
+    private Val(Type type, Object value, Type _asType) {
+        this.type = Objects.requireNonNull(type);
         this.value = Objects.requireNonNull(value);
         this._asType = _asType;
     }
@@ -31,7 +32,7 @@ public final class Val implements ValAdapter {
         return this;
     }
 
-    public Type type() {
+    public Type getType() {
         return type;
     }
 
@@ -43,23 +44,31 @@ public final class Val implements ValAdapter {
     }
 
     public Val call(Val arg) {
-        return type().callInstance(this, arg);
-    }
-
-    public Val call(Val arg, Val... rest) {
-        Val ret = this.call(arg);
-        for (Val val : rest) {
-            ret = ret.call(val);
-        }
-        return ret;
+        return getType().callInstance(this, arg);
     }
 
     public Val get(String property) {
         return call(symbol(property));
     }
 
+    public Val call(Val arg, Val... rest) {
+        return call0(arg, rest, Val::call);
+    }
+
+    public Val get(String property, String... rest) {
+        return call0(property, rest, Val::get);
+    }
+
+    private <T> Val call0(T arg, T[] rest, BiFunction<Val, T, Val> function) {
+        Val ret = function.apply(this, arg);
+        for (T val : rest) {
+            ret = function.apply(ret, val);
+        }
+        return ret;
+    }
+
     public CallContract callContract() {
-        return type().instanceContract(this);
+        return getType().instanceContract(this);
     }
 
     public Expr toExpr(CompEnv compEnv) {
@@ -68,7 +77,7 @@ public final class Val implements ValAdapter {
 
     @Deprecated
     public Expr toExpr_Old(Val toExpr) {
-        if (type().equals(CallFw.call_t)) return ExprList.of(
+        if (getType().equals(CallFw.call_t)) return ExprList.of(
                 BracketsTypes.round,
                 Symbol.of("Call"),
                 CallFw.getVal(this).toExpr_Old(toExpr),
@@ -92,12 +101,13 @@ public final class Val implements ValAdapter {
     }
 
     public boolean equalsSymbol(String symbol) {
-        return this.type() == SymbolFw.symbol && this._unpack().toString().equals(symbol);
+        return this.getType() == SymbolFw.symbol && this._unpack().toString().equals(symbol);
     }
 
     public static Val of(Type type, Object value) {
-        if (type instanceof Type.TelephonistType && !(value instanceof Type.TelephonistType.Telephonist))
+        if (type instanceof Type.TelephonistType && type != ofTelephonist(0).asType()) {
             throw new IllegalArgumentException();
+        }
         return new Val(Objects.requireNonNull(type), value, null);
     }
 
@@ -134,17 +144,35 @@ public final class Val implements ValAdapter {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         Val that = (Val) obj;
-        if (!Objects.equals(this.type, that.type)) return false;
-        boolean valEq = Objects.equals(this.value, that.value);
-        if (!valEq && this.value.getClass().isArray() && that.value.getClass().isArray()) {
-            valEq = Arrays.deepEquals((Object[]) this.value, (Object[]) that.value);
-        }
-        return valEq;
+
+        if (this.value.getClass() != that.value.getClass())
+            return false;
+
+        if (!Objects.equals(this.type, that.type))
+            return false;
+
+        if (this.value.getClass().isArray())
+            return _arrayEquals(this.value, that.value);
+
+        return this.value.equals(that.value);
+    }
+
+    private static boolean _arrayEquals(Object e1, Object e2) {
+        if (e1 instanceof Object[]) return Arrays.deepEquals((Object[]) e1, (Object[]) e2);
+        else if (e1 instanceof byte[]) return Arrays.equals((byte[]) e1, (byte[]) e2);
+        else if (e1 instanceof short[]) return Arrays.equals((short[]) e1, (short[]) e2);
+        else if (e1 instanceof int[]) return Arrays.equals((int[]) e1, (int[]) e2);
+        else if (e1 instanceof long[]) return Arrays.equals((long[]) e1, (long[]) e2);
+        else if (e1 instanceof char[]) return Arrays.equals((char[]) e1, (char[]) e2);
+        else if (e1 instanceof float[]) return Arrays.equals((float[]) e1, (float[]) e2);
+        else if (e1 instanceof double[]) return Arrays.equals((double[]) e1, (double[]) e2);
+        else if (e1 instanceof boolean[]) return Arrays.equals((boolean[]) e1, (boolean[]) e2);
+        else return e1.equals(e2);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, value);
+        return 31 * (31 + type.hashCode()) + value.hashCode();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
-import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import org.fw.core.FW;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
@@ -25,7 +24,7 @@ import static org.fw.core.FW.symbol;
 
 public final class MemLib {
     public static final Val parseReifiedBits = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -77,7 +76,7 @@ public final class MemLib {
     });
 
     public static final Val constructReifiedType = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val.asType() == ReifiedTypeFw.reifiedType) {

@@ -20,7 +20,7 @@ public final class MemUtils {
         type = WrapperTypeFw.unwrapFully(type);
 
         if (type == BitFw.bit) return 1;
-        if (type.asVal().type().equals(ReifiedTypeFw.reifiedType)) {
+        if (type.asVal().getType().equals(ReifiedTypeFw.reifiedType)) {
             ReifiedTypeFw.ReifiedType rt = type.asVal()._unpack();
             return binarySize(rt.atom_t) * rt.size;
         }
@@ -29,11 +29,11 @@ public final class MemUtils {
 
     public static Number toBitsAsNumber(Val val) {
         val = WrapperTypeFw.unwrapFully(val);
-        if (val.type().equals(BitFw.bit))
+        if (val.getType().equals(BitFw.bit))
             return val._unpack(boolean.class) ? (byte) 1 : (byte) 0;
 
-        if (val.type().asVal().type().equals(ReifiedTypeFw.reifiedType)) {
-            ReifiedTypeFw.ReifiedType rt = val.type().asVal()._unpack();
+        if (val.getType().asVal().getType().equals(ReifiedTypeFw.reifiedType)) {
+            ReifiedTypeFw.ReifiedType rt = val.getType().asVal()._unpack();
             long size = rt.size;
             Object obj = val._unpack();
             if (obj instanceof Byte) return (Byte) obj;
@@ -60,10 +60,10 @@ public final class MemUtils {
     public static Bits toBits(Val val) {
         val = WrapperTypeFw.unwrapFully(val);
 
-        if (val.type().equals(BitFw.bit))
+        if (val.getType().equals(BitFw.bit))
             return Bits.bits(val._unpack(boolean.class));
-        if (val.type().asVal().type().equals(ReifiedTypeFw.reifiedType)) {
-            ReifiedTypeFw.ReifiedType rt = val.type().asVal()._unpack();
+        if (val.getType().asVal().getType().equals(ReifiedTypeFw.reifiedType)) {
+            ReifiedTypeFw.ReifiedType rt = val.getType().asVal()._unpack();
             long size = rt.size;
             Object obj = val._unpack();
             if (obj instanceof Byte) return new OctetBits((Byte) obj, (int) size);

@@ -36,15 +36,15 @@ public final class BoxFw {
     }).asType();
 
     public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
 
             arg = arg.call(symbol("passing"));
 
-            Type type = arg.type();
+            Type type = arg.getType();
             if (type.equals(boxType)) {
                 return ExprFw.wrap(ExprList.of(BracketsTypes.round, boxType.asVal().toExpr(compEnv), unbox(arg).toExpr(compEnv)));
-            } else if (type.asVal().type().equals(boxType)) {
+            } else if (type.asVal().getType().equals(boxType)) {
                 return ExprFw.wrap(ExprList.of(BracketsTypes.round, type.asVal().toExpr(compEnv), unbox(arg).toExpr(compEnv)));
             }
             return null;

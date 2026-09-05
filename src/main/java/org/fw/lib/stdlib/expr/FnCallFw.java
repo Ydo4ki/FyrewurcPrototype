@@ -18,14 +18,14 @@ import static org.fw.core.FW.telephonist;
 // todo: make this generate a code that constructs vit so we can make old cenv static instead of storing it with the function
 public final class FnCallFw {
     public static final Val fnCallCEnv = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toFnResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
-            if (val.type() == FunctionFw.function) {
+            if (val.getType() == FunctionFw.function) {
                 return val.get("fn-call");
             }
         }
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -34,7 +34,7 @@ public final class FnCallFw {
                 int isize = ((ExprList) expr).size();
 
                 Val fvv = compEnv.call(CompEnv.syntaxResolve(f, CompEnv.of(compEnv)));
-                if (!VitFw.isVit(fvv.type()))
+                if (!VitFw.isVit(fvv.getType()))
                     return null;
                 Vit fv = VitFw.unwrap(fvv, f);
 

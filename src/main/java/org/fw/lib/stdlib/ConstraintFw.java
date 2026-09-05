@@ -18,7 +18,7 @@ public final class ConstraintFw {
     private static final WeakHashMap<Val, Val> typeConstraints = new WeakHashMap<>();
 
     public static final Val to_constraint = FW.telephonist("to-constraint", (arg) -> {
-        if (arg.type().equals(ConstraintFw.constraint))
+        if (arg.getType().equals(ConstraintFw.constraint))
             return arg;
 
         Val ret = arg.call(symbol("to-constraint"));
@@ -37,7 +37,7 @@ public final class ConstraintFw {
     }
 
     public static Constraint unwrap(Val constraint) {
-        if (constraint.type() == ConstraintFw.constraint) {
+        if (constraint.getType() == ConstraintFw.constraint) {
             return unwrap0(constraint);
         }
         return null;
@@ -56,7 +56,7 @@ public final class ConstraintFw {
     }
 
     public static final Val constraintBuilder = FW.telephonist("Constraint.constructor", (arg1) -> {
-        if (!VitFw.isVit(arg1.type()))
+        if (!VitFw.isVit(arg1.getType()))
             return null;
         return Val.of(ConstraintFw.constraint, Constraint.of(arg1._unpack(Vit.class)));
     });
@@ -65,7 +65,7 @@ public final class ConstraintFw {
         if (FwUtils.isTypeApiCall(arg, ConstraintFw.constraint)) {
             Val instance = CallFw.getVal(arg);
             return handleInstanceCall(instance, instance._unpack(), CallFw.getArg(arg));
-        } else if (arg.type().equals(SymbolFw.symbol)) {
+        } else if (arg.getType().equals(SymbolFw.symbol)) {
             String value = arg._unpack(Symbol.class).getValue();
             if (value.equals("construct")) {
                 return constraintBuilder;
@@ -75,7 +75,7 @@ public final class ConstraintFw {
     }).asType();
 
     private static Val handleInstanceCall(Val instance, Constraint payload, Val arg) {
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String val = arg._unpack(Symbol.class).getValue();
             switch (val) {
                 case "check":
@@ -98,7 +98,7 @@ public final class ConstraintFw {
     public static final Val free = wrap(Constraint.free);
 
     public static boolean isConstraint(Val val) {
-        return val.type().equals(ConstraintFw.constraint);
+        return val.getType().equals(ConstraintFw.constraint);
     }
 
     public static Val constraint(Vit a) {

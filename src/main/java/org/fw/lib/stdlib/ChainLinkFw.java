@@ -63,13 +63,13 @@ public final class ChainLinkFw {
         return null;
     }).asType();
     public static final Val chainLinkToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
+        if (arg.getType() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
         arg = arg.call(symbol("passing"));
 
-        Type type = arg.type();
-        if (type.asVal().type().equals(chainLinkType)) {
+        Type type = arg.getType();
+        if (type.asVal().getType().equals(chainLinkType)) {
             ChainLinkRecord env = arg._unpack();
             return ExprFw.wrap(env.toExpr(toExpr));
         }

@@ -62,7 +62,7 @@ public class Main {
                         DeclaredFw.declared(symbol("_CurrentTimeMillis"), SystemOperation.currentTimeMillis.asVal()),
                         DeclaredFw.declared(symbol("_NanoTime"), SystemOperation.nanoTime.asVal()),
                         DeclaredFw.declared(symbol("_Sleep"), FW.telephonist((arg) -> {
-                            if (arg.type() != DIntFw.dint)
+                            if (arg.getType() != DIntFw.dint)
                                 return null;
 
                             return new SystemOperation.ThreadSleepOperation(DIntFw.unwrap(arg).longValue()).asVal();
@@ -90,7 +90,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
             Val val = vit.eval(rtEnv, state);
-            if (val.type() == DeclaredFw.declared) {
+            if (val.getType() == DeclaredFw.declared) {
                 compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asVal()));
             } else {
                 System.out.println(val.toExpr(compEnv));
@@ -100,14 +100,14 @@ public class Main {
     }
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
-            if (val.type() == DIntFw.dint) {
+            if (val.getType() == DIntFw.dint) {
                 return ExprFw.wrap(Symbol.of(val._unpack().toString()));
             }
         }
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();

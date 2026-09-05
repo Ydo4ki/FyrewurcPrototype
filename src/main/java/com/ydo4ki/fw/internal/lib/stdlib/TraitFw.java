@@ -47,11 +47,11 @@ final class TraitFw {
         }
         if (arg.equalsSymbol("construct")) {
             return FW.telephonist("Trait.constructor", (payload) -> {
-                if (!payload.type().equals(DVecFw.dVec))
+                if (!payload.getType().equals(DVecFw.dVec))
                     return null;
                 Val[] fields = payload._unpack();
                 for (Val field : fields) {
-                    if (!field.type().equals(DeclarationFw.declaration))
+                    if (!field.getType().equals(DeclarationFw.declaration))
                         return null; // some day I'll add proper errors
                 }
                 return Val.of(TraitFw.trait, new Trait(fields));
@@ -60,12 +60,12 @@ final class TraitFw {
         return null;
     }).asType();
     public static final Val traitToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
+        if (arg.getType() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
         arg = arg.call(symbol("passing"));
 
-        Type type = arg.type();
+        Type type = arg.getType();
         if (type.equals(trait)) {
             return toExpr(arg, toExpr);
         }
@@ -74,7 +74,7 @@ final class TraitFw {
 
     public static Val trait(Val... fields) {
         for (Val field : fields) {
-            if (!field.type().equals(DeclarationFw.declaration))
+            if (!field.getType().equals(DeclarationFw.declaration))
                 throw new IllegalArgumentException("Declaration expected");
         }
         return Val.of(TraitFw.trait, new Trait(fields));

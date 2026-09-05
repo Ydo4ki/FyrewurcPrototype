@@ -19,7 +19,7 @@ public final class WidePointerFw {
             arg = CallFw.getArg(arg);
 
             ValArrayObj vao = instance._unpack();
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String v = arg._unpack().toString();
                 if (v.equals("size")) {
                     // this one's pure since array size cannot change after its creation

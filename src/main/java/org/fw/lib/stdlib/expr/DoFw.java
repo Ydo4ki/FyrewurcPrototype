@@ -28,14 +28,14 @@ public final class DoFw {
     }).asType();
 
     public static final Val usLast = FW.telephonist((arg) -> {
-        if (arg.type().equals(DoFw.unaryStoreType)) {
+        if (arg.getType().equals(DoFw.unaryStoreType)) {
             return arg._unpack();
         }
         return null;
     });
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -73,7 +73,7 @@ public final class DoFw {
                 // OK FINE
                 Val newRtGetter = FW.telephonist((oldRt) -> FW.telephonist((varValue) -> {
                     return FW.telephonist((arg) -> {
-                        if (arg.type().equals(SymbolFw.symbol) && arg._unpack(Symbol.class).getValue().equals(name)) {
+                        if (arg.getType().equals(SymbolFw.symbol) && arg._unpack(Symbol.class).getValue().equals(name)) {
                             return varValue;
                         }
                         return oldRt.call(arg);
@@ -83,7 +83,7 @@ public final class DoFw {
                 // still probably conceptually the best way to do this
 
                 Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
-                    if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+                    if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                         Val exprVal0 = arg.call(symbol("expr"));
                         Expr expr = exprVal0._unpack();
                         if (expr instanceof Symbol && ((Symbol) expr).getValue().equals(name)) {

@@ -49,7 +49,7 @@ public final class FwUtils {
         if (isTypeApiCall(arg, type)) {
             Val instance = CallFw.getVal(arg);
             Val callArg = CallFw.getArg(arg);
-            if (!callArg.type().equals(SymbolFw.symbol)) {
+            if (!callArg.getType().equals(SymbolFw.symbol)) {
                 return nonSymbolicHandler.handle(instance, callArg);
             }
             String symbol = callArg._unpack(Symbol.class).getValue();
@@ -63,9 +63,9 @@ public final class FwUtils {
     }
 
     public static boolean isTypeApiCall(Val call, Type type) {
-        if (call.type().equals(CallFw.call_t)) {
+        if (call.getType().equals(CallFw.call_t)) {
             Val val = CallFw.getVal(call);
-            return val.type().equals(type);
+            return val.getType().equals(type);
         }
         return false;
     }
@@ -110,7 +110,7 @@ public final class FwUtils {
         Map<String, Val> defineds = new HashMap<>();
 
         final Val defined = symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
-            if (!arg1.type().equals(SymbolFw.symbol))
+            if (!arg1.getType().equals(SymbolFw.symbol))
                 return null;
             String string = arg1._unpack().toString();
             Val ret = defineds.get(string);
@@ -131,10 +131,10 @@ public final class FwUtils {
                 throw new RuntimeException("Cannot compile: " + expr, e);
             }
             result = vit.eval(rtEnv, state);
-            if (result.type().equals(DeclaredFw.declared)) {
+            if (result.getType().equals(DeclaredFw.declared)) {
                 Val key = DeclaredFw.getKey(result);
                 Val value = DeclaredFw.getValue(result);
-                if (key.type().equals(SymbolFw.symbol)) {
+                if (key.getType().equals(SymbolFw.symbol)) {
                     defineds.put(key._unpack(Symbol.class).getValue(), value);
                 }
             }
@@ -198,7 +198,7 @@ public final class FwUtils {
                         throw new RuntimeException(e);
                     }
                     val = vit.eval(RtEnv.unspecified, state);
-                    if (val.type() == DeclaredFw.declared) {
+                    if (val.getType() == DeclaredFw.declared) {
                         compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asVal(), ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
                     } else if (val != Operation.unit)
                         if (debug) System.out.println(val.toExpr(compEnv));

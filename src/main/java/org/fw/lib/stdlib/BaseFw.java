@@ -16,7 +16,7 @@ import static org.fw.core.FW.symbol;
 public final class BaseFw {
 
     private static final Val directivesCenv = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -28,7 +28,7 @@ public final class BaseFw {
                         return null;
 
                     Val operand = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                    if (!VitFw.isVit(operand.type()))
+                    if (!VitFw.isVit(operand.getType()))
                         return operand;
 
                     return VitFw.wrap(Vit.call(TypeGetFw.typeGet, operand._unpack(Vit.class)));
@@ -37,7 +37,7 @@ public final class BaseFw {
                         return null;
 
                     Val operand = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                    if (!VitFw.isVit(operand.type()))
+                    if (!VitFw.isVit(operand.getType()))
                         return operand;
 
                     return VitFw.wrap(Vit.call(Unspecified.isUnspecified, operand._unpack(Vit.class)).call(symbol("not")));

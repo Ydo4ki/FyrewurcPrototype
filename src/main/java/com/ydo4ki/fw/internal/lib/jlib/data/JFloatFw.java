@@ -11,7 +11,7 @@ import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 public final class JFloatFw {
     public static final Type jfloat = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Float value = unwrap(rawPayload);
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap(-value);
@@ -27,7 +27,7 @@ public final class JFloatFw {
 
     private static Val bop(Float value, FloatBinaryOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JFloatFw.jfloat)) {
+            if (arg1.getType().equals(JFloatFw.jfloat)) {
                 Float v2 = unwrap(arg1);
                 return wrap(operator.applyAsFloat(value, v2));
             }

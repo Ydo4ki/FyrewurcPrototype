@@ -20,7 +20,7 @@ public final class JOopFw {
         if (FwUtils.isTypeApiCall(arg, JOopFw.jOop)) {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
-            if (arg.type() != SymbolFw.symbol)
+            if (arg.getType() != SymbolFw.symbol)
                 return null;
 
             Object oop = instance._unpack();
@@ -29,10 +29,10 @@ public final class JOopFw {
             switch (arg._unpack(Symbol.class).getValue()) {
                 case "get-method": {
                     return FW.telephonist(nameV -> {
-                        if (!nameV.type().equals(StrFw.str)) return null;
+                        if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
                         return FW.telephonist(arg1 -> {
-                            if (!arg1.type().equals(StrFw.str)) return null;
+                            if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._unpack();
 
                             MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);

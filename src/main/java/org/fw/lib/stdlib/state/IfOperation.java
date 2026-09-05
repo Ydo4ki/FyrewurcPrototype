@@ -12,15 +12,15 @@ import static org.fw.core.FW.telephonist;
 // it's not like this can't be implemented on the language itself, this just seems easier
 public final class IfOperation extends Operation {
     public static final Val _If = FW.telephonist((condition) -> {
-        if (condition.type() != OperationFw.operation)
+        if (condition.getType() != OperationFw.operation)
             return null;
 
         return FW.telephonist((ifTrue) -> {
-            if (ifTrue.type() != OperationFw.operation)
+            if (ifTrue.getType() != OperationFw.operation)
                 return null;
 
             return FW.telephonist((ifFalse) -> {
-                if (ifFalse.type() != OperationFw.operation)
+                if (ifFalse.getType() != OperationFw.operation)
                     return null;
 
                 return new IfOperation(condition._unpack(), ifTrue._unpack(), ifFalse._unpack()).asVal();

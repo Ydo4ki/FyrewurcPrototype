@@ -13,7 +13,7 @@ import java.util.function.DoubleBinaryOperator;
 public final class JDoubleFw {
     public static final Type jdouble = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Double value = unwrap(rawPayload);
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap(-value);
@@ -29,7 +29,7 @@ public final class JDoubleFw {
 
     private static Val bop(Double value, DoubleBinaryOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JDoubleFw.jdouble)) {
+            if (arg1.getType().equals(JDoubleFw.jdouble)) {
                 Double v2 = unwrap(arg1);
                 return wrap(operator.applyAsDouble(value, v2));
             }

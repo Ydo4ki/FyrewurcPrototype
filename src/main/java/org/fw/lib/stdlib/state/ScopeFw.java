@@ -19,7 +19,7 @@ public final class ScopeFw {
 
             Scope obj = instance._unpack();
 
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String s = arg._unpack().toString();
                 switch (s) {
                     case "owner":

@@ -16,7 +16,7 @@ public final class DVecIterFw {
             Type iterType = iterTypeInstance.asType();
             Val targetDVec = iterTypeInstance._unpack();
             Val[] target = targetDVec._unpack();
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String s = arg._unpack().toString();
                 switch (s) {
                     case "target":
@@ -28,7 +28,7 @@ public final class DVecIterFw {
                 arg = CallFw.getArg(arg);
 
                 int i = instance._unpack();
-                if (arg.type().equals(SymbolFw.symbol)) {
+                if (arg.getType().equals(SymbolFw.symbol)) {
                     String text = arg._unpack().toString();
                     switch (text) {
                         case "value":
@@ -48,7 +48,7 @@ public final class DVecIterFw {
     }).asType();
 
     public static Type iterType(Val dVec) {
-        if (dVec.type() != DVecFw.dVec)
+        if (dVec.getType() != DVecFw.dVec)
             throw new IllegalArgumentException(dVec.toString());
         return Val.of(dVecIter, dVec).asType();
     }

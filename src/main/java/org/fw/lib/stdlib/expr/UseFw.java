@@ -18,7 +18,7 @@ import static org.fw.core.FW.telephonist;
 
 public final class UseFw {
     public static final Val useDirectivesCenv = FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -31,7 +31,7 @@ public final class UseFw {
                             return null;
 
                         Val moduleVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(moduleVit.type()))
+                        if (!VitFw.isVit(moduleVit.getType()))
                             return null; // could not compile module
 
                         Vit vit = VitUtils.simplify(moduleVit._unpack(Vit.class));
@@ -44,7 +44,7 @@ public final class UseFw {
                         );
 
                         Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(newCompEnv)));
-                        if (!VitFw.isVit(value.type()))
+                        if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 
                         return value;
@@ -54,7 +54,7 @@ public final class UseFw {
                             return null;
 
                         Val cEnvVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(cEnvVit.type()))
+                        if (!VitFw.isVit(cEnvVit.getType()))
                             return null; // could not compile cenv
 
                         Vit vit = VitUtils.simplify(cEnvVit._unpack(Vit.class));
@@ -67,7 +67,7 @@ public final class UseFw {
                         );
 
                         Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(newCompEnv)));
-                        if (!VitFw.isVit(value.type()))
+                        if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 
                         return value;

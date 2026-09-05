@@ -22,7 +22,7 @@ public final class JClassFw {
         if (FwUtils.isTypeApiCall(arg, JClassFw.jClass)) {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
-            if (arg.type() != SymbolFw.symbol)
+            if (arg.getType() != SymbolFw.symbol)
                 return null;
 
             Class<?> cls = instance._unpack();
@@ -30,10 +30,10 @@ public final class JClassFw {
             switch (arg._unpack(Symbol.class).getValue()) {
                 case "get-static-method": {
                     return FW.telephonist(nameV -> {
-                        if (!nameV.type().equals(StrFw.str)) return null;
+                        if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
                         return FW.telephonist(arg1 -> {
-                            if (!arg1.type().equals(StrFw.str)) return null;
+                            if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._unpack();
 
                             MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
@@ -47,7 +47,7 @@ public final class JClassFw {
                 }
                 case "get-constructor": {
                     return FW.telephonist(arg1 -> {
-                        if (!arg1.type().equals(StrFw.str)) return null;
+                        if (!arg1.getType().equals(StrFw.str)) return null;
                         String descriptor = arg1._unpack();
 
                         MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
@@ -60,10 +60,10 @@ public final class JClassFw {
                 }
                 case "get-static-getter": {
                     return FW.telephonist(nameV -> {
-                        if (!nameV.type().equals(StrFw.str)) return null;
+                        if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
                         return FW.telephonist(arg1 -> {
-                            if (!arg1.type().equals(StrFw.str)) return null;
+                            if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._unpack();
                             try {
                                 MethodHandle mh = JVMHandles.lookup.findStaticGetter(cls, name, JVMHandles.findType(descriptor));
@@ -76,10 +76,10 @@ public final class JClassFw {
                 }
                 case "get-static-setter": {
                     return FW.telephonist(nameV -> {
-                        if (!nameV.type().equals(StrFw.str)) return null;
+                        if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._unpack();
                         return FW.telephonist(arg1 -> {
-                            if (!arg1.type().equals(StrFw.str)) return null;
+                            if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._unpack();
                             try {
                                 return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStaticSetter(cls, name, JVMHandles.findType(descriptor)));
@@ -117,7 +117,7 @@ public final class JClassFw {
                 }
                 case "is-assignable-from": {
                     return FW.telephonist(b -> {
-                        if (b.type() != JClassFw.jClass) return null;
+                        if (b.getType() != JClassFw.jClass) return null;
                         return BoolFw.wrap(cls.isAssignableFrom(b._unpack(Class.class)));
                     });
                 }

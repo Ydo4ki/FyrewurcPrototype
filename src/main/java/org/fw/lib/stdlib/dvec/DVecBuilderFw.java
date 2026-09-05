@@ -21,7 +21,7 @@ public final class DVecBuilderFw {
     }).asType();
     public static final Val emptyBuilder = Val.of(dVecBuilder, new Val[0]);
     public static final Val dvecbf = FW.telephonist("dvecbf", (arg) -> {
-        if (arg.type() == dVecBuilder) {
+        if (arg.getType() == dVecBuilder) {
             return Val.of(DVecFw.dVec, arg._unpack());
         }
         return null;

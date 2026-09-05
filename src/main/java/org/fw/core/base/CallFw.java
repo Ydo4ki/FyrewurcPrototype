@@ -13,7 +13,7 @@ import static org.fw.core.FW.*;
 // aaioasopdiou when was this even written
 public final class CallFw {
     public static final Type call_t = telephonist("Call", (arg) -> {
-        if (arg.type().equals(CallFw.call_t)) {
+        if (arg.getType().equals(CallFw.call_t)) {
             // native
             CallFw.CallRecord call = arg._unpack();
             Val me = call.val();

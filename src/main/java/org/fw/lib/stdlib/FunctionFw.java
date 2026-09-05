@@ -26,7 +26,7 @@ public final class FunctionFw {
 
     public static final Type function = FW.telephonist((arg) -> {
         Val ret = function_struct.asVal().call(arg);
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String value = arg._unpack(Symbol.class).getValue();
             switch (value) {
                 case "builder":
@@ -38,7 +38,7 @@ public final class FunctionFw {
             Val cArg = CallFw.getArg(arg);
 
             Val value = instance._unpack();
-            if (cArg.type().equals(SymbolFw.symbol)) {
+            if (cArg.getType().equals(SymbolFw.symbol)) {
                 switch (cArg._unpack(Symbol.class).getValue()) {
                     case "fn-call":
                         Val constraint = value.get("arg-constraint");
@@ -73,7 +73,7 @@ public final class FunctionFw {
     }).asType();
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -126,7 +126,7 @@ public final class FunctionFw {
                         Expr bodyE = exprVal.call(DIntFw.dint(3))._unpack();
 
                         Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg0) -> {
-                            if (arg0.type().equals(SyntaxResolveFw.syntaxResolve)) {
+                            if (arg0.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                                 Val exprVal0 = arg0.call(symbol("expr"));
                                 Expr expr0 = exprVal0._unpack();
                                 if (expr0 instanceof Symbol) {
@@ -142,7 +142,7 @@ public final class FunctionFw {
                         }));
 
                         Val body = newCompEnv.call(CompEnv.syntaxResolve(bodyE, CompEnv.of(newCompEnv)));
-                        if (!VitFw.isVit(body.type()))
+                        if (!VitFw.isVit(body.getType()))
                             return body;
 
                         Vit varValuesV = Vit.var.call(symbol("%"));
@@ -152,7 +152,7 @@ public final class FunctionFw {
                                 for (int i = 0; i < paramsList.size(); i++) {
                                     FnParam param = paramsList.get(i);
                                     Symbol name = param.name;
-                                    if (argSym.type().equals(SymbolFw.symbol) && argSym._unpack(Symbol.class).getValue().equals(name.getValue())) {
+                                    if (argSym.getType().equals(SymbolFw.symbol) && argSym._unpack(Symbol.class).getValue().equals(name.getValue())) {
                                         return varValues.call(DIntFw.dint(i));
                                     }
                                 }
@@ -183,9 +183,9 @@ public final class FunctionFw {
     private static Val builderWrapper(Val builder) {
         return FW.telephonist((arg) -> {
             Val ret = builder.call(arg);
-            if (ret.type().equals(builder.type()))
+            if (ret.getType().equals(builder.getType()))
                 return builderWrapper(ret);
-            if (ret.type() != function_struct)
+            if (ret.getType() != function_struct)
                 return null;
             return Val.of(function, ret); // wrap
         });

@@ -20,12 +20,12 @@ public final class AllocatedMemoryFw {
 
             AllocatedMemoryObj amo = instance._unpack();
 
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String sym = arg._unpack().toString();
                 switch (sym) {
                     case "put":
                         return FW.telephonist(arg1 -> {
-                            if (arg1.type() != JIntFw.jint)
+                            if (arg1.getType() != JIntFw.jint)
                                 return null;
                             int v = arg1._unpack();
                             return new Operation() {

@@ -43,7 +43,7 @@ public final class DeviceLib {
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("bufr"), Val.of(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
                         DeclaredFw.declared(symbol("parse-placeholder"), FW.telephonist(arg -> {
-                            if (!arg.type().equals(StrFw.str)) return null;
+                            if (!arg.getType().equals(StrFw.str)) return null;
                             String str = arg._unpack();
                             Iterable<LocatedExpr<?>> exprs = new ExprOutput(new TokenOutput(str, null, BracketsTypes.bracketsTypes));
                             List<Val> vals = new ArrayList<>();

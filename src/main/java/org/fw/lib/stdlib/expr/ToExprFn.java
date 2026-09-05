@@ -37,16 +37,16 @@ public class ToExprFn {
     // wait did I really write all of this instead of using hashmap or some custom overengineered condition table?
     // wow
     public static final Val toExprRest = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
+        if (arg.getType() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
         arg = arg.call(symbol("passing"));
 
-        Type type = arg.type();
+        Type type = arg.getType();
 
         if (type.equals(EnumFw.enumeration)) {
             return EnumFw.toExpr(arg, toExpr);
-        } else if (type.asVal().type().equals(EnumFw.enumeration)) {
+        } else if (type.asVal().getType().equals(EnumFw.enumeration)) {
             return arg._unpack(); // it was supposed to be a symbol
         }
 

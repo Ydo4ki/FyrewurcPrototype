@@ -63,12 +63,12 @@ public final class DeclaredFw {
         return null;
     }).asType();
     public static final Val declaredToExpr = FW.telephonist((arg) -> {
-        if (arg.type() != ToExprFn.toExprResolve)
+        if (arg.getType() != ToExprFn.toExprResolve)
             return null;
         Val toExpr = arg.call(symbol("chain"));
         arg = arg.call(symbol("passing"));
 
-        Type type = arg.type();
+        Type type = arg.getType();
         if (type.equals(declared)) {
             Expr expr = toExpr(arg, toExpr);
             return ExprFw.wrap(expr);
@@ -137,7 +137,7 @@ public final class DeclaredFw {
     }
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.type().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack();
@@ -150,11 +150,11 @@ public final class DeclaredFw {
                             return VitErrorFw.rrror(f, "3 elements expected");
 
                         Val name = exprVal.call(DIntFw.dint(1));
-                        if (!name.type().equals(SymbolFw.symbol))
+                        if (!name.getType().equals(SymbolFw.symbol))
                             return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
                         Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
-                        if (!VitFw.isVit(value.type()))
+                        if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 
                         return VitFw.wrap(Vit.val(declared.asVal()).call(symbol("builder")).call(name).call(value._unpack(Vit.class)));

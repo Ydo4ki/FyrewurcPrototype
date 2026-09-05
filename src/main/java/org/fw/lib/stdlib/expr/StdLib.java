@@ -15,7 +15,7 @@ import org.fw.lib.stdlib.state.OperationFw;
 
 public final class StdLib {
     private static final CompEnv somethingToExpr = CompEnv.of(FW.telephonist(arg -> {
-        if (arg.type().equals(SyntaxResolveFw.toExprResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             if (Unspecified.isUnspecified(val))
@@ -27,7 +27,7 @@ public final class StdLib {
             if (val.asType() instanceof Type.TelephonistType) {
                 return ExprFw.wrap(Symbol.of(val.asType().toString()));
             }
-            return ExprFw.wrap(ExprList.of(BracketsTypes.braces, val.type().asVal().toExpr(compEnv)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.braces, val.getType().asVal().toExpr(compEnv)));
         }
         return null;
     }));

@@ -13,7 +13,7 @@ public final class TypePayloadInfo {
             Val instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
 
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String s = arg._unpack().toString();
                 switch (s) {
                     case "value":
@@ -25,7 +25,7 @@ public final class TypePayloadInfo {
     }).asType();
 
     public static Type value(Val payloadInfo) {
-        if (payloadInfo.type() == typePayloadInfo)
+        if (payloadInfo.getType() == typePayloadInfo)
             return payloadInfo._unpack(Val.class).asType();
         return null;
     }

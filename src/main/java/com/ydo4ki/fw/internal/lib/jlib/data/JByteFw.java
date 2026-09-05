@@ -11,7 +11,7 @@ import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 public final class JByteFw {
     public static final Type jbyte = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.octet, FW.telephonist(instance -> FW.telephonist(rawPayload -> FW.telephonist(arg -> {
         Byte value = unwrap(rawPayload);
-        if (arg.type().equals(SymbolFw.symbol)) {
+        if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._unpack(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap((byte) -value);
@@ -52,7 +52,7 @@ public final class JByteFw {
 
     private static Val bopBIB(Byte value, ByteIntByteOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JIntFw.jint)) {
+            if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = JIntFw.unwrap(arg1);
                 return wrap(operator.apply(value, v2));
             }
@@ -70,7 +70,7 @@ public final class JByteFw {
 
     private static Val bopBBB(Byte value, ByteBinaryOperator operator) {
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(JByteFw.jbyte)) {
+            if (arg1.getType().equals(JByteFw.jbyte)) {
                 Byte v2 = unwrap(arg1);
                 return wrap(operator.applyAsShort(value, v2));
             }

@@ -33,22 +33,22 @@ public final class ReifiedTypeFw {
 //                    vals[i] = getAtom(instance, i).call(arg);
 //                }
 //                return reify(vals);
-            } else if (arg.type() == SymbolFw.symbol && arg._unpack().toString().equals("builder")) {
+            } else if (arg.getType() == SymbolFw.symbol && arg._unpack().toString().equals("builder")) {
                 return builder(instance.asType(), new Object[0]);
             }
             return null;
-        } else if (arg.type() == SymbolFw.symbol) {
+        } else if (arg.getType() == SymbolFw.symbol) {
             String v = arg._unpack().toString();
             if (v.equals("builder"))
                 return FW.telephonist(atomType -> FW.telephonist(size0 -> {
-                    if (size0.type().equals(DIntFw.dint)) {
+                    if (size0.getType().equals(DIntFw.dint)) {
                         int size = DIntFw.unwrap0(size0).intValueExact();
                         return reifiedType(atomType.asType(), size).asVal();
                     }
                     return null;
                 }));
             else if (v.equals("fn-call")) return FW.telephonist(arg1 -> {
-                if (arg1.type() != DVecFw.dVec)
+                if (arg1.getType() != DVecFw.dVec)
                     return null;
 
                 Val[] arr = arg1._unpack();
@@ -56,7 +56,7 @@ public final class ReifiedTypeFw {
                 if (size != 2)
                     return null;
 
-                if (arr[1].type() != DIntFw.dint)
+                if (arr[1].getType() != DIntFw.dint)
                     return null;
 
                 return Operation.pure(reifiedType(arr[0].asType(), DIntFw.unwrap0(arr[1]).intValueExact()).asVal()).asVal();
@@ -71,7 +71,7 @@ public final class ReifiedTypeFw {
     public static Type reifiedType(Type elementType, long size) {
         if (size == 1)
             return elementType;
-        while (elementType.asVal().type() == reifiedType) {
+        while (elementType.asVal().getType() == reifiedType) {
             ReifiedType rt = elementType.asVal()._unpack();
             elementType = rt.atom_t;
             size *= rt.size;
@@ -83,8 +83,8 @@ public final class ReifiedTypeFw {
     }
 
     private static Val getAtom(Val reified, int index) {
-        Type type = reified.type();
-        if (type.asVal().type() != ReifiedTypeFw.reifiedType)
+        Type type = reified.getType();
+        if (type.asVal().getType() != ReifiedTypeFw.reifiedType)
             throw new IllegalStateException();
 
         Type atomType = type.asVal()._unpack(ReifiedType.class).atom_t;
@@ -104,8 +104,8 @@ public final class ReifiedTypeFw {
         Object[] payloads = new Object[vals.length];
         for (int i = 0; i < vals.length; i++) {
             if (atomType == null) {
-                atomType = vals[i].type();
-            } else if (!atomType.equals(vals[i].type())) {
+                atomType = vals[i].getType();
+            } else if (!atomType.equals(vals[i].getType())) {
                 throw new IllegalStateException();
             }
             payloads[i] = vals[i]._unpack();
@@ -164,7 +164,7 @@ public final class ReifiedTypeFw {
 
             RtBuilder builder = instance._unpack();
             ReifiedType rt = builder.rt.asVal()._unpack(ReifiedType.class);
-            if (arg.type().equals(rt.atom_t)) {
+            if (arg.getType().equals(rt.atom_t)) {
                 Object[] na = DVecFw.arAppended(builder.data, arg._unpack());
                 if (na.length == rt.size) {
                     return reify0(builder.rt, na);

@@ -3,8 +3,6 @@ package org.fw.core.base;
 import org.fw.core.FW;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.symbol;
-
 public final class BoolFw {
     public static final Type bool = FW.telephonist("Bool", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoolFw.bool)) {
@@ -33,7 +31,7 @@ public final class BoolFw {
     private static Val bop(Val instance, FwUtils.BoolBinaryOperator operator) {
         boolean value = instance._unpack(Boolean.class);
         return FW.telephonist((arg1) -> {
-            if (arg1.type().equals(BoolFw.bool)) {
+            if (arg1.getType().equals(BoolFw.bool)) {
                 boolean v2 = arg1._unpack(Boolean.class);
                 return wrap(operator.apply(value, v2));
             }

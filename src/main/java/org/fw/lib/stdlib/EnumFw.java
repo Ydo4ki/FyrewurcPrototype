@@ -27,13 +27,13 @@ public final class EnumFw {
         }
         if (arg.equalsSymbol("construct")) {
             return FW.telephonist("Enum.construct", (payload) -> {
-                if (!payload.type().equals(DVecFw.dVec))
+                if (!payload.getType().equals(DVecFw.dVec))
                     return null;
                 Val[] keys = payload._unpack();
                 Val[] values = new Val[keys.length];
                 Type resultingType = Val.of(EnumFw.enumeration, new Enum(values)).asType();
                 for (int i = 0; i < keys.length; i++) {
-                    if (!keys[i].type().equals(SymbolFw.symbol))
+                    if (!keys[i].getType().equals(SymbolFw.symbol))
                         return null;
 
                     values[i] = Val.of(resultingType, keys[i]);

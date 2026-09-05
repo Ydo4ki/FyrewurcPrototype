@@ -17,7 +17,7 @@ public final class StatePointerFw {
 
             State obj = instance._unpack();
 
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String s = arg._unpack().toString();
                 switch (s) {
                     case "scope":
@@ -26,7 +26,7 @@ public final class StatePointerFw {
             }
             return null;
         } else {
-            if (arg.type() == SymbolFw.symbol) {
+            if (arg.getType() == SymbolFw.symbol) {
                 String s = arg._unpack().toString();
                 if (s.equals("current")) {
                     return GetLocalStateOperation.getInstance().asVal();

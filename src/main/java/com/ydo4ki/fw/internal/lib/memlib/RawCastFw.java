@@ -7,9 +7,9 @@ import org.fw.lib.stdlib.WrapperTypeFw;
 
 public final class RawCastFw {
     public static final Val rawcast = FW.telephonist(v -> FW.telephonist(targetType -> {
-        Type originalType = v.type();
+        Type originalType = v.getType();
         originalType = WrapperTypeFw.unwrapFully(originalType);
-        if (originalType.asVal().type() == ReifiedTypeFw.reifiedType) {
+        if (originalType.asVal().getType() == ReifiedTypeFw.reifiedType) {
             throw new UnsupportedOperationException("todo");
         }
         return null;
