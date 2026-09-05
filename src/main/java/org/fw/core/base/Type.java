@@ -122,10 +122,12 @@ public abstract class Type implements ValAdapter {
         }
 
         public static final class Telephonist {
+            private final String marker;
             private final CallFunction function;
             private final CallContract contract;
 
-            public Telephonist(CallFunction function, CallContract contract) {
+            public Telephonist(String marker, CallFunction function, CallContract contract) {
+                this.marker = marker;
                 this.function = function;
                 this.contract = contract;
             }
@@ -148,6 +150,11 @@ public abstract class Type implements ValAdapter {
             @Override
             public int hashCode() {
                 return Objects.hash(function, contract);
+            }
+
+            @Override
+            public String toString() {
+                return marker;
             }
         }
     }

@@ -119,7 +119,7 @@ public final class Val implements ValAdapter {
     static Val telephonistVal(Type.TelephonistType asType) {
         return new Val(
                 Type.TelephonistType.of(asType.getDepth() + 1),
-                new Type.TelephonistType.Telephonist((arg) -> {
+                new Type.TelephonistType.Telephonist(null, (arg) -> {
                     if (FwUtils.isTypeApiCall(arg, asType)) {
                         Val instance = CallFw.getVal(arg);
                         Val cArg = CallFw.getArg(arg);

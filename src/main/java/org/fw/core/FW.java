@@ -6,33 +6,22 @@ import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.TypePayloadInfo;
 import org.fw.core.vit.Vit;
 
-import java.util.function.Supplier;
-
 import static org.fw.core.base.EqFw.eq;
 import static org.fw.core.vit.Vit.val;
 
 public final class FW {
     // I changed my mind (partially)
-    public static Val telephonist(@Deprecated String name, Type.TelephonistType.CallFunction call) {
+    public static Val telephonist(String name, Type.TelephonistType.CallFunction call) {
         //        System.out.println("# New Telephonist: " + representation);
-        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(call, CallContract.unknown()));
+        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call, CallContract.unknown()));
     }
 
     public static Val telephonist(Type.TelephonistType.CallFunction call, CallContract contract) {
-        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(call, contract));
+        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(null, call, contract));
     }
 
     public static Val telephonist(Type.TelephonistType.CallFunction call) {
         return telephonist(call, CallContract.unknown());
-    }
-
-    public static Val telephonist(@Deprecated Supplier<String> name, Type.TelephonistType.CallFunction call) {
-        //        System.out.println("# New Telephonist: " + representation);
-        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(call, CallContract.unknown()));
-    }
-
-    public static Val telephonist(@Deprecated Expr representation, Type.TelephonistType.CallFunction call) {
-        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(call, CallContract.unknown()));
     }
 
     public static Val symbol(String value) {
@@ -50,7 +39,7 @@ public final class FW {
     }
 
     public static Type payloadType(Type type) {
-        Val ret = type.asVal().call(symbol("Payload"));
+        Val ret = type.asVal().get("Payload");
         return TypePayloadInfo.value(ret);
     }
 

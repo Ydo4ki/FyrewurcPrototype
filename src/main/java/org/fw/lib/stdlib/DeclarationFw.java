@@ -13,6 +13,7 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static org.fw.core.FW.symbol;
 
@@ -32,12 +33,12 @@ public final class DeclarationFw {
             }
         } else if (arg.equalsSymbol("builder")) {
             return FW.telephonist("Declaration.builder", (key) -> {
-                return FW.telephonist(() -> "(call Declaration.builder " + key + ")", (constraint) -> {
-                    if (!ConstraintFw.isConstraint(constraint))
-                        return null;
+                return FW.telephonist(((Supplier<String>) () -> "(call Declaration.builder " + key + ")").get().toString(), (constraint) -> {
+                            if (!ConstraintFw.isConstraint(constraint))
+                                return null;
 
-                    return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
-                });
+                            return Val.of(DeclarationFw.declaration, new Declaration(key, constraint));
+                        });
             });
         }
         return null;

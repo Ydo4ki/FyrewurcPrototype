@@ -19,6 +19,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.fw.core.FW.*;
 
@@ -103,10 +104,10 @@ public final class DVecFw {
     }
 
     public static final class DVecConstructorCEnvFw {
-        public static final Val dVecConstructorCenv = telephonist(() -> "dVecConstructorCenv", (arg) -> {
+        public static final Val dVecConstructorCenv = FW.telephonist(((Supplier<String>) () -> "dVecConstructorCenv").get().toString(), (arg) -> {
             if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-                Val exprVal = arg.call(symbol("expr"));
-                Val compEnv = arg.call(symbol("comp-env"));
+                Val exprVal = arg.call(FW.symbol("expr"));
+                Val compEnv = arg.call(FW.symbol("comp-env"));
                 Expr expr = exprVal._unpack(Expr.class);
                 if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.square)) {
                     ExprList list = (ExprList) expr;

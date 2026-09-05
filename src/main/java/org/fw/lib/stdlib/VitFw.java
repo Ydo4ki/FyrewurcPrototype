@@ -13,6 +13,7 @@ import org.fw.core.vit.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;
@@ -25,7 +26,7 @@ public final class VitFw {
             Val instance2 = CallFw.getVal(arg0);
             Val callArg = CallFw.getArg(arg0);
             if (!callArg.getType().equals(SymbolFw.symbol)) {
-                return ((FwUtils.NSHandler) (instance1, arg3) -> null).handle(instance2, callArg);
+                return null;
             }
             String symbol1 = callArg._unpack().toString();
             switch (symbol1) {
@@ -36,7 +37,7 @@ public final class VitFw {
             }
         }
         if (arg0.equalsSymbol("construct")) {
-            return FW.telephonist(() -> "VitVal.construct", (arg) -> wrap(Vit.val(arg)));
+            return telephonist("VitVal.construct", (arg) -> wrap(Vit.val(arg)));
         }
         return null;
     }).asType();
@@ -47,7 +48,7 @@ public final class VitFw {
             Val instance2 = CallFw.getVal(arg0);
             Val callArg = CallFw.getArg(arg0);
             if (!callArg.getType().equals(SymbolFw.symbol)) {
-                return ((FwUtils.NSHandler) (instance1, arg3) -> null).handle(instance2, callArg);
+                return null;
             }
             String symbol1 = callArg._unpack(Symbol.class).getValue();
             switch (symbol1) {
@@ -58,14 +59,14 @@ public final class VitFw {
             }
         }
         if (arg0.equalsSymbol("construct")) {
-            return FW.telephonist(() -> "VitInvoke.construct", (arg) -> {
-                if (!VitFw.isVit(arg.getType()))
-                    return null;
+            return telephonist("VitInvoke.construct", (arg) -> {
+                    if (!VitFw.isVit(arg.getType()))
+                        return null;
 
-                Vit operation = arg._unpack();
-                operation = VitUtils.simplify(operation);
-                return wrap(Vit.invoke(operation));
-            });
+                    Vit operation = arg._unpack();
+                    operation = VitUtils.simplify(operation);
+                    return wrap(Vit.invoke(operation));
+                });
         }
         return null;
     }).asType();
@@ -79,7 +80,7 @@ public final class VitFw {
             Val instance2 = CallFw.getVal(arg0);
             Val callArg = CallFw.getArg(arg0);
             if (!callArg.getType().equals(SymbolFw.symbol)) {
-                return ((FwUtils.NSHandler) (instance1, arg2) -> null).handle(instance2, callArg);
+                return null;
             }
             String symbol1 = callArg._unpack(Symbol.class).getValue();
             switch (symbol1) {
@@ -95,7 +96,6 @@ public final class VitFw {
         return null;
     }).asType();
 
-    private static final Expr repr = FwUtils.parse("VitCall.builder").getExpr();
     public static final Type vitCall = FW.telephonist("VitCall", (arg0)
             -> {
         if (FwUtils.isTypeApiCall(arg0, VitFw.vitCall)) {
@@ -116,7 +116,7 @@ public final class VitFw {
         }
         return ((Type.TelephonistType.CallFunction) (arg1) -> {
             if (arg1.equalsSymbol("builder")) {
-                return FW.telephonist(repr, (func) -> {
+                return FW.telephonist("VitCall.builder", (func) -> {
                     if (!isVit(func.getType())) {
                         return null;
                     }
