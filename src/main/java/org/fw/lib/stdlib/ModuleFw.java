@@ -1,5 +1,6 @@
 package org.fw.lib.stdlib;
 
+import com.ydo4ki.fw.internal.lib.stdlib.ExtendedFw;
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;

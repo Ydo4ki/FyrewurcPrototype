@@ -1,6 +1,8 @@
-package org.fw.lib.stdlib;
+package org.fw.lib.stdlib.expr;
 
-import org.fw.lib.stdlib.expr.Lib;
+import org.fw.lib.stdlib.ConstraintFw;
+import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.ModuleFw;
 
 import static org.fw.core.FW.symbol;
 

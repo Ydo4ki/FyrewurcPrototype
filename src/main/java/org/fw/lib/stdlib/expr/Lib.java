@@ -2,7 +2,7 @@ package org.fw.lib.stdlib.expr;
 
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.ChainLinkFw;
-import org.fw.lib.stdlib.ExtendedFw;
+import com.ydo4ki.fw.internal.lib.stdlib.ExtendedFw;
 import org.fw.lib.stdlib.ModuleFw;
 
 import java.util.function.Function;

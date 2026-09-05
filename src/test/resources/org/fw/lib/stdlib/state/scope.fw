@@ -1,6 +1,6 @@
 (assert! true)
 
-Operation
+(assert! (== (to-expr Operation) (symbol "Operation")))
 (do
  (: scope (get (invoke! StatePointer.current) scope))
  (: o1 (invoke! (call scope.new 17)))

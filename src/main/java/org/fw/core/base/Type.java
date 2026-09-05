@@ -6,6 +6,7 @@ import org.fw.core.base.contract.CallContract;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public abstract class Type implements ValAdapter {
 

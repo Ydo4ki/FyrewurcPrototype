@@ -34,7 +34,6 @@ public final class Std {
     public static final Type vitCall = VitFw.vitCall;
     public static final Type vitInvoke = VitFw.vitInvoke;
     public static final Type constraint = ConstraintFw.constraint;
-    public static final Type trait = TraitFw.trait;
     public static final Type struct = StructFw.struct;
     public static final Type $enum = EnumFw.enumeration;
     public static final Type chainLinkType = ChainLinkFw.chainLinkType;

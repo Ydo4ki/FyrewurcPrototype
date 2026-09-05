@@ -1,6 +1,8 @@
-package org.fw.lib.stdlib;
+package com.ydo4ki.fw.internal.lib.stdlib;
 
 import org.fw.core.base.Type;
+import org.fw.lib.stdlib.ChainLinkFw;
+import org.fw.lib.stdlib.ConstraintFw;
 
 import static org.fw.core.FW.symbol;
 

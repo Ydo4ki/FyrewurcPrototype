@@ -1,7 +1,10 @@
-package org.fw.lib.stdlib;
+package com.ydo4ki.fw.internal.lib.stdlib;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.lib.stdlib.ConstraintFw;
+import org.fw.lib.stdlib.DeclarationFw;
+import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
@@ -18,7 +21,7 @@ import java.util.Objects;
 
 import static org.fw.core.FW.symbol;
 
-public final class TraitFw {
+final class TraitFw {
 
     public static final Type trait = FW.telephonist("Trait", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, TraitFw.trait)) {

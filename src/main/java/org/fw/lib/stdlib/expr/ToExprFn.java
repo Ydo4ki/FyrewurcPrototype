@@ -61,7 +61,7 @@ public class ToExprFn {
             StrFw.strToExpr,
             SyntaxResolveFw.syntaxResolveToExpr,
             ChainLinkFw.chainLinkToExpr,
-            TraitFw.traitToExpr,
+//            TraitFw.traitToExpr,
             IntTypeFw.intToExpr,
             toExprRest
     );
