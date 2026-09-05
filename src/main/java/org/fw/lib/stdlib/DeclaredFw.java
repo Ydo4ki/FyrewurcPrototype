@@ -85,12 +85,8 @@ public final class DeclaredFw {
     }
 
 
-    public static Val declared(Val key, ValAdapter value) {
-        return declared(key, value.asVal());
-    }
-
-    public static Val declared(Val key, Val value) {
-        return Val.of(DeclaredFw.declared, new Declared(key, value));
+    public static Val declared(ValAdapter key, ValAdapter value) {
+        return Val.of(DeclaredFw.declared, new Declared(key.asVal(), value.asVal()));
     }
 
     public static Expr toExpr(Val arg, Val toExpr) {
@@ -107,7 +103,7 @@ public final class DeclaredFw {
         }
 
         public Expr toExpr(Val toExpr) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr(toExpr), value.toExpr(toExpr));
+            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr_Old(toExpr), value.toExpr_Old(toExpr));
         }
 
         public Val key() {

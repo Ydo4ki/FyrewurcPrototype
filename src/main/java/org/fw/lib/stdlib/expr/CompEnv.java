@@ -2,7 +2,7 @@ package org.fw.lib.stdlib.expr;
 
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.ChainLinkFw;
-import org.fw.core.commons.AbstractValAdapted;
+import org.fw.core.commons.AbstractValAdapter;
 import org.fw.core.ast.Expr;
 import org.fw.lib.stdlib.ChainResolveFw;
 import org.fw.lib.stdlib.VitFw;
@@ -12,7 +12,7 @@ import org.fw.core.vit.VitCompilationException;
 
 import static org.fw.core.FW.symbol;
 
-public final class CompEnv extends AbstractValAdapted {
+public final class CompEnv extends AbstractValAdapter {
 
     public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
             .call(symbol("construct"))

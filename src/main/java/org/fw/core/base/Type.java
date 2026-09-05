@@ -6,15 +6,10 @@ import org.fw.core.base.contract.CallContract;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public abstract class Type implements ValAdapter {
 
     Type() {}
-
-    static Type of(Val.Box val) {
-        return new ValType(val);
-    }
 
     abstract Val callInstance(Val instance, Val arg);
 
@@ -22,11 +17,11 @@ public abstract class Type implements ValAdapter {
 
     public abstract Val asVal();
 
-    public static final class ValType extends Type {
+    static final class ValType extends Type {
 
-        private final Val.Box asVal;
+        private final Val asVal;
 
-        public ValType(Val.Box asVal) {
+        public ValType(Val asVal) {
             this.asVal = asVal;
         }
 
@@ -60,13 +55,13 @@ public abstract class Type implements ValAdapter {
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(asVal);
+            return asVal.hashCode();
         }
     }
 
     public static final class TelephonistType extends Type {
         private final int depth;
-        private Val val;
+        private Val asVal;
 
         TelephonistType(int depth) {
             super();
@@ -94,10 +89,10 @@ public abstract class Type implements ValAdapter {
 
         @Override
         public Val asVal() {
-            if (val == null) {
-                this.val = new Val.TelephonistVal(this);
+            if (asVal == null) {
+                this.asVal = Val.telephonistVal(this);
             }
-            return val;
+            return asVal;
         }
 
         @Override

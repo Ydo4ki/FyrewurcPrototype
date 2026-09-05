@@ -165,11 +165,11 @@ public final class IntTypeFw {
         }
         if (arg.type() == int_t) {
             return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    arg.type().asVal().toExpr(toExpr),
-                    arg.call(symbol("bitwidth")).toExpr(toExpr),
-                    arg.call(symbol("signedness")).toExpr(toExpr),
-                    arg.call(symbol("endian")).toExpr(toExpr),
-                    arg.call(symbol("overflow")).toExpr(toExpr)
+                    arg.type().asVal().toExpr_Old(toExpr),
+                    arg.call(symbol("bitwidth")).toExpr_Old(toExpr),
+                    arg.call(symbol("signedness")).toExpr_Old(toExpr),
+                    arg.call(symbol("endian")).toExpr_Old(toExpr),
+                    arg.call(symbol("overflow")).toExpr_Old(toExpr)
             ));
         }
         if (arg.type().asVal().type() == int_t) {

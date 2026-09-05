@@ -56,10 +56,10 @@ public final class EnumFw {
     public static Val toExpr(Val arg, Val toExpr) {
         EnumFw.Enum value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(EnumFw.enumeration.asVal().toExpr(toExpr));
+        finElements.add(EnumFw.enumeration.asVal().toExpr_Old(toExpr));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.values()) {
-            elements.add(val._unpack(Val.class).toExpr(toExpr));
+            elements.add(val._unpack(Val.class).toExpr_Old(toExpr));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));

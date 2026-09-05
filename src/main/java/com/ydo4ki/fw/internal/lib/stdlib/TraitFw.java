@@ -83,10 +83,10 @@ final class TraitFw {
     public static Val toExpr(Val arg, Val toExpr) {
         TraitFw.Trait value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(TraitFw.trait.asVal().toExpr(toExpr));
+        finElements.add(TraitFw.trait.asVal().toExpr_Old(toExpr));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.fields) {
-            elements.add(val.toExpr(toExpr));
+            elements.add(val.toExpr_Old(toExpr));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));

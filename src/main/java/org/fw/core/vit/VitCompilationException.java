@@ -28,7 +28,7 @@ public class VitCompilationException extends FyrewurcException {
     }
 
     public VitCompilationException(Val value, Val toExpr) {
-        super(value.toExpr(toExpr).toString());
+        super(value.toExpr_Old(toExpr).toString());
         this.value = value;
         this.string = null;
     }

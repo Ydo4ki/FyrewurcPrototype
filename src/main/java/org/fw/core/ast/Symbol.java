@@ -1,5 +1,9 @@
 package org.fw.core.ast;
 
+import org.fw.core.FW;
+import org.fw.core.base.Val;
+import org.fw.core.commons.ValAdapter;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -7,7 +11,7 @@ import java.util.stream.Collectors;
  * @since 4/7/2025 10:33 PM
  * @author Sulphuris
  */
-public final class Symbol extends Expr {
+public final class Symbol extends Expr implements ValAdapter {
 	private final String value;
 	
 	public Symbol(String value) {
@@ -91,5 +95,10 @@ public final class Symbol extends Expr {
 
 	public LocatedSymbol located(Location location) {
 		return new LocatedSymbol(this, location);
+	}
+
+	@Override
+	public Val asVal() {
+		return FW.symbol(value);
 	}
 }
