@@ -38,7 +38,7 @@ public final class DoFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack();
+            Expr expr = exprVal._unpack(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -73,7 +73,7 @@ public final class DoFw {
                 // OK FINE
                 Val newRtGetter = FW.telephonist((oldRt) -> FW.telephonist((varValue) -> {
                     return FW.telephonist((arg) -> {
-                        if (arg.getType().equals(SymbolFw.symbol) && arg._unpack(Symbol.class).getValue().equals(name)) {
+                        if (arg.getType().equals(SymbolFw.symbol) && arg._unpack().toString().equals(name)) {
                             return varValue;
                         }
                         return oldRt.call(arg);
@@ -85,7 +85,7 @@ public final class DoFw {
                 Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
                     if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                         Val exprVal0 = arg.call(symbol("expr"));
-                        Expr expr = exprVal0._unpack();
+                        Expr expr = exprVal0._unpack(Expr.class);
                         if (expr instanceof Symbol && ((Symbol) expr).getValue().equals(name)) {
                             return VitFw.wrap(Vit.var.call(symbol(name)));
                         }

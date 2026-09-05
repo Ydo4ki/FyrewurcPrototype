@@ -36,12 +36,12 @@ public final class CompEnv extends AbstractValAdapter {
     }
 
     public Val compileV(Val expr) {
-        return asVal().call(syntaxResolve(expr._unpack(), this));
+        return asVal().call(syntaxResolve(expr._unpack(Expr.class), this));
     }
 
     public Vit compile(Val expr) throws VitCompilationException {
-        Val v = asVal().call(syntaxResolve(expr._unpack(), this));
-        return VitFw.unwrap(v, expr._unpack());
+        Val v = asVal().call(syntaxResolve(expr._unpack(Expr.class), this));
+        return VitFw.unwrap(v, expr._unpack(Expr.class));
     }
 
     public static Val syntaxResolve(Expr expr, CompEnv env) {

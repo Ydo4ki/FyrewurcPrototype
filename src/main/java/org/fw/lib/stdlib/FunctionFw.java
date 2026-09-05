@@ -76,7 +76,7 @@ public final class FunctionFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack();
+            Expr expr = exprVal._unpack(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -84,7 +84,7 @@ public final class FunctionFw {
                     case "fn": {
                         if (isize != 4)
                             return VitErrorFw.rrror(expr, "4 arguments expected");
-                        Expr arrow = exprVal.call(DIntFw.dint(2))._unpack();
+                        Expr arrow = exprVal.call(DIntFw.dint(2))._unpack(Expr.class);
                         boolean pure;
                         if (arrow instanceof Symbol) {
                             if (((Symbol) arrow).getValue().equals("!>")) pure = false;
@@ -128,7 +128,7 @@ public final class FunctionFw {
                         Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg0) -> {
                             if (arg0.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                                 Val exprVal0 = arg0.call(symbol("expr"));
-                                Expr expr0 = exprVal0._unpack();
+                                Expr expr0 = exprVal0._unpack(Expr.class);
                                 if (expr0 instanceof Symbol) {
                                     for (FnParam param : paramsList) {
                                         Symbol name = param.name;

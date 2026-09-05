@@ -107,7 +107,7 @@ public final class DVecFw {
             if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                 Val exprVal = arg.call(symbol("expr"));
                 Val compEnv = arg.call(symbol("comp-env"));
-                Expr expr = exprVal._unpack();
+                Expr expr = exprVal._unpack(Expr.class);
                 if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.square)) {
                     ExprList list = (ExprList) expr;
                     if (list.size() == 0)

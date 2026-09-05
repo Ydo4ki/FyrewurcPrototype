@@ -26,7 +26,7 @@ public final class ExprFw {
         String value = arg1._unpack();
         Expr expr = FwUtils.parse(value).getExpr();
         if (expr instanceof Symbol)
-            return Val.of(SymbolFw.symbol, expr);
+            return Val.of(SymbolFw.symbol, expr.toString());
 
         return null;
     });
@@ -77,7 +77,7 @@ public final class ExprFw {
                             if (!isExpr(value))
                                 return null;
 
-                            actualValues[i] = value._unpack();
+                            actualValues[i] = value._unpack(Expr.class);
                         }
                         ExprList result = ExprList.of(bt._unpack(BracketsType.class), actualValues); // todo: add other bracket types
 
@@ -132,7 +132,7 @@ public final class ExprFw {
             return Val.of(exprList, expr);
         }
         if (expr instanceof Symbol) {
-            return Val.of(SymbolFw.symbol, expr);
+            return Val.of(SymbolFw.symbol, expr.toString());
         }
         throw new IllegalStateException("This should never happen: " + expr);
     }
@@ -145,7 +145,7 @@ public final class ExprFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack();
+            Expr expr = exprVal._unpack(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -153,7 +153,7 @@ public final class ExprFw {
                     case "symbol": {
                         if (isize != 2) return null;
 
-                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 

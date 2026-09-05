@@ -244,7 +244,7 @@ public final class VitFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack();
+            Expr expr = exprVal._unpack(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -259,13 +259,13 @@ public final class VitFw {
                         if (isize == 1) {
                             return null;
                         }
-                        Expr eee = exprVal.call(DIntFw.dint(1))._unpack();
+                        Expr eee = exprVal.call(DIntFw.dint(1))._unpack(Expr.class);
                         Val retVit = compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
                         for (int i = 1; i < (isize - 1); i++) {
-                            Expr eeeN = exprVal.call(DIntFw.dint(i + 1))._unpack();
+                            Expr eeeN = exprVal.call(DIntFw.dint(i + 1))._unpack(Expr.class);
                             Val argNVit = compEnv.call(CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(argNVit.getType()))
                                 return argNVit; // compile error idk
@@ -283,7 +283,7 @@ public final class VitFw {
                             return null;
                         }
 
-                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)));
+                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
@@ -296,7 +296,7 @@ public final class VitFw {
                             return null;
 
                         return VitFw.wrap(VitUtils.simplify(Vit.val(
-                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)))
+                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)))
                         )));
                     }
                     case "compile-vit-fast": {
@@ -304,7 +304,7 @@ public final class VitFw {
                             return null;
 
                         return VitFw.wrap(Vit.val(
-                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(), CompEnv.of(compEnv)))
+                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)))
                         ));
                     }
                 }

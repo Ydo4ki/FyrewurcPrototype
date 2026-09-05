@@ -177,7 +177,7 @@ public final class ModuleFw {
                 if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                     Val exprVal = arg.call(symbol("expr"));
                     Val compEnv = arg.call(symbol("comp-env"));
-                    Expr expr = exprVal._unpack();
+                    Expr expr = exprVal._unpack(Expr.class);
                     if (expr instanceof Symbol) {
                         if (payload.getType() == ModuleFw.module) {
                             if (module.asVal().call(symbol("contains-key")).call(payload).call(exprVal) == BoolFw._true) {
@@ -237,7 +237,7 @@ public final class ModuleFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack();
+            Expr expr = exprVal._unpack(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();

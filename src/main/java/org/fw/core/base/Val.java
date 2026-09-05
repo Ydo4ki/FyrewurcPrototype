@@ -95,8 +95,9 @@ public final class Val implements ValAdapter {
         return (T)value;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unchecked"})
     public <T> T _unpack(Class<T> cls) {
+        if ((cls == Symbol.class || cls == Expr.class) && type == SymbolFw.symbol) return (T) Symbol.of((String) value);
         return _unpack();
     }
 

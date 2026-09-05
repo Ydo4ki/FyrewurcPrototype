@@ -138,7 +138,7 @@ public final class DeclarationFw {
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack();
+            Expr expr = exprVal._unpack(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -151,7 +151,7 @@ public final class DeclarationFw {
                         if (!name.getType().equals(SymbolFw.symbol))
                             return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
-                        Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(), CompEnv.of(compEnv)));
+                        Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 

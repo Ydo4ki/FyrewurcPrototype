@@ -66,7 +66,7 @@ public final class ConstraintFw {
             Val instance = CallFw.getVal(arg);
             return handleInstanceCall(instance, instance._unpack(), CallFw.getArg(arg));
         } else if (arg.getType().equals(SymbolFw.symbol)) {
-            String value = arg._unpack(Symbol.class).getValue();
+            String value = arg._unpack().toString();
             if (value.equals("construct")) {
                 return constraintBuilder;
             }
@@ -76,7 +76,7 @@ public final class ConstraintFw {
 
     private static Val handleInstanceCall(Val instance, Constraint payload, Val arg) {
         if (arg.getType().equals(SymbolFw.symbol)) {
-            String val = arg._unpack(Symbol.class).getValue();
+            String val = arg._unpack().toString();
             switch (val) {
                 case "check":
                     return FW.telephonist("Constraint.check", (arg1) -> {

@@ -46,7 +46,7 @@ public final class FW {
     }
 
     public static Val symbol(String value) {
-        return Val.of(SymbolFw.symbol, Symbol.of(value));
+        return Val.of(SymbolFw.symbol, value);
     }
 
     public static Vit vIf(Vit condition, Vit ifTrue, Vit ifFalse) {
