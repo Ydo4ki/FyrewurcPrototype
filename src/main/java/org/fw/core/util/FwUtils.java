@@ -39,25 +39,6 @@ public final class FwUtils {
         { throw new InstantiationException(); }
 
 
-    @Deprecated
-    public static Val handleSymbols(Val arg, Type type, SHandler handler, Type.TelephonistType.CallFunction orStatic) throws Exception {
-        return handleSymbols(arg, type, handler, (instance, arg1) -> null, orStatic);
-    }
-
-    @Deprecated
-    public static Val handleSymbols(Val arg, Type type, SHandler handler, NSHandler nonSymbolicHandler, Type.TelephonistType.CallFunction orStatic) throws Exception {
-        if (isTypeApiCall(arg, type)) {
-            Val instance = CallFw.getVal(arg);
-            Val callArg = CallFw.getArg(arg);
-            if (!callArg.getType().equals(SymbolFw.symbol)) {
-                return nonSymbolicHandler.handle(instance, callArg);
-            }
-            String symbol = callArg._unpack(Symbol.class).getValue();
-            return handler.handle(instance, symbol);
-        }
-        return orStatic.call(arg);
-    }
-
     public static LocatedExpr<? extends Expr> parse(String name) {
         return new ExprOutput(new TokenOutput(name, null, BracketsTypes.bracketsTypes)).iterator().next();
     }

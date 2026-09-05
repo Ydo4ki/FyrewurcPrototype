@@ -113,6 +113,43 @@
                     </includes>
                 </configuration>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.11.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>compile-java24</id>-->
+<!--                        <phase>compile</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>compile</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <release>24</release>-->
+<!--                            <compileSourceRoots>-->
+<!--                                <compileSourceRoot>${project.basedir}/src/main/java24</compileSourceRoot>-->
+<!--                            </compileSourceRoots>-->
+<!--                            <outputDirectory>${project.build.outputDirectory}/META-INF/versions/24</outputDirectory>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>compile-java12</id>-->
+<!--                        <phase>compile</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>compile</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <release>12</release>-->
+<!--                            <compileSourceRoots>-->
+<!--                                <compileSourceRoot>${project.basedir}/src/main/java12</compileSourceRoot>-->
+<!--                            </compileSourceRoots>-->
+<!--                            <outputDirectory>${project.build.outputDirectory}/META-INF/versions/12</outputDirectory>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
         </plugins>
     </build>
 </project>

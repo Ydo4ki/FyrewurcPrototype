@@ -39,29 +39,42 @@ public final class ExprFw {
     });
 
     public static final Type exprList = FW.telephonist("ExprList", (arg0) -> {
-        return FwUtils.handleSymbols(arg0, ExprFw.exprList, (instance, symbol) -> {
-            ExprList list = instance._unpack();
-            if (symbol.equals("size")) {
-                return DIntFw.dint(list.size());
-            }
-            if (symbol.equals("brackets-type")) {
-                BracketsType bt = list.getBracketsType();
-                return Val.of(ExprFw.bracketsType, bt);
-            }
-            return null; // unknown property
-        }, (instance, arg1) -> {
-            BigInteger i = DIntFw.unwrap(arg1);
-            if (i == null) return null;
-            if (i.bitLength() > 32)
-                return null; // out of range
+        // unknown property
+        // out of range
+        // out of range
+        // todo: add other bracket types
+        if (FwUtils.isTypeApiCall(arg0, ExprFw.exprList)) {
+            Val instance1 = CallFw.getVal(arg0);
+            Val callArg = CallFw.getArg(arg0);
+            if (!callArg.getType().equals(SymbolFw.symbol)) {
+                return ((FwUtils.NSHandler) (instance, arg1) -> {
+                    BigInteger i = DIntFw.unwrap(arg1);
+                    if (i == null) return null;
+                    if (i.bitLength() > 32)
+                        return null; // out of range
 
-            ExprList list = instance._unpack();
-            int index = i.intValue();
-            if (index >= list.size() || index < 0)
-                return null; // out of range
+                    ExprList list = instance._unpack();
+                    int index = i.intValue();
+                    if (index >= list.size() || index < 0)
+                        return null; // out of range
 
-            return ExprFw.wrap(list.get(index));
-        }, (arg) -> {
+                    return ExprFw.wrap(list.get(index));
+                }).handle(instance1, callArg);
+            }
+            String symbol1 = callArg._unpack(Symbol.class).getValue();
+            return ((FwUtils.SHandler) (instance, symbol) -> {
+                ExprList list = instance._unpack();
+                if (symbol.equals("size")) {
+                    return DIntFw.dint(list.size());
+                }
+                if (symbol.equals("brackets-type")) {
+                    BracketsType bt = list.getBracketsType();
+                    return Val.of(ExprFw.bracketsType, bt);
+                }
+                return null; // unknown property
+            }).handle(instance1, symbol1);
+        }
+        return ((Type.TelephonistType.CallFunction) (arg) -> {
             if (arg.equalsSymbol("construct")) {
                 return FW.telephonist("ExprList.constructor", (bt) -> {
                     if (!bt.getType().equals(ExprFw.bracketsType))
@@ -87,7 +100,7 @@ public final class ExprFw {
 
             }
             return null;
-        });
+        }).call(arg0);
     }).asType(); // bruh
     public static final Val isExpr = ConstraintFw.constraint(
             Vit.val(FW.telephonist(a -> BoolFw.wrap(isExpr(a)))).call(Vit.var)

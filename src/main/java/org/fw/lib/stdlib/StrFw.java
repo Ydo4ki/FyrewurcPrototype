@@ -94,35 +94,35 @@ public final class StrFw {
         private static final Vit argExpr = arg.call(symbol("expr"));
         private static final Vit argCEnv = arg.call(symbol("comp-env"));
 
-        @Deprecated
-        public static Val symbolMapEnv(Vit telemap) {
-            Vit parseArg = telemap.call(argExpr);
+        public static final Val parseStrCenv;
+
+        static {
+            Vit parseArg = val(FW.telephonist("parseNum", (arg1) -> {
+                Val str1 = ExprFw.symbolToString.call(arg1);
+                if (!str1.getType().equals(StrFw.str))
+                    return null;
+
+                String s = str1._unpack();
+                s = s.replace("\\n", "\n");
+                if (s.length() >= 2 && s.startsWith("\"") && s.endsWith("\"")) {
+                    return str(s.substring(1, s.length() - 1)); // uh okay
+                }
+                return null;
+            })).call(argExpr);
             // what the heck is this
             // how's it suppose to work
             // WHY IT WORKS
             Vit body = FW.vIf(val(Unspecified.isUnspecified).call(parseArg).call(symbol("not")),
-                    Vit.val(VitFw.vitVal.asVal()).call(symbol("construct"))
+                    val(VitFw.vitVal.asVal()).call(symbol("construct"))
                             .call(parseArg),
                     parseArg
             );
-            return State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(RtEnv.of(FW.telephonist((arg2) -> {
-                if (arg2.equalsSymbol("arg")) return arg1;
+            // uh okay
+            parseStrCenv = State.performAndDie(state -> FW.telephonist((arg3) -> body.eval(RtEnv.of(FW.telephonist((arg2) -> {
+                if (arg2.equalsSymbol("arg")) return arg3;
                 return null;
             })), state)));
         }
-
-        public static final Val parseStrCenv = symbolMapEnv(val(FW.telephonist("parseNum", (arg1) -> {
-            Val str = ExprFw.symbolToString.call(arg1);
-            if (!str.getType().equals(StrFw.str))
-                return null;
-
-            String s = str._unpack();
-            s = s.replace("\\n", "\n");
-            if (s.length() >= 2 && s.startsWith("\"") && s.endsWith("\"")) {
-                return str(s.substring(1, s.length() - 1)); // uh okay
-            }
-            return null;
-        })));
     }
 
     public static final Lib lib = Lib.of(

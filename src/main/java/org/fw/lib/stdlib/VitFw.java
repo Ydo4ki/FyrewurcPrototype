@@ -4,13 +4,11 @@ import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
-import org.fw.core.base.TypeGetFw;
+import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.lib.stdlib.expr.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
 import org.fw.core.vit.*;
 
 import java.util.ArrayList;
@@ -22,32 +20,44 @@ import static org.fw.core.FW.telephonist;
 public final class VitFw {
 
     public static final Type vitVal = FW.telephonist("VitVal", (arg0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitVal, (instance, symbol) -> {
-        switch (symbol) {
-            case "val":
-                return instance._unpack(VitVal.class).val();
-            default:
-                return null;
+            -> {
+        if (FwUtils.isTypeApiCall(arg0, VitFw.vitVal)) {
+            Val instance2 = CallFw.getVal(arg0);
+            Val callArg = CallFw.getArg(arg0);
+            if (!callArg.getType().equals(SymbolFw.symbol)) {
+                return ((FwUtils.NSHandler) (instance1, arg3) -> null).handle(instance2, callArg);
+            }
+            String symbol1 = callArg._unpack().toString();
+            switch (symbol1) {
+                case "val":
+                    return instance2._unpack(VitVal.class).val();
+                default:
+                    return null;
+            }
         }
-    }, (arg1) -> {
-        if (arg1.equalsSymbol("construct")) {
-            return FW.telephonist(() -> "VitVal.construct", (arg) -> {
-                return wrap(Vit.val(arg));
-            });
+        if (arg0.equalsSymbol("construct")) {
+            return FW.telephonist(() -> "VitVal.construct", (arg) -> wrap(Vit.val(arg)));
         }
         return null;
-    })).asType();
+    }).asType();
 
     public static final Type vitInvoke = FW.telephonist("VitInvoke", (arg0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitInvoke, (instance, symbol) -> {
-        switch (symbol) {
-            case "operation":
-                return VitFw.wrap(instance._unpack(VitInvoke.class).operation());
-            default:
-                return null;
+            -> {
+        if (FwUtils.isTypeApiCall(arg0, VitFw.vitInvoke)) {
+            Val instance2 = CallFw.getVal(arg0);
+            Val callArg = CallFw.getArg(arg0);
+            if (!callArg.getType().equals(SymbolFw.symbol)) {
+                return ((FwUtils.NSHandler) (instance1, arg3) -> null).handle(instance2, callArg);
+            }
+            String symbol1 = callArg._unpack(Symbol.class).getValue();
+            switch (symbol1) {
+                case "operation":
+                    return VitFw.wrap(instance2._unpack(VitInvoke.class).operation());
+                default:
+                    return null;
+            }
         }
-    }, (arg1) -> {
-        if (arg1.equalsSymbol("construct")) {
+        if (arg0.equalsSymbol("construct")) {
             return FW.telephonist(() -> "VitInvoke.construct", (arg) -> {
                 if (!VitFw.isVit(arg.getType()))
                     return null;
@@ -58,55 +68,74 @@ public final class VitFw {
             });
         }
         return null;
-    })).asType();
+    }).asType();
 
     public static final Type vitVar = FW.telephonist("VitVar", (arg0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitVar, (instance, symbol) -> {
-        switch (symbol) {
+            -> {//        case "key":
+//            return ((VitVar) instance._unpack()).key();
+        //        case "key":
+        //            return ((VitVar) instance._unpack()).key();
+        if (FwUtils.isTypeApiCall(arg0, VitFw.vitVar)) {
+            Val instance2 = CallFw.getVal(arg0);
+            Val callArg = CallFw.getArg(arg0);
+            if (!callArg.getType().equals(SymbolFw.symbol)) {
+                return ((FwUtils.NSHandler) (instance1, arg2) -> null).handle(instance2, callArg);
+            }
+            String symbol1 = callArg._unpack(Symbol.class).getValue();
+            switch (symbol1) {
 //        case "key":
 //            return ((VitVar) instance._unpack()).key();
-            default:
-                return null;
+                default:
+                    return null;
+            }
         }
-    }, (arg1) -> {
-        if (arg1.equalsSymbol("instance")) {
+        if (arg0.equalsSymbol("instance")) {
             return wrap(Vit.var);
         }
         return null;
-    })).asType();
+    }).asType();
 
     private static final Expr repr = FwUtils.parse("VitCall.builder").getExpr();
     public static final Type vitCall = FW.telephonist("VitCall", (arg0)
-            -> FwUtils.handleSymbols(arg0, VitFw.vitCall, (instance, symbol) -> {
-        switch (symbol) {
-            case "func":
-                return wrap(((VitCall) instance._unpack()).func());
-            case "arg":
-                return wrap(((VitCall) instance._unpack()).arg());
-            default:
-                return null;
-        }
-    }, (arg1) -> {
-        if (arg1.equalsSymbol("builder")) {
-            return telephonist(repr, (func) -> {
-                if (!isVit(func.getType())) {
+            -> {
+        if (FwUtils.isTypeApiCall(arg0, VitFw.vitCall)) {
+            Val instance2 = CallFw.getVal(arg0);
+            Val callArg = CallFw.getArg(arg0);
+            if (!callArg.getType().equals(SymbolFw.symbol)) {
+                return ((FwUtils.NSHandler) (instance1, arg3) -> null).handle(instance2, callArg);
+            }
+            String symbol1 = callArg._unpack(Symbol.class).getValue();
+            switch (symbol1) {
+                case "func":
+                    return wrap(((VitCall) instance2._unpack()).func());
+                case "arg":
+                    return wrap(((VitCall) instance2._unpack()).arg());
+                default:
                     return null;
-                }
-
-                return FW.telephonist((arg) -> {
-                    if (!isVit(arg.getType())) {
+            }
+        }
+        return ((Type.TelephonistType.CallFunction) (arg1) -> {
+            if (arg1.equalsSymbol("builder")) {
+                return FW.telephonist(repr, (func) -> {
+                    if (!isVit(func.getType())) {
                         return null;
                     }
-                    try {
-                        return wrap(Vit.call(unwrap(func, null), unwrap(arg, null)));
-                    } catch (VitCompilationException e) {
-                        throw new RuntimeException(e);
-                    }
+
+                    return FW.telephonist((arg) -> {
+                        if (!isVit(arg.getType())) {
+                            return null;
+                        }
+                        try {
+                            return wrap(Vit.call(unwrap(func, null), unwrap(arg, null)));
+                        } catch (VitCompilationException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                 });
-            });
-        }
-        return null;
-    })).asType();
+            }
+            return null;
+        }).call(arg0);
+    }).asType();
 
     public static final CompEnv vit2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
@@ -225,20 +254,6 @@ public final class VitFw {
             throw new VitCompilationException(vit);
         throw new VitCompilationException(expr);
     }
-
-    @Deprecated // nafiga you did this, _unpack exists, its just one function spodifoisdfoiusiodfuiu
-    public static Vit unwrap0(Val vit) {
-        if (
-                vit.getType().equals(vitVal)
-                        || vit.getType().equals(vitVar)
-                        || vit.getType().equals(vitCall)
-                        || vit.getType().equals(vitInvoke)
-        ) {
-            return vit._unpack();
-        }
-        return null;
-    }
-
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
