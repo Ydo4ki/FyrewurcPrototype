@@ -1,5 +1,6 @@
 package org.fw.lib.stdlib.dvec;
 
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;

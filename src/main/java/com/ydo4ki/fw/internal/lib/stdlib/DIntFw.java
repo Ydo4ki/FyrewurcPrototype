@@ -1,10 +1,13 @@
-package org.fw.lib.stdlib;
+package com.ydo4ki.fw.internal.lib.stdlib;
 
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
+import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.ModuleFw;
+import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ExprFw;
 import org.fw.lib.stdlib.expr.Lib;

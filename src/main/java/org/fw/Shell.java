@@ -19,7 +19,7 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 import org.fw.lib.stdlib.DeclaredFw;
 import org.fw.lib.stdlib.ModuleFw;
-import org.fw.lib.stdlib.StrFw;
+import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ExprFw;

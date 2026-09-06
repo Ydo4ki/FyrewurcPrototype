@@ -1,15 +1,11 @@
 package com.ydo4ki.fw.internal.lib.memlib.ints;
 
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.ExprList;
-import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.util.bits.Bits;
 import org.fw.lib.stdlib.*;
-import org.fw.lib.stdlib.expr.ExprFw;
 import org.fw.lib.stdlib.expr.Lib;
-import org.fw.lib.stdlib.expr.ToExprFn;
 import com.ydo4ki.fw.internal.lib.memlib.MemUtils;
 import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
 import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
@@ -154,55 +150,55 @@ public final class IntTypeFw {
 //        });
 //    }
 
-    public static final Val intToExpr = FW.telephonist((arg) -> {
-        if (arg.getType() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
+//    public static final Val intToExpr = FW.telephonist((arg) -> {
+//        if (arg.getType() != ToExprFn.toExprResolve)
+//            return null;
+//        Val toExpr = arg.call(symbol("chain"));
+//        arg = arg.call(symbol("passing"));
+//
+//        if (arg == int_t.asVal()) {
+//            return symbol("IntType");
+//        }
+//        if (arg.getType() == int_t) {
+//            return ExprFw.wrap(ExprList.of(BracketsTypes.round,
+//                    arg.getType().asVal().toExpr_Old(toExpr),
+//                    arg.call(symbol("bitwidth")).toExpr_Old(toExpr),
+//                    arg.call(symbol("signedness")).toExpr_Old(toExpr),
+//                    arg.call(symbol("endian")).toExpr_Old(toExpr),
+//                    arg.call(symbol("overflow")).toExpr_Old(toExpr)
+//            ));
+//        }
+//        if (arg.getType().asVal().getType() == int_t) {
+////            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
+//            Type Int = arg.getType();
+//            byte[] bytes = MemUtils.toBits(arg).toByteArray();
+//            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
+//
+//            BigInteger value = new BigInteger(bytes);
+//
+//            BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
+//            value = value.and(mask);
+//
+//            if (value.testBit(bitwidth - 1)) {
+//                value = value.subtract(BigInteger.ONE.shiftLeft(bitwidth));
+//            }
+//
+//            return ExprFw.wrap(Symbol.of(value.toString()));
+//        }
+//        return null;
+//    });
 
-        if (arg == int_t.asVal()) {
-            return symbol("IntType");
-        }
-        if (arg.getType() == int_t) {
-            return ExprFw.wrap(ExprList.of(BracketsTypes.round,
-                    arg.getType().asVal().toExpr_Old(toExpr),
-                    arg.call(symbol("bitwidth")).toExpr_Old(toExpr),
-                    arg.call(symbol("signedness")).toExpr_Old(toExpr),
-                    arg.call(symbol("endian")).toExpr_Old(toExpr),
-                    arg.call(symbol("overflow")).toExpr_Old(toExpr)
-            ));
-        }
-        if (arg.getType().asVal().getType() == int_t) {
-//            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
-            Type Int = arg.getType();
-            byte[] bytes = MemUtils.toBits(arg).toByteArray();
-            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
+    public static final Lib lib;
 
-            BigInteger value = new BigInteger(bytes);
-
-            BigInteger mask = BigInteger.ONE.shiftLeft(bitwidth).subtract(BigInteger.ONE);
-            value = value.and(mask);
-
-            if (value.testBit(bitwidth - 1)) {
-                value = value.subtract(BigInteger.ONE.shiftLeft(bitwidth));
-            }
-
-            return ExprFw.wrap(Symbol.of(value.toString()));
-        }
-        return null;
-    });
-
-    public static final Lib lib = Lib.of(
-            ModuleFw.module(
-                    DeclaredFw.declared(symbol("IntType"), IntTypeFw.int_t),
-                    DeclaredFw.declared(symbol("Signedness"), Signedness.signedness),
-                    DeclaredFw.declared(symbol("Endian"), Endian.endian),
-                    DeclaredFw.declared(symbol("Overflow"), Overflow.overflow)
-            ),
-            var -> ChainLinkFw.chain(ToExprFn.exprififier,
-                    intToExpr,
-                    var.call(symbol("to-expr"))
-            )
-    );
+    static {
+        Val module = ModuleFw.module(
+                DeclaredFw.declared(symbol("IntType"), IntTypeFw.int_t),
+                DeclaredFw.declared(symbol("Signedness"), Signedness.signedness),
+                DeclaredFw.declared(symbol("Endian"), Endian.endian),
+                DeclaredFw.declared(symbol("Overflow"), Overflow.overflow)
+        );
+        //                    intToExpr,
+        lib = Lib.of(module, (Val) null);
+    }
 }
 

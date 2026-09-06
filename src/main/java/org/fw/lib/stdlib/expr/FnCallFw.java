@@ -6,7 +6,7 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
 import org.fw.core.vit.VitUtils;
-import org.fw.lib.stdlib.DIntFw;
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.FunctionFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.dvec.DVecBuilderFw;

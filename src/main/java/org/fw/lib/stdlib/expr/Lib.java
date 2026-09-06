@@ -5,8 +5,6 @@ import org.fw.lib.stdlib.ChainLinkFw;
 import com.ydo4ki.fw.internal.lib.stdlib.ExtendedFw;
 import org.fw.lib.stdlib.ModuleFw;
 
-import java.util.function.Function;
-
 public final class Lib {
 
     public static Lib combine(Lib first, Lib... libs) {
@@ -62,14 +60,6 @@ public final class Lib {
     }
 
     public static Lib of(Val module, Val extraCEnv) {
-        return new Lib(module, ModuleFw.invert(module), extraCEnv);
-    }
-
-    public static Lib of(Val module, Function<Val, Val> rtEnvAdjuster) {
-        return Lib.of(module, (Val)null);
-    }
-
-    public static Lib of(Val module, Val extraCEnv, Function<Val, Val> rtEnvAdjuster) {
         return of(module, ModuleFw.invert(module), extraCEnv);
     }
 

@@ -5,7 +5,7 @@ import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.stdlib.DIntFw;
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.state.array.CreateArrayOperation;
 import org.fw.lib.stdlib.state.array.ValArrayObj;
 import org.fw.core.util.FwUtils;

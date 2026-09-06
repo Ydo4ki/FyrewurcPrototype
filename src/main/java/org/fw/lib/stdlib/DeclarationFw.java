@@ -1,5 +1,6 @@
 package org.fw.lib.stdlib;
 
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.state.operation.Operation;
@@ -13,7 +14,6 @@ import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import static org.fw.core.FW.symbol;
 

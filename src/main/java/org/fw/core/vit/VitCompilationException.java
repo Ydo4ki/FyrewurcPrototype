@@ -3,6 +3,7 @@ package org.fw.core.vit;
 import org.fw.core.FyrewurcException;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
+import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ExprFw;
 
 public class VitCompilationException extends FyrewurcException {
@@ -27,8 +28,8 @@ public class VitCompilationException extends FyrewurcException {
         this.string = null;
     }
 
-    public VitCompilationException(Val value, Val toExpr) {
-        super(value.toExpr_Old(toExpr).toString());
+    public VitCompilationException(Val value, CompEnv toExpr) {
+        super(value.toExpr(toExpr).toString());
         this.value = value;
         this.string = null;
     }

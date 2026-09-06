@@ -6,7 +6,7 @@ import org.fw.core.base.*;
 import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 import com.ydo4ki.fw.internal.lib.jlib.data.JOopFw;
 import com.ydo4ki.fw.internal.lib.jlib.util.JvmUtils;
-import org.fw.lib.stdlib.StrFw;
+import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 

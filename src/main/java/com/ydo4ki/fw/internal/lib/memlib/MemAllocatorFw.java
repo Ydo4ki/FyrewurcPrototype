@@ -5,7 +5,7 @@ import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.stdlib.DIntFw;
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import com.ydo4ki.fw.internal.lib.memlib.obj.AllocatedMemoryObj;
 import com.ydo4ki.fw.internal.lib.memlib.obj.HeapObj;
 import org.fw.core.state.obj.State;

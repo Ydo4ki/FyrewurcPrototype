@@ -1,6 +1,7 @@
 package org.fw.core.cases;
 
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
 import org.fw.core.Tester;
 import org.fw.core.ast.*;
@@ -29,9 +30,7 @@ import static org.fw.core.FW.symbol;
 
 public class Main {
 
-    public static final RtEnv rtEnv = RtEnv.of(ModuleFw.module(
-            DeclaredFw.declared(symbol("to-expr"), ToExprFn.toExpr)
-    ));
+    public static final RtEnv rtEnv = RtEnv.unspecified;
 
     public static void main(String[] args) throws IOException {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));

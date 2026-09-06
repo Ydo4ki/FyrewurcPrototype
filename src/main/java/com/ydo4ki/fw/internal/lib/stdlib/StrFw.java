@@ -1,4 +1,4 @@
-package org.fw.lib.stdlib;
+package com.ydo4ki.fw.internal.lib.stdlib;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.vit.Vit.val;
@@ -6,9 +6,11 @@ import static org.fw.core.vit.Vit.var;
 
 import org.fw.core.FW;
 import org.fw.core.base.*;
+import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.ModuleFw;
+import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.ExprFw;
 import org.fw.lib.stdlib.expr.Lib;
-import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.base.context.RtEnv;
@@ -70,20 +72,6 @@ public final class StrFw {
             return null;
         });
     }
-
-
-    public static final Val strToExpr = FW.telephonist((arg) -> {
-        if (arg.getType() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.getType();
-        if (type.equals(str)) {
-            return symbol('"' + arg._unpack(String.class) + '"');
-        }
-        return null;
-    });
 
     public static Val str(String string) {
         return Val.of(str, string);

@@ -5,7 +5,7 @@ import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.stdlib.DIntFw;
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 import org.fw.core.state.operation.Operation;

@@ -1,5 +1,6 @@
 package org.fw.lib.stdlib;
 
+import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.base.*;
@@ -64,19 +65,6 @@ public final class DeclaredFw {
         }
         return null;
     }).asType();
-    public static final Val declaredToExpr = FW.telephonist((arg) -> {
-        if (arg.getType() != ToExprFn.toExprResolve)
-            return null;
-        CompEnv toExpr = CompEnv.of(arg.get("chain"));
-        arg = arg.get("passing");
-
-        Type type = arg.getType();
-        if (type.equals(declared)) {
-            Expr expr = toExpr(arg, toExpr);
-            return ExprFw.wrap(expr);
-        }
-        return null;
-    });
 
     public static Val getKey(Val declared) {
         return declared.call(symbol("key"));

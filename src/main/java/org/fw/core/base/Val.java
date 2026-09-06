@@ -3,11 +3,8 @@ package org.fw.core.base;
 import org.fw.core.commons.ValAdapter;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.ToExprFn;
 import org.fw.core.util.FwUtils;
-import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
-import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 
 import java.util.*;
@@ -68,21 +65,6 @@ public final class Val implements ValAdapter {
 
     public Expr toExpr(CompEnv compEnv) {
         return compEnv.toExpr(this);
-    }
-
-    @Deprecated
-    public Expr toExpr_Old(Val toExpr) {
-        if (getType().equals(CallFw.call_t)) return ExprList.of(
-                BracketsTypes.round,
-                Symbol.of("Call"),
-                CallFw.getVal(this).toExpr_Old(toExpr),
-                CallFw.getArg(this).toExpr_Old(toExpr)
-        ); // huh
-        Val result = toExpr.call(ToExprFn.toExprResolve(this, toExpr));
-        if (result._unpack() instanceof Expr)
-            return result._unpack();
-
-        return ExprList.of(BracketsTypes.braces);
     }
 
     @SuppressWarnings("unchecked")

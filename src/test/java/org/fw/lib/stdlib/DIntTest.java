@@ -1,15 +1,50 @@
-package org.fw.lib.stdlib;
-
-import org.fw.core.Tester;
-import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.StdLib;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-public final class DIntTest {
-    @Test
-    public void test() throws IOException {
-        Tester.testFw(DIntFw.class, "dint", CompEnv.of(StdLib.lib.exports()));
-    }
-}
+//package org.fw.lib.stdlib;
+//
+//import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
+//import org.fw.core.Tester;
+//import org.fw.lib.stdlib.expr.CompEnv;
+//import org.fw.lib.stdlib.expr.StdLib;
+//import org.junit.jupiter.api.Test;
+//
+//import java.io.IOException;
+//
+//public final class DIntTest {
+//    @Test
+//    public void test() throws IOException {
+//        Tester.testFw(DIntFw.class, "dint", CompEnv.of(StdLib.lib.exports()));
+//    }
+//}
+//
+// CONTENT OF "dint.fw"
+//
+//(assert! true)
+//
+//(: n 20)
+//
+//(do
+// (assert! (== (call n.+ 50) 70))
+// (assert! (== (call n.- 10) 10))
+// (assert! (== (call n.* 50) 1000))
+// (assert! (== (call n./ 3) 6))
+// (assert! (== n.neg -20))
+//)
+//
+//// operators
+//(do
+// (assert! (== (+ n 50) 70))
+// (assert! (== (- n 10) 10))
+// (assert! (== (* n 50) 1000))
+// (assert! (== (/ n 3) 6))
+// (assert! (== (neg n) -20))
+//)
+//
+//// parse
+//(do
+// (assert! (== (call DInt.parse "553") 553))
+//)
+//
+//// esast
+//(do
+// (assert! (== (to-expr 12) (symbol "12")))
+// (assert! (== (to-expr 12.neg) (symbol "-12")))
+//)

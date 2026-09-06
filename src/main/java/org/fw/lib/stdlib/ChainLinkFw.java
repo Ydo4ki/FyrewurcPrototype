@@ -9,8 +9,7 @@ import org.fw.core.base.BoolFw;
 import org.fw.core.base.CallFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
-import org.fw.lib.stdlib.expr.ExprFw;
-import org.fw.lib.stdlib.expr.ToExprFn;
+import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.core.util.FwUtils;
 
 import java.util.Objects;
@@ -62,23 +61,23 @@ public final class ChainLinkFw {
         }
         return null;
     }).asType();
-    public static final Val chainLinkToExpr = FW.telephonist((arg) -> {
-        if (arg.getType() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.getType();
-        if (type.asVal().getType().equals(chainLinkType)) {
-            ChainLinkRecord env = arg._unpack();
-            return ExprFw.wrap(env.toExpr(toExpr));
-        }
-        return null;
-    });
+//    public static final Val chainLinkToExpr = FW.telephonist((arg) -> {
+//        if (arg.getType() != ToExprFn.toExprResolve)
+//            return null;
+//        Val toExpr = arg.call(symbol("chain"));
+//        arg = arg.call(symbol("passing"));
+//
+//        Type type = arg.getType();
+//        if (type.asVal().getType().equals(chainLinkType)) {
+//            ChainLinkRecord env = arg._unpack();
+//            return ExprFw.wrap(env.toExpr(toExpr));
+//        }
+//        return null;
+//    });
 
 
     public static Val chain(Type type, Val parent, Val primary) {
-        return type.asVal().call(symbol("builder")).call(primary).call(parent);
+        return type.asVal().get("builder").call(primary).call(parent);
     }
 
 
@@ -134,8 +133,8 @@ public final class ChainLinkFw {
             return parent;
         }
 
-        public Expr toExpr(Val toExpr) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), primary.toExpr_Old(toExpr), parent.toExpr_Old(toExpr));
+        public Expr toExpr(CompEnv toExpr) {
+            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), primary.toExpr(toExpr), parent.toExpr(toExpr));
         }
 
         @Override

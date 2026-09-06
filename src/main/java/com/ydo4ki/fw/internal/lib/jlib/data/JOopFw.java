@@ -9,7 +9,7 @@ import org.fw.core.base.Val;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JClassFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;
-import org.fw.lib.stdlib.StrFw;
+import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 

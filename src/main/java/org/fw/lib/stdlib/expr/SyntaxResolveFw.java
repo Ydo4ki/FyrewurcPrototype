@@ -68,19 +68,6 @@ public final class SyntaxResolveFw {
             throw new AssertionError("RIP");
     }
 
-    public static final Val syntaxResolveToExpr = FW.telephonist((arg) -> {
-        if (arg.getType() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.getType();
-//        if (type.equals(syntaxResolve)) {
-//            return ExprFw.wrap(arg._unpack(SyntaxResolve.class).toExpr(RtEnv.unspecified));
-//        }
-        return null;
-    });
-
     public static final Lib lib = Lib.ofModule(
             ModuleFw.module(
                     DeclaredFw.declared(symbol("SyntaxResolve"), syntaxResolve)

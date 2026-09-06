@@ -6,7 +6,7 @@ import org.fw.lib.stdlib.ConstraintFw;
 import org.fw.lib.stdlib.DeclarationFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.dvec.DVecFw;
-import org.fw.lib.stdlib.expr.ToExprFn;
+import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
@@ -59,18 +59,6 @@ final class TraitFw {
         }
         return null;
     }).asType();
-    public static final Val traitToExpr = FW.telephonist((arg) -> {
-        if (arg.getType() != ToExprFn.toExprResolve)
-            return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
-
-        Type type = arg.getType();
-        if (type.equals(trait)) {
-            return toExpr(arg, toExpr);
-        }
-        return null;
-    });
 
     public static Val trait(Val... fields) {
         for (Val field : fields) {
@@ -80,13 +68,13 @@ final class TraitFw {
         return Val.of(TraitFw.trait, new Trait(fields));
     }
 
-    public static Val toExpr(Val arg, Val toExpr) {
+    public static Val toExpr(Val arg, CompEnv toExpr) {
         TraitFw.Trait value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(TraitFw.trait.asVal().toExpr_Old(toExpr));
+        finElements.add(TraitFw.trait.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.fields) {
-            elements.add(val.toExpr_Old(toExpr));
+            elements.add(val.toExpr(toExpr));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));

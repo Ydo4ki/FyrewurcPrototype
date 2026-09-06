@@ -7,6 +7,7 @@ import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
+import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.lib.stdlib.expr.ExprFw;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,13 +54,13 @@ public final class EnumFw {
         return resultingType;
     }
 
-    public static Val toExpr(Val arg, Val toExpr) {
+    public static Val toExpr(Val arg, CompEnv toExpr) {
         EnumFw.Enum value = arg._unpack();
         List<Expr> finElements = new ArrayList<>();
-        finElements.add(EnumFw.enumeration.asVal().toExpr_Old(toExpr));
+        finElements.add(EnumFw.enumeration.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.values()) {
-            elements.add(val._unpack(Val.class).toExpr_Old(toExpr));
+            elements.add(val._unpack(Val.class).toExpr(toExpr));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
