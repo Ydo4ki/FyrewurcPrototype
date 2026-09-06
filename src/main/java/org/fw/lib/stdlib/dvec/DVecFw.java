@@ -20,20 +20,19 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static org.fw.core.FW.*;
 
 public final class DVecFw {
     // this already looks oldfashioned wtf
-    public static final Type dVec = FW.telephonist("DVec", (arg) -> {
+    public static final Type dVec = FW.telephonist_native("DVec", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DVecFw.dVec)) {
-            Val instance = CallFw.getVal(arg);
-            Val cArg = CallFw.getArg(arg);
-            Val[] vec = instance._unpack();
+            Val instance = (Val) CallFw.getVal(arg);
+            Val cArg = (Val) CallFw.getArg(arg);
+            Val[] vec = instance._UNPACK();
 
             if (cArg.getType().equals(SymbolFw.symbol)) {
-                String text = cArg._unpack().toString();
+                String text = cArg._UNPACK().toString();
                 switch (text) {
                     case "size": // ???
                         return DIntFw.dint(vec.length);
@@ -66,21 +65,21 @@ public final class DVecFw {
         return null;
     }).asType();
 
-    public static final CompEnv dvec2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv dvec2exprCenv = CompEnv.of(FW.telephonist_native("dvec2exprCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
 
             Type type = arg.getType();
             if (type.equals(dVec)) {
-                Val[] vec = arg._unpack();
+                Val[] vec = arg._UNPACK();
                 List<Expr> elements = new ArrayList<>();
                 for (Val val : vec) {
                     elements.add(val.toExpr(compEnv));
                 }
                 return ExprFw.wrap(ExprList.of(BracketsTypes.square, elements));
             } else if (type.equals(DVecBuilderFw.dVecBuilder)) {
-                Val[] vec = arg._unpack();
+                Val[] vec = arg._UNPACK();
                 List<Expr> elements = new ArrayList<>();
                 elements.add(type.asVal().toExpr(compEnv));
                 for (Val val : vec) {
@@ -105,11 +104,11 @@ public final class DVecFw {
     }
 
     public static final class DVecConstructorCEnvFw {
-        public static final Val dVecConstructorCenv = FW.telephonist(((Supplier<String>) () -> "dVecConstructorCenv").get().toString(), (arg) -> {
+        public static final Val dVecConstructorCenv = FW.telephonist_native("dVecConstructorCenv", (arg) -> {
             if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                 Val exprVal = arg.call(FW.symbol("expr"));
                 Val compEnv = arg.call(FW.symbol("comp-env"));
-                Expr expr = exprVal._unpack(Expr.class);
+                Expr expr = exprVal._UNPACK(Expr.class);
                 if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.square)) {
                     ExprList list = (ExprList) expr;
                     if (list.size() == 0)
@@ -122,7 +121,7 @@ public final class DVecFw {
                         if (!VitFw.isVit(elVitVal.getType()))
                             return elVitVal;
 
-                        Vit vit = null;
+                        Vit vit;
                         try {
                             vit = VitFw.unwrap(elVitVal, f);
                         } catch (VitCompilationException e) {

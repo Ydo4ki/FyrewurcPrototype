@@ -13,29 +13,29 @@ import org.fw.core.ast.ExprList;
 import static org.fw.core.FW.symbol;
 
 public final class BoxFw {
-    public static final Type boxType = FW.telephonist("BoxType", (arg) -> {
+    public static final Type boxType = FW.telephonist_native("BoxType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoxFw.boxType)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
 
             Type type = instance.asType();
             if (FwUtils.isTypeApiCall(arg, type)) {
-                instance = CallFw.getVal(arg);
-                Val cArg = CallFw.getArg(arg);
+                instance = (Val) CallFw.getVal(arg);
+                Val cArg = (Val) CallFw.getArg(arg);
                 if (cArg.equalsSymbol("unbox")) {
                     return unbox(instance);
                 }
             } else if (arg.equalsSymbol("construct")) {
-                return FW.telephonist((arg1) -> Val.of(type, arg1));
+                return FW.telephonist_native((arg1) -> Val.of(type, arg1));
             }
             return null;
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist(arg1 -> Val.of(BoxFw.boxType, arg1));
+            return FW.telephonist_native(arg1 -> Val.of(BoxFw.boxType, arg1));
         }
         return null;
     }).asType();
 
-    public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
 
@@ -54,7 +54,7 @@ public final class BoxFw {
 
     // the only operation that doesn't need context xd
     public static Val unbox(Val arg) {
-        return arg._unpack();
+        return arg._UNPACK();
     }
 
     public static Type newBoxType(Val key) {

@@ -8,14 +8,28 @@ import static org.fw.core.base.EqFw.eq;
 import static org.fw.core.vit.Vit.val;
 
 public final class FW {
-    // I changed my mind (partially)
+
     public static Val telephonist(String name, Type.TelephonistType.CallFunction call) {
-        //        System.out.println("# New Telephonist: " + representation);
         return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call));
     }
 
     public static Val telephonist(Type.TelephonistType.CallFunction call) {
         return telephonist(null, call);
+    }
+
+    public static Val telephonist_native(String name, Type.TelephonistType.NativeCallFunction call) {
+        return telephonist(name, arg -> {
+            try {
+                return call.call((Val)arg);
+            } catch (Exception e) {
+                throw new NativeExecutionException(e);
+            }
+        });
+    }
+
+    @Deprecated
+    public static Val telephonist_native(Type.TelephonistType.NativeCallFunction call) {
+        return telephonist_native(null, call);
     }
 
     public static Val symbol(String value) {

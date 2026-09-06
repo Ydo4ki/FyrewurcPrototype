@@ -1,6 +1,7 @@
 package org.fw.core.util;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.*;
 import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
@@ -11,7 +12,6 @@ import org.fw.core.base.TypeGetFw;
 import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.ModuleFw;
 import org.fw.lib.stdlib.VitFw;
-import org.fw.core.base.Constraint;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -30,7 +30,6 @@ import java.util.function.Predicate;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.vit.Vit.val;
-import static org.fw.core.vit.Vit.var;
 
 // todo: replace all java File with FwFiles or something like that so they won't be attached to the actual filesystem
 public final class FwUtils {
@@ -42,20 +41,10 @@ public final class FwUtils {
         return new ExprOutput(new TokenOutput(name, null, BracketsTypes.bracketsTypes)).iterator().next();
     }
 
-    public static boolean isTypeApiCall(Val call, Type type) {
-        if (call.getType().equals(CallFw.call_t)) {
-            Val val = CallFw.getVal(call);
-            return val.getType().equals(type);
-        }
-        return false;
-    }
-
-    public static boolean isTypeApiCall(Constraint arg, Type type) {
-        Constraint argType = arg.typeConstraint();
-        if (argType.implies(Constraint.equals(CallFw.call_t.asVal()))) {
-            Constraint valc = arg.call(Constraint.equals(symbol("val")));
-            Constraint valType = valc.typeConstraint();
-            return valType.implies(Constraint.equals(type.asVal()));
+    public static boolean isTypeApiCall(Value call, Type type) {
+        if (call.getType0().impliesEquality(CallFw.call_t.asVal())) {
+            Value val = CallFw.getVal(call);
+            return val.getType0().impliesEquality(type.asVal());
         }
         return false;
     }
@@ -89,10 +78,10 @@ public final class FwUtils {
 
         Map<String, Val> defineds = new HashMap<>();
 
-        final Val defined = symbolMapVitEnv(val(FW.telephonist("vals", (arg1) -> {
+        final Val defined = symbolMapVitEnv(val(FW.telephonist_native("vals", (arg1) -> {
             if (!arg1.getType().equals(SymbolFw.symbol))
                 return null;
-            String string = arg1._unpack().toString();
+            String string = arg1._UNPACK().toString();
             Val ret = defineds.get(string);
             if (ret != null)
                 return VitFw.wrap(val(ret));
@@ -115,7 +104,7 @@ public final class FwUtils {
                 Val key = DeclaredFw.getKey(result);
                 Val value = DeclaredFw.getValue(result);
                 if (key.getType().equals(SymbolFw.symbol)) {
-                    defineds.put(key._unpack(Symbol.class).getValue(), value);
+                    defineds.put(key._UNPACK(Symbol.class).getValue(), value);
                 }
             }
         }
@@ -131,7 +120,7 @@ public final class FwUtils {
     }
 
     public static Val valify(Predicate<Val> tester) {
-        return FW.telephonist((arg) -> BoolFw.wrap(tester.test(arg)));
+        return FW.telephonist_native((arg) -> BoolFw.wrap(tester.test(arg)));
     }
 
     public static Vit equals(Vit a, Vit b) {
@@ -139,10 +128,10 @@ public final class FwUtils {
     }
 
     public static Val symbolMapVitEnv(Vit telemap) {
-        Vit arg = var(symbol("arg"));
+        Vit arg = Vit.var.call(FW.symbol("arg"));
         Vit argExpr = arg.call(symbol("expr"));
         Vit parseArg = telemap.call(argExpr);
-        return FW.telephonist((arg1) -> {
+        return FW.telephonist_native((arg1) -> {
             if (Unspecified.isUnspecified(arg1)) return null;
             else return parseArg.eval();
         });

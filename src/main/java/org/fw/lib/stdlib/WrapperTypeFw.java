@@ -6,28 +6,28 @@ import org.fw.core.util.FwUtils;
 
 public final class WrapperTypeFw {
     
-    public static final Type wrapperType = FW.telephonist(arg -> {
+    public static final Type wrapperType = FW.telephonist_native("wrapperType", arg -> {
         if (FwUtils.isTypeApiCall(arg, WrapperTypeFw.wrapperType)) {
-            Val wType = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val wType = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
 
-            WrapperType wt = wType._unpack();
+            WrapperType wt = wType._UNPACK();
             Type payloadType = wt.payloadType;
             Val callsHandler = wt.callsHandler;
             if (FwUtils.isTypeApiCall(arg, wType.asType())) {
-                Val instanceOfWt = CallFw.getVal(arg);
-                arg = CallFw.getArg(arg);
+                Val instanceOfWt = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
 
                 // since we know the core type anyway there's no reason to create additional nesting levels
                 // so the value of wrapper type instance is exactly the same as the one in the wrapped type
-                Val rawPayload = Val.of(payloadType, instanceOfWt._unpack());
+                Val rawPayload = Val.of(payloadType, instanceOfWt._UNPACK());
                 return callsHandler.call(instanceOfWt).call(rawPayload).call(arg);
             } else {
                 Val staticCallsHandler = wt.staticCallsHandler;
                 Val ret = staticCallsHandler.call(arg);
                 if (!Unspecified.isUnspecified(ret)) return ret;
                 if (arg.getType() == SymbolFw.symbol) {
-                    String sym = arg._unpack().toString();
+                    String sym = arg._UNPACK().toString();
                     switch (sym) {
                         case "Payload":
                             return TypePayloadInfo.wrap(payloadType);
@@ -58,7 +58,7 @@ public final class WrapperTypeFw {
     public static Val unwrapFully(Val val) {
         Type type = unwrapFully(val.getType());
         if (type != val.getType())
-            return Val.of(type, val._unpack());
+            return Val.of(type, val._UNPACK());
         return val;
     }
 

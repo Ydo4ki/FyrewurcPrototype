@@ -5,12 +5,12 @@ import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
 final class InstancerFw {
-    public static final Type instancer = FW.telephonist("Instancer", (arg) -> {
+    public static final Type instancer = FW.telephonist_native("Instancer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, InstancerFw.instancer)) {
-            Val instance = CallFw.getVal(arg);
-            Val cArg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            Val cArg = (Val) CallFw.getArg(arg);
 
-            Type targetType = instance._unpack();
+            Type targetType = instance._UNPACK();
             return Val.of(targetType, cArg);
         }
         return null;

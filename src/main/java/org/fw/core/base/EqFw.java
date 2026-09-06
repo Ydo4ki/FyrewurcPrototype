@@ -10,13 +10,13 @@ public final class EqFw {
     public static final Type eqChecker;
 
     static {
-        eq = FW.telephonist((arg1) -> Val.of(EqFw.eqChecker, arg1));
-        eqChecker = FW.telephonist(arg -> {
+        eq = FW.telephonist_native("eq", (arg1) -> Val.of(EqFw.eqChecker, arg1));
+        eqChecker = FW.telephonist_native("eqChecker", arg -> {
             if (FwUtils.isTypeApiCall(arg, EqFw.eqChecker)) {
-                Val instance = CallFw.getVal(arg);
-                arg = CallFw.getArg(arg);
+                Val instance = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
 
-                Val a = instance._unpack();
+                Val a = instance._UNPACK();
                 return BoolFw.wrap(arg.equals(a));
             }
             return null;

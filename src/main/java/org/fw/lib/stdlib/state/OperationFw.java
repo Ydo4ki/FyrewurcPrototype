@@ -17,21 +17,21 @@ import org.fw.core.vit.Vit;
 import org.fw.lib.stdlib.expr.VitErrorFw;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist;
+import static org.fw.core.FW.telephonist_native;
 
 public final class OperationFw {
 
-    public static final Type operation = FW.telephonist("Operation", (arg) -> {
+    public static final Type operation = FW.telephonist_native("Operation", (arg) -> {
         return null;
     }).asType();
 
-    public static final Val _VitOperation = FW.telephonist((arg) -> {
+    public static final Val _VitOperation = FW.telephonist_native((arg) -> {
         if (!VitFw.isVit(arg.getType()))
             return null;
 
-        Vit vit = arg._unpack();
+        Vit vit = arg._UNPACK();
 
-        return FW.telephonist((rtEnv) -> Operation.vit(vit, RtEnv.of(rtEnv)).asVal());
+        return FW.telephonist_native((rtEnv) -> Operation.vit(vit, RtEnv.of(rtEnv)).asVal());
     });
     public static Val wrap(Operation operation) {
         if (operation == null) return null;
@@ -40,16 +40,16 @@ public final class OperationFw {
 
     public static Operation unwrap(Val operation) {
         if (operation.getType() == OperationFw.operation)
-            return operation._unpack(Operation.class);
+            return operation._UNPACK(Operation.class);
         return null;
     }
 
 
-    public static final Val directivesCenv = FW.telephonist((arg) -> {
+    public static final Val directivesCenv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -59,7 +59,7 @@ public final class OperationFw {
                             return null;
 
 
-                        Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
+                        Val val = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(val.getType()))
                             return null;
 
@@ -69,10 +69,10 @@ public final class OperationFw {
                         if (isize != 3)
                             return VitErrorFw.rrror(expr, "3 elements expected");
 
-                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
+                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(condition.getType()))
                             return condition;
-                        Val body = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(Expr.class), CompEnv.of(compEnv)));
+                        Val body = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(body.getType()))
                             return body;
 
@@ -86,13 +86,13 @@ public final class OperationFw {
                         if (isize != 5)
                             return null;
 
-                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
-                        Val ifTrue = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(Expr.class), CompEnv.of(compEnv)));
-                        Expr ELSE = exprVal.call(DIntFw.dint(3))._unpack(Expr.class);
+                        Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(Expr.class), CompEnv.of(compEnv)));
+                        Val ifTrue = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(Expr.class), CompEnv.of(compEnv)));
+                        Expr ELSE = exprVal.call(DIntFw.dint(3))._UNPACK(Expr.class);
                         if (!ELSE.toString().equals("else"))
                             return null;
 
-                        Val ifFalse = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(4))._unpack(Expr.class), CompEnv.of(compEnv)));
+                        Val ifFalse = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(4))._UNPACK(Expr.class), CompEnv.of(compEnv)));
 
                         Vit ret = Vit.invoke(Vit.val(IfOperation._If)
                                 .call(Vit.call(OperationFw._VitOperation, condition).call(Vit.var))

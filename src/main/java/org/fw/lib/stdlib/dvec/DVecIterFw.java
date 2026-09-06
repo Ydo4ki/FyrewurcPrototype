@@ -8,28 +8,28 @@ import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 
 public final class DVecIterFw {
-    public static final Type dVecIter = FW.telephonist(arg -> {
+    public static final Type dVecIter = FW.telephonist_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, DVecIterFw.dVecIter)) {
-            Val iterTypeInstance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val iterTypeInstance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
 
             Type iterType = iterTypeInstance.asType();
-            Val targetDVec = iterTypeInstance._unpack();
-            Val[] target = targetDVec._unpack();
+            Val targetDVec = iterTypeInstance._UNPACK();
+            Val[] target = targetDVec._UNPACK();
             if (arg.getType() == SymbolFw.symbol) {
-                String s = arg._unpack().toString();
+                String s = arg._UNPACK().toString();
                 switch (s) {
                     case "target":
                         return targetDVec;
                 }
             }
             if (FwUtils.isTypeApiCall(arg, iterType)) {
-                Val instance = CallFw.getVal(arg);
-                arg = CallFw.getArg(arg);
+                Val instance = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
 
-                int i = instance._unpack();
+                int i = instance._UNPACK();
                 if (arg.getType().equals(SymbolFw.symbol)) {
-                    String text = arg._unpack().toString();
+                    String text = arg._UNPACK().toString();
                     switch (text) {
                         case "value":
                             return target[i];

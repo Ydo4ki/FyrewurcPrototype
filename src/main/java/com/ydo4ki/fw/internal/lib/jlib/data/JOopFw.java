@@ -16,24 +16,24 @@ import org.fw.core.util.FwUtils;
 import java.lang.invoke.MethodType;
 
 public final class JOopFw {
-    public static final Type jOop = FW.telephonist((arg) -> {
+    public static final Type jOop = FW.telephonist_native((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JOopFw.jOop)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
             if (arg.getType() != SymbolFw.symbol)
                 return null;
 
-            Object oop = instance._unpack();
+            Object oop = instance._UNPACK();
             Class<?> cls = oop.getClass();
 
-            switch (arg._unpack(Symbol.class).getValue()) {
+            switch (arg._UNPACK(Symbol.class).getValue()) {
                 case "get-method": {
-                    return FW.telephonist(nameV -> {
+                    return FW.telephonist_native(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
-                        String name = nameV._unpack();
-                        return FW.telephonist(arg1 -> {
+                        String name = nameV._UNPACK();
+                        return FW.telephonist_native(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
-                            String descriptor = arg1._unpack();
+                            String descriptor = arg1._UNPACK();
 
                             MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
                             try {

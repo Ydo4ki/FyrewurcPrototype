@@ -1,15 +1,16 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.util.FwUtils;
 
 public final class BoolFw {
-    public static final Type bool = FW.telephonist("Bool", (arg) -> {
+    public static final Type bool = FW.telephonist_native("Bool", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoolFw.bool)) {
-            Val instance = CallFw.getVal(arg);
-            Val cArg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            Value cArg = (Val) CallFw.getArg(arg);
 
-            boolean value = instance._unpack(Boolean.class);
+            boolean value = instance._UNPACK(Boolean.class);
             if (cArg.equalsSymbol("not")) {
                 return wrap(!value);
             } else if (cArg.equalsSymbol("and")) {
@@ -29,10 +30,10 @@ public final class BoolFw {
     }).asType();
 
     private static Val bop(Val instance, FwUtils.BoolBinaryOperator operator) {
-        boolean value = instance._unpack(Boolean.class);
-        return FW.telephonist((arg1) -> {
+        boolean value = instance._UNPACK(Boolean.class);
+        return FW.telephonist_native((arg1) -> {
             if (arg1.getType().equals(BoolFw.bool)) {
-                boolean v2 = arg1._unpack(Boolean.class);
+                boolean v2 = arg1._UNPACK(Boolean.class);
                 return wrap(operator.apply(value, v2));
             }
             return null;

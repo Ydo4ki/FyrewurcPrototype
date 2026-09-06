@@ -7,27 +7,27 @@ import java.util.Objects;
 
 public final class Unspecified {
     public static final Val isUnspecified = FwUtils.valify(Unspecified::isUnspecified);
-    private static final Type unspecified_t = FW.telephonist((arg) -> {
+    private static final Type unspecified_t = FW.telephonist_native((arg) -> {
         if (FwUtils.isTypeApiCall(arg, Unspecified.unspecified_t)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
             return unspecified(instance, arg); // accumulate
         } else if (arg.getType() == SymbolFw.symbol) {
-            String v = arg._unpack().toString();
+            String v = arg._UNPACK().toString();
             switch (v) {
                 case "builder":
-                    return FW.telephonist("Unspecified.builder",
-                            (func) -> FW.telephonist((argument) -> unspecified(func, argument)));
+                    return FW.telephonist_native("Unspecified.builder",
+                            (func) -> FW.telephonist_native((argument) -> unspecified(func, argument)));
                 case "val":
-                    return FW.telephonist(unspecified -> {
+                    return FW.telephonist_native(unspecified -> {
                         if (isUnspecified(unspecified))
-                            return unspecified._unpack(UnspecifiedRecord.class).val();
+                            return unspecified._UNPACK(UnspecifiedRecord.class).val();
                         return null;
                     });
                 case "arg":
-                    return FW.telephonist(unspecified -> {
+                    return FW.telephonist_native(unspecified -> {
                         if (isUnspecified(unspecified))
-                            return unspecified._unpack(UnspecifiedRecord.class).arg();
+                            return unspecified._UNPACK(UnspecifiedRecord.class).arg();
                         return null;
                     });
             }
@@ -44,11 +44,11 @@ public final class Unspecified {
     }
 
     public static Val getVal(Val val) {
-        return val._unpack(UnspecifiedRecord.class).val;
+        return val._UNPACK(UnspecifiedRecord.class).val;
     }
 
     public static Val getArg(Val val) {
-        return val._unpack(UnspecifiedRecord.class).arg;
+        return val._UNPACK(UnspecifiedRecord.class).arg;
     }
 
     private static final class UnspecifiedRecord {

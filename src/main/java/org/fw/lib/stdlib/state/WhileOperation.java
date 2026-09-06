@@ -6,18 +6,18 @@ import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.base.BoolFw;
 
-import static org.fw.core.FW.telephonist;
+import static org.fw.core.FW.telephonist_native;
 
 public final class WhileOperation extends Operation {
-    public static final Val _While = FW.telephonist((condition) -> {
+    public static final Val _While = FW.telephonist_native((condition) -> {
         if (condition.getType() != OperationFw.operation)
             return null;
 
-        return FW.telephonist((body) -> {
+        return FW.telephonist_native((body) -> {
             if (body.getType() != OperationFw.operation)
                 return null;
 
-            return new WhileOperation(condition._unpack(), body._unpack()).asVal();
+            return new WhileOperation(condition._UNPACK(), body._UNPACK()).asVal();
         });
     });
     private final Operation condition;

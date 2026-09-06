@@ -23,15 +23,15 @@ import static org.fw.core.vit.Vit.var;
 
 // lmao I completely forgot we wanted to get rid of this
 public final class DIntFw {
-    public static final Type dint = FW.telephonist("DInt", (arg) -> {
+    public static final Type dint = FW.telephonist_native("DInt", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DIntFw.dint)) {
-            Val instance = CallFw.getVal(arg);
-            Val cArg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            Val cArg = (Val) CallFw.getArg(arg);
 
             BigInteger value = unwrap(instance);
             assert value != null;
             if (cArg.getType() == SymbolFw.symbol) {
-                String sym = cArg._unpack().toString();
+                String sym = cArg._UNPACK().toString();
                 switch (sym) {
                     case "neg":
                         return dint(value.negate());
@@ -54,9 +54,9 @@ public final class DIntFw {
                 }
             }
         } else if (arg.equalsSymbol("parse")) {
-            return FW.telephonist((arg1) -> {
+            return FW.telephonist_native((arg1) -> {
                 if (arg1.getType().equals(StrFw.str)) {
-                    String string = arg1._unpack();
+                    String string = arg1._UNPACK();
                     try {
                         BigInteger i = new BigInteger(string);
                         return dint(i);
@@ -70,12 +70,12 @@ public final class DIntFw {
         return null;
     }).asType();
 
-    public static final CompEnv dint2exprCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv dint2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val.getType() == dint) {
-                return ExprFw.wrap(Symbol.of(val._unpack().toString()));
+                return ExprFw.wrap(Symbol.of(val._UNPACK().toString()));
             }
         }
         return null;
@@ -84,7 +84,7 @@ public final class DIntFw {
     private static Val bop(Val instance, FwUtils.BigBinaryOperator operator) {
         BigInteger value = unwrap(instance);
         assert value != null;
-        return FW.telephonist((arg1) -> {
+        return FW.telephonist_native((arg1) -> {
             if (arg1.getType().equals(DIntFw.dint)) {
                 BigInteger v2 = unwrap(arg1);
                 return dint(operator.apply(value, v2));
@@ -107,14 +107,14 @@ public final class DIntFw {
     }
 
     public static BigInteger unwrap0(Val dint) {
-        return dint._unpack();
+        return dint._UNPACK();
     }
 
     public static final class ParseDIntCEnvFw {
         public static final Val parseNumCenv;
 
         static {
-            Vit parseArg = val(FW.telephonist("parseNum", (arg1) -> {
+            Vit parseArg = val(FW.telephonist_native("parseNum", (arg1) -> {
                 return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1))
                         .eval();
             })).call(var.call(symbol("arg")).call(symbol("expr")));
@@ -126,7 +126,7 @@ public final class DIntFw {
                             .call(parseArg),
                     parseArg
             );
-            parseNumCenv = State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(RtEnv.of(FW.telephonist((arg2) -> {
+            parseNumCenv = State.performAndDie(state -> FW.telephonist_native((arg1) -> body.eval(RtEnv.of(FW.telephonist_native((arg2) -> {
                 if (arg2.equalsSymbol("arg")) return arg1;
                 return null;
             })), state)));

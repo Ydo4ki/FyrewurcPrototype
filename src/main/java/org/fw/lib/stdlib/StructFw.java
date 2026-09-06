@@ -23,15 +23,15 @@ import static org.fw.core.FW.symbol;
 
 // so should the order of fields matter or not?
 public final class StructFw {
-    public static final Type struct = FW.telephonist("Struct", (arg) -> {
+    public static final Type struct = FW.telephonist_native("Struct", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.struct)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
-            Struct struct = instance._unpack();
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+            Struct struct = instance._UNPACK();
             if (FwUtils.isTypeApiCall(arg, instance.asType())) {
-                Val strInstance = CallFw.getVal(arg);
-                arg = CallFw.getArg(arg);
-                Val[] values = strInstance._unpack();
+                Val strInstance = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
+                Val[] values = strInstance._UNPACK();
                 int index = struct.indexOf(arg);
                 if (index == -1) return null;
                 return values[index];
@@ -41,10 +41,10 @@ public final class StructFw {
                 return DVecFw.vec(struct.fields);
             }
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist("Struct.construct", (payload) -> {
+            return FW.telephonist_native("Struct.construct", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
-                Val[] fields = payload._unpack();
+                Val[] fields = payload._UNPACK();
                 for (Val field : fields) {
                     if (!field.getType().equals(DeclarationFw.declaration))
                         return null; // some day I'll add proper errors
@@ -56,7 +56,7 @@ public final class StructFw {
     }).asType();
 
     public static Val toExpr(Val arg, CompEnv toExpr) {
-        StructFw.Struct value = arg._unpack();
+        StructFw.Struct value = arg._UNPACK();
         List<Expr> finElements = new ArrayList<>();
         finElements.add(StructFw.struct.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();
@@ -68,7 +68,7 @@ public final class StructFw {
     }
 
     public static Val instanceToExpr(Val arg, CompEnv toExpr) {
-        Val[] value = arg._unpack();
+        Val[] value = arg._UNPACK();
         List<Expr> elements = new ArrayList<>();
         elements.add(arg.getType().asVal().toExpr(toExpr));
         for (Val val : value) {
@@ -135,11 +135,11 @@ public final class StructFw {
         return Val.of(structBuilder, new StructBuilder(struct, sameStructButItsAVal, new Val[0]));
     }
 
-    private static final Type structBuilder = FW.telephonist("StructBuilder", (arg) -> {
+    private static final Type structBuilder = FW.telephonist_native("StructBuilder", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.structBuilder)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
-            StructBuilder payload = instance._unpack();
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+            StructBuilder payload = instance._UNPACK();
 
             Val constraint = DeclarationFw.getConstraint(payload.struct.fields[payload.progress.length]);
             if (constraint.call(symbol("check")).call(arg) != BoolFw._true) {
@@ -156,7 +156,7 @@ public final class StructFw {
     }).asType();
 
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -172,10 +172,10 @@ public final class StructFw {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val == struct.asVal()) {
-                return FW.telephonist(c -> {
+                return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
-                    Val[] args = c._unpack();
+                    Val[] args = c._UNPACK();
                     if (args.length > 1)
                         return null;
                     Val b = val.get("construct");
@@ -185,11 +185,11 @@ public final class StructFw {
                     return Operation.pure(b).asVal();
                 });
             } else if (val.getType() == struct) {
-                int len = val._unpack(Struct.class).fields.length;
-                return FW.telephonist(c -> {
+                int len = val._UNPACK(Struct.class).fields.length;
+                return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
-                    Val[] args = c._unpack();
+                    Val[] args = c._UNPACK();
                     if (args.length > len)
                         return null;
                     Val b = val.get("builder");
@@ -202,7 +202,7 @@ public final class StructFw {
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -210,12 +210,12 @@ public final class StructFw {
                     case "struct": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Expr expr1 = exprVal.call(DIntFw.dint(i))._unpack();
+                            Expr expr1 = exprVal.call(DIntFw.dint(i))._UNPACK();
                             Val val = compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.getType()))
                                 return val;
 
-                            builder = builder.call(val._unpack(Vit.class));
+                            builder = builder.call(val._UNPACK(Vit.class));
                         }
                         builder = Vit.call(DVecBuilderFw.dvecbf, builder);
 

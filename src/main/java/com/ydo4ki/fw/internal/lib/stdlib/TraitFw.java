@@ -23,11 +23,11 @@ import static org.fw.core.FW.symbol;
 
 final class TraitFw {
 
-    public static final Type trait = FW.telephonist("Trait", (arg) -> {
+    public static final Type trait = FW.telephonist_native("Trait", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, TraitFw.trait)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
-            Trait trait = instance._unpack();
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+            Trait trait = instance._UNPACK();
             if (arg.equalsSymbol("to-constraint")) {
                 return trait.constraint();
             }
@@ -46,10 +46,10 @@ final class TraitFw {
 //            }
         }
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist("Trait.constructor", (payload) -> {
+            return FW.telephonist_native("Trait.constructor", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
-                Val[] fields = payload._unpack();
+                Val[] fields = payload._UNPACK();
                 for (Val field : fields) {
                     if (!field.getType().equals(DeclarationFw.declaration))
                         return null; // some day I'll add proper errors
@@ -69,7 +69,7 @@ final class TraitFw {
     }
 
     public static Val toExpr(Val arg, CompEnv toExpr) {
-        TraitFw.Trait value = arg._unpack();
+        TraitFw.Trait value = arg._UNPACK();
         List<Expr> finElements = new ArrayList<>();
         finElements.add(TraitFw.trait.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();

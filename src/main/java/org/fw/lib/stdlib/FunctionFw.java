@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist;
+import static org.fw.core.FW.telephonist_native;
 
 public final class FunctionFw {
     public static final Type function_struct = StructFw.struct(
@@ -25,26 +25,26 @@ public final class FunctionFw {
             DeclarationFw.declaration(symbol("rt-env"), ConstraintFw.free)
     );
 
-    public static final Type function = FW.telephonist((arg) -> {
+    public static final Type function = FW.telephonist_native((arg) -> {
         Val ret = function_struct.asVal().call(arg);
         if (arg.getType().equals(SymbolFw.symbol)) {
-            String value = arg._unpack(Symbol.class).getValue();
+            String value = arg._UNPACK(Symbol.class).getValue();
             switch (value) {
                 case "builder":
                     return builderWrapper(ret);
             }
         }
         if (FwUtils.isTypeApiCall(arg, FunctionFw.function)) {
-            Val instance = CallFw.getVal(arg);
-            Val cArg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            Val cArg = (Val) CallFw.getArg(arg);
 
-            Val value = instance._unpack();
+            Val value = instance._UNPACK();
             if (cArg.getType().equals(SymbolFw.symbol)) {
-                switch (cArg._unpack(Symbol.class).getValue()) {
+                switch (cArg._UNPACK(Symbol.class).getValue()) {
                     case "fn-call":
                         Val constraint = value.get("arg-constraint");
-                        Vit body = value.get("body")._unpack();
-                        return FW.telephonist((arg1) -> {
+                        Vit body = value.get("body")._UNPACK();
+                        return FW.telephonist_native((arg1) -> {
                             boolean qualifies = constraint.get("check").call(arg1) == BoolFw._true;
                             if (!qualifies) {
                                 return null;
@@ -57,7 +57,7 @@ public final class FunctionFw {
 //                                if (Unspecified.isUnspecified(ret0)) return oldRtEnv.call(arg2, context2);
 //                                return ret0;
 //                            });
-                            Val newRtEnv = FW.telephonist((arg2) -> {
+                            Val newRtEnv = FW.telephonist_native((arg2) -> {
                                 if (arg2.equalsSymbol("%")) return arg1;
                                 if (arg2.equalsSymbol("%self%")) return instance;
                                 else return oldRtEnv.call(arg2);
@@ -73,11 +73,11 @@ public final class FunctionFw {
         return ret;
     }).asType();
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -85,7 +85,7 @@ public final class FunctionFw {
                     case "fn": {
                         if (isize != 4)
                             return VitErrorFw.rrror(expr, "4 arguments expected");
-                        Expr arrow = exprVal.call(DIntFw.dint(2))._unpack(Expr.class);
+                        Expr arrow = exprVal.call(DIntFw.dint(2))._UNPACK(Expr.class);
                         boolean pure;
                         if (arrow instanceof Symbol) {
                             if (((Symbol) arrow).getValue().equals("!>")) pure = false;
@@ -93,7 +93,7 @@ public final class FunctionFw {
                             else return null;
                         } else return null;
 
-                        Expr paramsE = exprVal.call(DIntFw.dint(1))._unpack();
+                        Expr paramsE = exprVal.call(DIntFw.dint(1))._UNPACK();
                         if (!(paramsE instanceof ExprList)) {
                             return VitErrorFw.rrror(paramsE, "ExprList expected");
                         }
@@ -124,12 +124,12 @@ public final class FunctionFw {
                                         .call(Vit.val(DIntFw.dint(paramsList.size())))
                         );
 
-                        Expr bodyE = exprVal.call(DIntFw.dint(3))._unpack();
+                        Expr bodyE = exprVal.call(DIntFw.dint(3))._UNPACK();
 
-                        Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg0) -> {
+                        Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist_native((arg0) -> {
                             if (arg0.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                                 Val exprVal0 = arg0.call(symbol("expr"));
-                                Expr expr0 = exprVal0._unpack(Expr.class);
+                                Expr expr0 = exprVal0._UNPACK(Expr.class);
                                 if (expr0 instanceof Symbol) {
                                     for (FnParam param : paramsList) {
                                         Symbol name = param.name;
@@ -148,12 +148,12 @@ public final class FunctionFw {
 
                         Vit varValuesV = Vit.var.call(symbol("%"));
 
-                        Val newRtGetter = FW.telephonist((oldRt) -> FW.telephonist((varValues) -> {
-                            return FW.telephonist((argSym) -> {
+                        Val newRtGetter = FW.telephonist_native((oldRt) -> FW.telephonist_native((varValues) -> {
+                            return FW.telephonist_native((argSym) -> {
                                 for (int i = 0; i < paramsList.size(); i++) {
                                     FnParam param = paramsList.get(i);
                                     Symbol name = param.name;
-                                    if (argSym.getType().equals(SymbolFw.symbol) && argSym._unpack(Symbol.class).getValue().equals(name.getValue())) {
+                                    if (argSym.getType().equals(SymbolFw.symbol) && argSym._UNPACK(Symbol.class).getValue().equals(name.getValue())) {
                                         return varValues.call(DIntFw.dint(i));
                                     }
                                 }
@@ -182,7 +182,7 @@ public final class FunctionFw {
     );
 
     private static Val builderWrapper(Val builder) {
-        return FW.telephonist((arg) -> {
+        return FW.telephonist_native((arg) -> {
             Val ret = builder.call(arg);
             if (ret.getType().equals(builder.getType()))
                 return builderWrapper(ret);

@@ -29,22 +29,22 @@ public final class JVMHandles {
     public static final Val jvmEnv = ModuleFw.module(
             // let's just assume find-X is an operation and get-X is pure
             // that would be more intuitive
-            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist((arg) -> {
+            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String string = arg._unpack();
+                String string = arg._UNPACK();
                 return jwrap(string, String.class);
             })),
-            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist((arg) -> {
-                if (!arg.getType().equals(JOopFw.jOop) || !(arg._unpack() instanceof String))
+            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist_native((arg) -> {
+                if (!arg.getType().equals(JOopFw.jOop) || !(arg._UNPACK() instanceof String))
                     return null;
-                String string = arg._unpack();
+                String string = arg._UNPACK();
                 return StrFw.str(string);
             })),
-            DeclaredFw.declared(symbol("find-type"), FW.telephonist((arg) -> {
+            DeclaredFw.declared(symbol("find-type"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._unpack();
+                String descriptor = arg._UNPACK();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
@@ -53,10 +53,10 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist((arg) -> {
+            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._unpack();
+                String descriptor = arg._UNPACK();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
@@ -75,10 +75,10 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist((arg) -> {
+            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._unpack();
+                String descriptor = arg._UNPACK();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
@@ -88,10 +88,10 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist((arg) -> {
+            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._unpack();
+                String descriptor = arg._UNPACK();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
@@ -119,8 +119,8 @@ public final class JVMHandles {
 
     public static Object junwrap(Val val) {
         Type type = val.getType();
-        if (type == JOopFw.jOop) return val._unpack();
-        if (type == JBooleanFw.jboolean) return val._unpack(Boolean.class);
+        if (type == JOopFw.jOop) return val._UNPACK();
+        if (type == JBooleanFw.jboolean) return val._UNPACK(Boolean.class);
         if (type == JByteFw.jbyte) return JByteFw.unwrap(val);
         if (type == JCharFw.jchar) return (char)(short)JCharFw.unwrap(val);
         if (type == JShortFw.jshort) return JShortFw.unwrap(val);

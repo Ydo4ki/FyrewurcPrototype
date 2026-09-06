@@ -14,18 +14,18 @@ import static org.fw.core.FW.symbol;
 
 public final class ToExprFw {
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val.getType() == DIntFw.dint) {
-                return ExprFw.wrap(Symbol.of(val._unpack().toString()));
+                return ExprFw.wrap(Symbol.of(val._UNPACK().toString()));
             }
         }
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -33,10 +33,10 @@ public final class ToExprFw {
                     if (isize != 2)
                         return null;
 
-                    Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
+                    Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(condition.getType()))
                         return null;
-                    Vit v = condition._unpack();
+                    Vit v = condition._UNPACK();
                     return VitFw.wrap(Vit.val(compEnv).call(CompEnv.toExprResolve(v, CompEnv.of(compEnv))));
                 } else if (((Symbol) f).getValue().equals("expr")) {
                     if (isize != 2)

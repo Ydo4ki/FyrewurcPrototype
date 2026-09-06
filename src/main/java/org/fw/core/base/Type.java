@@ -1,5 +1,6 @@
 package org.fw.core.base;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 
 import java.util.ArrayList;
@@ -8,7 +9,8 @@ import java.util.Objects;
 
 public abstract class Type implements ValAdapter {
 
-    Type() {}
+    Type() {
+    }
 
     abstract Val callInstance(Val instance, Val arg);
 
@@ -62,16 +64,21 @@ public abstract class Type implements ValAdapter {
 
         @Override
         Val callInstance(Val instance, Val arg) {
-            try {
-                Val v = instance._unpack(Telephonist.class).function().call(arg);
-                if (v == null)
-                    return Unspecified.unspecified(instance, arg);
-                return v;
-            } catch (Exception e) {
-                System.out.println("UNEXPECTED EXCEPTION, AAAAA:");
-                e.printStackTrace(System.out);
+            Value v = instance._UNPACK(Telephonist.class).function().call(arg);
+            if (!(v instanceof Val))
                 return Unspecified.unspecified(instance, arg);
-            }
+
+            return (Val) v;
+//            try {
+//                Value v = instance._unpack(Telephonist.class).function().call(arg);
+//                if (!(v instanceof Val))
+//                    return Unspecified.unspecified(instance, arg);
+//                return (Val) v;
+//            } catch (Exception e) {
+//                System.out.println("UNEXPECTED EXCEPTION, AAAAA:");
+//                e.printStackTrace(System.out);
+//                return Unspecified.unspecified(instance, arg);
+//            }
         }
 
         @Override
@@ -91,15 +98,16 @@ public abstract class Type implements ValAdapter {
             return depth;
         }
 
-        public interface CallFunction {
+        public interface NativeCallFunction {
             Val call(Val arg) throws Exception;
         }
 
-        public interface ConstraintCallFunction {
-            Constraint call(Constraint arg) throws Exception;
+        public interface CallFunction {
+            Value call(Value arg);
         }
 
         private static final List<TelephonistType> preTelephonists = new ArrayList<>();
+
         public static TelephonistType of(int depth) {
             int cs;
             while ((cs = preTelephonists.size()) <= depth) {
@@ -120,6 +128,7 @@ public abstract class Type implements ValAdapter {
             public CallFunction function() {
                 return function;
             }
+
             @Override
             public boolean equals(Object o) {
                 if (o == null || getClass() != o.getClass()) return false;

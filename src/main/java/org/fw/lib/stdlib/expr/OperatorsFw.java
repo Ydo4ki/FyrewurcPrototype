@@ -11,15 +11,15 @@ import org.fw.lib.stdlib.VitFw;
 import org.fw.core.vit.Vit;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist;
+import static org.fw.core.FW.telephonist_native;
 
 public final class OperatorsFw {
 
-    public static final Val exports = FW.telephonist((arg) -> {
+    public static final Val exports = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -57,11 +57,11 @@ public final class OperatorsFw {
                                 return null;
 
                             for (int i = 1; i < isize; i++) {
-                                Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._unpack(Expr.class), CompEnv.of(compEnv)));
+                                Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                                 if (!VitFw.isVit(term.getType()))
                                     return null;
-                                if (vit == null) vit = term._unpack(Vit.class);
-                                else vit = vit.call(symbol(name)).call(term._unpack(Vit.class));
+                                if (vit == null) vit = term._UNPACK(Vit.class);
+                                else vit = vit.call(symbol(name)).call(term._UNPACK(Vit.class));
                             }
                             return VitFw.wrap(vit);
                         }
@@ -72,10 +72,10 @@ public final class OperatorsFw {
                             if (isize != 2)
                                 return null;
 
-                            Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
+                            Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                             if (!VitFw.isVit(term.getType()))
                                 return null;
-                            return VitFw.wrap(term._unpack(Vit.class).call(symbol(name)));
+                            return VitFw.wrap(term._UNPACK(Vit.class).call(symbol(name)));
                         }
                     }
                 }

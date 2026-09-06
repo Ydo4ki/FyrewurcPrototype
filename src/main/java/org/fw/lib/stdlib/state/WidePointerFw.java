@@ -10,17 +10,17 @@ import org.fw.lib.stdlib.state.array.CreateArrayOperation;
 import org.fw.lib.stdlib.state.array.ValArrayObj;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.telephonist;
+import static org.fw.core.FW.telephonist_native;
 
 public final class WidePointerFw {
-    public static final Type widePointer = FW.telephonist("WidePointer", (arg) -> {
+    public static final Type widePointer = FW.telephonist_native("WidePointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, WidePointerFw.widePointer)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
 
-            ValArrayObj vao = instance._unpack();
+            ValArrayObj vao = instance._UNPACK();
             if (arg.getType() == SymbolFw.symbol) {
-                String v = arg._unpack().toString();
+                String v = arg._UNPACK().toString();
                 if (v.equals("size")) {
                     // this one's pure since array size cannot change after its creation
                     // wait I just realized
@@ -33,7 +33,7 @@ public final class WidePointerFw {
         return null;
     }).asType();
 
-    public static final Val _CreateNewArrayOperation = FW.telephonist(size -> FW.telephonist(init -> {
+    public static final Val _CreateNewArrayOperation = FW.telephonist_native(size -> FW.telephonist_native(init -> {
         return new CreateArrayOperation(
                 DIntFw.unwrap(size).intValueExact(),
                 i -> {

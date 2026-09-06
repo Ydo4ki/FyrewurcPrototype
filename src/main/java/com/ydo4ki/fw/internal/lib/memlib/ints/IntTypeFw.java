@@ -21,21 +21,21 @@ import static org.fw.core.FW.symbol;
 
 public final class IntTypeFw {
 
-    public static final Type int_t = FW.telephonist(arg -> {
+    public static final Type int_t = FW.telephonist_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, IntTypeFw.int_t)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
-            IntType raw_payload = instance._unpack();
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+            IntType raw_payload = instance._UNPACK();
 
             Type Int = instance.asType();
             if (FwUtils.isTypeApiCall(arg, Int)) {
-                Val int_instance = CallFw.getVal(arg);
-                arg = CallFw.getArg(arg);
+                Val int_instance = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
 
                 Bits bits = MemUtils.toBits(int_instance);
 
                 if (arg.getType() == SymbolFw.symbol) {
-                    String s = arg._unpack().toString();
+                    String s = arg._UNPACK().toString();
                     switch (s) {
                         case "neg": return raw_payload.isSigned() ? uop(int_instance, instance.asType(), raw_payload.neg) : null;
                         case "+": return bop(int_instance, instance.asType(), raw_payload.add);
@@ -48,7 +48,7 @@ public final class IntTypeFw {
 
                 return null;
             } else if (arg.getType() == SymbolFw.symbol) {
-                String s = arg._unpack().toString();
+                String s = arg._UNPACK().toString();
                 switch (s) {
                     case "Payload": {
                         long bitwidth = raw_payload.getBitWidth();
@@ -57,12 +57,12 @@ public final class IntTypeFw {
                     case "bitwidth": return DIntFw.dint(raw_payload.getBitWidth());
                     case "signedness": return raw_payload.getSign();
                     case "overflow": return raw_payload.getOverflow();
-                    case "construct": return FW.telephonist(arg1 -> {
+                    case "construct": return FW.telephonist_native(arg1 -> {
                         if (arg1.getType() != DIntFw.dint)
                             return null;
 
                         BigInteger value = DIntFw.unwrap0(arg1);
-                        int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();
+                        int bitwidth = Int.get("bitwidth")._UNPACK(Number.class).intValue();
 
                         Bits bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(toBytes(value, bitwidth))), bitwidth);
 
@@ -73,14 +73,14 @@ public final class IntTypeFw {
             return null;
         }
         if (arg.getType() == SymbolFw.symbol) {
-            String s = arg._unpack().toString();
+            String s = arg._UNPACK().toString();
             switch (s) {
                 case "construct": {
-                    return FW.telephonist(bw -> {
+                    return FW.telephonist_native(bw -> {
                         if (bw.getType() != DIntFw.dint) return null;
-                        return FW.telephonist(sign -> {
+                        return FW.telephonist_native(sign -> {
                             if (sign.getType() != Signedness.signedness) return null;
-                            return FW.telephonist(over -> {
+                            return FW.telephonist_native(over -> {
                                 if (over.getType() != Overflow.overflow) return null;
                                 return Val.of(IntTypeFw.int_t, new IntType(DIntFw.unwrap0(bw).intValueExact(), sign, over));
                             });
@@ -103,7 +103,7 @@ public final class IntTypeFw {
     private static Val bop(Val instance, Type Int, BinaryOperator<Number> operator) {
         Number value = MemUtils.toBitsAsNumber(instance);
         assert value != null;
-        return FW.telephonist((arg1) -> {
+        return FW.telephonist_native((arg1) -> {
             if (arg1.getType().equals(Int)) {
                 Number v2 = MemUtils.toBitsAsNumber(instance);
                 Number ret = operator.apply(value, v2);

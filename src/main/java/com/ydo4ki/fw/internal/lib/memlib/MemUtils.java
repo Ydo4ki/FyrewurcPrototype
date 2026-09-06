@@ -21,7 +21,7 @@ public final class MemUtils {
 
         if (type == BitFw.bit) return 1;
         if (type.asVal().getType().equals(ReifiedTypeFw.reifiedType)) {
-            ReifiedTypeFw.ReifiedType rt = type.asVal()._unpack();
+            ReifiedTypeFw.ReifiedType rt = type.asVal()._UNPACK();
             return binarySize(rt.atom_t) * rt.size;
         }
         return 0;
@@ -30,19 +30,19 @@ public final class MemUtils {
     public static Number toBitsAsNumber(Val val) {
         val = WrapperTypeFw.unwrapFully(val);
         if (val.getType().equals(BitFw.bit))
-            return val._unpack(boolean.class) ? (byte) 1 : (byte) 0;
+            return val._UNPACK(boolean.class) ? (byte) 1 : (byte) 0;
 
         if (val.getType().asVal().getType().equals(ReifiedTypeFw.reifiedType)) {
-            ReifiedTypeFw.ReifiedType rt = val.getType().asVal()._unpack();
+            ReifiedTypeFw.ReifiedType rt = val.getType().asVal()._UNPACK();
             long size = rt.size;
-            Object obj = val._unpack();
+            Object obj = val._UNPACK();
             if (obj instanceof Byte) return (Byte) obj;
             if (obj instanceof Short) return (Short) obj;
             if (obj instanceof Integer) return (Integer) obj;
             if (obj instanceof Long) return (Long) obj;
-            if (obj instanceof long[]) return new BigInteger(MemUtils.toBytes(val._unpack(long[].class)));
-            if (obj instanceof byte[]) return new BigInteger(val._unpack(byte[].class));
-            throw new IllegalArgumentException(val._unpack().toString());
+            if (obj instanceof long[]) return new BigInteger(MemUtils.toBytes(val._UNPACK(long[].class)));
+            if (obj instanceof byte[]) return new BigInteger(val._UNPACK(byte[].class));
+            throw new IllegalArgumentException(val._UNPACK().toString());
         }
         return null;
     }
@@ -61,18 +61,18 @@ public final class MemUtils {
         val = WrapperTypeFw.unwrapFully(val);
 
         if (val.getType().equals(BitFw.bit))
-            return Bits.bits(val._unpack(boolean.class));
+            return Bits.bits(val._UNPACK(boolean.class));
         if (val.getType().asVal().getType().equals(ReifiedTypeFw.reifiedType)) {
-            ReifiedTypeFw.ReifiedType rt = val.getType().asVal()._unpack();
+            ReifiedTypeFw.ReifiedType rt = val.getType().asVal()._UNPACK();
             long size = rt.size;
-            Object obj = val._unpack();
+            Object obj = val._UNPACK();
             if (obj instanceof Byte) return new OctetBits((Byte) obj, (int) size);
             if (obj instanceof Short) return new WordBits((Short) obj, (int) size);
             if (obj instanceof Integer) return new DWordBits((Integer) obj, (int) size);
             if (obj instanceof Long) return new QWordBits((Long) obj, (int) size);
-            if (obj instanceof long[]) return new MnogaBits(BitSet.valueOf(val._unpack(long[].class)), size);
-            if (obj instanceof byte[]) return new MnogaBits(BitSet.valueOf(val._unpack(byte[].class)), size);
-            throw new IllegalArgumentException(val._unpack().toString());
+            if (obj instanceof long[]) return new MnogaBits(BitSet.valueOf(val._UNPACK(long[].class)), size);
+            if (obj instanceof byte[]) return new MnogaBits(BitSet.valueOf(val._UNPACK(byte[].class)), size);
+            throw new IllegalArgumentException(val._UNPACK().toString());
         }
         return null;
     }

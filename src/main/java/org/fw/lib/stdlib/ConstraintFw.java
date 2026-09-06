@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.Constraint;
 import org.fw.core.util.FwUtils;
-import org.fw.core.ast.Symbol;
 import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
@@ -17,7 +16,7 @@ import static org.fw.core.FW.symbol;
 public final class ConstraintFw {
     private static final WeakHashMap<Val, Val> typeConstraints = new WeakHashMap<>();
 
-    public static final Val to_constraint = FW.telephonist("to-constraint", (arg) -> {
+    public static final Val to_constraint = FW.telephonist_native("to-constraint", (arg) -> {
         if (arg.getType().equals(ConstraintFw.constraint))
             return arg;
 
@@ -44,7 +43,7 @@ public final class ConstraintFw {
     }
 
     public static Constraint unwrap0(Val constraint) {
-        return constraint._unpack(Constraint.class);
+        return constraint._UNPACK(Constraint.class);
     }
 
     public static Val toConstraint(Val val) {
@@ -55,45 +54,42 @@ public final class ConstraintFw {
         return to_constraint.call(type.asVal());
     }
 
-    public static final Val constraintBuilder = FW.telephonist("Constraint.constructor", (arg1) -> {
+    public static final Val constraintBuilder = FW.telephonist_native("Constraint.constructor", (arg1) -> {
         if (!VitFw.isVit(arg1.getType()))
             return null;
-        return Val.of(ConstraintFw.constraint, Constraint.of(arg1._unpack(Vit.class)));
+        return Val.of(ConstraintFw.constraint, Constraint.of(arg1._UNPACK(Vit.class)));
     });
 
-    public static final Type constraint = FW.telephonist("Constraint", (arg) -> {
+    public static final Type constraint = FW.telephonist_native("Constraint", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ConstraintFw.constraint)) {
-            Val instance = CallFw.getVal(arg);
-            return handleInstanceCall(instance, instance._unpack(), CallFw.getArg(arg));
+            Val instance = (Val) CallFw.getVal(arg);
+            Val arg2 = (Val) CallFw.getArg(arg);
+            if (arg2.getType().equals(SymbolFw.symbol)) {
+                String val = arg2._UNPACK().toString();
+                switch (val) {
+                    case "check":
+                        return FW.telephonist_native("Constraint.check", (arg1) -> {
+                            RtEnv rtEnv = RtEnv.of(arg1);
+
+                            // we might as well do it in parallel
+
+                            return BoolFw.wrap(instance._UNPACK(Constraint.class).check(rtEnv.asVal()));
+                        });
+    //                case "vit":
+    //                    return VitFw.wrap(payload);
+    //                case "b":
+    //                    return VitFw.wrap(payload.b());
+                }
+            }
+            return null;
         } else if (arg.getType().equals(SymbolFw.symbol)) {
-            String value = arg._unpack().toString();
+            String value = arg._UNPACK().toString();
             if (value.equals("construct")) {
                 return constraintBuilder;
             }
         }
         return null;
     }).asType();
-
-    private static Val handleInstanceCall(Val instance, Constraint payload, Val arg) {
-        if (arg.getType().equals(SymbolFw.symbol)) {
-            String val = arg._unpack().toString();
-            switch (val) {
-                case "check":
-                    return FW.telephonist("Constraint.check", (arg1) -> {
-                        RtEnv rtEnv = RtEnv.of(arg1);
-
-                        // we might as well do it in parallel
-
-                        return BoolFw.wrap(payload.check(rtEnv.asVal()));
-                    });
-//                case "vit":
-//                    return VitFw.wrap(payload);
-//                case "b":
-//                    return VitFw.wrap(payload.b());
-            }
-        }
-        return null;
-    }
 
     public static final Val free = wrap(Constraint.free);
 

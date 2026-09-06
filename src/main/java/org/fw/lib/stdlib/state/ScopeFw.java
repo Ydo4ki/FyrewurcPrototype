@@ -18,20 +18,20 @@ public final class ScopeFw {
         //                    return _Constraint.free; // (isSpecified) todo: unify those existing constraints
         //                }
         //            }
-        scopePointer = FW.telephonist((arg) -> {
+        scopePointer = FW.telephonist_native((arg) -> {
             if (FwUtils.isTypeApiCall(arg, ScopeFw.scopePointer)) {
-                Val instance = CallFw.getVal(arg);
-                arg = CallFw.getArg(arg);
+                Val instance = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
 
-                Scope obj = instance._unpack();
+                Scope obj = instance._UNPACK();
 
                 if (arg.getType() == SymbolFw.symbol) {
-                    String s = arg._unpack().toString();
+                    String s = arg._UNPACK().toString();
                     switch (s) {
                         case "owner":
                             return obj.partOf().asVal();
                         case "new":
-                            return FW.telephonist(value -> new CreateObjectOperation(obj, value).asVal());
+                            return FW.telephonist_native(value -> new CreateObjectOperation(obj, value).asVal());
                     }
                 }
                 return null;

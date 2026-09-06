@@ -1,5 +1,6 @@
 package org.fw.core.base;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.CompEnv;
@@ -12,7 +13,7 @@ import java.util.function.BiFunction;
 
 import static org.fw.core.FW.symbol;
 
-public final class Val implements ValAdapter {
+public final class Val implements ValAdapter, Value {
     private final Type type;
     private final Object value;
     private Type _asType;
@@ -43,6 +44,12 @@ public final class Val implements ValAdapter {
         return getType().callInstance(this, arg);
     }
 
+    @Override
+    public Value call(Value value) {
+        if (value instanceof Val) return this.call((Val) value);
+        throw new UnsupportedOperationException();
+    }
+
     public Val get(String property) {
         return call(symbol(property));
     }
@@ -68,21 +75,28 @@ public final class Val implements ValAdapter {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T _unpack() {
+    public <T> T _UNPACK() {
         return (T)value;
     }
 
     @SuppressWarnings({"unchecked"})
-    public <T> T _unpack(Class<T> cls) {
+    public <T> T _UNPACK(Class<T> cls) {
         if ((cls == Symbol.class || cls == Expr.class) && type == SymbolFw.symbol) return (T) Symbol.of((String) value);
-        return _unpack();
+        return _UNPACK();
     }
 
     public boolean equalsSymbol(String symbol) {
-        return this.getType() == SymbolFw.symbol && this._unpack().toString().equals(symbol);
+        return this.getType() == SymbolFw.symbol && this._UNPACK().toString().equals(symbol);
+    }
+
+    @Override
+    public boolean impliesEquality(Val val) {
+        return this.equals(val);
     }
 
     public static Val of(Type type, Object value) {
+        if (value instanceof Value && !(value instanceof Val))
+            throw new IllegalArgumentException("If the value is another val, it must be concrete: " + value);
         if (type instanceof Type.TelephonistType && type != ofTelephonist(0).asType()) {
             throw new IllegalArgumentException();
         }
@@ -96,10 +110,10 @@ public final class Val implements ValAdapter {
     static Val telephonistVal(Type.TelephonistType asType) {
         return new Val(
                 Type.TelephonistType.of(asType.getDepth() + 1),
-                new Type.TelephonistType.Telephonist(null, (arg) -> {
+                new Type.TelephonistType.Telephonist("Telephonist" + asType.getDepth(), (arg) -> {
                     if (FwUtils.isTypeApiCall(arg, asType)) {
-                        Val instance = CallFw.getVal(arg);
-                        Val cArg = CallFw.getArg(arg);
+                        Value instance = CallFw.getVal(arg);
+                        Value cArg = CallFw.getArg(arg);
 
                         return instance.call(cArg); // so here we're going in the opposite direction
                     }

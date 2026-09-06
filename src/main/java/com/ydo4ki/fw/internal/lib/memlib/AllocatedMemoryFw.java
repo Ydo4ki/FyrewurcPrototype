@@ -12,21 +12,21 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
 public final class AllocatedMemoryFw {
-    public static final Type allocatedMemory = FW.telephonist(arg -> {
+    public static final Type allocatedMemory = FW.telephonist_native("allocatedMemory", arg -> {
         if (FwUtils.isTypeApiCall(arg, AllocatedMemoryFw.allocatedMemory)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
 
-            AllocatedMemoryObj amo = instance._unpack();
+            AllocatedMemoryObj amo = instance._UNPACK();
 
             if (arg.getType() == SymbolFw.symbol) {
-                String sym = arg._unpack().toString();
+                String sym = arg._UNPACK().toString();
                 switch (sym) {
                     case "put":
-                        return FW.telephonist(arg1 -> {
+                        return FW.telephonist_native(arg1 -> {
                             if (arg1.getType() != JIntFw.jint)
                                 return null;
-                            int v = arg1._unpack();
+                            int v = arg1._UNPACK();
                             return new Operation() {
                                 @Override
                                 public Val apply(State state) {

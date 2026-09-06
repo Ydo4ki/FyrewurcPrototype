@@ -16,21 +16,21 @@ import java.util.List;
 import static org.fw.core.FW.symbol;
 
 public final class EnumFw {
-    public static final Type enumeration = FW.telephonist("Enum", (arg) -> {
+    public static final Type enumeration = FW.telephonist_native("Enum", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, EnumFw.enumeration)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
-            Enum anEnum = instance._unpack();
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+            Enum anEnum = instance._UNPACK();
             for (Val value : anEnum.values) {
-                if (value._unpack(Val.class).equals(arg)) return value;
+                if (value._UNPACK(Val.class).equals(arg)) return value;
             }
             return null;
         }
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist("Enum.construct", (payload) -> {
+            return FW.telephonist_native("Enum.construct", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
-                Val[] keys = payload._unpack();
+                Val[] keys = payload._UNPACK();
                 Val[] values = new Val[keys.length];
                 Type resultingType = Val.of(EnumFw.enumeration, new Enum(values)).asType();
                 for (int i = 0; i < keys.length; i++) {
@@ -55,12 +55,12 @@ public final class EnumFw {
     }
 
     public static Val toExpr(Val arg, CompEnv toExpr) {
-        EnumFw.Enum value = arg._unpack();
+        EnumFw.Enum value = arg._UNPACK();
         List<Expr> finElements = new ArrayList<>();
         finElements.add(EnumFw.enumeration.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.values()) {
-            elements.add(val._unpack(Val.class).toExpr(toExpr));
+            elements.add(val._UNPACK(Val.class).toExpr(toExpr));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
@@ -78,7 +78,7 @@ public final class EnumFw {
             for (int i = 0; i < values.length; i++) {
                 Val value = values[i];
                 if (value == null) continue;
-                Object a = value._unpack();
+                Object a = value._UNPACK();
                 payloads[i] = a;
                 result = 31 * result + (a == null ? 0 : a.hashCode());
             }

@@ -16,7 +16,7 @@ import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.state.OperationFw;
 
 public final class StdLib {
-    private static final CompEnv somethingToExpr = CompEnv.of(FW.telephonist(arg -> {
+    private static final CompEnv somethingToExpr = CompEnv.of(FW.telephonist_native(arg -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             CompEnv compEnv = CompEnv.of(arg.get("chain"));

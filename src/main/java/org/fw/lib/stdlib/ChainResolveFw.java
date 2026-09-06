@@ -4,39 +4,37 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.symbol;
-
 public final class ChainResolveFw {
-    public static final Type chainResolveType = FW.telephonist("ChainResolveType", (arg) -> {
+    public static final Type chainResolveType = FW.telephonist_native("ChainResolveType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ChainResolveFw.chainResolveType)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
 
             Type type = instance.asType();
-            Val constraint = instance._unpack();
+            Val constraint = instance._UNPACK();
             if (FwUtils.isTypeApiCall(arg, type)) {
-                instance = CallFw.getVal(arg);
-                arg = CallFw.getArg(arg);
+                instance = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
 
-                ChainResolve cr = instance._unpack();
+                ChainResolve cr = instance._UNPACK();
                 if (arg.equalsSymbol("passing")) {
                     return cr.passing();
                 } else if (arg.equalsSymbol("chain")) {
                     return cr.chain();
                 }
             } else if (arg.equalsSymbol("builder")) {
-                return FW.telephonist((passingArg) -> {
+                return FW.telephonist_native((passingArg) -> {
                     if (constraint.get("check").call(passingArg) != BoolFw._true)
                         return null;
 
-                    return FW.telephonist((chain) -> {
+                    return FW.telephonist_native((chain) -> {
                         return Val.of(type, new ChainResolve(passingArg, chain));
                     });
                 });
             }
             return null;
         } else if (arg.equalsSymbol("builder")) {
-            return FW.telephonist((constraint) -> {
+            return FW.telephonist_native((constraint) -> {
                 if (!ConstraintFw.isConstraint(constraint))
                     return null;
 

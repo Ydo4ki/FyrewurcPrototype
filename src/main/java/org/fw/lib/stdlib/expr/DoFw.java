@@ -2,6 +2,7 @@ package org.fw.lib.stdlib.expr;
 
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -16,30 +17,30 @@ import org.fw.core.vit.VitUtils;
 import org.fw.lib.stdlib.*;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist;
+import static org.fw.core.FW.telephonist_native;
 
 public final class DoFw {
     public static final Type unaryStoreType = FW.telephonist((arg) -> {
         if (FwUtils.isTypeApiCall(arg, DoFw.unaryStoreType)) {
-            Val instance = CallFw.getVal(arg);
+            Value instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
             return Val.of(DoFw.unaryStoreType, arg);
         }
         return null;
     }).asType();
 
-    public static final Val usLast = FW.telephonist((arg) -> {
+    public static final Val usLast = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(DoFw.unaryStoreType)) {
-            return arg._unpack();
+            return arg._UNPACK();
         }
         return null;
     });
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Val exprVal = arg.get("expr");
+            Val compEnv = arg.get("comp-env");
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -60,7 +61,7 @@ public final class DoFw {
     private static Vit compileDo(Val exprVal, int start, int isize, Val compEnv) throws VitCompilationException {
         Vit execution = Vit.val(Val.of(DoFw.unaryStoreType, Operation.unit));
         for (int i = start; i < isize - 1; i++) {
-            Expr line = exprVal.call(DIntFw.dint(i + 1))._unpack();
+            Expr line = exprVal.call(DIntFw.dint(i + 1))._UNPACK(Expr.class);
             if (line instanceof ExprList && ((ExprList) line).size() == 3 && ((ExprList) line).get(0).toString().equals(":")) {
                 if (i == isize - 2) break;
 
@@ -71,10 +72,11 @@ public final class DoFw {
                 Expr valueE = ((ExprList) line).get(2);
                 Vit valueV = VitUtils.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv))), valueE));
 
+                Val sname = symbol(name);
                 // OK FINE
                 Val newRtGetter = FW.telephonist((oldRt) -> FW.telephonist((varValue) -> {
                     return FW.telephonist((arg) -> {
-                        if (arg.getType().equals(SymbolFw.symbol) && arg._unpack().toString().equals(name)) {
+                        if (arg.impliesEquality(sname)) {
                             return varValue;
                         }
                         return oldRt.call(arg);
@@ -84,10 +86,9 @@ public final class DoFw {
                 // still probably conceptually the best way to do this
 
                 Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
-                    if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-                        Val exprVal0 = arg.call(symbol("expr"));
-                        Expr expr = exprVal0._unpack(Expr.class);
-                        if (expr instanceof Symbol && ((Symbol) expr).getValue().equals(name)) {
+                    if (arg.getType0().impliesEquality(SyntaxResolveFw.syntaxResolve.asVal())) {
+                        Value exprVal0 = arg.get("expr");
+                        if (exprVal0.equalsSymbol(name)) {
                             return VitFw.wrap(Vit.var.call(symbol(name)));
                         }
                     }

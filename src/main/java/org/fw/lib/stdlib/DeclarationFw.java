@@ -20,20 +20,20 @@ import static org.fw.core.FW.symbol;
 public final class DeclarationFw {
 
     // I hope it will be possible to make it a struct later
-    public static final Type declaration = FW.telephonist("Declaration", (arg) -> {
+    public static final Type declaration = FW.telephonist_native("Declaration", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DeclarationFw.declaration)) {
-            Val instance = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
 
-            Declaration decl = instance._unpack();
+            Declaration decl = instance._UNPACK();
             if (arg.equalsSymbol("key")) {
                 return decl.key();
             } else if (arg.equalsSymbol("constraint")) {
                 return decl.constraint();
             }
         } else if (arg.equalsSymbol("builder")) {
-            return FW.telephonist("Declaration.builder", (key) -> {
-                return FW.telephonist("(call Declaration.builder " + key + ")", (constraint) -> {
+            return FW.telephonist_native("Declaration.builder", (key) -> {
+                return FW.telephonist_native("(call Declaration.builder " + key + ")", (constraint) -> {
                             if (!ConstraintFw.isConstraint(constraint))
                                 return null;
 
@@ -60,7 +60,7 @@ public final class DeclarationFw {
     }
 
     public static Expr toExpr(Val arg, CompEnv toExpr) {
-        return arg._unpack(DeclarationFw.Declaration.class).toExpr(toExpr);
+        return arg._UNPACK(DeclarationFw.Declaration.class).toExpr(toExpr);
     }
 
     private static final class Declaration {
@@ -74,7 +74,7 @@ public final class DeclarationFw {
 
         public Expr toExpr(CompEnv toExpr) {
             if (key.getType() == SymbolFw.symbol)
-                return ExprList.of(BracketsTypes.round, Symbol.of("="), key._unpack(Symbol.class), constraint.toExpr(toExpr));
+                return ExprList.of(BracketsTypes.round, Symbol.of("="), key._UNPACK(Symbol.class), constraint.toExpr(toExpr));
             return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), key.toExpr(toExpr), constraint.toExpr(toExpr));
         }
 
@@ -108,7 +108,7 @@ public final class DeclarationFw {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -123,10 +123,10 @@ public final class DeclarationFw {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val == DeclarationFw.declaration.asVal()) {
-                return FW.telephonist(c -> {
+                return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
-                    Val[] args = c._unpack();
+                    Val[] args = c._UNPACK();
                     if (args.length > 2)
                         return null;
                     Val b = declaration.asVal().get("builder");
@@ -139,7 +139,7 @@ public final class DeclarationFw {
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -152,11 +152,11 @@ public final class DeclarationFw {
                         if (!name.getType().equals(SymbolFw.symbol))
                             return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
-                        Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._unpack(Expr.class), CompEnv.of(compEnv)));
+                        Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 
-                        return VitFw.wrap(Vit.val(declaration.asVal()).call(symbol("builder")).call(name).call(value._unpack(Vit.class)));
+                        return VitFw.wrap(Vit.val(declaration.asVal()).call(symbol("builder")).call(name).call(value._UNPACK(Vit.class)));
                     }
                 }
             }

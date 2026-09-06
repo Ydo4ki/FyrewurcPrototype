@@ -1,6 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 
 import java.util.Objects;
 
@@ -12,18 +13,18 @@ import static org.fw.core.FW.*;
 // what do i need to remember
 // aaioasopdiou when was this even written
 public final class CallFw {
-    public static final Type call_t = telephonist("Call", (arg) -> {
+    public static final Type call_t = telephonist_native("Call", (arg) -> {
         if (arg.getType().equals(CallFw.call_t)) {
             // native
-            CallFw.CallRecord call = arg._unpack();
+            CallFw.CallRecord call = arg._UNPACK();
             Val me = call.val();
             Val cArg = call.arg();
-            CallFw.CallRecord meCall = me._unpack();
+            CallFw.CallRecord meCall = me._UNPACK();
             if (cArg.equalsSymbol("arg")) return meCall.arg();
             if (cArg.equalsSymbol("val")) return meCall.val();
         }
         else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist("Call.construct", (func) -> FW.telephonist((argument) -> fwCall(func, argument)));
+            return FW.telephonist_native("Call.construct", (func) -> FW.telephonist_native((argument) -> fwCall(func, argument)));
         }
         return null;
     }).asType();
@@ -32,19 +33,11 @@ public final class CallFw {
         return Val.of(call_t, new CallRecord(instance, arg));
     }
 
-    public static Val getVal(Val call) {
+    public static Value getVal(Value call) {
         return call.get("val");
     }
 
-    public static Val getArg(Val call) {
-        return call.get("arg");
-    }
-
-    public static Constraint getVal(Constraint call) {
-        return call.get("val");
-    }
-
-    public static Constraint getArg(Constraint call) {
+    public static Value getArg(Value call) {
         return call.get("arg");
     }
 

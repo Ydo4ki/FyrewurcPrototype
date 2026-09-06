@@ -12,12 +12,12 @@ public final class BinOperationsFw {
     public static final Val or = binary(Bits::or);
     public static final Val and = binary(Bits::and);
     public static final Val xor = binary(Bits::xor);
-    public static final Val not = FW.telephonist(type0 -> {
+    public static final Val not = FW.telephonist_native(type0 -> {
         Type type = type0.asType();
         long size = MemUtils.binarySize(type);
         if (size <= 0)
             return null;
-        return FW.telephonist(arg -> {
+        return FW.telephonist_native(arg -> {
             if (!arg.getType().equals(type))
                 return null;
 
@@ -31,12 +31,12 @@ public final class BinOperationsFw {
     });
 
     private static Val binary(BinaryOperator<Bits> operator) {
-        return FW.telephonist(type0 -> {
+        return FW.telephonist_native(type0 -> {
             Type type = type0.asType();
             long size = MemUtils.binarySize(type);
             if (size <= 0)
                 return null;
-            return FW.telephonist(arg -> {
+            return FW.telephonist_native(arg -> {
                 if (!arg.getType().equals(type))
                     return null;
 
@@ -45,7 +45,7 @@ public final class BinOperationsFw {
                 if (bits == null || bits.size() != size)
                     return null;
 
-                return FW.telephonist(arg1 -> {
+                return FW.telephonist_native(arg1 -> {
                     if (!arg1.getType().equals(type))
                         return null;
 

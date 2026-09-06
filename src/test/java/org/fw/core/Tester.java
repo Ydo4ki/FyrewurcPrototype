@@ -50,11 +50,11 @@ public final class Tester {
     }
 
 
-    public static final CompEnv testDirectivesCenv = CompEnv.of(FW.telephonist((arg) -> {
+    public static final CompEnv testDirectivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._unpack(Expr.class);
+            Expr expr = exprVal._UNPACK(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -62,12 +62,12 @@ public final class Tester {
                     if (isize != 2)
                         return null;
 
-                    Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._unpack(Expr.class), CompEnv.of(compEnv)));
+                    Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(Expr.class), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(condition.getType()))
                         return condition;
                     Vit vitOperation = Vit.call(OperationFw._VitOperation, condition).call(Vit.var);
-                    Vit assertOperation = Vit.call(FW.telephonist(arg1 ->
-                            new AssertOperation(arg1._unpack(Operation.class)).asVal()), vitOperation);
+                    Vit assertOperation = Vit.call(FW.telephonist_native(arg1 ->
+                            new AssertOperation(arg1._UNPACK(Operation.class)).asVal()), vitOperation);
                     return VitFw.wrap(Vit.invoke(assertOperation));
                 }
             }

@@ -18,9 +18,9 @@ import static org.fw.core.FW.symbol;
 
 // for things like CompEnv
 public final class ChainLinkFw {
-    public static final Type chainLinkType = FW.telephonist((arg) -> {
+    public static final Type chainLinkType = FW.telephonist_native((arg) -> {
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist((arg1) -> {
+            return FW.telephonist_native((arg1) -> {
                 if (!ConstraintFw.isConstraint(arg1))
                     return null;
 
@@ -28,14 +28,14 @@ public final class ChainLinkFw {
             });
         }
         if (FwUtils.isTypeApiCall(arg, ChainLinkFw.chainLinkType)) {
-            Val instanceType = CallFw.getVal(arg);
-            arg = CallFw.getArg(arg);
-            ChainLinkTypeRecord typeInfo = instanceType._unpack();
+            Val instanceType = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+            ChainLinkTypeRecord typeInfo = instanceType._UNPACK();
             Type type = instanceType.asType();
 
             if (FwUtils.isTypeApiCall(arg, type)) {
-                ChainLinkFw.ChainLinkRecord instance = CallFw.getVal(arg)._unpack();
-                Val cArg = CallFw.getArg(arg);
+                ChainLinkFw.ChainLinkRecord instance = ((Val) CallFw.getVal(arg))._UNPACK();
+                Val cArg = (Val) CallFw.getArg(arg);
 
                 Val ret = instance.resolver().call(cArg);
 
@@ -50,8 +50,8 @@ public final class ChainLinkFw {
 //
 //                }
             } else if (arg.equalsSymbol("builder")) {
-                return FW.telephonist("*.builder", (resolver) -> {
-                    return FW.telephonist((parentCEnv) -> {
+                return FW.telephonist_native("*.builder", (resolver) -> {
+                    return FW.telephonist_native((parentCEnv) -> {
                         return Val.of(type, new ChainLinkFw.ChainLinkRecord(resolver, parentCEnv));
                     });
                 });
@@ -85,7 +85,7 @@ public final class ChainLinkFw {
         int i = 0;
         Val actual = links[i++];
         while (actual == null) {
-            if (i == links.length) return FW.telephonist(a -> null);
+            if (i == links.length) return FW.telephonist_native(a -> null);
             actual = links[i++];
         }
         for (; i < links.length; i++) {

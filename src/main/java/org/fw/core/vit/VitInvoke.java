@@ -51,7 +51,7 @@ public final class VitInvoke extends Vit {
         if (operation instanceof VitVal) {
             Val val = ((VitVal) operation).val();
             if (val.getType() == OperationFw.operation) {
-                Operation op = val._unpack();
+                Operation op = val._UNPACK();
                 return op.operationAreYouPureQuestionMark();
             }
         }
