@@ -1,0 +1,23 @@
+(assert! true)
+
+(: d (: abc 943))
+
+(do
+ (assert! (== Declared (typeof d)))
+
+ (assert! (== d.key (symbol "abc")))
+ (assert! (== d.value 943))
+)
+
+(do
+ (assert! (== d (call Declared.builder (symbol "abc") 943)))
+ (assert! (== d (Declared (symbol "abc") 943)))
+ (assert! (== d (call (Declared (symbol "abc")) 943)))
+ (assert! (== d (call (Declared) (symbol "abc") 943)))
+)
+
+(do
+ (assert! (== (to-expr Declared) (symbol "Declared")))
+ (assert! (== (to-expr d) (expr (: abc 943))))
+ (assert! (== (to-expr (Declared unit 15)) (expr (Declared unit 15))))
+)

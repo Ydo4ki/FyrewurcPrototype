@@ -125,17 +125,10 @@ public final class ModuleFw {
             List<Expr> elements0 = new ArrayList<>();
             elements0.add(ModuleFw.module.asVal().toExpr(compEnv));
             List<Expr> elements = new ArrayList<>();
-            for (Val declared : declareds) {
-                Val key = DeclaredFw.getKey(declared);
-                if (key.getType() == SymbolFw.symbol) {
-                    elements.add(ExprList.of(BracketsTypes.round, Symbol.of(":"),
-                            ExprFw.unwrap(key),
-                            DeclaredFw.getValue(declared).toExpr(compEnv)
-                            ));
-                } else {
-                    elements.add(declared.toExpr(compEnv));
-                }
-            }
+
+            for (Val declared : declareds)
+                elements.add(declared.toExpr(compEnv));
+
             elements0.add(ExprList.of(BracketsTypes.square, elements));
             return ExprList.of(BracketsTypes.round, elements0);
         }

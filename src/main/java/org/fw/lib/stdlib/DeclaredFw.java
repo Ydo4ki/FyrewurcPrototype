@@ -3,12 +3,14 @@ package org.fw.lib.stdlib;
 import org.fw.core.FW;
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.base.*;
+import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.vit.Vit;
+import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.*;
 
 import java.util.Objects;
@@ -65,8 +67,8 @@ public final class DeclaredFw {
     public static final Val declaredToExpr = FW.telephonist((arg) -> {
         if (arg.getType() != ToExprFn.toExprResolve)
             return null;
-        Val toExpr = arg.call(symbol("chain"));
-        arg = arg.call(symbol("passing"));
+        CompEnv toExpr = CompEnv.of(arg.get("chain"));
+        arg = arg.get("passing");
 
         Type type = arg.getType();
         if (type.equals(declared)) {
@@ -89,7 +91,7 @@ public final class DeclaredFw {
         return Val.of(DeclaredFw.declared, new Declared(key.asVal(), value.asVal()));
     }
 
-    public static Expr toExpr(Val arg, Val toExpr) {
+    public static Expr toExpr(Val arg, CompEnv toExpr) {
         return arg._unpack(DeclaredFw.Declared.class).toExpr(toExpr);
     }
 
@@ -102,8 +104,11 @@ public final class DeclaredFw {
             this.value = value;
         }
 
-        public Expr toExpr(Val toExpr) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr_Old(toExpr), value.toExpr_Old(toExpr));
+        public Expr toExpr(CompEnv toExpr) {
+            if (key.getType() == SymbolFw.symbol) {
+                return ExprList.of(BracketsTypes.round, Symbol.of(":"), key._unpack(Symbol.class), value.toExpr(toExpr));
+            }
+            return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), key.toExpr(toExpr), value.toExpr(toExpr));
         }
 
         public Val key() {
@@ -137,7 +142,33 @@ public final class DeclaredFw {
     }
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist((arg) -> {
-        if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            arg = arg.get("passing");
+
+            Type type = arg.getType();
+            if (type.equals(declared)) {
+                return ExprFw.wrap(toExpr(arg, compEnv));
+            }
+            return null;
+        } else if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
+            Val val = arg.get("passing");
+            Val compEnv = arg.get("chain");
+            if (val == declared.asVal()) {
+                return FW.telephonist(c -> {
+                    if (c.getType() != DVecFw.dVec)
+                        return null;
+                    Val[] args = c._unpack();
+                    if (args.length > 2)
+                        return null;
+                    Val b = declared.asVal().get("builder");
+                    for (Val arg1 : args) {
+                        b = b.call(arg1);
+                    }
+                    return Operation.pure(b).asVal();
+                });
+            }
+        }else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
             Expr expr = exprVal._unpack(Expr.class);

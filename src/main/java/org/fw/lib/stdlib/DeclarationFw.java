@@ -33,7 +33,7 @@ public final class DeclarationFw {
             }
         } else if (arg.equalsSymbol("builder")) {
             return FW.telephonist("Declaration.builder", (key) -> {
-                return FW.telephonist(((Supplier<String>) () -> "(call Declaration.builder " + key + ")").get().toString(), (constraint) -> {
+                return FW.telephonist("(call Declaration.builder " + key + ")", (constraint) -> {
                             if (!ConstraintFw.isConstraint(constraint))
                                 return null;
 
@@ -129,7 +129,7 @@ public final class DeclarationFw {
                     Val[] args = c._unpack();
                     if (args.length > 2)
                         return null;
-                    Val b = val.get("builder");
+                    Val b = declaration.asVal().get("builder");
                     for (Val arg1 : args) {
                         b = b.call(arg1);
                     }

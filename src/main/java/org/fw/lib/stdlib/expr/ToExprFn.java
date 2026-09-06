@@ -13,13 +13,16 @@ import static org.fw.core.FW.symbol;
 @Deprecated
 public class ToExprFn {
 
+    @Deprecated
     public static final Type exprififier = ChainLinkFw.chainLinkType.asVal()
             .call(symbol("construct"))
             .call(ConstraintFw.isSpecified)
             .asType();
 
+    @Deprecated
     public static final Type toExprResolve = ChainResolveFw.chainResolveType(ConstraintFw.isSpecified);
 
+    @Deprecated
     public static Val toExprResolve(Val val, Val toExpr) {
         return Val.of(ToExprFn.toExprResolve, new ChainResolveFw.ChainResolve(val, toExpr));
     }
@@ -36,6 +39,7 @@ public class ToExprFn {
 
     // wait did I really write all of this instead of using hashmap or some custom overengineered condition table?
     // wow
+    @Deprecated
     public static final Val toExprRest = FW.telephonist((arg) -> {
         if (arg.getType() != ToExprFn.toExprResolve)
             return null;
@@ -56,6 +60,7 @@ public class ToExprFn {
         return null;
     });
 
+    @Deprecated
     public static final Val toExpr = ChainLinkFw.chain(exprififier,
             DeclaredFw.declaredToExpr,
             StrFw.strToExpr,
