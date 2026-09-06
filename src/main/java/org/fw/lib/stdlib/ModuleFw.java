@@ -3,6 +3,7 @@ package org.fw.lib.stdlib;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import com.ydo4ki.fw.internal.lib.stdlib.ExtendedFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.dvec.DVecBuilderFw;
@@ -60,7 +61,7 @@ public final class ModuleFw {
         return null;
     }).asType();
 
-    public static final CompEnv module2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv module2exprCenv = CompEnv.of(FW.telephonist_native("module2exprCenv",(arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -102,8 +103,8 @@ public final class ModuleFw {
         return Val.of(module.getType(), new Module(newd));
     }
 
-    public static Val merge(Val module, Val... modules) {
-        for (Val val : modules) {
+    public static Value merge(Value module, Value... modules) {
+        for (Value val : modules) {
             if (val == null) continue;
             module = ChainLinkFw.chain(ExtendedFw.extended, module, val);
         }

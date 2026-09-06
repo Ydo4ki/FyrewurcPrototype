@@ -58,7 +58,7 @@ public final class DoFw {
         return null;
     }));
 
-    private static Vit compileDo(Val exprVal, int start, int isize, Val compEnv) throws VitCompilationException {
+    private static Vit compileDo(Val exprVal, int start, int isize, Value compEnv) throws VitCompilationException {
         Vit execution = Vit.val(Val.of(DoFw.unaryStoreType, Operation.unit));
         for (int i = start; i < isize - 1; i++) {
             Expr line = exprVal.call(DIntFw.dint(i + 1))._UNPACK(Expr.class);
@@ -70,7 +70,7 @@ public final class DoFw {
                     throw new VitCompilationException(nameE, "Symbol expected");
                 String name = ((Symbol) nameE).getValue();
                 Expr valueE = ((ExprList) line).get(2);
-                Vit valueV = VitUtils.simplify(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv))), valueE));
+                Vit valueV = VitUtils.simplify(VitFw.unwrap((Val)compEnv.call(CompEnv.syntaxResolve(valueE, CompEnv.of(compEnv))), valueE));
 
                 Val sname = symbol(name);
                 // OK FINE
@@ -85,8 +85,8 @@ public final class DoFw {
                 // this looks cryptic as hell
                 // still probably conceptually the best way to do this
 
-                Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
-                    if (arg.getType0().impliesEquality(SyntaxResolveFw.syntaxResolve.asVal())) {
+                Value newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
+                    if (arg.getTypeValue().impliesEquality(SyntaxResolveFw.syntaxResolve.asVal())) {
                         Value exprVal0 = arg.get("expr");
                         if (exprVal0.equalsSymbol(name)) {
                             return VitFw.wrap(Vit.var.call(symbol(name)));
@@ -102,8 +102,8 @@ public final class DoFw {
                 execution = execution.call(evalRest);
                 break;
             } else {
-                Val compiled = compEnv.call(CompEnv.syntaxResolve(line, CompEnv.of(compEnv)));
-                Vit cv = VitFw.unwrap(compiled, line);
+                Value compiled = compEnv.call(CompEnv.syntaxResolve(line, CompEnv.of(compEnv)));
+                Vit cv = VitFw.unwrap((Val) compiled, line);
                 execution = execution.call(cv);
             }
         }

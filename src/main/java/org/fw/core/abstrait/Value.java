@@ -1,8 +1,11 @@
 package org.fw.core.abstrait;
 
+import org.fw.core.ast.Expr;
 import org.fw.core.base.SymbolFw;
+import org.fw.core.base.Type;
 import org.fw.core.base.TypeGetFw;
 import org.fw.core.base.Val;
+import org.fw.lib.stdlib.expr.CompEnv;
 
 import static org.fw.core.FW.symbol;
 
@@ -18,15 +21,19 @@ public interface Value {
         return call(symbol(val));
     }
 
-    default Value getType0() {
+    default Value getTypeValue() {
         return TypeGetFw.typeGet.call(this);
     }
 
     default boolean equalsSymbol(String symbol) {
-        if (!this.getType0().impliesEquality(SymbolFw.symbol.asVal()))
+        if (!this.getTypeValue().impliesEquality(SymbolFw.symbol.asVal()))
             return false;
         return this.impliesEquality(symbol(symbol));
     }
 
     boolean impliesEquality(Val val);
+
+    default Expr toExpr(CompEnv compEnv) {
+        return compEnv.toExpr(this);
+    }
 }

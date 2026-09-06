@@ -1,25 +1,25 @@
 package org.fw.core.vit;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
 
 import java.util.Objects;
 
 public final class VitVal extends Vit {
 
-    private final Val val;
+    private final Value val;
 
-    public VitVal(Val val) {
+    public VitVal(Value val) {
         this.val = Objects.requireNonNull(val);
     }
 
-    public Val val() {
+    public Value val() {
         return val;
     }
 
     @Override
-    public Val eval(RtEnv rtEnv, State state) {
+    public Value eval(Value rtEnv, State state) {
         return val;
     }
 
@@ -48,6 +48,6 @@ public final class VitVal extends Vit {
 
     @Override
     public int hashCode() {
-        return Objects.hash(val);
+        return Objects.hashCode(val);
     }
 }

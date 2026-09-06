@@ -1,8 +1,8 @@
 package org.fw.core.vit;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.expr.CompEnv;
@@ -19,7 +19,7 @@ public final class VitCall extends Vit {
     }
 
     @Override
-    public Val eval(RtEnv rtEnv, State state) {
+    public Value eval(Value rtEnv, State state) {
         if (isPreDetermied != null)
             return isPreDetermied;
         return func.eval(rtEnv, state).call(arg.eval(rtEnv, state));
@@ -45,7 +45,7 @@ public final class VitCall extends Vit {
     private final Vit arg;
     private final boolean isConst;
     private final boolean isPure;
-    private final Val isPreDetermied;
+    private final Value isPreDetermied;
 
     private VitCall(Vit func, Vit arg, boolean isConst, boolean isPure) {
         Objects.requireNonNull(func);

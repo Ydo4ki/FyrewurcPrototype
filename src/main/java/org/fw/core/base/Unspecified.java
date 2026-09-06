@@ -1,6 +1,7 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.util.FwUtils;
 
 import java.util.Objects;
@@ -39,8 +40,8 @@ public final class Unspecified {
         return Val.of(unspecified_t, new UnspecifiedRecord(val, arg));
     }
 
-    public static boolean isUnspecified(Val val) {
-        return val.getType() == unspecified_t;
+    public static boolean isUnspecified(Value val) {
+        return val.getTypeValue().impliesEquality(unspecified_t.asVal());
     }
 
     public static Val getVal(Val val) {

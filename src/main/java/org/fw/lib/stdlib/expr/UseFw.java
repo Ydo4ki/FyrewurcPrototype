@@ -1,6 +1,7 @@
 package org.fw.lib.stdlib.expr;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -38,12 +39,12 @@ public final class UseFw {
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
-                        Val newCompEnv = CompEnv.compEnv(
+                        Value newCompEnv = CompEnv.compEnv(
                                 compEnv,
-                                ModuleFw.ModuleCEnvFw.compEnv(((VitVal) vit).val())
+                                ModuleFw.ModuleCEnvFw.compEnv((Val)((VitVal) vit).val())
                         );
 
-                        Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(), CompEnv.of(newCompEnv)));
+                        Val value = (Val) newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(), CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 
@@ -61,12 +62,12 @@ public final class UseFw {
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
-                        Val newCompEnv = CompEnv.compEnv(
+                        Value newCompEnv = CompEnv.compEnv(
                                 compEnv,
                                 ((VitVal) vit).val()
                         );
 
-                        Val value = newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(), CompEnv.of(newCompEnv)));
+                        Val value = (Val) newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(), CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 

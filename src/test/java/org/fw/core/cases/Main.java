@@ -30,7 +30,7 @@ import static org.fw.core.FW.symbol;
 
 public class Main {
 
-    public static final RtEnv rtEnv = RtEnv.unspecified;
+    public static final Val rtEnv = RtEnv.unspecified.asVal();
 
     public static void main(String[] args) throws IOException {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
@@ -170,5 +170,4 @@ public class Main {
         }
         return null;
     }));
-
 }

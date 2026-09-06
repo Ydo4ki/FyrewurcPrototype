@@ -1,5 +1,6 @@
 package org.fw.core.vit;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
 
@@ -20,8 +21,8 @@ public final class VitUtils {
             Vit arg = substitude(call.arg(), replaceVarWith);
 
             if (func instanceof VitVal && arg instanceof VitVal) {
-                Val f = ((VitVal) func).val();
-                Val a = ((VitVal) arg).val();
+                Value f = ((VitVal) func).val();
+                Value a = ((VitVal) arg).val();
                 return Vit.val(f.call(a));
             }
 
@@ -55,8 +56,8 @@ public final class VitUtils {
             Vit arg = simplify(call.arg());
 
             if (func instanceof VitVal && arg instanceof VitVal) {
-                Val f = ((VitVal) func).val();
-                Val a = ((VitVal) arg).val();
+                Value f = ((VitVal) func).val();
+                Value a = ((VitVal) arg).val();
                 return Vit.val(f.call(a));
             }
 

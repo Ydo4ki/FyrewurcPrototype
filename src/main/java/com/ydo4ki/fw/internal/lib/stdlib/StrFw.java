@@ -106,10 +106,10 @@ public final class StrFw {
                     parseArg
             );
             // uh okay
-            parseStrCenv = State.performAndDie(state -> FW.telephonist_native((arg3) -> body.eval(RtEnv.of(FW.telephonist_native((arg2) -> {
+            parseStrCenv = State.performAndDie(state -> FW.telephonist((arg3) -> body.eval(FW.telephonist((arg2) -> {
                 if (arg2.equalsSymbol("arg")) return arg3;
                 return null;
-            })), state)));
+            }), state)));
         }
     }
 

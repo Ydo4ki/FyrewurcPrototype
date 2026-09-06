@@ -42,9 +42,9 @@ public final class FwUtils {
     }
 
     public static boolean isTypeApiCall(Value call, Type type) {
-        if (call.getType0().impliesEquality(CallFw.call_t.asVal())) {
+        if (call.getTypeValue().impliesEquality(CallFw.call_t.asVal())) {
             Value val = CallFw.getVal(call);
-            return val.getType0().impliesEquality(type.asVal());
+            return val.getTypeValue().impliesEquality(type.asVal());
         }
         return false;
     }
@@ -99,7 +99,7 @@ public final class FwUtils {
             } catch (VitCompilationException e) {
                 throw new RuntimeException("Cannot compile: " + expr, e);
             }
-            result = vit.eval(rtEnv, state);
+            result = vit.eval(rtEnv.asVal(), state);
             if (result.getType().equals(DeclaredFw.declared)) {
                 Val key = DeclaredFw.getKey(result);
                 Val value = DeclaredFw.getValue(result);
@@ -131,7 +131,7 @@ public final class FwUtils {
         Vit arg = Vit.var.call(FW.symbol("arg"));
         Vit argExpr = arg.call(symbol("expr"));
         Vit parseArg = telemap.call(argExpr);
-        return FW.telephonist_native((arg1) -> {
+        return FW.telephonist((arg1) -> {
             if (Unspecified.isUnspecified(arg1)) return null;
             else return parseArg.eval();
         });
@@ -166,7 +166,7 @@ public final class FwUtils {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
-                    val = vit.eval(RtEnv.unspecified, state);
+                    val = vit.eval(RtEnv.unspecified.asVal(), state);
                     if (val.getType() == DeclaredFw.declared) {
                         compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asVal(), ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
                     } else if (val != Operation.unit)

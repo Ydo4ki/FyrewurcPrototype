@@ -2,6 +2,7 @@ package org.fw.lib.stdlib;
 
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -126,7 +127,7 @@ public final class FunctionFw {
 
                         Expr bodyE = exprVal.call(DIntFw.dint(3))._UNPACK();
 
-                        Val newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist_native((arg0) -> {
+                        Value newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist_native((arg0) -> {
                             if (arg0.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                                 Val exprVal0 = arg0.call(symbol("expr"));
                                 Expr expr0 = exprVal0._UNPACK(Expr.class);
@@ -142,7 +143,7 @@ public final class FunctionFw {
                             return null;
                         }));
 
-                        Val body = newCompEnv.call(CompEnv.syntaxResolve(bodyE, CompEnv.of(newCompEnv)));
+                        Val body = (Val) newCompEnv.call(CompEnv.syntaxResolve(bodyE, CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(body.getType()))
                             return body;
 

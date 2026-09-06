@@ -129,7 +129,7 @@ public final class DIntFw {
             parseNumCenv = State.performAndDie(state -> FW.telephonist_native((arg1) -> body.eval(RtEnv.of(FW.telephonist_native((arg2) -> {
                 if (arg2.equalsSymbol("arg")) return arg1;
                 return null;
-            })), state)));
+            })).asVal(), state)));
         }
     }
 

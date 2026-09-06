@@ -1,7 +1,7 @@
 package org.fw.core.vit;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 import org.fw.lib.stdlib.expr.StdLib;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
@@ -24,8 +24,8 @@ public final class VitInvoke extends Vit {
     }
 
     @Override
-    public Val eval(RtEnv rtEnv, State state) {
-        Operation op = OperationFw.unwrap(operationVal(rtEnv, state));
+    public Value eval(Value rtEnv, State state) {
+        Operation op = OperationFw.unwrap((Val) operationVal(rtEnv, state));
         if (op == null) {
             // temp
             CompEnv toExpr = CompEnv.of(StdLib.lib.exports());
@@ -49,7 +49,7 @@ public final class VitInvoke extends Vit {
         // WAIT
         operation = VitUtils.simplify(operation);
         if (operation instanceof VitVal) {
-            Val val = ((VitVal) operation).val();
+            Val val = (Val)((VitVal) operation).val();
             if (val.getType() == OperationFw.operation) {
                 Operation op = val._UNPACK();
                 return op.operationAreYouPureQuestionMark();
@@ -58,7 +58,7 @@ public final class VitInvoke extends Vit {
         return false;
     }
 
-    public Val operationVal(RtEnv rtEnv, State state) {
+    public Value operationVal(Value rtEnv, State state) {
         return operation.eval(rtEnv, state);
     }
 

@@ -1,6 +1,7 @@
 package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
@@ -76,16 +77,16 @@ public final class ChainLinkFw {
 //    });
 
 
-    public static Val chain(Type type, Val parent, Val primary) {
+    public static Value chain(Type type, Value parent, Value primary) {
         return type.asVal().get("builder").call(primary).call(parent);
     }
 
 
-    public static Val chain(Type type, Val... links) {
+    public static Value chain(Type type, Value... links) {
         int i = 0;
-        Val actual = links[i++];
+        Value actual = links[i++];
         while (actual == null) {
-            if (i == links.length) return FW.telephonist_native(a -> null);
+            if (i == links.length) return FW.telephonist(a -> null);
             actual = links[i++];
         }
         for (; i < links.length; i++) {

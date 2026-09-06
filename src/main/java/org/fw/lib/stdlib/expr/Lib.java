@@ -1,5 +1,6 @@
 package org.fw.lib.stdlib.expr;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
 import org.fw.lib.stdlib.ChainLinkFw;
 import com.ydo4ki.fw.internal.lib.stdlib.ExtendedFw;
@@ -16,7 +17,7 @@ public final class Lib {
     }
 
     public static Lib combine(Lib parent, Lib over) {
-        Val module;
+        Value module;
         if (over.module == null) {
             module = parent.module;
         } else if (parent.module == null) {
@@ -25,7 +26,7 @@ public final class Lib {
             module = ChainLinkFw.chain(ExtendedFw.extended, parent.module, over.module);
         }
 
-        Val moduleInverted;
+        Value moduleInverted;
         if (over.moduleInverted == null) {
             moduleInverted = parent.moduleInverted;
         } else if (parent.moduleInverted == null) {
@@ -34,7 +35,7 @@ public final class Lib {
             moduleInverted = ChainLinkFw.chain(ExtendedFw.extended, parent.moduleInverted, over.moduleInverted);
         }
 
-        Val extraCEnv;
+        Value extraCEnv;
         if (over.extraCEnv == null) {
             extraCEnv = parent.extraCEnv;
         } else if (parent.extraCEnv == null) {
@@ -51,55 +52,55 @@ public final class Lib {
         );
     }
 
-    public static Lib ofCEnv(Val extraCEnv) {
+    public static Lib ofCEnv(Value extraCEnv) {
         return Lib.of(null, extraCEnv);
     }
 
-    public static Lib ofModule(Val module) {
-        return Lib.of(module, (Val) null);
+    public static Lib ofModule(Value module) {
+        return Lib.of(module, null);
     }
 
-    public static Lib of(Val module, Val extraCEnv) {
-        return of(module, ModuleFw.invert(module), extraCEnv);
+    public static Lib of(Value module, Value extraCEnv) {
+        return of(module, ModuleFw.invert((Val)module), extraCEnv);
     }
 
-    public static Lib of(Val module, Val moduleInverted, Val extraCEnv) {
+    public static Lib of(Value module, Value moduleInverted, Value extraCEnv) {
         return new Lib(module, moduleInverted, extraCEnv);
     }
 
-    private final Val module;
+    private final Value module;
 
-    private final Val moduleInverted;
-    private final Val extraCEnv;
-    private final Val m_exports;
+    private final Value moduleInverted;
+    private final Value extraCEnv;
+    private final Value m_exports;
 
-    private Lib(Val module, Val moduleInverted, Val extraCEnv) {
+    private Lib(Value module, Value moduleInverted, Value extraCEnv) {
         this.module = module;
         this.moduleInverted = moduleInverted;
         this.extraCEnv = extraCEnv;
         m_exports = CompEnv.compEnv(
                 extraCEnv,
-                moduleInverted == null ? null : ModuleFw.ModuleCEnvFw.toExprCompEnv(moduleInverted),
-                module == null ? null : ModuleFw.ModuleCEnvFw.compEnv(module)
+                moduleInverted == null ? null : ModuleFw.ModuleCEnvFw.toExprCompEnv((Val)moduleInverted),
+                module == null ? null : ModuleFw.ModuleCEnvFw.compEnv((Val)module)
         );
     }
 
-    private Lib(Val module, Val moduleInverted, Val extraCEnv, Val mExports) {
+    private Lib(Value module, Value moduleInverted, Value extraCEnv, Value mExports) {
         this.module = module;
         this.moduleInverted = moduleInverted;
         this.extraCEnv = extraCEnv;
         m_exports = mExports;
     }
 
-    public Val exports() {
+    public Value exports() {
         return m_exports;
     }
 
-    public Val module() {
+    public Value module() {
         return module;
     }
 
-    public Val extraCEnv() {
+    public Value extraCEnv() {
         return extraCEnv;
     }
 }

@@ -1,5 +1,6 @@
 package org.fw.lib.stdlib.expr;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.ChainLinkFw;
 import org.fw.core.commons.AbstractValAdapter;
@@ -23,8 +24,8 @@ public final class CompEnv extends AbstractValAdapter {
         super(val);
     }
 
-    public static CompEnv of(Val val) {
-        return new CompEnv(val);
+    public static CompEnv of(Value val) {
+        return new CompEnv((Val)val); // todo
     }
 
     public Val compileV(Expr expr) {
@@ -48,8 +49,8 @@ public final class CompEnv extends AbstractValAdapter {
         return Val.of(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(ExprFw.wrap(expr), env.asVal()));
     }
 
-    public Expr toExpr(Val val) {
-        Val v = asVal().call(toExprResolve(val, this));
+    public Expr toExpr(Value val) {
+        Val v = asVal().call(toExprResolve((Val) val, this));
         return ExprFw.unwrap(v);
     }
 
@@ -65,11 +66,11 @@ public final class CompEnv extends AbstractValAdapter {
         return Vit.val(SyntaxResolveFw.toFnResolve.asVal()).call(symbol("builder")).call(val).call(env.asVal());
     }
 
-    public static Val compEnv(Val parentCEnv, Val resolver) {
+    public static Value compEnv(Value parentCEnv, Value resolver) {
         return ChainLinkFw.chain(compEnv, parentCEnv, resolver);
     }
 
-    public static Val compEnv(Val... resolvers) {
+    public static Value compEnv(Value... resolvers) {
         return ChainLinkFw.chain(compEnv, resolvers);
     }
 }

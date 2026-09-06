@@ -1,9 +1,9 @@
 package org.fw.core.base;
 
+import org.fw.core.abstrait.TypedValue;
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 import org.fw.lib.stdlib.dvec.DVecFw;
-import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.Symbol;
@@ -13,7 +13,7 @@ import java.util.function.BiFunction;
 
 import static org.fw.core.FW.symbol;
 
-public final class Val implements ValAdapter, Value {
+public final class Val implements ValAdapter, TypedValue {
     private final Type type;
     private final Object value;
     private Type _asType;
@@ -60,18 +60,6 @@ public final class Val implements ValAdapter, Value {
 
     public Val get(String property, String... rest) {
         return call0(property, rest, Val::get);
-    }
-
-    private <T> Val call0(T arg, T[] rest, BiFunction<Val, T, Val> function) {
-        Val ret = function.apply(this, arg);
-        for (T val : rest) {
-            ret = function.apply(ret, val);
-        }
-        return ret;
-    }
-
-    public Expr toExpr(CompEnv compEnv) {
-        return compEnv.toExpr(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -149,19 +137,6 @@ public final class Val implements ValAdapter, Value {
         return this.value.equals(that.value);
     }
 
-    private static boolean _arrayEquals(Object e1, Object e2) {
-        if (e1 instanceof Object[]) return Arrays.deepEquals((Object[]) e1, (Object[]) e2);
-        else if (e1 instanceof byte[]) return Arrays.equals((byte[]) e1, (byte[]) e2);
-        else if (e1 instanceof short[]) return Arrays.equals((short[]) e1, (short[]) e2);
-        else if (e1 instanceof int[]) return Arrays.equals((int[]) e1, (int[]) e2);
-        else if (e1 instanceof long[]) return Arrays.equals((long[]) e1, (long[]) e2);
-        else if (e1 instanceof char[]) return Arrays.equals((char[]) e1, (char[]) e2);
-        else if (e1 instanceof float[]) return Arrays.equals((float[]) e1, (float[]) e2);
-        else if (e1 instanceof double[]) return Arrays.equals((double[]) e1, (double[]) e2);
-        else if (e1 instanceof boolean[]) return Arrays.equals((boolean[]) e1, (boolean[]) e2);
-        else return e1.equals(e2);
-    }
-
     @Override
     public int hashCode() {
         return 31 * (31 + type.hashCode()) + value.hashCode();
@@ -177,5 +152,26 @@ public final class Val implements ValAdapter, Value {
         return "Val[" +
                 "type=" + type.asVal() + ", " +
                 "value=" + value + ']';
+    }
+
+    private static boolean _arrayEquals(Object e1, Object e2) {
+        if (e1 instanceof Object[]) return Arrays.deepEquals((Object[]) e1, (Object[]) e2);
+        else if (e1 instanceof byte[]) return Arrays.equals((byte[]) e1, (byte[]) e2);
+        else if (e1 instanceof short[]) return Arrays.equals((short[]) e1, (short[]) e2);
+        else if (e1 instanceof int[]) return Arrays.equals((int[]) e1, (int[]) e2);
+        else if (e1 instanceof long[]) return Arrays.equals((long[]) e1, (long[]) e2);
+        else if (e1 instanceof char[]) return Arrays.equals((char[]) e1, (char[]) e2);
+        else if (e1 instanceof float[]) return Arrays.equals((float[]) e1, (float[]) e2);
+        else if (e1 instanceof double[]) return Arrays.equals((double[]) e1, (double[]) e2);
+        else if (e1 instanceof boolean[]) return Arrays.equals((boolean[]) e1, (boolean[]) e2);
+        else return e1.equals(e2);
+    }
+
+    private <T> Val call0(T arg, T[] rest, BiFunction<Val, T, Val> function) {
+        Val ret = function.apply(this, arg);
+        for (T val : rest) {
+            ret = function.apply(ret, val);
+        }
+        return ret;
     }
 }

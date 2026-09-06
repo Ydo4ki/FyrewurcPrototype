@@ -31,7 +31,7 @@ public final class VitFw {
             String symbol1 = callArg._UNPACK().toString();
             switch (symbol1) {
                 case "val":
-                    return instance2._UNPACK(VitVal.class).val();
+                    return (Val)instance2._UNPACK(VitVal.class).val();
                 default:
                     return null;
             }

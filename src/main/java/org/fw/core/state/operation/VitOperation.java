@@ -18,7 +18,7 @@ public final class VitOperation extends Operation {
 
     @Override
     public Val apply(State state) {
-        return vit.eval(rtEnv, state);
+        return vit.eval(rtEnv.asVal(), state);
     }
 
     public Vit vit() {

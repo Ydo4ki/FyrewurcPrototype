@@ -30,7 +30,7 @@ public final class Constraint {
     }
 
     public boolean check(Val val) {
-        return a.eval(RtEnv.of(val)).equals(BoolFw._true);
+        return a.eval(val).impliesEquality(BoolFw._true);
     }
 
     // constraint of the call result
