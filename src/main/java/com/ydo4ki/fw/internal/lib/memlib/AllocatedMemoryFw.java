@@ -7,7 +7,6 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import com.ydo4ki.fw.internal.lib.memlib.obj.AllocatedMemoryObj;
 import com.ydo4ki.fw.internal.lib.jlib.data.JIntFw;
-import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -33,11 +32,6 @@ public final class AllocatedMemoryFw {
                                 public Val apply(State state) {
                                     amo.buffer().putInt(v);
                                     return Operation.unit;
-                                }
-
-                                @Override
-                                public InvokeContract contract() {
-                                    return InvokeContract.unknown();
                                 }
                             }.asVal();
                         });

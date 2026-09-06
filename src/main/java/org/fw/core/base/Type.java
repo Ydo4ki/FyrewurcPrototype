@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.commons.ValAdapter;
-import org.fw.core.base.contract.CallContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +11,6 @@ public abstract class Type implements ValAdapter {
     Type() {}
 
     abstract Val callInstance(Val instance, Val arg);
-
-    abstract CallContract instanceContract(Val instance);
 
     public abstract Val asVal();
 
@@ -28,11 +25,6 @@ public abstract class Type implements ValAdapter {
         @Override
         public Val callInstance(Val instance, Val arg) {
             return asVal.call(CallFw.fwCall(instance, arg));
-        }
-
-        @Override
-        CallContract instanceContract(Val instance) {
-            return CallContract.unknown();
         }
 
         @Override
@@ -83,11 +75,6 @@ public abstract class Type implements ValAdapter {
         }
 
         @Override
-        CallContract instanceContract(Val instance) {
-            return instance._unpack(Telephonist.class).contract();
-        }
-
-        @Override
         public Val asVal() {
             if (asVal == null) {
                 this.asVal = Val.telephonistVal(this);
@@ -124,32 +111,25 @@ public abstract class Type implements ValAdapter {
         public static final class Telephonist {
             private final String marker;
             private final CallFunction function;
-            private final CallContract contract;
 
-            public Telephonist(String marker, CallFunction function, CallContract contract) {
+            public Telephonist(String marker, CallFunction function) {
                 this.marker = marker;
                 this.function = function;
-                this.contract = contract;
             }
 
             public CallFunction function() {
                 return function;
             }
-
-            public CallContract contract() {
-                return contract;
-            }
-
             @Override
             public boolean equals(Object o) {
                 if (o == null || getClass() != o.getClass()) return false;
                 Telephonist that = (Telephonist) o;
-                return Objects.equals(function, that.function) && Objects.equals(contract, that.contract);
+                return Objects.equals(function, that.function);
             }
 
             @Override
             public int hashCode() {
-                return Objects.hash(function, contract);
+                return Objects.hashCode(function);
             }
 
             @Override

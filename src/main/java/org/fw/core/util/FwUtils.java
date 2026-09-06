@@ -6,7 +6,6 @@ import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.*;
 import org.fw.core.base.BoolFw;
-import org.fw.core.base.contract.InvokeContract;
 import org.fw.lib.stdlib.DeclaredFw;
 import org.fw.core.base.TypeGetFw;
 import org.fw.lib.stdlib.expr.Lib;
@@ -185,11 +184,6 @@ public final class FwUtils {
                         if (debug) System.out.println(val.toExpr(compEnv));
                 }
                 return val;
-            }
-
-            @Override
-            public InvokeContract contract() {
-                return InvokeContract.unknown();
             }
         };
     }

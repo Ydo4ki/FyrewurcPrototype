@@ -2,7 +2,6 @@ package org.fw.core.vit;
 
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.expr.StdLib;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
@@ -57,11 +56,6 @@ public final class VitInvoke extends Vit {
             }
         }
         return false;
-    }
-
-    @Override
-    public CallContract evalContract() {
-        return CallContract.unknown();
     }
 
     public Val operationVal(RtEnv rtEnv, State state) {

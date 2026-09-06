@@ -13,7 +13,6 @@ import org.fw.core.vit.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist;

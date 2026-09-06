@@ -3,7 +3,6 @@ package org.fw.lib.stdlib.state;
 import org.fw.core.FW;
 import org.fw.core.base.Val;
 import org.fw.core.base.BoolFw;
-import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 
@@ -44,11 +43,6 @@ public final class IfOperation extends Operation {
         } else {
             return ifFalse.apply(state);
         }
-    }
-
-    @Override
-    public InvokeContract contract() {
-        return InvokeContract.unknown();
     }
 
     // todo:

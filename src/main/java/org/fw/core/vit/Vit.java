@@ -1,9 +1,7 @@
 package org.fw.core.vit;
 
-import org.fw.core.FW;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.base.contract.CallContract;
 import org.fw.core.state.obj.State;
 
 import static org.fw.core.FW.telephonist;
@@ -27,8 +25,6 @@ public abstract class Vit {
     public abstract boolean isConst();
 
     public abstract boolean isPure();
-
-    public abstract CallContract evalContract();
 
     public Vit call(Vit arg) {
         return call(this, arg);
@@ -68,7 +64,7 @@ public abstract class Vit {
     }
 
     public final Val asLambdaVal() {
-        return FW.telephonist((env) -> State.performAndDie(scope ->
-                this.eval(RtEnv.of(env), scope)), this.evalContract());
+        return telephonist((env) -> State.performAndDie(scope ->
+                this.eval(RtEnv.of(env), scope)));
     }
 }

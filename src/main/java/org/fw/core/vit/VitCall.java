@@ -3,7 +3,6 @@ package org.fw.core.vit;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.expr.CompEnv;
@@ -21,8 +20,8 @@ public final class VitCall extends Vit {
 
     @Override
     public Val eval(RtEnv rtEnv, State state) {
-        if (isConst != null)
-            return isConst;
+        if (isPreDetermied != null)
+            return isPreDetermied;
         return func.eval(rtEnv, state).call(arg.eval(rtEnv, state));
     }
 
@@ -44,9 +43,9 @@ public final class VitCall extends Vit {
 
     private final Vit func;
     private final Vit arg;
-    private final Val isConst;
+    private final boolean isConst;
     private final boolean isPure;
-    private CallContract contract;
+    private final Val isPreDetermied;
 
     private VitCall(Vit func, Vit arg, boolean isConst, boolean isPure) {
         Objects.requireNonNull(func);
@@ -54,10 +53,11 @@ public final class VitCall extends Vit {
         this.func = func;
         this.arg = arg;
         this.isPure = isPure;
+        this.isConst = isConst;
         if (isConst && isPure) {
-            this.isConst = func.eval().call(arg.eval());
+            this.isPreDetermied = func.eval().call(arg.eval());
         } else {
-            this.isConst = null;
+            this.isPreDetermied = null;
         }
 
     }
@@ -71,23 +71,11 @@ public final class VitCall extends Vit {
     }
 
     public boolean isConst() {
-        return isConst != null;
+        return isConst;
     }
 
     public boolean isPure() {
         return isPure;
-    }
-
-    @Override
-    public CallContract evalContract() {
-        if (contract == null) {
-            if (isConst()) {
-                contract = CallContract.constant(this.isConst);
-            } else {
-                contract = CallContract.unknown();
-            }
-        }
-        return contract;
     }
 
     @Override

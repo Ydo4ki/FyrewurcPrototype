@@ -2,7 +2,6 @@ package org.fw.core.state.operation;
 
 import org.fw.core.base.Val;
 import org.fw.core.base.context.RtEnv;
-import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 
@@ -20,11 +19,6 @@ public final class VitOperation extends Operation {
     @Override
     public Val apply(State state) {
         return vit.eval(rtEnv, state);
-    }
-
-    @Override
-    public InvokeContract contract() {
-        return InvokeContract.unknown();
     }
 
     public Vit vit() {

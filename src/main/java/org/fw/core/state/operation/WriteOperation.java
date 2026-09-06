@@ -1,8 +1,6 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.base.Val;
-import org.fw.core.base.contract.InvokeContract;
-import org.fw.core.base.Constraint;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.AtomObj;
@@ -28,10 +26,5 @@ public final class WriteOperation extends Operation {
     public Val apply(State state) {
         obj.write(state, x);
         return Operation.unit;
-    }
-
-    @Override
-    public InvokeContract contract() {
-        return InvokeContract.writesOnly(Constraint.equals(Operation.unit), obj);
     }
 }

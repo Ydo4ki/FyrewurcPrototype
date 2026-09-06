@@ -3,7 +3,6 @@ package org.fw.core;
 import org.fw.core.ast.*;
 import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
-import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.state.OperationFw;
@@ -88,11 +87,6 @@ public final class Tester {
             Val ret = _assert.apply(state);
             if (ret == BoolFw._true) return Operation.unit;
             else throw new AssertionError(_assert + " -> " + ret);
-        }
-
-        @Override
-        public InvokeContract contract() {
-            return InvokeContract.unknown();
         }
     }
 }

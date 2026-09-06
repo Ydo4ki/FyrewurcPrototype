@@ -1,8 +1,6 @@
 package org.fw.core;
 
-import org.fw.core.ast.Expr;
 import org.fw.core.base.*;
-import org.fw.core.base.contract.CallContract;
 import org.fw.lib.stdlib.TypePayloadInfo;
 import org.fw.core.vit.Vit;
 
@@ -13,15 +11,11 @@ public final class FW {
     // I changed my mind (partially)
     public static Val telephonist(String name, Type.TelephonistType.CallFunction call) {
         //        System.out.println("# New Telephonist: " + representation);
-        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call, CallContract.unknown()));
-    }
-
-    public static Val telephonist(Type.TelephonistType.CallFunction call, CallContract contract) {
-        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(null, call, contract));
+        return Val.of(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call));
     }
 
     public static Val telephonist(Type.TelephonistType.CallFunction call) {
-        return telephonist(call, CallContract.unknown());
+        return telephonist(null, call);
     }
 
     public static Val symbol(String value) {

@@ -1,7 +1,6 @@
 package com.ydo4ki.fw.internal.lib.stdlib.state;
 
 import org.fw.core.base.Val;
-import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.StrFw;
@@ -28,11 +27,6 @@ public abstract class SystemOperation extends Operation {
     }
 
     protected abstract Val apply0();
-
-    @Override
-    public InvokeContract contract() {
-        return InvokeContract.unknown();
-    }
 
     public static class FlushOperation extends SystemOperation {
         private final PrintStream out;

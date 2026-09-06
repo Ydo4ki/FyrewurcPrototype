@@ -1,8 +1,6 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.base.Val;
-import org.fw.core.base.contract.InvokeContract;
-import org.fw.core.base.Constraint;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.state.obj.State;
@@ -26,11 +24,6 @@ public final class CreateObjectOperation extends Operation {
             return Operation.unit;
         AtomObj obj = AtomObj.of(initialValue, scope);
         return Val.of(LaserPointerFw.laserPointer, obj);
-    }
-
-    @Override
-    public InvokeContract contract() {
-        return InvokeContract.returnsBrandNew(Constraint.type(LaserPointerFw.laserPointer), true, false);
     }
 
     @Override

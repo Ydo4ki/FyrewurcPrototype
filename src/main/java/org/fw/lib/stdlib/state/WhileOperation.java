@@ -2,7 +2,6 @@ package org.fw.lib.stdlib.state;
 
 import org.fw.core.FW;
 import org.fw.core.base.Val;
-import org.fw.core.base.contract.InvokeContract;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.base.BoolFw;
@@ -36,11 +35,6 @@ public final class WhileOperation extends Operation {
             ret = body.apply(state);
         }
         return ret;
-    }
-
-    @Override
-    public InvokeContract contract() {
-        return InvokeContract.unknown();
     }
 
     // todo:

@@ -1,7 +1,6 @@
 package org.fw.core.base;
 
 import org.fw.core.FW;
-import org.fw.core.base.contract.CallContract;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public final class TelephonistTests {
     @Test
     public void test() {
-        Val v = FW.telephonist(a -> null, CallContract.unknown());
+        Val v = FW.telephonist(a -> null);
         assertEquals(Val.ofTelephonist(2), v.getType().asVal().getType().asVal().getType().asVal());
         assertEquals("Telephonist14", Val.ofTelephonist(14).toString());
         assertEquals("Telephonist2", v.getType().asVal().getType().asVal().getType().toString());

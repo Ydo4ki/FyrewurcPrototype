@@ -1,6 +1,5 @@
 package org.fw.core.base;
 
-import org.fw.core.base.contract.CallContract;
 import org.fw.core.commons.ValAdapter;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.lib.stdlib.expr.CompEnv;
@@ -67,10 +66,6 @@ public final class Val implements ValAdapter {
         return ret;
     }
 
-    public CallContract callContract() {
-        return getType().instanceContract(this);
-    }
-
     public Expr toExpr(CompEnv compEnv) {
         return compEnv.toExpr(this);
     }
@@ -127,7 +122,7 @@ public final class Val implements ValAdapter {
                         return instance.call(cArg); // so here we're going in the opposite direction
                     }
                     return null;
-                }, CallContract.c(arg -> {
+                }/*, CallContract.c(arg -> {
                     if (FwUtils.isTypeApiCall(arg, asType)) {
                         Constraint instance = CallFw.getVal(arg);
                         Constraint cArg = CallFw.getArg(arg);
@@ -135,7 +130,7 @@ public final class Val implements ValAdapter {
                         return instance.call(cArg);
                     }
                     return null;
-                })),
+                })*/),
                 asType
         );
     }
