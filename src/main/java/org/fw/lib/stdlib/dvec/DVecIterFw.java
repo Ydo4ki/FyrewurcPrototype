@@ -8,7 +8,7 @@ import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 
 public final class DVecIterFw {
-    public static final Type dVecIter = FW.telephonist_native_standalone(arg -> {
+    public static final Type dVecIter = FW.telephonist_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, DVecIterFw.dVecIter)) {
             Val iterTypeInstance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);

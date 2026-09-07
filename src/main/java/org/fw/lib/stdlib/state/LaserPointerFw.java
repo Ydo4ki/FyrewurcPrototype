@@ -12,7 +12,7 @@ import org.fw.core.util.FwUtils;
 
 public final class LaserPointerFw {
     // todo: make them predetermined for each scope, otherwise its possible to do a(b) != a(b)
-    public static final Type laserPointer = FW.telephonist_native_standalone("LaserPointer", (arg) -> {
+    public static final Type laserPointer = FW.telephonist_native("LaserPointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, LaserPointerFw.laserPointer)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -27,7 +27,7 @@ public final class LaserPointerFw {
                     case "read":
                         return Operation.read((AtomObj) obj).asVal();
                     case "write":
-                        return FW.telephonist_native_standalone((arg1) -> Operation.write((AtomObj) obj, arg1).asVal());
+                        return FW.telephonist_native((arg1) -> Operation.write((AtomObj) obj, arg1).asVal());
                 }
             }
             return null;

@@ -8,7 +8,7 @@ import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 
 public final class TypePayloadInfo {
-    public static final Type typePayloadInfo = FW.telephonist_native_standalone(arg -> {
+    public static final Type typePayloadInfo = FW.telephonist_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, TypePayloadInfo.typePayloadInfo)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);

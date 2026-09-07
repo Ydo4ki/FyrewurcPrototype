@@ -20,7 +20,7 @@ import static org.fw.core.FW.symbol;
 public final class DeclarationFw {
 
     // I hope it will be possible to make it a struct later
-    public static final Type declaration = FW.telephonist_native_standalone("Declaration", (arg) -> {
+    public static final Type declaration = FW.telephonist_native("Declaration", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DeclarationFw.declaration)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -32,8 +32,8 @@ public final class DeclarationFw {
                 return decl.constraint();
             }
         } else if (arg.equalsSymbol("builder")) {
-            return FW.telephonist_native_standalone("Declaration.builder", (key) -> {
-                return FW.telephonist_native_standalone("(call Declaration.builder " + key + ")", (constraint) -> {
+            return FW.telephonist_native("Declaration.builder", (key) -> {
+                return FW.telephonist_native("(call Declaration.builder " + key + ")", (constraint) -> {
                             if (!ConstraintFw.isConstraint(constraint))
                                 return null;
 
@@ -108,7 +108,7 @@ public final class DeclarationFw {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -123,7 +123,7 @@ public final class DeclarationFw {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val == DeclarationFw.declaration.asVal()) {
-                return FW.telephonist_native_standalone(c -> {
+                return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
                     Val[] args = c._UNPACK_();

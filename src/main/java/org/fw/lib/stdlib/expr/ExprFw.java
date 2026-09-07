@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native_standalone;
+import static org.fw.core.FW.telephonist_native;
 
 public final class ExprFw {
-    public static final Val symbolConstructor = FW.telephonist_native_standalone("stringToSymbol", (arg1) -> {
+    public static final Val symbolConstructor = FW.telephonist_native("stringToSymbol", (arg1) -> {
         if (!arg1.getType().equals(StrFw.str))
             return null;
 
@@ -33,14 +33,14 @@ public final class ExprFw {
         return null;
     });
 
-    public static final Val symbolToString = FW.telephonist_native_standalone("symbolToString", (arg) -> {
+    public static final Val symbolToString = FW.telephonist_native("symbolToString", (arg) -> {
         if (arg.getType() == SymbolFw.symbol) {
             return StrFw.str(arg._UNPACK_(Symbol.class).getValue());
         }
         return null;
     });
 
-    public static final Type exprList = FW.telephonist_native_standalone("ExprList", (arg0) -> {
+    public static final Type exprList = FW.telephonist_native("ExprList", (arg0) -> {
         // unknown property
         // out of range
         // out of range
@@ -76,12 +76,12 @@ public final class ExprFw {
                 return null; // unknown property
             }).handle(instance1, symbol1);
         }
-        return ((Type.TelephonistType.StandaloneNativeCallFunction) (arg) -> {
+        return ((Type.TelephonistType.NativeCallFunction) (arg) -> {
             if (arg.equalsSymbol("construct")) {
-                return FW.telephonist_native_standalone("ExprList.constructor", (bt) -> {
+                return FW.telephonist_native("ExprList.constructor", (bt) -> {
                     if (!bt.getType().equals(ExprFw.bracketsType))
                         return null;
-                    return FW.telephonist_native_standalone((valuesDvec) -> {
+                    return FW.telephonist_native((valuesDvec) -> {
                         if (!valuesDvec.getType().equals(DVecFw.dVec))
                             return null;
 
@@ -105,15 +105,15 @@ public final class ExprFw {
         }).call(arg0);
     }).asType(); // bruh
     public static final Val isExpr = ConstraintFw.constraint(
-            Vit.val(FW.telephonist_native_standalone(a -> BoolFw.wrap(isExpr(a)))).call(Vit.var)
+            Vit.val(FW.telephonist_native(a -> BoolFw.wrap(isExpr(a)))).call(Vit.var)
     );
     @Deprecated
     public static final Val isExprBugged = ConstraintFw.constraint(
-            Vit.val(FW.telephonist_native_standalone(passingArg
+            Vit.val(FW.telephonist_native(passingArg
                     -> BoolFw.wrap(!passingArg.getType().equals(SymbolFw.symbol) && !passingArg.getType().equals(exprList))))
     );
 
-    public static final Type bracketsType = FW.telephonist_native_standalone("BracketsType", (arg) -> {
+    public static final Type bracketsType = FW.telephonist_native("BracketsType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ExprFw.bracketsType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -156,7 +156,7 @@ public final class ExprFw {
         return val.getType().equals(exprList) || val.getType().equals(SymbolFw.symbol);
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
@@ -207,7 +207,7 @@ public final class ExprFw {
         return null;
     }));
 
-    public static final CompEnv esast2exprCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv esast2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");

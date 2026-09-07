@@ -13,7 +13,7 @@ import static org.fw.core.FW.*;
 // what do i need to remember
 // aaioasopdiou when was this even written
 public final class CallFw {
-    public static final Type call_t = telephonist_native_standalone("Call", (arg) -> {
+    public static final Type call_t = telephonist_native("Call", (arg) -> {
         if (arg.getType().equals(CallFw.call_t)) {
             // native
             CallFw.CallRecord call = arg._UNPACK_();
@@ -24,7 +24,7 @@ public final class CallFw {
             if (cArg.equalsSymbol("val")) return meCall.val();
         }
         else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native_standalone("Call.construct", (func) -> FW.telephonist_native_standalone((argument) -> fwCall(func, argument)));
+            return FW.telephonist_native("Call.construct", (func) -> FW.telephonist_native((argument) -> fwCall(func, argument)));
         }
         return null;
     }).asType();

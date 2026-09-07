@@ -6,10 +6,10 @@ import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.telephonist_native_standalone;
+import static org.fw.core.FW.telephonist_native;
 
 public final class DVecBuilderFw {
-    public static final Type dVecBuilder = FW.telephonist_native_standalone("DVecBuilder", (arg) -> {
+    public static final Type dVecBuilder = FW.telephonist_native("DVecBuilder", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DVecBuilderFw.dVecBuilder)) {
             Val instance = (Val) CallFw.getVal(arg);
             Val cArg = (Val) CallFw.getArg(arg);
@@ -22,7 +22,7 @@ public final class DVecBuilderFw {
 
     public static final Val emptyBuilder = Val._NEW_INSTANCE_(dVecBuilder, new Val[0]);
 
-    public static final Val dvecbf = FW.telephonist_native_standalone("dvecbf", (arg) -> {
+    public static final Val dvecbf = FW.telephonist_native("dvecbf", (arg) -> {
         if (arg.getType() == dVecBuilder) {
             return Val._NEW_INSTANCE_(DVecFw.dVec, arg._UNPACK_());
         }

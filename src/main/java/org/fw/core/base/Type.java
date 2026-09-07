@@ -99,11 +99,7 @@ public abstract class Type implements ValAdapter {
         }
 
         public interface NativeCallFunction {
-            Value call(Val arg) throws Exception; // demands a concrete parameter, but may depend on some other abstract Value
-        }
-
-        public interface StandaloneNativeCallFunction {
-            Val call(Val arg) throws Exception;
+            Value call(Val arg) throws Exception;
         }
 
         public interface CallFunction {

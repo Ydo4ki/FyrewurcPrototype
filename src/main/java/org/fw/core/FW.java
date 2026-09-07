@@ -1,7 +1,5 @@
 package org.fw.core;
 
-import org.fw.core.abstrait.TypedValue;
-import org.fw.core.abstrait.Value;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.TypePayloadInfo;
 import org.fw.core.vit.Vit;
@@ -19,44 +17,7 @@ public final class FW {
         return telephonist(null, call);
     }
 
-    public static Value telephonist_native(Type.TelephonistType.NativeCallFunction call) {
-        return telephonist_native(null, call);
-    }
-
-    public static Value telephonist_native(String name, Type.TelephonistType.NativeCallFunction call) {
-        return new TypedValue() {
-
-            @Override
-            public Value call(Value value) {
-                if (!(value instanceof Val))
-                    return null;
-                try {
-                    return call.call((Val) value);
-                } catch (NativeExecutionException e) {
-                    throw e;
-                } catch (Exception e) {
-                    throw new NativeExecutionException(e);
-                }
-            }
-
-            @Override
-            public Type getType() {
-                return Val.ofTelephonist(0).asType();
-            }
-
-            @Override
-            public boolean impliesEquality(Val val) {
-                return false;
-            }
-
-            @Override
-            public String toString() {
-                return name == null ? super.toString() : name;
-            }
-        };
-    }
-
-    public static Val telephonist_native_standalone(String name, Type.TelephonistType.StandaloneNativeCallFunction call) {
+    public static Val telephonist_native(String name, Type.TelephonistType.NativeCallFunction call) {
         return telephonist(name, arg -> {
             try {
                 return call.call((Val)arg);
@@ -69,8 +30,8 @@ public final class FW {
     }
 
     @Deprecated
-    public static Val telephonist_native_standalone(Type.TelephonistType.StandaloneNativeCallFunction call) {
-        return telephonist_native_standalone(null, call);
+    public static Val telephonist_native(Type.TelephonistType.NativeCallFunction call) {
+        return telephonist_native(null, call);
     }
 
     public static Val symbol(String value) {

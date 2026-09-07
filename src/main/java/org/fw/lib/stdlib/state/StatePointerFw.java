@@ -10,7 +10,7 @@ import org.fw.core.state.operation.GetLocalStateOperation;
 import org.fw.core.util.FwUtils;
 
 public final class StatePointerFw {
-    public static final Type statePointer = FW.telephonist_native_standalone("StatePointer", (arg) -> {
+    public static final Type statePointer = FW.telephonist_native("StatePointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StatePointerFw.statePointer)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);

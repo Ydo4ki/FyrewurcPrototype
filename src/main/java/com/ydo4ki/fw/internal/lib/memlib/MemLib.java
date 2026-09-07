@@ -23,7 +23,7 @@ import java.util.BitSet;
 import static org.fw.core.FW.symbol;
 
 public final class MemLib {
-    public static final Val parseReifiedBits = FW.telephonist_native_standalone((arg) -> {
+    public static final Val parseReifiedBits = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
@@ -75,7 +75,7 @@ public final class MemLib {
         return null;
     });
 
-    public static final Val constructReifiedType = FW.telephonist_native_standalone((arg) -> {
+    public static final Val constructReifiedType = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");

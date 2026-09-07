@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.WeakHashMap;
 
 public final class ReifiedTypeFw {
-    public static final Type reifiedType = FW.telephonist_native_standalone(arg -> {
+    public static final Type reifiedType = FW.telephonist_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, ReifiedTypeFw.reifiedType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -40,14 +40,14 @@ public final class ReifiedTypeFw {
         } else if (arg.getType() == SymbolFw.symbol) {
             String v = arg._UNPACK_().toString();
             if (v.equals("builder"))
-                return FW.telephonist_native_standalone(atomType -> FW.telephonist_native_standalone(size0 -> {
+                return FW.telephonist_native(atomType -> FW.telephonist_native(size0 -> {
                     if (size0.getType().equals(DIntFw.dint)) {
                         int size = DIntFw.unwrap0(size0).intValueExact();
                         return reifiedType(atomType.asType(), size).asVal();
                     }
                     return null;
                 }));
-            else if (v.equals("fn-call")) return FW.telephonist_native_standalone(arg1 -> {
+            else if (v.equals("fn-call")) return FW.telephonist_native(arg1 -> {
                 if (arg1.getType() != DVecFw.dVec)
                     return null;
 
@@ -157,7 +157,7 @@ public final class ReifiedTypeFw {
     }
 
 
-    private static final Type rtBuilder = FW.telephonist_native_standalone(arg -> {
+    private static final Type rtBuilder = FW.telephonist_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, ReifiedTypeFw.rtBuilder)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);

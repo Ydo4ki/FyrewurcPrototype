@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class JClassFw {
-    public static final Type jClass = FW.telephonist_native_standalone((arg) -> {
+    public static final Type jClass = FW.telephonist_native((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JClassFw.jClass)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -29,10 +29,10 @@ public final class JClassFw {
 
             switch (arg._UNPACK_(Symbol.class).getValue()) {
                 case "get-static-method": {
-                    return FW.telephonist_native_standalone(nameV -> {
+                    return FW.telephonist_native(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._UNPACK_();
-                        return FW.telephonist_native_standalone(arg1 -> {
+                        return FW.telephonist_native(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._UNPACK_();
 
@@ -46,7 +46,7 @@ public final class JClassFw {
                     });
                 }
                 case "get-constructor": {
-                    return FW.telephonist_native_standalone(arg1 -> {
+                    return FW.telephonist_native(arg1 -> {
                         if (!arg1.getType().equals(StrFw.str)) return null;
                         String descriptor = arg1._UNPACK_();
 
@@ -59,10 +59,10 @@ public final class JClassFw {
                     });
                 }
                 case "get-static-getter": {
-                    return FW.telephonist_native_standalone(nameV -> {
+                    return FW.telephonist_native(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._UNPACK_();
-                        return FW.telephonist_native_standalone(arg1 -> {
+                        return FW.telephonist_native(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._UNPACK_();
                             try {
@@ -75,10 +75,10 @@ public final class JClassFw {
                     });
                 }
                 case "get-static-setter": {
-                    return FW.telephonist_native_standalone(nameV -> {
+                    return FW.telephonist_native(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._UNPACK_();
-                        return FW.telephonist_native_standalone(arg1 -> {
+                        return FW.telephonist_native(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._UNPACK_();
                             try {
@@ -116,7 +116,7 @@ public final class JClassFw {
                     return wrap(cls.getComponentType());
                 }
                 case "is-assignable-from": {
-                    return FW.telephonist_native_standalone(b -> {
+                    return FW.telephonist_native(b -> {
                         if (b.getType() != JClassFw.jClass) return null;
                         return BoolFw.wrap(cls.isAssignableFrom(b._UNPACK_(Class.class)));
                     });

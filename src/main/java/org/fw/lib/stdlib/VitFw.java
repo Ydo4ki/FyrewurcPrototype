@@ -18,7 +18,7 @@ import static org.fw.core.FW.symbol;
 
 public final class VitFw {
 
-    public static final Type vitVal = FW.telephonist_native_standalone("VitVal", (arg0)
+    public static final Type vitVal = FW.telephonist_native("VitVal", (arg0)
             -> {
         if (FwUtils.isTypeApiCall(arg0, VitFw.vitVal)) {
             Val instance2 = (Val) CallFw.getVal(arg0);
@@ -35,12 +35,12 @@ public final class VitFw {
             }
         }
         if (arg0.equalsSymbol("construct")) {
-            return FW.telephonist_native_standalone("VitVal.construct", (arg) -> wrap(Vit.val(arg)));
+            return FW.telephonist_native("VitVal.construct", (arg) -> wrap(Vit.val(arg)));
         }
         return null;
     }).asType();
 
-    public static final Type vitInvoke = FW.telephonist_native_standalone("VitInvoke", (arg0)
+    public static final Type vitInvoke = FW.telephonist_native("VitInvoke", (arg0)
             -> {
         if (FwUtils.isTypeApiCall(arg0, VitFw.vitInvoke)) {
             Val instance2 = (Val) CallFw.getVal(arg0);
@@ -57,7 +57,7 @@ public final class VitFw {
             }
         }
         if (arg0.equalsSymbol("construct")) {
-            return FW.telephonist_native_standalone("VitInvoke.construct", (arg) -> {
+            return FW.telephonist_native("VitInvoke.construct", (arg) -> {
                     if (!VitFw.isVit(arg.getType()))
                         return null;
 
@@ -69,7 +69,7 @@ public final class VitFw {
         return null;
     }).asType();
 
-    public static final Type vitVar = FW.telephonist_native_standalone("VitVar", (arg0)
+    public static final Type vitVar = FW.telephonist_native("VitVar", (arg0)
             -> {//        case "key":
 //            return ((VitVar) instance._unpack()).key();
         //        case "key":
@@ -94,7 +94,7 @@ public final class VitFw {
         return null;
     }).asType();
 
-    public static final Type vitCall = FW.telephonist_native_standalone("VitCall", (arg0)
+    public static final Type vitCall = FW.telephonist_native("VitCall", (arg0)
             -> {
         if (FwUtils.isTypeApiCall(arg0, VitFw.vitCall)) {
             Val instance2 = (Val) CallFw.getVal(arg0);
@@ -113,12 +113,12 @@ public final class VitFw {
             }
         }
         if (arg0.equalsSymbol("builder")) {
-            return FW.telephonist_native_standalone("VitCall.builder", (func) -> {
+            return FW.telephonist_native("VitCall.builder", (func) -> {
                 if (!isVit(func.getType())) {
                     return null;
                 }
 
-                return FW.telephonist_native_standalone((arg) -> {
+                return FW.telephonist_native((arg) -> {
                     if (!isVit(arg.getType())) {
                         return null;
                     }
@@ -133,7 +133,7 @@ public final class VitFw {
         return null;
     }).asType();
 
-    public static final CompEnv vit2exprCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv vit2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -160,7 +160,7 @@ public final class VitFw {
         return null;
     }));
 
-    public static final Val evalVit = FW.telephonist_native_standalone("eval-vit", (arg) -> {
+    public static final Val evalVit = FW.telephonist_native("eval-vit", (arg) -> {
         if (isVit(arg.getType())) {
             Vit vit = arg._UNPACK_();
             return vit.asLambdaVal();
@@ -168,16 +168,16 @@ public final class VitFw {
         return null;
     });
 
-    public static final Val simplify = FW.telephonist_native_standalone("vit-simplify", (arg) -> {
+    public static final Val simplify = FW.telephonist_native("vit-simplify", (arg) -> {
         if (VitFw.isVit(arg.getType())) {
             return VitFw.wrap(VitUtils.simplify(arg._UNPACK_()));
         }
         return null;
     });
 
-    public static final Val reduce = FW.telephonist_native_standalone("vit-reduce", (arg) -> {
+    public static final Val reduce = FW.telephonist_native("vit-reduce", (arg) -> {
         if (VitFw.isVit(arg.getType())) {
-            return FW.telephonist_native_standalone(env
+            return FW.telephonist_native(env
                     -> VitFw.wrap(VitUtils.reduce(arg._UNPACK_(), env))); // thx java
         }
         return null;
@@ -251,7 +251,7 @@ public final class VitFw {
         throw new VitCompilationException(expr);
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

@@ -9,7 +9,7 @@ import java.util.Objects;
 @Deprecated // todo: replace with other implementations of value
 public final class Unspecified {
     public static final Val isUnspecified = FwUtils.valify(Unspecified::isUnspecified);
-    private static final Type unspecified_t = FW.telephonist_native_standalone((arg) -> {
+    private static final Type unspecified_t = FW.telephonist_native((arg) -> {
         if (FwUtils.isTypeApiCall(arg, Unspecified.unspecified_t)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -18,16 +18,16 @@ public final class Unspecified {
             String v = arg._UNPACK_().toString();
             switch (v) {
                 case "builder":
-                    return FW.telephonist_native_standalone("Unspecified.builder",
-                            (func) -> FW.telephonist_native_standalone((argument) -> unspecified(func, argument)));
+                    return FW.telephonist_native("Unspecified.builder",
+                            (func) -> FW.telephonist_native((argument) -> unspecified(func, argument)));
                 case "val":
-                    return FW.telephonist_native_standalone(unspecified -> {
+                    return FW.telephonist_native(unspecified -> {
                         if (isUnspecified(unspecified))
                             return unspecified._UNPACK_(UnspecifiedRecord.class).val();
                         return null;
                     });
                 case "arg":
-                    return FW.telephonist_native_standalone(unspecified -> {
+                    return FW.telephonist_native(unspecified -> {
                         if (isUnspecified(unspecified))
                             return unspecified._UNPACK_(UnspecifiedRecord.class).arg();
                         return null;

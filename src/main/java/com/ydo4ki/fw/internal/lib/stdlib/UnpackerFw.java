@@ -5,7 +5,7 @@ import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
 final class UnpackerFw {
-    public static final Type unpacker = FW.telephonist_native_standalone("Unpacker", (arg) -> {
+    public static final Type unpacker = FW.telephonist_native("Unpacker", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, UnpackerFw.unpacker)) {
             Val instance = (Val) CallFw.getVal(arg);
             Val cArg = (Val) CallFw.getArg(arg);

@@ -23,7 +23,7 @@ import static org.fw.core.FW.symbol;
 
 // so should the order of fields matter or not?
 public final class StructFw {
-    public static final Type struct = FW.telephonist_native_standalone("Struct", (arg) -> {
+    public static final Type struct = FW.telephonist_native("Struct", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.struct)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -41,7 +41,7 @@ public final class StructFw {
                 return DVecFw.vec(struct.fields);
             }
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native_standalone("Struct.construct", (payload) -> {
+            return FW.telephonist_native("Struct.construct", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
                 Val[] fields = payload._UNPACK_();
@@ -135,7 +135,7 @@ public final class StructFw {
         return Val._NEW_INSTANCE_(structBuilder, new StructBuilder(struct, sameStructButItsAVal, new Val[0]));
     }
 
-    private static final Type structBuilder = FW.telephonist_native_standalone("StructBuilder", (arg) -> {
+    private static final Type structBuilder = FW.telephonist_native("StructBuilder", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.structBuilder)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -156,7 +156,7 @@ public final class StructFw {
     }).asType();
 
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -172,7 +172,7 @@ public final class StructFw {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val == struct.asVal()) {
-                return FW.telephonist_native_standalone(c -> {
+                return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
                     Val[] args = c._UNPACK_();
@@ -186,7 +186,7 @@ public final class StructFw {
                 });
             } else if (val.getType() == struct) {
                 int len = val._UNPACK_(Struct.class).fields.length;
-                return FW.telephonist_native_standalone(c -> {
+                return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
                     Val[] args = c._UNPACK_();

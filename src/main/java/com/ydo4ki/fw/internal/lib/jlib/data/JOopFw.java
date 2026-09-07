@@ -16,7 +16,7 @@ import org.fw.core.util.FwUtils;
 import java.lang.invoke.MethodType;
 
 public final class JOopFw {
-    public static final Type jOop = FW.telephonist_native_standalone((arg) -> {
+    public static final Type jOop = FW.telephonist_native((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JOopFw.jOop)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -28,10 +28,10 @@ public final class JOopFw {
 
             switch (arg._UNPACK_(Symbol.class).getValue()) {
                 case "get-method": {
-                    return FW.telephonist_native_standalone(nameV -> {
+                    return FW.telephonist_native(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._UNPACK_();
-                        return FW.telephonist_native_standalone(arg1 -> {
+                        return FW.telephonist_native(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._UNPACK_();
 

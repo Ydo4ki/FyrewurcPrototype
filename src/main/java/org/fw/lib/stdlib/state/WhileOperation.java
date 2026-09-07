@@ -7,14 +7,14 @@ import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.base.BoolFw;
 
-import static org.fw.core.FW.telephonist_native_standalone;
+import static org.fw.core.FW.telephonist_native;
 
 public final class WhileOperation extends Operation {
-    public static final Val _While = FW.telephonist_native_standalone((condition) -> {
+    public static final Val _While = FW.telephonist_native((condition) -> {
         if (condition.getType() != OperationFw.operation)
             return null;
 
-        return FW.telephonist_native_standalone((body) -> {
+        return FW.telephonist_native((body) -> {
             if (body.getType() != OperationFw.operation)
                 return null;
 

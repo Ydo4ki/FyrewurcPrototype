@@ -5,7 +5,7 @@ import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
 public final class ChainResolveFw {
-    public static final Type chainResolveType = FW.telephonist_native_standalone("ChainResolveType", (arg) -> {
+    public static final Type chainResolveType = FW.telephonist_native("ChainResolveType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ChainResolveFw.chainResolveType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -23,18 +23,18 @@ public final class ChainResolveFw {
                     return cr.chain();
                 }
             } else if (arg.equalsSymbol("builder")) {
-                return FW.telephonist_native_standalone((passingArg) -> {
+                return FW.telephonist_native((passingArg) -> {
                     if (constraint.get("check").call(passingArg) != BoolFw._true)
                         return null;
 
-                    return FW.telephonist_native_standalone((chain) -> {
+                    return FW.telephonist_native((chain) -> {
                         return Val._NEW_INSTANCE_(type, new ChainResolve(passingArg, chain));
                     });
                 });
             }
             return null;
         } else if (arg.equalsSymbol("builder")) {
-            return FW.telephonist_native_standalone((constraint) -> {
+            return FW.telephonist_native((constraint) -> {
                 if (!ConstraintFw.isConstraint(constraint))
                     return null;
 

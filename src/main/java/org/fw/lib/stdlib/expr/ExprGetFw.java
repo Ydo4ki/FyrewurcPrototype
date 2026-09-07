@@ -15,7 +15,7 @@ import org.fw.core.vit.VitCompilationException;
 import static org.fw.core.FW.symbol;
 
 public final class ExprGetFw {
-    public static final Val getterCEnv = FW.telephonist_native_standalone("dot-getters-cenv-fw", (arg) -> {
+    public static final Val getterCEnv = FW.telephonist_native("dot-getters-cenv-fw", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

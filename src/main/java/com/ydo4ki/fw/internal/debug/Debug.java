@@ -14,7 +14,7 @@ public final class Debug {
 //            DeclaredFw.declared(symbol("val2oop"), FW.telephonist((arg) -> {
 //                return Val.of(JOopFw.jOop, arg);
 //            })),
-            DeclaredFw.declared(symbol("Print"), FW.telephonist_native_standalone((arg) -> {
+            DeclaredFw.declared(symbol("Print"), FW.telephonist_native((arg) -> {
                 System.out.println("# " + arg);
                 return Operation.unit;
             }))

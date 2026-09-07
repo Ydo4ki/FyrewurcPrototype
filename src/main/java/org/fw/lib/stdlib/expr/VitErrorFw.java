@@ -19,7 +19,7 @@ public final class VitErrorFw {
         return vitError.get("builder").call(ExprFw.wrap(expr)).call(StrFw.str(message));
     }
 
-    public static final Val cantResolveAnythingCenv = FW.telephonist_native_standalone((arg) -> {
+    public static final Val cantResolveAnythingCenv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

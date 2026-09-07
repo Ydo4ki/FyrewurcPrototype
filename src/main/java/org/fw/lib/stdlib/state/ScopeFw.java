@@ -18,7 +18,7 @@ public final class ScopeFw {
         //                    return _Constraint.free; // (isSpecified) todo: unify those existing constraints
         //                }
         //            }
-        scopePointer = FW.telephonist_native_standalone((arg) -> {
+        scopePointer = FW.telephonist_native((arg) -> {
             if (FwUtils.isTypeApiCall(arg, ScopeFw.scopePointer)) {
                 Val instance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);
@@ -31,7 +31,7 @@ public final class ScopeFw {
                         case "owner":
                             return obj.partOf().asVal();
                         case "new":
-                            return FW.telephonist_native_standalone(value -> new CreateObjectOperation(obj, value).asVal());
+                            return FW.telephonist_native(value -> new CreateObjectOperation(obj, value).asVal());
                     }
                 }
                 return null;

@@ -15,10 +15,10 @@ import org.fw.core.vit.VitUtils;
 import org.fw.core.vit.VitVal;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native_standalone;
+import static org.fw.core.FW.telephonist_native;
 
 public final class UseFw {
-    public static final Val useDirectivesCenv = FW.telephonist_native_standalone((arg) -> {
+    public static final Val useDirectivesCenv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

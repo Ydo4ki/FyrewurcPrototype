@@ -29,19 +29,19 @@ public final class JVMHandles {
     public static final Val jvmEnv = ModuleFw.module(
             // let's just assume find-X is an operation and get-X is pure
             // that would be more intuitive
-            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist_native_standalone((arg) -> {
+            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String string = arg._UNPACK_();
                 return jwrap(string, String.class);
             })),
-            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist_native_standalone((arg) -> {
+            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(JOopFw.jOop) || !(arg._UNPACK_() instanceof String))
                     return null;
                 String string = arg._UNPACK_();
                 return StrFw.str(string);
             })),
-            DeclaredFw.declared(symbol("find-type"), FW.telephonist_native_standalone((arg) -> {
+            DeclaredFw.declared(symbol("find-type"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();
@@ -53,7 +53,7 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist_native_standalone((arg) -> {
+            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();
@@ -75,7 +75,7 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist_native_standalone((arg) -> {
+            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();
@@ -88,7 +88,7 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist_native_standalone((arg) -> {
+            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();

@@ -11,7 +11,7 @@ import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 import java.util.function.LongBinaryOperator;
 
 public final class JLongFw {
-    public static final Type jlong = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
+    public static final Type jlong = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
         Long value = unwrap(rawPayload);
         if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._UNPACK_(Symbol.class).getValue();
@@ -37,10 +37,10 @@ public final class JLongFw {
             }
         }
         return null;
-    }))), FW.telephonist_native_standalone(arg -> null));
+    }))), FW.telephonist_native(arg -> null));
 
     private static Val bopLIL(Long value, LongIntLongOperator operator) {
-        return FW.telephonist_native_standalone((arg1) -> {
+        return FW.telephonist_native((arg1) -> {
             if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = JIntFw.unwrap(arg1);
                 return wrap(operator.apply(value, v2));
@@ -54,7 +54,7 @@ public final class JLongFw {
     }
 
     private static Val bopLLL(Long value, LongBinaryOperator operator) {
-        return FW.telephonist_native_standalone((arg1) -> {
+        return FW.telephonist_native((arg1) -> {
             if (arg1.getType().equals(JLongFw.jlong)) {
                 Long v2 = unwrap(arg1);
                 return wrap(operator.applyAsLong(value, v2));

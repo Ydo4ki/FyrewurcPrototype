@@ -17,21 +17,21 @@ import org.fw.lib.stdlib.expr.VitErrorFw;
 import org.fw.lib.stdlib.state.array.WidePointerFw;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native_standalone;
+import static org.fw.core.FW.telephonist_native;
 
 public final class OperationFw {
 
-    public static final Type operation = FW.telephonist_native_standalone("Operation", (arg) -> {
+    public static final Type operation = FW.telephonist_native("Operation", (arg) -> {
         return null;
     }).asType();
 
-    public static final Val _VitOperation = FW.telephonist_native_standalone((arg) -> {
+    public static final Val _VitOperation = FW.telephonist_native((arg) -> {
         if (!VitFw.isVit(arg.getType()))
             return null;
 
         Vit vit = arg._UNPACK_();
 
-        return FW.telephonist_native_standalone((rtEnv) -> Operation.vit(vit, rtEnv).asVal());
+        return FW.telephonist_native((rtEnv) -> Operation.vit(vit, rtEnv).asVal());
     });
     public static Val wrap(Operation operation) {
         if (operation == null) return null;
@@ -45,7 +45,7 @@ public final class OperationFw {
     }
 
 
-    public static final Val directivesCenv = FW.telephonist_native_standalone((arg) -> {
+    public static final Val directivesCenv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

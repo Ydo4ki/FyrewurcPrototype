@@ -59,7 +59,7 @@ public class Main {
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
                         DeclaredFw.declared(symbol("_CurrentTimeMillis"), SystemOperation.currentTimeMillis.asVal()),
                         DeclaredFw.declared(symbol("_NanoTime"), SystemOperation.nanoTime.asVal()),
-                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist_native_standalone((arg) -> {
+                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist_native((arg) -> {
                             if (arg.getType() != DIntFw.dint)
                                 return null;
 
@@ -97,7 +97,7 @@ public class Main {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");

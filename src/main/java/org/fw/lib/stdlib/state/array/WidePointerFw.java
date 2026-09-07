@@ -9,11 +9,11 @@ import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.telephonist_native_standalone;
+import static org.fw.core.FW.telephonist_native;
 
 @Deprecated
 public final class WidePointerFw {
-    public static final Type widePointer = FW.telephonist_native_standalone("WidePointer", (arg) -> {
+    public static final Type widePointer = FW.telephonist_native("WidePointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, WidePointerFw.widePointer)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -33,7 +33,7 @@ public final class WidePointerFw {
         return null;
     }).asType();
 
-    public static final Val _CreateNewArrayOperation = FW.telephonist_native_standalone(size -> FW.telephonist_native_standalone(init -> {
+    public static final Val _CreateNewArrayOperation = FW.telephonist_native(size -> FW.telephonist_native(init -> {
         return new CreateArrayOperation(
                 DIntFw.unwrap(size).intValueExact(),
                 i -> {

@@ -19,9 +19,9 @@ import static org.fw.core.FW.symbol;
 
 // for things like CompEnv
 public final class ChainLinkFw {
-    public static final Type chainLinkType = FW.telephonist_native_standalone((arg) -> {
+    public static final Type chainLinkType = FW.telephonist_native((arg) -> {
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native_standalone((arg1) -> {
+            return FW.telephonist_native((arg1) -> {
                 if (!ConstraintFw.isConstraint(arg1))
                     return null;
 
@@ -51,8 +51,8 @@ public final class ChainLinkFw {
 //
 //                }
             } else if (arg.equalsSymbol("builder")) {
-                return FW.telephonist_native_standalone("*.builder", (resolver) -> {
-                    return FW.telephonist_native_standalone((parentCEnv) -> {
+                return FW.telephonist_native("*.builder", (resolver) -> {
+                    return FW.telephonist_native((parentCEnv) -> {
                         return Val._NEW_INSTANCE_(type, new ChainLinkFw.ChainLinkRecord(resolver, parentCEnv));
                     });
                 });

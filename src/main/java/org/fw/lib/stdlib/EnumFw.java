@@ -16,7 +16,7 @@ import java.util.List;
 import static org.fw.core.FW.symbol;
 
 public final class EnumFw {
-    public static final Type enumeration = FW.telephonist_native_standalone("Enum", (arg) -> {
+    public static final Type enumeration = FW.telephonist_native("Enum", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, EnumFw.enumeration)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -27,7 +27,7 @@ public final class EnumFw {
             return null;
         }
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native_standalone("Enum.construct", (payload) -> {
+            return FW.telephonist_native("Enum.construct", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
                 Val[] keys = payload._UNPACK_();

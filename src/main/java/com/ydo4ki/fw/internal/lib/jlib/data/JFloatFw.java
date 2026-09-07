@@ -9,7 +9,7 @@ import org.fw.lib.stdlib.WrapperTypeFw;
 import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 
 public final class JFloatFw {
-    public static final Type jfloat = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
+    public static final Type jfloat = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
         Float value = unwrap(rawPayload);
         if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = arg._UNPACK_(Symbol.class).getValue();
@@ -23,10 +23,10 @@ public final class JFloatFw {
             }
         }
         return null;
-    }))), FW.telephonist_native_standalone(arg -> null));
+    }))), FW.telephonist_native(arg -> null));
 
     private static Val bop(Float value, FloatBinaryOperator operator) {
-        return FW.telephonist_native_standalone((arg1) -> {
+        return FW.telephonist_native((arg1) -> {
             if (arg1.getType().equals(JFloatFw.jfloat)) {
                 Float v2 = unwrap(arg1);
                 return wrap(operator.applyAsFloat(value, v2));

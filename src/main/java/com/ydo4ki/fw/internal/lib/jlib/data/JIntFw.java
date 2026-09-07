@@ -11,7 +11,7 @@ import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 import java.util.function.IntBinaryOperator;
 
 public final class JIntFw {
-    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
+    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
         Integer value = unwrap(rawPayload);
         assert value != null;
         if (arg.getType().equals(SymbolFw.symbol)) {
@@ -39,10 +39,10 @@ public final class JIntFw {
             }
         }
         return null;
-    }))), FW.telephonist_native_standalone(arg -> null));
+    }))), FW.telephonist_native(arg -> null));
 
     private static Val bop(Integer value, IntBinaryOperator operator) {
-        return FW.telephonist_native_standalone((arg1) -> {
+        return FW.telephonist_native((arg1) -> {
             if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = unwrap(arg1);
                 return wrap(operator.applyAsInt(value, v2));

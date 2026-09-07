@@ -17,7 +17,7 @@ import org.fw.core.vit.VitUtils;
 import org.fw.lib.stdlib.*;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native_standalone;
+import static org.fw.core.FW.telephonist_native;
 
 public final class DoFw {
     public static final Type unaryStoreType = FW.telephonist((arg) -> {
@@ -29,14 +29,14 @@ public final class DoFw {
         return null;
     }).asType();
 
-    public static final Val usLast = FW.telephonist_native_standalone((arg) -> {
+    public static final Val usLast = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(DoFw.unaryStoreType)) {
             return arg._UNPACK_();
         }
         return null;
     });
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.get("expr");
             Val compEnv = arg.get("comp-env");

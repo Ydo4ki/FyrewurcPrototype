@@ -16,7 +16,7 @@ import static org.fw.core.FW.symbol;
 
 public final class BaseFw {
 
-    private static final Val directivesCenv = FW.telephonist_native_standalone((arg) -> {
+    private static final Val directivesCenv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));

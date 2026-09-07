@@ -13,7 +13,7 @@ import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
 public final class AllocatedMemoryFw {
-    public static final Type allocatedMemory = FW.telephonist_native_standalone("allocatedMemory", arg -> {
+    public static final Type allocatedMemory = FW.telephonist_native("allocatedMemory", arg -> {
         if (FwUtils.isTypeApiCall(arg, AllocatedMemoryFw.allocatedMemory)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -24,7 +24,7 @@ public final class AllocatedMemoryFw {
                 String sym = arg._UNPACK_().toString();
                 switch (sym) {
                     case "put":
-                        return FW.telephonist_native_standalone(arg1 -> {
+                        return FW.telephonist_native(arg1 -> {
                             if (arg1.getType() != JIntFw.jint)
                                 return null;
                             int v = arg1._UNPACK_();

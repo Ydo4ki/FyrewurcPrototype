@@ -10,8 +10,8 @@ public final class EqFw {
     public static final Type eqChecker;
 
     static {
-        eq = FW.telephonist_native_standalone("eq", (arg1) -> Val._NEW_INSTANCE_(EqFw.eqChecker, arg1));
-        eqChecker = FW.telephonist_native_standalone("eqChecker", arg -> {
+        eq = FW.telephonist_native("eq", (arg1) -> Val._NEW_INSTANCE_(EqFw.eqChecker, arg1));
+        eqChecker = FW.telephonist_native("eqChecker", arg -> {
             if (FwUtils.isTypeApiCall(arg, EqFw.eqChecker)) {
                 Val instance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);

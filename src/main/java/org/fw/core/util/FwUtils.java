@@ -77,7 +77,7 @@ public final class FwUtils {
 
         Map<String, Val> defineds = new HashMap<>();
 
-        final Val defined = symbolMapVitEnv(val(FW.telephonist_native_standalone("vals", (arg1) -> {
+        final Val defined = symbolMapVitEnv(val(FW.telephonist_native("vals", (arg1) -> {
             if (!arg1.getType().equals(SymbolFw.symbol))
                 return null;
             String string = arg1._UNPACK_().toString();
@@ -119,7 +119,7 @@ public final class FwUtils {
     }
 
     public static Val valify(Predicate<Val> tester) {
-        return FW.telephonist_native_standalone((arg) -> BoolFw.wrap(tester.test(arg)));
+        return FW.telephonist_native((arg) -> BoolFw.wrap(tester.test(arg)));
     }
 
     public static Vit equals(Vit a, Vit b) {

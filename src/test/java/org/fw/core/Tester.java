@@ -51,7 +51,7 @@ public final class Tester {
     }
 
 
-    public static final CompEnv testDirectivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
+    public static final CompEnv testDirectivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
@@ -67,7 +67,7 @@ public final class Tester {
                     if (!VitFw.isVit(condition.getType()))
                         return condition;
                     Vit vitOperation = Vit.call(OperationFw._VitOperation, condition).call(Vit.var);
-                    Vit assertOperation = Vit.call(FW.telephonist_native_standalone(arg1 ->
+                    Vit assertOperation = Vit.call(FW.telephonist_native(arg1 ->
                             new AssertOperation(arg1._UNPACK_(Operation.class)).asVal()), vitOperation);
                     return VitFw.wrap(Vit.invoke(assertOperation));
                 }
