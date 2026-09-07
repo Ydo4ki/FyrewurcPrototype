@@ -14,9 +14,9 @@ public final class SyntaxResolveFw {
                     String s = arg._UNPACK_().toString();
                     switch (s) {
                         case "expr":
-                            return rawPayload.call(symbol("passing"));
+                            return (Val) rawPayload.call(symbol("passing"));
                         case "comp-env":
-                            return rawPayload.call(symbol("chain"));
+                            return (Val) rawPayload.call(symbol("chain"));
                     }
                 }
                 return null;
@@ -34,10 +34,11 @@ public final class SyntaxResolveFw {
 //    public static final Type toExprResolve = crtcis;
 
     public static final Type toExprResolve = WrapperTypeFw.wrapperType(crtcis,
-            FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(rawPayload::call))), FW.telephonist_native(arg -> {
+            FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> (Val) rawPayload.call(arg)))), FW.telephonist_native(arg -> {
                 if (arg.equalsSymbol("builder")) {
                     return FW.telephonist_native((passingArg) -> {
-                        if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
+                        Val val = ((Val) ConstraintFw.isSpecified.call(symbol("check")));
+                        if ((Val) val.call(passingArg) != BoolFw._true)
                             return null;
 
                         return FW.telephonist_native((chain) -> {
@@ -48,10 +49,11 @@ public final class SyntaxResolveFw {
                 return null;
             }));
     public static final Type toFnResolve = WrapperTypeFw.wrapperType(crtcis,
-            FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(rawPayload::call))), FW.telephonist_native(arg -> {
+            FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> (Val) rawPayload.call(arg)))), FW.telephonist_native(arg -> {
                 if (arg.equalsSymbol("builder")) {
                     return FW.telephonist_native((passingArg) -> {
-                        if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
+                        Val val = ((Val) ConstraintFw.isSpecified.call(symbol("check")));
+                        if ((Val) val.call(passingArg) != BoolFw._true)
                             return null;
 
                         return FW.telephonist_native((chain) -> {

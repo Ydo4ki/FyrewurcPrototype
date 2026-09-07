@@ -37,12 +37,18 @@ public final class IntTypeFw {
                 if (arg.getType() == SymbolFw.symbol) {
                     String s = arg._UNPACK_().toString();
                     switch (s) {
-                        case "neg": return raw_payload.isSigned() ? uop(int_instance, instance.asType(), raw_payload.neg) : null;
-                        case "+": return bop(int_instance, instance.asType(), raw_payload.add);
-                        case "-": return bop(int_instance, instance.asType(), raw_payload.sub);
-                        case "*": return bop(int_instance, instance.asType(), raw_payload.mul);
-                        case "/": return bop(int_instance, instance.asType(), raw_payload.div);
-                        case "%": return bop(int_instance, instance.asType(), raw_payload.mod);
+                        case "neg":
+                            return raw_payload.isSigned() ? uop(int_instance, instance.asType(), raw_payload.neg) : null;
+                        case "+":
+                            return bop(int_instance, instance.asType(), raw_payload.add);
+                        case "-":
+                            return bop(int_instance, instance.asType(), raw_payload.sub);
+                        case "*":
+                            return bop(int_instance, instance.asType(), raw_payload.mul);
+                        case "/":
+                            return bop(int_instance, instance.asType(), raw_payload.div);
+                        case "%":
+                            return bop(int_instance, instance.asType(), raw_payload.mod);
                     }
                 }
 
@@ -54,20 +60,24 @@ public final class IntTypeFw {
                         long bitwidth = raw_payload.getBitWidth();
                         return TypePayloadInfo.wrap(ReifiedTypeFw.reifiedType(BitFw.bit, bitwidth));
                     }
-                    case "bitwidth": return DIntFw.dint(raw_payload.getBitWidth());
-                    case "signedness": return raw_payload.getSign();
-                    case "overflow": return raw_payload.getOverflow();
-                    case "construct": return FW.telephonist_native(arg1 -> {
-                        if (arg1.getType() != DIntFw.dint)
-                            return null;
+                    case "bitwidth":
+                        return DIntFw.dint(raw_payload.getBitWidth());
+                    case "signedness":
+                        return raw_payload.getSign();
+                    case "overflow":
+                        return raw_payload.getOverflow();
+                    case "construct":
+                        return FW.telephonist_native(arg1 -> {
+                            if (arg1.getType() != DIntFw.dint)
+                                return null;
 
-                        BigInteger value = DIntFw.unwrap0(arg1);
-                        int bitwidth = Int.get("bitwidth")._UNPACK_(Number.class).intValue();
+                            BigInteger value = DIntFw.unwrap0(arg1);
+                            int bitwidth = ((Val) Int.get("bitwidth"))._UNPACK_(Number.class).intValue();
 
-                        Bits bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(toBytes(value, bitwidth))), bitwidth);
+                            Bits bits = Bits.of(BitSet.valueOf(MemUtils.reverseBytes(toBytes(value, bitwidth))), bitwidth);
 
-                        return MemUtils.wrap(Int, bits);
-                    });
+                            return MemUtils.wrap(Int, bits);
+                        });
                 }
             }
             return null;
@@ -100,6 +110,7 @@ public final class IntTypeFw {
         Number ret = operator.apply(value);
         return MemUtils.wrap(Int, ret);
     }
+
     private static Val bop(Val instance, Type Int, BinaryOperator<Number> operator) {
         Number value = MemUtils.toBitsAsNumber(instance);
         assert value != null;
@@ -169,7 +180,7 @@ public final class IntTypeFw {
 //            ));
 //        }
 //        if (arg.getType().asVal().getType() == int_t) {
-////            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
+    /// /            return ExprFw.wrap(Symbol.of(MemUtils.toBits(arg).toString()));
 //            Type Int = arg.getType();
 //            byte[] bytes = MemUtils.toBits(arg).toByteArray();
 //            int bitwidth = Int.get("bitwidth")._unpack(Number.class).intValue();

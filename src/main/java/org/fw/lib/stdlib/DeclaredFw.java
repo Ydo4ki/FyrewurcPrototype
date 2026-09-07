@@ -2,6 +2,7 @@ package org.fw.lib.stdlib;
 
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.base.*;
 import org.fw.core.state.operation.Operation;
@@ -66,11 +67,11 @@ public final class DeclaredFw {
     }).asType();
 
     public static Val getKey(Val declared) {
-        return declared.call(symbol("key"));
+        return (Val) declared.call(symbol("key"));
     }
 
     public static Val getValue(Val declared) {
-        return declared.call(symbol("value"));
+        return (Val) declared.call(symbol("value"));
     }
 
 
@@ -130,8 +131,8 @@ public final class DeclaredFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native("DeclaredFw.directivesCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            arg = arg.get("passing");
+            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            arg = (Val) (Val) arg.get("passing");
 
             Type type = arg.getType();
             if (type.equals(declared)) {
@@ -139,8 +140,8 @@ public final class DeclaredFw {
             }
             return null;
         } else if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) (Val) arg.get("passing");
+            Value compEnv = (Val) arg.get("chain");
             if (val == declared.asVal()) {
                 return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
@@ -148,7 +149,8 @@ public final class DeclaredFw {
                     Val[] args = c._UNPACK_();
                     if (args.length > 2)
                         return null;
-                    Val b = declared.asVal().get("builder");
+                    Val val1 = declared.asVal();
+                    Value b = (Val) val1.get("builder");
                     for (Val arg1 : args) {
                         b = b.call(arg1);
                     }
@@ -156,8 +158,8 @@ public final class DeclaredFw {
                 });
             }
         }else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -167,11 +169,11 @@ public final class DeclaredFw {
                         if (isize != 3)
                             return VitErrorFw.rrror(f, "3 elements expected");
 
-                        Val name = exprVal.call(DIntFw.dint(1));
+                        Val name = (Val) (Val) exprVal.call(DIntFw.dint(1));
                         if (!name.getType().equals(SymbolFw.symbol))
                             return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
-                        Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                        Val value = (Val) (Val) compEnv.call(CompEnv.syntaxResolve(((Val) (Val) exprVal.call(DIntFw.dint(2)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 

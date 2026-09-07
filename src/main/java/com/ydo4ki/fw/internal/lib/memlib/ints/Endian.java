@@ -10,6 +10,6 @@ public final class Endian {
 
     public static final Type endian = EnumFw.enumeration("big", "little");
 
-    public static final Val big = endian.get("big");
-    public static final Val little = endian.get("little");
+    public static final Val big = (Val) endian.get("big");
+    public static final Val little = (Val) endian.get("little");
 }

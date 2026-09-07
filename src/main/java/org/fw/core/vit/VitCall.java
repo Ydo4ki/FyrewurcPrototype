@@ -55,7 +55,8 @@ public final class VitCall extends Vit {
         this.isPure = isPure;
         this.isConst = isConst;
         if (isConst && isPure) {
-            this.isPreDetermied = func.eval().call(arg.eval());
+            Val val = func.eval();
+            this.isPreDetermied = (Val) val.call(arg.eval());
         } else {
             this.isPreDetermied = null;
         }

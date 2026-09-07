@@ -17,8 +17,8 @@ public final class OperatorsFw {
 
     public static final Val exports = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -57,7 +57,7 @@ public final class OperatorsFw {
                                 return null;
 
                             for (int i = 1; i < isize; i++) {
-                                Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(i))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                                Val term = (Val) (Val) compEnv.call(CompEnv.syntaxResolve(((Val) (Val) exprVal.call(DIntFw.dint(i)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                                 if (!VitFw.isVit(term.getType()))
                                     return null;
                                 if (vit == null) vit = term._UNPACK_(Vit.class);
@@ -72,7 +72,7 @@ public final class OperatorsFw {
                             if (isize != 2)
                                 return null;
 
-                            Val term = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                            Val term = (Val) (Val) compEnv.call(CompEnv.syntaxResolve(((Val) (Val) exprVal.call(DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                             if (!VitFw.isVit(term.getType()))
                                 return null;
                             return VitFw.wrap(term._UNPACK_(Vit.class).call(symbol(name)));

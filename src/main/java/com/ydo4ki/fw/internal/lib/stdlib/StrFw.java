@@ -5,6 +5,7 @@ import static org.fw.core.vit.Vit.val;
 import static org.fw.core.vit.Vit.var;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.DeclaredFw;
 import org.fw.lib.stdlib.ModuleFw;
@@ -85,11 +86,11 @@ public final class StrFw {
 
         static {
             Vit parseArg = val(FW.telephonist_native("parseNum", (arg1) -> {
-                Val str1 = ExprFw.symbolToString.call(arg1);
-                if (!str1.getType().equals(StrFw.str))
+                Value str1 = (Val) ExprFw.symbolToString.call(arg1);
+                if (!str1.getTypeValue().impliesEquality(StrFw.str.asVal()))
                     return null;
 
-                String s = str1._UNPACK_();
+                String s = ((Val)str1)._UNPACK_();
                 s = s.replace("\\n", "\n");
                 if (s.length() >= 2 && s.startsWith("\"") && s.endsWith("\"")) {
                     return str(s.substring(1, s.length() - 1)); // uh okay

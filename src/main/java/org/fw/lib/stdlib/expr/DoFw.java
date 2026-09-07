@@ -38,8 +38,8 @@ public final class DoFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.get("expr");
-            Val compEnv = arg.get("comp-env");
+            Val exprVal = (Val) (Val) arg.get("expr");
+            Val compEnv = (Val) (Val) arg.get("comp-env");
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -61,7 +61,7 @@ public final class DoFw {
     private static Vit compileDo(Val exprVal, int start, int isize, Value compEnv) throws VitCompilationException {
         Vit execution = Vit.val(Val._NEW_INSTANCE_(DoFw.unaryStoreType, Operation.unit));
         for (int i = start; i < isize - 1; i++) {
-            Expr line = exprVal.call(DIntFw.dint(i + 1))._UNPACK_(Expr.class);
+            Expr line = ((Val) (Val) exprVal.call(DIntFw.dint(i + 1)))._UNPACK_(Expr.class);
             if (line instanceof ExprList && ((ExprList) line).size() == 3 && ((ExprList) line).get(0).toString().equals(":")) {
                 if (i == isize - 2) break;
 

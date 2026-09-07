@@ -12,36 +12,35 @@ import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.dvec.DVecBuilderFw;
 import org.fw.core.vit.Vit;
 
-import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist_native;
 
 // todo: make this generate a code that constructs vit so we can make old cenv static instead of storing it with the function
 public final class FnCallFw {
     public static final Val fnCallCEnv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Val compEnv = (Val) arg.get("chain");
             if (val.getType() == FunctionFw.function) {
-                return val.get("fn-call");
+                return (Val) val.get("fn-call");
             }
         }
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
 
-                Val fvv = compEnv.call(CompEnv.syntaxResolve(f, CompEnv.of(compEnv)));
+                Val fvv = (Val) compEnv.call(CompEnv.syntaxResolve(f, CompEnv.of(compEnv)));
                 if (!VitFw.isVit(fvv.getType()))
                     return null;
                 Vit fv = VitFw.unwrap(fvv, f);
 
                 Vit varValuesV = Vit.val(DVecBuilderFw.emptyBuilder);
                 for (int i = 1; i < isize; i++) {
-                    Expr eee = exprVal.call(DIntFw.dint(i))._UNPACK_(Expr.class);
-                    varValuesV = varValuesV.call(VitFw.unwrap(compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv))), eee));
+                    Expr eee = ((Val) exprVal.call(DIntFw.dint(i)))._UNPACK_(Expr.class);
+                    varValuesV = varValuesV.call(VitFw.unwrap((Val) compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv))), eee));
                 }
                 varValuesV = Vit.val(DVecBuilderFw.dvecbf).call(varValuesV);
 

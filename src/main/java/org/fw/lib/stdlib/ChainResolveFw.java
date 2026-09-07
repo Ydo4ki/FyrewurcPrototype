@@ -24,7 +24,8 @@ public final class ChainResolveFw {
                 }
             } else if (arg.equalsSymbol("builder")) {
                 return FW.telephonist_native((passingArg) -> {
-                    if (constraint.get("check").call(passingArg) != BoolFw._true)
+                    Val val = (Val) constraint.get("check");
+                    if ((Val) val.call(passingArg) != BoolFw._true)
                         return null;
 
                     return FW.telephonist_native((chain) -> {

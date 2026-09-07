@@ -2,6 +2,7 @@ package org.fw.lib.stdlib.expr;
 
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.Expr;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
@@ -12,20 +13,18 @@ import static org.fw.core.FW.symbol;
 public final class VitErrorFw {
     public static final Type vitError = StructFw.struct(
             DeclarationFw.declaration(symbol("expr"), ExprFw.isExpr),
-            DeclarationFw.declaration(symbol("message"), ConstraintFw.toConstraint(StrFw.str))
+            DeclarationFw.declaration(symbol("message"), (Val) ConstraintFw.toConstraint(StrFw.str))
     );
 
-    public static Val rrror(Expr expr, String message) {
+    public static Value rrror(Expr expr, String message) {
         return vitError.get("builder").call(ExprFw.wrap(expr)).call(StrFw.str(message));
     }
 
-    public static final Val cantResolveAnythingCenv = FW.telephonist_native((arg) -> {
+    public static final Val cantResolveAnythingCenv = FW.telephonist_native("cantResolveAnythingCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._UNPACK_(Expr.class);
-            Val error = rrror(expr, "Can't resolve");
-            return error;
+            Value exprVal = (Val) arg.get("expr");
+            Value compEnv = (Val) arg.get("comp-env");
+            return vitError.get("builder").call(exprVal).call(StrFw.str("Can't resolve"));
         }
         return null;
     });

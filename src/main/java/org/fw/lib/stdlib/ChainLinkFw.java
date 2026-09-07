@@ -38,13 +38,15 @@ public final class ChainLinkFw {
                 ChainLinkFw.ChainLinkRecord instance = ((Val) CallFw.getVal(arg))._UNPACK_();
                 Val cArg = (Val) CallFw.getArg(arg);
 
-                Val ret = instance.resolver().call(cArg);
+                Val ret = (Val) instance.resolver().call(cArg);
 
 //                    if (Unspecified.isUnspecified(ret))
-                if (typeInfo.constraint.call(symbol("check")).call(ret) != BoolFw._true)
-                    return instance
-                            .parentCEnv()
-                            .call(cArg);
+                Val arg1 = symbol("check");
+                Val val = ((Val) typeInfo.constraint.call(arg1));
+                if ((Val) val.call(ret) != BoolFw._true) {
+                    return (Val) instance
+                                        .parentCEnv().call(cArg);
+                }
 
                 return ret;
 //                if (cArg.type().equals(SyntaxResolveFw.syntaxResolve)) {
@@ -78,7 +80,8 @@ public final class ChainLinkFw {
 
 
     public static Value chain(Type type, Value parent, Value primary) {
-        return type.asVal().get("builder").call(primary).call(parent);
+        Val val = type.asVal();
+        return ((Val) val.get("builder")).call(primary).call(parent);
     }
 
 

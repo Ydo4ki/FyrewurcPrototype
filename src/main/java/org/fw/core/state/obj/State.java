@@ -6,6 +6,7 @@ import org.fw.lib.stdlib.state.StatePointerFw;
 import java.util.function.Function;
 
 public final class State implements Obj {
+    // questionable, maybe I should just allow states to be inside other states but keep this as optional
     private final Scope scope = new Scope(this);
 
     public static State eternal() {

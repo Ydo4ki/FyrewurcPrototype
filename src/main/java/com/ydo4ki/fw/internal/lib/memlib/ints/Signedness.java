@@ -10,6 +10,6 @@ public final class Signedness {
 
     public static final Type signedness = EnumFw.enumeration("signed", "unsigned");
 
-    public static final Val signed = signedness.get("signed");
-    public static final Val unsigned = signedness.get("unsigned");
+    public static final Val signed = (Val) signedness.get("signed");
+    public static final Val unsigned = (Val) signedness.get("unsigned");
 }

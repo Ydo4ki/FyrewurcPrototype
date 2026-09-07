@@ -18,8 +18,8 @@ public final class BaseFw {
 
     private static final Val directivesCenv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -28,7 +28,7 @@ public final class BaseFw {
                     if (isize != 2)
                         return null;
 
-                    Val operand = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                    Val operand = (Val) (Val) compEnv.call(CompEnv.syntaxResolve(((Val) (Val) exprVal.call(DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(operand.getType()))
                         return operand;
 
@@ -37,7 +37,7 @@ public final class BaseFw {
                     if (isize != 2)
                         return null;
 
-                    Val operand = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                    Val operand = (Val) (Val) compEnv.call(CompEnv.syntaxResolve(((Val) (Val) exprVal.call(DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(operand.getType()))
                         return operand;
 

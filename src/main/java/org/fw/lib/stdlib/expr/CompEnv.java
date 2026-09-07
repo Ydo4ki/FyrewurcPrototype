@@ -15,10 +15,14 @@ import static org.fw.core.FW.symbol;
 
 public final class CompEnv extends AbstractValueAdapter {
 
-    public static final Type compEnv = ChainLinkFw.chainLinkType.asVal()
-            .call(symbol("construct"))
-            .call(ConstraintFw.isSpecified)
-            .asType();
+    public static final Type compEnv;
+
+    static {
+        Val val = ChainLinkFw.chainLinkType.asVal();
+        Val val1 = ((Val) val.call(symbol("construct")));
+        compEnv = ((Val) (Val) val1.call(ConstraintFw.isSpecified))
+                .asType();
+    }
 
     private CompEnv(Value val) {
         super(val);

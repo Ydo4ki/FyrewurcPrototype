@@ -48,7 +48,7 @@ public abstract class Operation implements ValAdapter {
         return new VitOperation(vit, rtEnv);
     }
 
-    public static Operation pure(Val val) {
+    public static Operation pure(Value val) {
         return new VitOperation(Vit.val(val), FW.telephonist((arg) -> null));
     }
 

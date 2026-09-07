@@ -1,6 +1,7 @@
 package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.*;
 import org.fw.core.constraint.Constraint;
 import org.fw.core.util.FwUtils;
@@ -19,14 +20,14 @@ public final class ConstraintFw {
         if (arg.getType().equals(ConstraintFw.constraint))
             return arg;
 
-        Val ret = arg.call(symbol("to-constraint"));
+        Value ret = (Val) arg.call(FW.symbol("to-constraint"));
 
         if (isConstraint(ret))
             return ret;
 
         return typeConstraints.computeIfAbsent(arg, arg0 -> {
             Val a = VitFw.wrap(Vit.call(EqFw.eq, Vit.call(TypeGetFw.typeGet, Vit.var)).call(arg0));
-            return ConstraintFw.constraintBuilder.call(a);
+            return (Val) (Val) ConstraintFw.constraintBuilder.call(a);
         });
     });
 
@@ -46,11 +47,11 @@ public final class ConstraintFw {
     }
 
     public static Val toConstraint(Val val) {
-        return to_constraint.call(val);
+        return (Val) to_constraint.call(val);
     }
 
     public static Val toConstraint(Type type) {
-        return to_constraint.call(type.asVal());
+        return (Val) to_constraint.call(type.asVal());
     }
 
     public static final Val constraintBuilder = FW.telephonist_native("Constraint.constructor", (arg1) -> {
@@ -91,8 +92,8 @@ public final class ConstraintFw {
 
     public static final Val free = wrap(Constraint.free);
 
-    public static boolean isConstraint(Val val) {
-        return val.getType().equals(ConstraintFw.constraint);
+    public static boolean isConstraint(Value val) {
+        return val.getTypeValue().impliesEquality(ConstraintFw.constraint.asVal());
     }
 
     public static Val constraint(Vit a) {

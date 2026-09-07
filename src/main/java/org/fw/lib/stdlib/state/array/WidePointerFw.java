@@ -37,7 +37,7 @@ public final class WidePointerFw {
         return new CreateArrayOperation(
                 DIntFw.unwrap(size).intValueExact(),
                 i -> {
-                    return OperationFw.unwrap(init.call(DIntFw.dint(i)));
+                    return OperationFw.unwrap((Val) init.call(DIntFw.dint(i)));
                 }).asVal();
     }));
 }

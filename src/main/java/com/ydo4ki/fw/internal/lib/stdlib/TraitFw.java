@@ -98,8 +98,7 @@ final class TraitFw {
                 a = a.call(symbol("and")).call(fieldChecker);
             }
             Vit b = Vit.val(BoolFw._true);
-            return ConstraintFw.constraintBuilder
-                    .call(VitFw.wrap(Vit.call(EqFw.eq, a).call(b)));
+            return (Val) ConstraintFw.constraintBuilder.call(VitFw.wrap(Vit.call(EqFw.eq, a).call(b)));
         }
 
         public int indexOf(Val key) {

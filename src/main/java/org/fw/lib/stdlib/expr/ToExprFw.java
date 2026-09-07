@@ -10,21 +10,19 @@ import org.fw.core.vit.Vit;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
 
-import static org.fw.core.FW.symbol;
-
 public final class ToExprFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Val compEnv = (Val) arg.get("chain");
             if (val.getType() == DIntFw.dint) {
                 return ExprFw.wrap(Symbol.of(val._UNPACK_().toString()));
             }
         }
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -33,7 +31,7 @@ public final class ToExprFw {
                     if (isize != 2)
                         return null;
 
-                    Val condition = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                    Val condition = (Val) compEnv.call(CompEnv.syntaxResolve(((Val) exprVal.call(DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(condition.getType()))
                         return null;
                     Vit v = condition._UNPACK_();
@@ -42,7 +40,7 @@ public final class ToExprFw {
                     if (isize != 2)
                         return null;
 
-                    return VitFw.wrap(Vit.val(exprVal.call(DIntFw.dint(1))));
+                    return VitFw.wrap(Vit.val((Val) exprVal.call(DIntFw.dint(1))));
                 }
             }
         }

@@ -3,6 +3,7 @@ package org.fw.lib.stdlib.expr;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.*;
 import org.fw.lib.stdlib.*;
 import org.fw.lib.stdlib.ConstraintFw;
@@ -158,8 +159,8 @@ public final class ExprFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
+            Value compEnv = (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -168,7 +169,7 @@ public final class ExprFw {
                     case "symbol": {
                         if (isize != 2) return null;
 
-                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                        Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve(((Val) (Val) exprVal.call(DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
@@ -187,7 +188,7 @@ public final class ExprFw {
 
                         for (int i = 2; i < isize; i++) {
                             Expr eee = ((ExprList) expr).get(i);
-                            Val retVit = compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
+                            Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(retVit.getType()))
                                 return retVit; // compile error idk
 
@@ -209,8 +210,8 @@ public final class ExprFw {
 
     public static final CompEnv esast2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) (Val) arg.get("passing");
+            Value compEnv = (Val) arg.get("chain");
 
             Type type = val.getType();
             if (type.equals(exprList)) {

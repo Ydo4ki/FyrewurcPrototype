@@ -67,8 +67,8 @@ public final class DVecFw {
 
     public static final CompEnv dvec2exprCenv = CompEnv.of(FW.telephonist_native("dvec2exprCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            arg = arg.get("passing");
+            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            arg = (Val) (Val) arg.get("passing");
 
             Type type = arg.getType();
             if (type.equals(dVec)) {
@@ -106,13 +106,14 @@ public final class DVecFw {
     public static final class DVecConstructorCEnvFw {
         public static final Val dVecConstructorCenv = FW.telephonist_native("dVecConstructorCenv", (arg) -> {
             if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-                Val exprVal = arg.call(FW.symbol("expr"));
-                Val compEnv = arg.call(FW.symbol("comp-env"));
+                Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
+                Val compEnv = (Val) (Val) arg.call(FW.symbol("comp-env"));
                 Expr expr = exprVal._UNPACK_(Expr.class);
                 if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.square)) {
                     ExprList list = (ExprList) expr;
-                    if (list.size() == 0)
-                        return VitFw.wrap(Vit.val(DVecBuilderFw.dvecbf.call(DVecBuilderFw.emptyBuilder)));
+                    if (list.size() == 0) {
+                        return VitFw.wrap(Vit.val((Val) DVecBuilderFw.dvecbf.call(DVecBuilderFw.emptyBuilder)));
+                    }
 
                     Vit ctor = Vit.val(DVecBuilderFw.emptyBuilder);
                     for (int i = 0; i < list.size(); i++) {

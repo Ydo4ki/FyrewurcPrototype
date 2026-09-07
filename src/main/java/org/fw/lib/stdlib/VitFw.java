@@ -2,6 +2,7 @@ package org.fw.lib.stdlib;
 
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
@@ -18,8 +19,7 @@ import static org.fw.core.FW.symbol;
 
 public final class VitFw {
 
-    public static final Type vitVal = FW.telephonist_native("VitVal", (arg0)
-            -> {
+    public static final Type vitVal = FW.telephonist_native("VitVal", (arg0) -> {
         if (FwUtils.isTypeApiCall(arg0, VitFw.vitVal)) {
             Val instance2 = (Val) CallFw.getVal(arg0);
             Val callArg = (Val) CallFw.getArg(arg0);
@@ -29,7 +29,7 @@ public final class VitFw {
             String symbol1 = callArg._UNPACK_().toString();
             switch (symbol1) {
                 case "val":
-                    return (Val)instance2._UNPACK_(VitVal.class).val();
+                    return instance2._UNPACK_(VitVal.class).val();
                 default:
                     return null;
             }
@@ -40,8 +40,7 @@ public final class VitFw {
         return null;
     }).asType();
 
-    public static final Type vitInvoke = FW.telephonist_native("VitInvoke", (arg0)
-            -> {
+    public static final Type vitInvoke = FW.telephonist_native("VitInvoke", (arg0) -> {
         if (FwUtils.isTypeApiCall(arg0, VitFw.vitInvoke)) {
             Val instance2 = (Val) CallFw.getVal(arg0);
             Val callArg = (Val) CallFw.getArg(arg0);
@@ -69,8 +68,8 @@ public final class VitFw {
         return null;
     }).asType();
 
-    public static final Type vitVar = FW.telephonist_native("VitVar", (arg0)
-            -> {//        case "key":
+    public static final Type vitVar = FW.telephonist_native("VitVar", (arg0) -> {
+        //        case "key":
 //            return ((VitVar) instance._unpack()).key();
         //        case "key":
         //            return ((VitVar) instance._unpack()).key();
@@ -135,8 +134,8 @@ public final class VitFw {
 
     public static final CompEnv vit2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            arg = arg.get("passing");
+            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            arg = (Val) arg.get("passing");
 
             Type type = arg.getType();
             if (type.equals(vitVal)) {
@@ -244,7 +243,7 @@ public final class VitFw {
         }
         if (vit.getType().equals(VitErrorFw.vitError))
             //noinspection DataFlowIssue
-            throw new VitCompilationException(ExprFw.unwrap(vit.get("expr")), vit.get("message")._UNPACK_());
+            throw new VitCompilationException(ExprFw.unwrap((Val) vit.get("expr")), ((Val) vit.get("message"))._UNPACK_());
 
         if (expr == null)
             throw new VitCompilationException(vit);
@@ -253,8 +252,8 @@ public final class VitFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) arg.call((Value) FW.symbol("expr"));
+            Val compEnv = (Val) arg.call((Value) FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -270,14 +269,14 @@ public final class VitFw {
                         if (isize == 1) {
                             return null;
                         }
-                        Expr eee = exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class);
-                        Val retVit = compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
+                        Expr eee = ((Val) exprVal.call((Value) DIntFw.dint(1)))._UNPACK_(Expr.class);
+                        Val retVit = (Val) compEnv.call((Value) CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
                         for (int i = 1; i < (isize - 1); i++) {
-                            Expr eeeN = exprVal.call(DIntFw.dint(i + 1))._UNPACK_(Expr.class);
-                            Val argNVit = compEnv.call(CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv)));
+                            Expr eeeN = ((Val) exprVal.call((Value) DIntFw.dint(i + 1)))._UNPACK_(Expr.class);
+                            Val argNVit = (Val) compEnv.call((Value) CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(argNVit.getType()))
                                 return argNVit; // compile error idk
 
@@ -294,7 +293,7 @@ public final class VitFw {
                             return null;
                         }
 
-                        Val retVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                        Val retVit = (Val) compEnv.call((Value) CompEnv.syntaxResolve(((Val) exprVal.call((Value) DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
@@ -307,7 +306,7 @@ public final class VitFw {
                             return null;
 
                         return VitFw.wrap(VitUtils.simplify(Vit.val(
-                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)))
+                                (Val) compEnv.call((Value) CompEnv.syntaxResolve(((Val) exprVal.call((Value) DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)))
                         )));
                     }
                     case "compile-vit-fast": {
@@ -315,7 +314,7 @@ public final class VitFw {
                             return null;
 
                         return VitFw.wrap(Vit.val(
-                                compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)))
+                                (Val) compEnv.call((Value) CompEnv.syntaxResolve(((Val) exprVal.call((Value) DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)))
                         ));
                     }
                 }

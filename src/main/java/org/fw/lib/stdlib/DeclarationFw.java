@@ -45,11 +45,11 @@ public final class DeclarationFw {
     }).asType();
 
     public static Val getKey(Val declaration) {
-        return declaration.get("key");
+        return (Val) declaration.get("key");
     }
 
     public static Val getConstraint(Val declaration) {
-        return declaration.get("constraint");
+        return (Val) declaration.get("constraint");
     }
 
     public static Val declaration(Val key, Val constraint) {
@@ -110,18 +110,18 @@ public final class DeclarationFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            arg = arg.get("passing");
+            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            arg = (Val) arg.get("passing");
 
             Type type = arg.getType();
             if (type.equals(DeclarationFw.declaration)) {
-                Val key = arg.get("key");
+                Val key = (Val) arg.get("key");
                 return ExprFw.wrap(toExpr(arg, compEnv));
             }
             return null;
         } else if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Val compEnv = (Val) arg.get("chain");
             if (val == DeclarationFw.declaration.asVal()) {
                 return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
@@ -129,16 +129,17 @@ public final class DeclarationFw {
                     Val[] args = c._UNPACK_();
                     if (args.length > 2)
                         return null;
-                    Val b = declaration.asVal().get("builder");
+                    Val val1 = declaration.asVal();
+                    Val b = (Val) val1.get("builder");
                     for (Val arg1 : args) {
-                        b = b.call(arg1);
+                        b = (Val) b.call(arg1);
                     }
                     return Operation.pure(b).asVal();
                 });
             }
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -148,11 +149,11 @@ public final class DeclarationFw {
                         if (isize != 3)
                             return VitErrorFw.rrror(f, "3 elements expected");
 
-                        Val name = exprVal.call(DIntFw.dint(1));
+                        Val name = (Val) exprVal.call(DIntFw.dint(1));
                         if (!name.getType().equals(SymbolFw.symbol))
                             return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
-                        Val value = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                        Val value = (Val) compEnv.call(CompEnv.syntaxResolve(((Val) exprVal.call(DIntFw.dint(2)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 

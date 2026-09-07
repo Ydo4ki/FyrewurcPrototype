@@ -37,9 +37,9 @@ public final class BoxFw {
 
     public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
 
-            arg = arg.call(symbol("passing"));
+            arg = (Val) arg.call(FW.symbol("passing"));
 
             Type type = arg.getType();
             if (type.equals(boxType)) {
@@ -58,7 +58,9 @@ public final class BoxFw {
     }
 
     public static Type newBoxType(Val key) {
-        return boxType.asVal().call(symbol("construct")).call(key).asType();
+        Val val = boxType.asVal();
+        Val val1 = ((Val) val.call(symbol("construct")));
+        return ((Val) val1.call(key)).asType();
     }
 
     public static final Lib lib = Lib.of(ModuleFw.module(

@@ -25,15 +25,13 @@ public final class VitInvoke extends Vit {
 
     @Override
     public Value eval(Value rtEnv, State state) {
-        Operation op = OperationFw.unwrap((Val) operationVal(rtEnv, state));
-        if (op == null) {
-            // temp
-            CompEnv toExpr = CompEnv.of(StdLib.lib.exports());
-            throw new IllegalArgumentException(operation.eval(rtEnv, state).toExpr(toExpr).toString() + " from " + VitFw.wrap(operation).toExpr(toExpr));
-        }
-//        if (!Operation.isLocal(op, context.scope(), context))
-//            return Val.unspecified;
-        return op.apply(state);
+        Value opv = operationVal(rtEnv, state);
+//        if (op == null) {
+//            // temp
+//            CompEnv toExpr = CompEnv.of(StdLib.lib.exports());
+//            throw new IllegalArgumentException(operation.eval(rtEnv, state).toExpr(toExpr).toString() + " from " + VitFw.wrap(operation).toExpr(toExpr));
+//        }
+        return opv.invoke(state);
     }
 
     @Override

@@ -9,7 +9,7 @@ import static org.fw.core.vit.Vit.val;
 public final class FW {
 
     public static Val telephonist(String name, Type.TelephonistType.CallFunction call) {
-        return Val._NEW_INSTANCE_(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call));
+        return Val._NEW_INSTANCE_(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call, s -> null));
     }
 
     public static Val telephonist(Type.TelephonistType.CallFunction call) {

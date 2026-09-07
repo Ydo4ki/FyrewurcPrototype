@@ -5,6 +5,7 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.TypeGetFw;
 import org.fw.core.base.Val;
+import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.expr.CompEnv;
 
 import static org.fw.core.FW.symbol;
@@ -17,8 +18,8 @@ import static org.fw.core.FW.symbol;
 public interface Value {
     Value call(Value value);
 
-    default Value get(String val) {
-        return call(symbol(val));
+    default Value get(String property) {
+        return call(symbol(property));
     }
 
     default Value getTypeValue() {
@@ -36,4 +37,6 @@ public interface Value {
     default Expr toExpr(CompEnv compEnv) {
         return compEnv.toExpr(this);
     }
+
+    Value invoke(State state);
 }

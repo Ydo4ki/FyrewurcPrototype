@@ -100,8 +100,8 @@ public final class FwUtils {
             }
             result = vit.eval(rtEnv, state);
             if (result.getType().equals(DeclaredFw.declared)) {
-                Val key = DeclaredFw.getKey(result);
-                Val value = DeclaredFw.getValue(result);
+                Val key = (Val) DeclaredFw.getKey(result);
+                Val value = (Val) DeclaredFw.getValue(result);
                 if (key.getType().equals(SymbolFw.symbol)) {
                     defineds.put(key._UNPACK_(Symbol.class).getValue(), value);
                 }

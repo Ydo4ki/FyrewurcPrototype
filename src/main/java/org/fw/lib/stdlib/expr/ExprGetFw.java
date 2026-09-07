@@ -17,8 +17,8 @@ import static org.fw.core.FW.symbol;
 public final class ExprGetFw {
     public static final Val getterCEnv = FW.telephonist_native("dot-getters-cenv-fw", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof Symbol) {
                 // handling value.x
@@ -49,13 +49,13 @@ public final class ExprGetFw {
                         return null;
                     }
 
-                    Val retVitV = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
+                    Val retVitV = (Val) compEnv.call(CompEnv.syntaxResolve(((Val) exprVal.call(DIntFw.dint(1)))._UNPACK_(Expr.class), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(retVitV.getType()))
                         return retVitV; // compile error idk
                     Vit retVit = retVitV._UNPACK_();
 
                     for (int i = 1; i < (isize - 1); i++) {
-                        Val property = exprVal.call(DIntFw.dint(i + 1));
+                        Val property = (Val) exprVal.call(DIntFw.dint(i + 1));
                         if (!property.getType().equals(SymbolFw.symbol))
                             return null; // not a compile error idk (actually it still is)
 

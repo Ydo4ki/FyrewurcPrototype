@@ -1,6 +1,7 @@
 package org.fw.lib.stdlib;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
@@ -21,10 +22,12 @@ public final class WrapperTypeFw {
                 // since we know the core type anyway there's no reason to create additional nesting levels
                 // so the value of wrapper type instance is exactly the same as the one in the wrapped type
                 Val rawPayload = Val._NEW_INSTANCE_(payloadType, instanceOfWt._UNPACK_());
-                return callsHandler.call(instanceOfWt).call(rawPayload).call(arg);
+                Val val = ((Val) callsHandler.call(instanceOfWt));
+                Val val1 = ((Val) val.call(rawPayload));
+                return (Val) val1.call(arg);
             } else {
                 Val staticCallsHandler = wt.staticCallsHandler;
-                Val ret = staticCallsHandler.call(arg);
+                Value ret = (Val) staticCallsHandler.call(arg);
                 if (!Unspecified.isUnspecified(ret)) return ret;
                 if (arg.getType() == SymbolFw.symbol) {
                     String sym = arg._UNPACK_().toString();

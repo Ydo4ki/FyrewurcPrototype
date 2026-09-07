@@ -59,10 +59,10 @@ public final class JMethodFw {
 
     public static final Val methodCallCEnv = FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Val compEnv = (Val) arg.get("chain");
             if (val.getType() == JMethodFw.jMethod) {
-                return val.get("invoke-method");
+                return (Val) val.get("invoke-method");
             }
         }
         return null;

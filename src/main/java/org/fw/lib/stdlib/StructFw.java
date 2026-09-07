@@ -2,6 +2,7 @@ package org.fw.lib.stdlib;
 
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.state.operation.Operation;
@@ -142,7 +143,8 @@ public final class StructFw {
             StructBuilder payload = instance._UNPACK_();
 
             Val constraint = DeclarationFw.getConstraint(payload.struct.fields[payload.progress.length]);
-            if (constraint.call(symbol("check")).call(arg) != BoolFw._true) {
+            Val val = ((Val) constraint.call(symbol("check")));
+            if ((Val) val.call(arg) != BoolFw._true) {
                 return null;
             }
 
@@ -158,8 +160,8 @@ public final class StructFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            arg = arg.get("passing");
+            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            arg = (Val) arg.get("passing");
 
             Type type = arg.getType();
             if (type == struct) {
@@ -169,8 +171,8 @@ public final class StructFw {
             }
             return null;
         } else if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Val compEnv = (Val) arg.get("chain");
             if (val == struct.asVal()) {
                 return FW.telephonist_native(c -> {
                     if (c.getType() != DVecFw.dVec)
@@ -178,9 +180,9 @@ public final class StructFw {
                     Val[] args = c._UNPACK_();
                     if (args.length > 1)
                         return null;
-                    Val b = val.get("construct");
+                    Val b = (Val) val.get("construct");
                     for (Val arg1 : args) {
-                        b = b.call(arg1);
+                        b = (Val) b.call(arg1);
                     }
                     return Operation.pure(b).asVal();
                 });
@@ -192,16 +194,16 @@ public final class StructFw {
                     Val[] args = c._UNPACK_();
                     if (args.length > len)
                         return null;
-                    Val b = val.get("builder");
+                    Val b = (Val) val.get("builder");
                     for (Val arg1 : args) {
-                        b = b.call(arg1);
+                        b = (Val) b.call(arg1);
                     }
                     return Operation.pure(b).asVal();
                 });
             }
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = arg.call(symbol("expr"));
-            Val compEnv = arg.call(symbol("comp-env"));
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call((Value) FW.symbol("comp-env"));
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -210,8 +212,8 @@ public final class StructFw {
                     case "struct": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Expr expr1 = exprVal.call(DIntFw.dint(i))._UNPACK_();
-                            Val val = compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
+                            Expr expr1 = ((Val) exprVal.call((Value) DIntFw.dint(i)))._UNPACK_();
+                            Val val = (Val) compEnv.call((Value) CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.getType()))
                                 return val;
 

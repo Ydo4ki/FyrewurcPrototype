@@ -18,8 +18,8 @@ import org.fw.lib.stdlib.state.OperationFw;
 public final class StdLib {
     private static final CompEnv somethingToExpr = CompEnv.of(FW.telephonist_native(arg -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = arg.get("passing");
-            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            Val val = (Val) (Val) arg.get("passing");
+            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
             if (Unspecified.isUnspecified(val))
                 return ExprFw.wrap(ExprList.of(BracketsTypes.braces,
                         Symbol.of("unspecified"),

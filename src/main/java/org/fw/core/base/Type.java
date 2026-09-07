@@ -2,7 +2,10 @@ package org.fw.core.base;
 
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
+import org.fw.core.state.obj.State;
+import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.TypePayloadInfo;
+import org.fw.lib.stdlib.state.OperationFw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,9 @@ public abstract class Type implements ValAdapter {
     Type() {
     }
 
-    abstract Val callInstance(Val instance, Val arg);
+    abstract Value callInstance(Val instance, Val arg);
+
+    abstract Value invokeInstance(Val val, State state);
 
     public abstract Val asVal();
 
@@ -30,7 +35,7 @@ public abstract class Type implements ValAdapter {
 
         public Type getPayloadType() {
             if (payloadType == null) {
-                Val ret = this.asVal().get("Payload");
+                Val ret = (Val) this.asVal().get("Payload");
                 payloadType = Optional.ofNullable(TypePayloadInfo.value(ret));
             }
             return payloadType.orElse(null);
@@ -41,8 +46,17 @@ public abstract class Type implements ValAdapter {
         }
 
         @Override
-        public Val callInstance(Val instance, Val arg) {
-            return asVal.call(CallFw.fwCall(instance, arg));
+        public Value callInstance(Val instance, Val arg) {
+            return (Val) asVal.call(CallFw.fwCall(instance, arg));
+        }
+
+        @Override
+        Value invokeInstance(Val val, State state) {
+            if (this == OperationFw.operation) {
+                Operation op = val._UNPACK_(Operation.class);
+                return op.apply(state);
+            }
+            return null;
         }
 
         @Override
@@ -80,7 +94,7 @@ public abstract class Type implements ValAdapter {
 
         @Override
         Val callInstance(Val instance, Val arg) {
-            Value v = instance._UNPACK_(Telephonist.class).function().call(arg);
+            Value v = instance._UNPACK_(Telephonist.class).call(arg);
             if (!(v instanceof Val))
                 return Unspecified.unspecified(instance, arg);
 
@@ -95,6 +109,11 @@ public abstract class Type implements ValAdapter {
 //                e.printStackTrace(System.out);
 //                return Unspecified.unspecified(instance, arg);
 //            }
+        }
+
+        @Override
+        Value invokeInstance(Val instance, State state) {
+            return instance._UNPACK_(Telephonist.class).invoke(state);
         }
 
         @Override
@@ -122,6 +141,10 @@ public abstract class Type implements ValAdapter {
             Value call(Value arg);
         }
 
+        public interface InvokeFunction {
+            Value invoke(State state);
+        }
+
         private static final List<TelephonistType> preTelephonists = new ArrayList<>();
 
         public static TelephonistType of(int depth) {
@@ -135,14 +158,12 @@ public abstract class Type implements ValAdapter {
         public static final class Telephonist {
             private final String marker;
             private final CallFunction function;
+            private final InvokeFunction operation;
 
-            public Telephonist(String marker, CallFunction function) {
+            public Telephonist(String marker, CallFunction function, InvokeFunction operation) {
                 this.marker = marker;
                 this.function = function;
-            }
-
-            public CallFunction function() {
-                return function;
+                this.operation = operation;
             }
 
             @Override
@@ -160,6 +181,14 @@ public abstract class Type implements ValAdapter {
             @Override
             public String toString() {
                 return marker;
+            }
+
+            public Value call(Val arg) {
+                return function.call(arg);
+            }
+
+            public Value invoke(State state) {
+                return operation.invoke(state);
             }
         }
     }

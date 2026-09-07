@@ -1,6 +1,7 @@
 package com.ydo4ki.fw.internal.lib.stdlib;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
 import org.fw.core.state.obj.State;
@@ -71,8 +72,8 @@ public final class DIntFw {
 
     public static final CompEnv dint2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = arg.get("passing");
-            Val compEnv = arg.get("chain");
+            Val val = (Val) (Val) arg.get("passing");
+            Value compEnv = (Val) arg.get("chain");
             if (val.getType() == dint) {
                 return ExprFw.wrap(Symbol.of(val._UNPACK_().toString()));
             }
@@ -114,7 +115,7 @@ public final class DIntFw {
 
         static {
             Vit parseArg = val(FW.telephonist_native("parseNum", (arg1) -> {
-                return Vit.val(dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1))
+                return Vit.val(dint.asVal()).call(symbol("parse")).call((Val) ExprFw.symbolToString.call(arg1))
                         .eval();
             })).call(var.call(symbol("arg")).call(symbol("expr")));
             // what the heck is this

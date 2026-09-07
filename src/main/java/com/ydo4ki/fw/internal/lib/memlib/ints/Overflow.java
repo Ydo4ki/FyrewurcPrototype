@@ -10,7 +10,7 @@ public final class Overflow {
 
     public static final Type overflow = EnumFw.enumeration("wrap", "saturate", "trap");
 
-    public static final Val wrap = overflow.get("wrap");
-    public static final Val saturate = overflow.get("saturate");
-    public static final Val trap = overflow.get("trap");
+    public static final Val wrap = (Val) overflow.get("wrap");
+    public static final Val saturate = (Val) overflow.get("saturate");
+    public static final Val trap = (Val) overflow.get("trap");
 }

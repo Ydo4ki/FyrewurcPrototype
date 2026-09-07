@@ -3,6 +3,7 @@ package org.fw.core.base;
 import org.fw.core.abstrait.TypedValue;
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
+import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.dvec.DVecFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
@@ -10,8 +11,6 @@ import org.fw.core.ast.Symbol;
 
 import java.util.*;
 import java.util.function.BiFunction;
-
-import static org.fw.core.FW.symbol;
 
 public final class Val implements ValAdapter, TypedValue {
     private final Type type;
@@ -40,27 +39,29 @@ public final class Val implements ValAdapter, TypedValue {
         return _asType;
     }
 
-    public Val call(Val arg) {
-        return getType().callInstance(this, arg);
+    @Override
+    public Value get(String property) {
+        return TypedValue.super.get(property);
     }
 
     @Override
-    public Value call(Value value) {
-        if (value instanceof Val)
-            return this.call((Val) value);
+    public Value call(Value arg) {
+        if (arg instanceof Val)
+            return getType().callInstance(this, (Val) arg);
         throw new UnsupportedOperationException();
     }
 
-    public Val get(String property) {
-        return call(symbol(property));
+    @Override
+    public Value invoke(State state) {
+        return getType().invokeInstance(this, state);
     }
 
-    public Val call(Val arg, Val... rest) {
-        return call0(arg, rest, Val::call);
+    public Value call(Val arg, Val... rest) {
+        return call0(arg, rest, Value::call);
     }
 
-    public Val get(String property, String... rest) {
-        return call0(property, rest, Val::get);
+    public Value get(String property, String... rest) {
+        return call0(property, rest, Value::get);
     }
 
     @SuppressWarnings("unchecked")
@@ -86,9 +87,10 @@ public final class Val implements ValAdapter, TypedValue {
     public static Val _NEW_INSTANCE_(Type type, Object value) {
         if (value instanceof Value && !(value instanceof Val))
             throw new IllegalArgumentException("If the value is another val, it must be concrete: " + value);
-        if (type instanceof Type.TelephonistType && type != ofTelephonist(0).asType()) {
+
+        if (type instanceof Type.TelephonistType && type != ofTelephonist(0).asType())
             throw new IllegalArgumentException();
-        }
+
         return new Val(Objects.requireNonNull(type), value, null);
     }
 
@@ -109,7 +111,9 @@ public final class Val implements ValAdapter, TypedValue {
                         return instance.call(cArg); // so here we're going in the opposite direction
                     }
                     return null;
-                }/*, CallContract.c(arg -> {
+                }, state -> null
+
+                /*, CallContract.c(arg -> {
                     if (FwUtils.isTypeApiCall(arg, asType)) {
                         Constraint instance = CallFw.getVal(arg);
                         Constraint cArg = CallFw.getArg(arg);
@@ -176,8 +180,8 @@ public final class Val implements ValAdapter, TypedValue {
         else return e1.equals(e2);
     }
 
-    private <T> Val call0(T arg, T[] rest, BiFunction<Val, T, Val> function) {
-        Val ret = function.apply(this, arg);
+    private <T> Value call0(T arg, T[] rest, BiFunction<Value, T, Value> function) {
+        Value ret = function.apply(this, arg);
         for (T val : rest) {
             ret = function.apply(ret, val);
         }
