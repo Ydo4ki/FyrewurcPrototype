@@ -16,28 +16,28 @@ import java.util.List;
 import static org.fw.core.FW.symbol;
 
 public final class EnumFw {
-    public static final Type enumeration = FW.telephonist_native("Enum", (arg) -> {
+    public static final Type enumeration = FW.telephonist_native_standalone("Enum", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, EnumFw.enumeration)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
-            Enum anEnum = instance._UNPACK();
+            Enum anEnum = instance._UNPACK_();
             for (Val value : anEnum.values) {
-                if (value._UNPACK(Val.class).equals(arg)) return value;
+                if (value._UNPACK_(Val.class).equals(arg)) return value;
             }
             return null;
         }
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native("Enum.construct", (payload) -> {
+            return FW.telephonist_native_standalone("Enum.construct", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
-                Val[] keys = payload._UNPACK();
+                Val[] keys = payload._UNPACK_();
                 Val[] values = new Val[keys.length];
-                Type resultingType = Val.of(EnumFw.enumeration, new Enum(values)).asType();
+                Type resultingType = Val._NEW_INSTANCE_(EnumFw.enumeration, new Enum(values)).asType();
                 for (int i = 0; i < keys.length; i++) {
                     if (!keys[i].getType().equals(SymbolFw.symbol))
                         return null;
 
-                    values[i] = Val.of(resultingType, keys[i]);
+                    values[i] = Val._NEW_INSTANCE_(resultingType, keys[i]);
                 }
                 return resultingType.asVal();
             });
@@ -47,20 +47,20 @@ public final class EnumFw {
 
     public static Type enumeration(String... keys) {
         Val[] valuesV = new Val[keys.length];
-        Type resultingType = Val.of(EnumFw.enumeration, new Enum(valuesV)).asType();
+        Type resultingType = Val._NEW_INSTANCE_(EnumFw.enumeration, new Enum(valuesV)).asType();
         for (int i = 0; i < keys.length; i++) {
-            valuesV[i] = Val.of(resultingType, symbol(keys[i]));
+            valuesV[i] = Val._NEW_INSTANCE_(resultingType, symbol(keys[i]));
         }
         return resultingType;
     }
 
     public static Val toExpr(Val arg, CompEnv toExpr) {
-        EnumFw.Enum value = arg._UNPACK();
+        EnumFw.Enum value = arg._UNPACK_();
         List<Expr> finElements = new ArrayList<>();
         finElements.add(EnumFw.enumeration.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.values()) {
-            elements.add(val._UNPACK(Val.class).toExpr(toExpr));
+            elements.add(val._UNPACK_(Val.class).toExpr(toExpr));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));
         return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
@@ -78,7 +78,7 @@ public final class EnumFw {
             for (int i = 0; i < values.length; i++) {
                 Val value = values[i];
                 if (value == null) continue;
-                Object a = value._UNPACK();
+                Object a = value._UNPACK_();
                 payloads[i] = a;
                 result = 31 * result + (a == null ? 0 : a.hashCode());
             }

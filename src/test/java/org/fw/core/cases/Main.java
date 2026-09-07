@@ -59,7 +59,7 @@ public class Main {
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
                         DeclaredFw.declared(symbol("_CurrentTimeMillis"), SystemOperation.currentTimeMillis.asVal()),
                         DeclaredFw.declared(symbol("_NanoTime"), SystemOperation.nanoTime.asVal()),
-                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist_native((arg) -> {
+                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist_native_standalone((arg) -> {
                             if (arg.getType() != DIntFw.dint)
                                 return null;
 
@@ -97,18 +97,18 @@ public class Main {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val.getType() == DIntFw.dint) {
-                return ExprFw.wrap(Symbol.of(val._UNPACK().toString()));
+                return ExprFw.wrap(Symbol.of(val._UNPACK_().toString()));
             }
         }
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._UNPACK();
+            Expr expr = exprVal._UNPACK_();
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -117,7 +117,7 @@ public class Main {
                         if (isize != 2)
                             return null;
 
-                        String number = exprVal.call(DIntFw.dint(1))._UNPACK().toString();
+                        String number = exprVal.call(DIntFw.dint(1))._UNPACK_().toString();
                         int b;
                         try {
                             if (number.startsWith("0x")) {
@@ -134,7 +134,7 @@ public class Main {
                         if (isize != 2)
                             return null;
 
-                        String number = exprVal.call(DIntFw.dint(1))._UNPACK().toString();
+                        String number = exprVal.call(DIntFw.dint(1))._UNPACK_().toString();
                         long b;
                         try {
                             if (number.startsWith("0x")) {
@@ -151,7 +151,7 @@ public class Main {
                         if (isize != 2)
                             return null;
 
-                        String token = exprVal.call(DIntFw.dint(1))._UNPACK().toString();
+                        String token = exprVal.call(DIntFw.dint(1))._UNPACK_().toString();
                         char b;
                         try {
                             if (token.length() == 3 && token.charAt(0) == '\'' && token.charAt(2) == '\'') {

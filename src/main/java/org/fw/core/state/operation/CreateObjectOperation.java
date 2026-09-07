@@ -24,7 +24,7 @@ public final class CreateObjectOperation extends Operation {
         if (state != scope.state()) 
             return Operation.unit;
         AtomObj obj = AtomObj.of(initialValue, scope);
-        return Val.of(LaserPointerFw.laserPointer, obj);
+        return Val._NEW_INSTANCE_(LaserPointerFw.laserPointer, obj);
     }
 
     @Override

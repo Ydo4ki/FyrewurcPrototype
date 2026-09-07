@@ -19,23 +19,23 @@ import static org.fw.core.FW.symbol;
 
 // for things like CompEnv
 public final class ChainLinkFw {
-    public static final Type chainLinkType = FW.telephonist_native((arg) -> {
+    public static final Type chainLinkType = FW.telephonist_native_standalone((arg) -> {
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native((arg1) -> {
+            return FW.telephonist_native_standalone((arg1) -> {
                 if (!ConstraintFw.isConstraint(arg1))
                     return null;
 
-                return Val.of(ChainLinkFw.chainLinkType, new ChainLinkTypeRecord(arg1));
+                return Val._NEW_INSTANCE_(ChainLinkFw.chainLinkType, new ChainLinkTypeRecord(arg1));
             });
         }
         if (FwUtils.isTypeApiCall(arg, ChainLinkFw.chainLinkType)) {
             Val instanceType = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
-            ChainLinkTypeRecord typeInfo = instanceType._UNPACK();
+            ChainLinkTypeRecord typeInfo = instanceType._UNPACK_();
             Type type = instanceType.asType();
 
             if (FwUtils.isTypeApiCall(arg, type)) {
-                ChainLinkFw.ChainLinkRecord instance = ((Val) CallFw.getVal(arg))._UNPACK();
+                ChainLinkFw.ChainLinkRecord instance = ((Val) CallFw.getVal(arg))._UNPACK_();
                 Val cArg = (Val) CallFw.getArg(arg);
 
                 Val ret = instance.resolver().call(cArg);
@@ -51,9 +51,9 @@ public final class ChainLinkFw {
 //
 //                }
             } else if (arg.equalsSymbol("builder")) {
-                return FW.telephonist_native("*.builder", (resolver) -> {
-                    return FW.telephonist_native((parentCEnv) -> {
-                        return Val.of(type, new ChainLinkFw.ChainLinkRecord(resolver, parentCEnv));
+                return FW.telephonist_native_standalone("*.builder", (resolver) -> {
+                    return FW.telephonist_native_standalone((parentCEnv) -> {
+                        return Val._NEW_INSTANCE_(type, new ChainLinkFw.ChainLinkRecord(resolver, parentCEnv));
                     });
                 });
             }

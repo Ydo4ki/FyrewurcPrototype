@@ -16,13 +16,13 @@ import java.util.Objects;
 import java.util.WeakHashMap;
 
 public final class ReifiedTypeFw {
-    public static final Type reifiedType = FW.telephonist_native(arg -> {
+    public static final Type reifiedType = FW.telephonist_native_standalone(arg -> {
         if (FwUtils.isTypeApiCall(arg, ReifiedTypeFw.reifiedType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
             Type type = instance.asType();
-            ReifiedType rt = instance._UNPACK();
+            ReifiedType rt = instance._UNPACK_();
             if (FwUtils.isTypeApiCall(arg, type)) {
                 // nah
 //                instance = Call.getVal(arg);
@@ -33,25 +33,25 @@ public final class ReifiedTypeFw {
 //                    vals[i] = getAtom(instance, i).call(arg);
 //                }
 //                return reify(vals);
-            } else if (arg.getType() == SymbolFw.symbol && arg._UNPACK().toString().equals("builder")) {
+            } else if (arg.getType() == SymbolFw.symbol && arg._UNPACK_().toString().equals("builder")) {
                 return builder(instance.asType(), new Object[0]);
             }
             return null;
         } else if (arg.getType() == SymbolFw.symbol) {
-            String v = arg._UNPACK().toString();
+            String v = arg._UNPACK_().toString();
             if (v.equals("builder"))
-                return FW.telephonist_native(atomType -> FW.telephonist_native(size0 -> {
+                return FW.telephonist_native_standalone(atomType -> FW.telephonist_native_standalone(size0 -> {
                     if (size0.getType().equals(DIntFw.dint)) {
                         int size = DIntFw.unwrap0(size0).intValueExact();
                         return reifiedType(atomType.asType(), size).asVal();
                     }
                     return null;
                 }));
-            else if (v.equals("fn-call")) return FW.telephonist_native(arg1 -> {
+            else if (v.equals("fn-call")) return FW.telephonist_native_standalone(arg1 -> {
                 if (arg1.getType() != DVecFw.dVec)
                     return null;
 
-                Val[] arr = arg1._UNPACK();
+                Val[] arr = arg1._UNPACK_();
                 int size = arr.length;
                 if (size != 2)
                     return null;
@@ -72,14 +72,14 @@ public final class ReifiedTypeFw {
         if (size == 1)
             return elementType;
         while (elementType.asVal().getType() == reifiedType) {
-            ReifiedType rt = elementType.asVal()._UNPACK();
+            ReifiedType rt = elementType.asVal()._UNPACK_();
             elementType = rt.atom_t;
             size *= rt.size;
         }
         if (elementType == BitFw.bit) {
-            return reifiedBits.computeIfAbsent(size, s -> Val.of(reifiedType, new ReifiedType(BitFw.bit, s)).asType());
+            return reifiedBits.computeIfAbsent(size, s -> Val._NEW_INSTANCE_(reifiedType, new ReifiedType(BitFw.bit, s)).asType());
         }
-        return Val.of(reifiedType, new ReifiedType(elementType, size)).asType();
+        return Val._NEW_INSTANCE_(reifiedType, new ReifiedType(elementType, size)).asType();
     }
 
     private static Val getAtom(Val reified, int index) {
@@ -87,7 +87,7 @@ public final class ReifiedTypeFw {
         if (type.asVal().getType() != ReifiedTypeFw.reifiedType)
             throw new IllegalStateException();
 
-        Type atomType = type.asVal()._UNPACK(ReifiedType.class).atom_t;
+        Type atomType = type.asVal()._UNPACK_(ReifiedType.class).atom_t;
 
         long atomBSize = MemUtils.binarySize(atomType);
         if (atomBSize > 0) {
@@ -95,7 +95,7 @@ public final class ReifiedTypeFw {
             assert bits != null;
             return MemUtils.wrap(atomType, bits.getSlice(index * atomBSize, (index + 1) * atomBSize));
         } else {
-            return Val.of(atomType, reified._UNPACK(Object[].class)[index]);
+            return Val._NEW_INSTANCE_(atomType, reified._UNPACK_(Object[].class)[index]);
         }
     }
 
@@ -108,7 +108,7 @@ public final class ReifiedTypeFw {
             } else if (!atomType.equals(vals[i].getType())) {
                 throw new IllegalStateException();
             }
-            payloads[i] = vals[i]._UNPACK();
+            payloads[i] = vals[i]._UNPACK_();
         }
         Type reifiedType = reifiedType(atomType, vals.length);
         return reify0(reifiedType, payloads);
@@ -122,7 +122,7 @@ public final class ReifiedTypeFw {
             if (payloads.length <= 8 && bsize == payloads.length) {
                 byte result = 0;
                 for (int i = 0; i < payloads.length; i++) {
-                    if (payloads[i].equals(BitFw.bit1._UNPACK())) {
+                    if (payloads[i].equals(BitFw.bit1._UNPACK_())) {
                         result |= (byte) (1 << (payloads.length - 1 - i));
                     }
                 }
@@ -131,7 +131,7 @@ public final class ReifiedTypeFw {
                 throw new UnsupportedOperationException("TODO");
             }
         }
-        return Val.of(reifiedType, data);
+        return Val._NEW_INSTANCE_(reifiedType, data);
     }
 
     static class ReifiedType {
@@ -157,15 +157,15 @@ public final class ReifiedTypeFw {
     }
 
 
-    private static final Type rtBuilder = FW.telephonist_native(arg -> {
+    private static final Type rtBuilder = FW.telephonist_native_standalone(arg -> {
         if (FwUtils.isTypeApiCall(arg, ReifiedTypeFw.rtBuilder)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
-            RtBuilder builder = instance._UNPACK();
-            ReifiedType rt = builder.rt.asVal()._UNPACK(ReifiedType.class);
+            RtBuilder builder = instance._UNPACK_();
+            ReifiedType rt = builder.rt.asVal()._UNPACK_(ReifiedType.class);
             if (arg.getType().equals(rt.atom_t)) {
-                Object[] na = DVecFw.arAppended(builder.data, arg._UNPACK());
+                Object[] na = DVecFw.arAppended(builder.data, arg._UNPACK_());
                 if (na.length == rt.size) {
                     return reify0(builder.rt, na);
                 }
@@ -176,7 +176,7 @@ public final class ReifiedTypeFw {
     }).asType();
 
     private static Val builder(Type rt, Object[] data) {
-        return Val.of(rtBuilder, new RtBuilder(rt, data));
+        return Val._NEW_INSTANCE_(rtBuilder, new RtBuilder(rt, data));
     }
 
     static class RtBuilder {

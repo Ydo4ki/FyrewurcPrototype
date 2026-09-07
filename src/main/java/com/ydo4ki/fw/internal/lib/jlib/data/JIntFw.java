@@ -11,11 +11,11 @@ import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 import java.util.function.IntBinaryOperator;
 
 public final class JIntFw {
-    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
         Integer value = unwrap(rawPayload);
         assert value != null;
         if (arg.getType().equals(SymbolFw.symbol)) {
-            String sym = arg._UNPACK(Symbol.class).getValue();
+            String sym = arg._UNPACK_(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap(-value);
                 case "+": return bop(value, Integer::sum);
@@ -39,10 +39,10 @@ public final class JIntFw {
             }
         }
         return null;
-    }))), FW.telephonist_native(arg -> null));
+    }))), FW.telephonist_native_standalone(arg -> null));
 
     private static Val bop(Integer value, IntBinaryOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.telephonist_native_standalone((arg1) -> {
             if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = unwrap(arg1);
                 return wrap(operator.applyAsInt(value, v2));
@@ -52,11 +52,11 @@ public final class JIntFw {
     }
 
     public static Val wrap(int b) {
-        return Val.of(jint, b);
+        return Val._NEW_INSTANCE_(jint, b);
     }
 
     public static Integer unwrap(Val val) {
-        return val._UNPACK(Integer.class);
+        return val._UNPACK_(Integer.class);
     }
 }
 

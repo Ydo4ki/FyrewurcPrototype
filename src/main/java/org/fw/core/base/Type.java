@@ -64,7 +64,7 @@ public abstract class Type implements ValAdapter {
 
         @Override
         Val callInstance(Val instance, Val arg) {
-            Value v = instance._UNPACK(Telephonist.class).function().call(arg);
+            Value v = instance._UNPACK_(Telephonist.class).function().call(arg);
             if (!(v instanceof Val))
                 return Unspecified.unspecified(instance, arg);
 
@@ -99,6 +99,10 @@ public abstract class Type implements ValAdapter {
         }
 
         public interface NativeCallFunction {
+            Value call(Val arg) throws Exception; // demands a concrete parameter, but may depend on some other abstract Value
+        }
+
+        public interface StandaloneNativeCallFunction {
             Val call(Val arg) throws Exception;
         }
 

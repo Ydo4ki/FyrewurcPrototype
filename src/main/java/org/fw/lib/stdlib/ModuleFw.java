@@ -26,42 +26,42 @@ import static org.fw.core.FW.symbol;
 
 // no I literally just made a telemap XD
 public final class ModuleFw {
-    public static final Type module = FW.telephonist_native("Module", (arg) -> {
+    public static final Type module = FW.telephonist_native_standalone("Module", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ModuleFw.module)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
-            Module module = instance._UNPACK();
+            Module module = instance._UNPACK_();
             for (Val declared : module.declareds()) {
                 if (DeclaredFw.getKey(declared).equals(arg)) {
                     return DeclaredFw.getValue(declared);
                 }
             }
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native("Module.constructor", (arg1) -> {
+            return FW.telephonist_native_standalone("Module.constructor", (arg1) -> {
                 if (!arg1.getType().equals(DVecFw.dVec))
                     return null;
 
-                Val[] values = arg1._UNPACK(); // Ok I don't even care at this point
+                Val[] values = arg1._UNPACK_(); // Ok I don't even care at this point
                 for (Val value : values) {
                     if (!value.getType().equals(DeclaredFw.declared))
                         return null;
                 }
 
-                return Val.of(ModuleFw.module, new Module(values));
+                return Val._NEW_INSTANCE_(ModuleFw.module, new Module(values));
             });
         } else if (arg.equalsSymbol("contains-key")) {
-            return FW.telephonist_native("Module.contains-key", (arg1) -> {
+            return FW.telephonist_native_standalone("Module.contains-key", (arg1) -> {
                 if (!arg1.getType().equals(ModuleFw.module)) return null;
-                Module mod = arg1._UNPACK();
-                return FW.telephonist_native((key) -> mod.containsKey(key) ? BoolFw._true : BoolFw._false);
+                Module mod = arg1._UNPACK_();
+                return FW.telephonist_native_standalone((key) -> mod.containsKey(key) ? BoolFw._true : BoolFw._false);
             });
         }
 
         return null;
     }).asType();
 
-    public static final CompEnv module2exprCenv = CompEnv.of(FW.telephonist_native("module2exprCenv",(arg) -> {
+    public static final CompEnv module2exprCenv = CompEnv.of(FW.telephonist_native_standalone("module2exprCenv",(arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -80,11 +80,11 @@ public final class ModuleFw {
             if (!value.getType().equals(DeclaredFw.declared))
                 throw new IllegalArgumentException(value.toString());
         }
-        return Val.of(ModuleFw.module, new Module(values));
+        return Val._NEW_INSTANCE_(ModuleFw.module, new Module(values));
     }
 
     public static Val toExpr(Val arg, CompEnv compEnv) {
-        return ExprFw.wrap(arg._UNPACK(ModuleFw.Module.class).toExpr(compEnv));
+        return ExprFw.wrap(arg._UNPACK_(ModuleFw.Module.class).toExpr(compEnv));
     }
 
     public static Val invert(Val module) {
@@ -92,7 +92,7 @@ public final class ModuleFw {
         if (module.getType() != ModuleFw.module)
             return null;
 
-        Module m = module._UNPACK();
+        Module m = module._UNPACK_();
         Val[] newd = new Val[m.declareds.length];
         for (int i = 0; i < m.declareds.length; i++) {
             newd[i] = DeclaredFw.declared(
@@ -100,7 +100,7 @@ public final class ModuleFw {
                     DeclaredFw.getKey(m.declareds[i])
             );
         }
-        return Val.of(module.getType(), new Module(newd));
+        return Val._NEW_INSTANCE_(module.getType(), new Module(newd));
     }
 
     public static Value merge(Value module, Value... modules) {
@@ -161,18 +161,18 @@ public final class ModuleFw {
     }
 
     public static final class ModuleCEnvFw {
-        public static final Type moduleCompEnv = FW.telephonist_native("ModuleCEnvFn", (arg) -> {
+        public static final Type moduleCompEnv = FW.telephonist_native_standalone("ModuleCEnvFn", (arg) -> {
             if (arg.equalsSymbol("construct")) {
-                return FW.telephonist_native(ModuleCEnvFw::compEnv);
+                return FW.telephonist_native_standalone(ModuleCEnvFw::compEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv)) {
                 Val instance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);
-                Val payload = instance._UNPACK(Val.class);
+                Val payload = instance._UNPACK_(Val.class);
                 if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                     Val exprVal = arg.call(symbol("expr"));
                     Val compEnv = arg.call(symbol("comp-env"));
-                    Expr expr = exprVal._UNPACK(Expr.class);
+                    Expr expr = exprVal._UNPACK_(Expr.class);
                     if (expr instanceof Symbol) {
                         if (payload.getType() == ModuleFw.module) {
                             if (module.asVal().call(symbol("contains-key")).call(payload).call(exprVal) == BoolFw._true) {
@@ -191,14 +191,14 @@ public final class ModuleFw {
             return null;
         }).asType();
 
-        public static final Type moduleCompEnvToExpr = FW.telephonist_native("ModuleCEnvToExprFn", (arg) -> {
+        public static final Type moduleCompEnvToExpr = FW.telephonist_native_standalone("ModuleCEnvToExprFn", (arg) -> {
             if (arg.equalsSymbol("construct")) {
-                return FW.telephonist_native(ModuleCEnvFw::toExprCompEnv);
+                return FW.telephonist_native_standalone(ModuleCEnvFw::toExprCompEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnvToExpr)) {
                 Val instance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);
-                Val payload = instance._UNPACK(Val.class);
+                Val payload = instance._UNPACK_(Val.class);
                 if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
                     Val val = arg.call(symbol("passing"));
                     Val compEnv = arg.call(symbol("chain"));
@@ -226,19 +226,19 @@ public final class ModuleFw {
             return moduleCompEnvToExpr.asVal().get("construct").call(module);
         }
         public static Val compEnv(Val module) {
-            return Val.of(moduleCompEnv, module);
+            return Val._NEW_INSTANCE_(moduleCompEnv, module);
         }
         public static Val toExprCompEnv(Val module) {
-            return Val.of(moduleCompEnvToExpr, module);
+            return Val._NEW_INSTANCE_(moduleCompEnvToExpr, module);
         }
     }
 
 
-    public static final Val directivesCenv = FW.telephonist_native((arg) -> {
+    public static final Val directivesCenv = FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._UNPACK(Expr.class);
+            Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -246,12 +246,12 @@ public final class ModuleFw {
                     case "module": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Expr expr1 = exprVal.call(DIntFw.dint(i))._UNPACK();
+                            Expr expr1 = exprVal.call(DIntFw.dint(i))._UNPACK_();
                             Val val = compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.getType()))
                                 return val;
 
-                            builder = builder.call(val._UNPACK(Vit.class));
+                            builder = builder.call(val._UNPACK_(Vit.class));
                         }
                         builder = Vit.call(DVecBuilderFw.dvecbf, builder);
 

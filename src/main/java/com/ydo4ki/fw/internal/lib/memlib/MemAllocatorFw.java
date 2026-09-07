@@ -17,15 +17,15 @@ import org.fw.core.util.FwUtils;
 // remember local runtimes
 public final class MemAllocatorFw {
 
-    public static final Type heapAllocator = FW.telephonist_native("heapAllocator", arg -> {
+    public static final Type heapAllocator = FW.telephonist_native_standalone("heapAllocator", arg -> {
         if (FwUtils.isTypeApiCall(arg, MemAllocatorFw.heapAllocator)) {
             Val instance = (Val) CallFw.getVal(arg);
-            HeapObj heap = instance._UNPACK();
+            HeapObj heap = instance._UNPACK_();
             arg = (Val) CallFw.getArg(arg);
 
 
             if (arg.getType() == SymbolFw.symbol) {
-                String sym = arg._UNPACK().toString();
+                String sym = arg._UNPACK_().toString();
                 switch (sym) {
                     case "heap":
                         return heap.asVal();

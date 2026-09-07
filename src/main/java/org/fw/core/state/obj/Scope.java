@@ -28,7 +28,7 @@ public final class Scope implements Obj {
         return owner;
     }
 
-    private final Val asVal = Val.of(ScopeFw.scopePointer, this);
+    private final Val asVal = Val._NEW_INSTANCE_(ScopeFw.scopePointer, this);
 
     @Override
     public Val asVal() {

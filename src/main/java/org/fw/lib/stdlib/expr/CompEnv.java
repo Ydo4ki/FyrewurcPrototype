@@ -37,16 +37,16 @@ public final class CompEnv extends AbstractValueAdapter {
     }
 
     public Value compileV(Val expr) {
-        return asValue().call(syntaxResolve(expr._UNPACK(Expr.class), this));
+        return asValue().call(syntaxResolve(expr._UNPACK_(Expr.class), this));
     }
 
     public Vit compile(Val expr) throws VitCompilationException {
-        Value v = asValue().call(syntaxResolve(expr._UNPACK(Expr.class), this));
-        return VitFw.unwrap((Val) v, expr._UNPACK(Expr.class));
+        Value v = asValue().call(syntaxResolve(expr._UNPACK_(Expr.class), this));
+        return VitFw.unwrap((Val) v, expr._UNPACK_(Expr.class));
     }
 
     public static Val syntaxResolve(Expr expr, CompEnv env) {
-        return Val.of(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(ExprFw.wrap(expr), (Val) env.asValue()));
+        return Val._NEW_INSTANCE_(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(ExprFw.wrap(expr), (Val) env.asValue()));
     }
 
     public Expr toExpr(Value val) {
@@ -55,7 +55,7 @@ public final class CompEnv extends AbstractValueAdapter {
     }
 
     public static Val toExprResolve(Val val, CompEnv env) {
-        return Val.of(SyntaxResolveFw.toExprResolve, new ChainResolveFw.ChainResolve(val, (Val) env.asValue()));
+        return Val._NEW_INSTANCE_(SyntaxResolveFw.toExprResolve, new ChainResolveFw.ChainResolve(val, (Val) env.asValue()));
     }
 
     public static Vit toExprResolve(Vit val, CompEnv env) {

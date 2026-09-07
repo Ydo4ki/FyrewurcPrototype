@@ -15,22 +15,22 @@ import org.fw.core.util.FwUtils;
 import java.lang.invoke.MethodHandle;
 
 public final class JMethodFw {
-    public static final Type jMethod = FW.telephonist_native((arg) -> {
+    public static final Type jMethod = FW.telephonist_native_standalone((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JMethodFw.jMethod)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
             if (arg.getType() != SymbolFw.symbol)
                 return null;
 
-            MethodHandle method = instance._UNPACK();
+            MethodHandle method = instance._UNPACK_();
 
-            switch (arg._UNPACK(Symbol.class).getValue()) {
+            switch (arg._UNPACK_(Symbol.class).getValue()) {
                 case "invoke-method": {
-                    return FW.telephonist_native(argumentsVec -> {
+                    return FW.telephonist_native_standalone(argumentsVec -> {
                         if (argumentsVec.getType() != DVecFw.dVec)
                             return null;
 
-                        Val[] arguments = argumentsVec._UNPACK();
+                        Val[] arguments = argumentsVec._UNPACK_();
                         Object[] jArgs = new Object[arguments.length];
                         for (int i = 0; i < arguments.length; i++) {
                             Val argument = arguments[i];
@@ -57,7 +57,7 @@ public final class JMethodFw {
     }).asType();
 
 
-    public static final Val methodCallCEnv = FW.telephonist_native((arg) -> {
+    public static final Val methodCallCEnv = FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");

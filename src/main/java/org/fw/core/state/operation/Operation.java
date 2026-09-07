@@ -19,7 +19,7 @@ public abstract class Operation implements ValAdapter {
     // just without negative connotation
     // upd: ok nevermind it has kinda negative connotation now since unspecified is now very strict
     // maybe I should make a separate unspecified type for failed operations :hmm:
-    public static final Val unit = FW.telephonist_native((arg) -> Operation.unit);
+    public static final Val unit = FW.telephonist_native_standalone((arg) -> Operation.unit);
 
     public abstract Value apply(State state);
 
@@ -27,7 +27,7 @@ public abstract class Operation implements ValAdapter {
     private Boolean isPure = null;
 
     protected Operation() {
-        this.asVal = Val.of(OperationFw.operation, this);
+        this.asVal = Val._NEW_INSTANCE_(OperationFw.operation, this);
     }
 
     public static Operation read(AtomObj obj) {

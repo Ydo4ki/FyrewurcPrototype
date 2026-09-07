@@ -42,10 +42,10 @@ public final class DeviceLib {
                 MemLib.lib.exports(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
-                        DeclaredFw.declared(symbol("bufr"), Val.of(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
-                        DeclaredFw.declared(symbol("parse-placeholder"), FW.telephonist_native(arg -> {
+                        DeclaredFw.declared(symbol("bufr"), Val._NEW_INSTANCE_(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
+                        DeclaredFw.declared(symbol("parse-placeholder"), FW.telephonist_native_standalone(arg -> {
                             if (!arg.getType().equals(StrFw.str)) return null;
-                            String str = arg._UNPACK();
+                            String str = arg._UNPACK_();
                             Iterable<LocatedExpr<?>> exprs = new ExprOutput(new TokenOutput(str, null, BracketsTypes.bracketsTypes));
                             List<Val> vals = new ArrayList<>();
                             for (LocatedExpr<?> expr : exprs) {
@@ -54,10 +54,10 @@ public final class DeviceLib {
                             //noinspection SimplifyStreamApiCallChains
                             return DVecFw.vec(vals.stream().toArray(Val[]::new));
                         })),
-                        DeclaredFw.declared(symbol("expr2string"), FW.telephonist_native(arg -> {
+                        DeclaredFw.declared(symbol("expr2string"), FW.telephonist_native_standalone(arg -> {
                             if (!ExprFw.isExpr(arg))
                                 return null;
-                            return StrFw.str(arg._UNPACK(Expr.class).toString());
+                            return StrFw.str(arg._UNPACK_(Expr.class).toString());
                         }))
                 )),
                 Debug.lib.exports(),

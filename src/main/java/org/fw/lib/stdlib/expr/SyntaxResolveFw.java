@@ -9,9 +9,9 @@ import static org.fw.core.FW.symbol;
 public final class SyntaxResolveFw {
 
     public static final Type syntaxResolve = WrapperTypeFw.wrapperType(ChainResolveFw.chainResolveType(ExprFw.isExprBugged),
-            FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+            FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
                 if (arg.getType() == SymbolFw.symbol) {
-                    String s = arg._UNPACK().toString();
+                    String s = arg._UNPACK_().toString();
                     switch (s) {
                         case "expr":
                             return rawPayload.call(symbol("passing"));
@@ -20,10 +20,10 @@ public final class SyntaxResolveFw {
                     }
                 }
                 return null;
-            }))), FW.telephonist_native(arg -> {
-                if (arg.equalsSymbol("builder")) return FW.telephonist_native(arg1 -> {
-                    return FW.telephonist_native(arg2 -> {
-                        return Val.of(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(arg1, arg2));
+            }))), FW.telephonist_native_standalone(arg -> {
+                if (arg.equalsSymbol("builder")) return FW.telephonist_native_standalone(arg1 -> {
+                    return FW.telephonist_native_standalone(arg2 -> {
+                        return Val._NEW_INSTANCE_(SyntaxResolveFw.syntaxResolve, new ChainResolveFw.ChainResolve(arg1, arg2));
                     });
                 });
                 return null;
@@ -34,28 +34,28 @@ public final class SyntaxResolveFw {
 //    public static final Type toExprResolve = crtcis;
 
     public static final Type toExprResolve = WrapperTypeFw.wrapperType(crtcis,
-            FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(rawPayload::call))), FW.telephonist_native(arg -> {
+            FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(rawPayload::call))), FW.telephonist_native_standalone(arg -> {
                 if (arg.equalsSymbol("builder")) {
-                    return FW.telephonist_native((passingArg) -> {
+                    return FW.telephonist_native_standalone((passingArg) -> {
                         if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
                             return null;
 
-                        return FW.telephonist_native((chain) -> {
-                            return Val.of(SyntaxResolveFw.toExprResolve, new ChainResolveFw.ChainResolve(passingArg, chain));
+                        return FW.telephonist_native_standalone((chain) -> {
+                            return Val._NEW_INSTANCE_(SyntaxResolveFw.toExprResolve, new ChainResolveFw.ChainResolve(passingArg, chain));
                         });
                     });
                 }
                 return null;
             }));
     public static final Type toFnResolve = WrapperTypeFw.wrapperType(crtcis,
-            FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(rawPayload::call))), FW.telephonist_native(arg -> {
+            FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(rawPayload::call))), FW.telephonist_native_standalone(arg -> {
                 if (arg.equalsSymbol("builder")) {
-                    return FW.telephonist_native((passingArg) -> {
+                    return FW.telephonist_native_standalone((passingArg) -> {
                         if (ConstraintFw.isSpecified.call(symbol("check")).call(passingArg) != BoolFw._true)
                             return null;
 
-                        return FW.telephonist_native((chain) -> {
-                            return Val.of(SyntaxResolveFw.toFnResolve, new ChainResolveFw.ChainResolve(passingArg, chain));
+                        return FW.telephonist_native_standalone((chain) -> {
+                            return Val._NEW_INSTANCE_(SyntaxResolveFw.toFnResolve, new ChainResolveFw.ChainResolve(passingArg, chain));
                         });
                     });
                 }

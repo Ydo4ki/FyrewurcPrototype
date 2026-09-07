@@ -34,7 +34,7 @@ public final class ValArrayObj extends AbstractObj {
         return value.length;
     }
 
-    private final Val asVal = Val.of(WidePointerFw.widePointer, this);
+    private final Val asVal = Val._NEW_INSTANCE_(WidePointerFw.widePointer, this);
 
     @Override
     public Val asVal() {
@@ -70,7 +70,7 @@ public final class ValArrayObj extends AbstractObj {
             return valArrayObj;
         }
 
-        private final Val asVal = Val.of(LaserPointerFw.laserPointer, this);
+        private final Val asVal = Val._NEW_INSTANCE_(LaserPointerFw.laserPointer, this);
 
         @Override
         public Val asVal() {

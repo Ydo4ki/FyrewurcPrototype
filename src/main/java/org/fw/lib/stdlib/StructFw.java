@@ -23,15 +23,15 @@ import static org.fw.core.FW.symbol;
 
 // so should the order of fields matter or not?
 public final class StructFw {
-    public static final Type struct = FW.telephonist_native("Struct", (arg) -> {
+    public static final Type struct = FW.telephonist_native_standalone("Struct", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.struct)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
-            Struct struct = instance._UNPACK();
+            Struct struct = instance._UNPACK_();
             if (FwUtils.isTypeApiCall(arg, instance.asType())) {
                 Val strInstance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);
-                Val[] values = strInstance._UNPACK();
+                Val[] values = strInstance._UNPACK_();
                 int index = struct.indexOf(arg);
                 if (index == -1) return null;
                 return values[index];
@@ -41,22 +41,22 @@ public final class StructFw {
                 return DVecFw.vec(struct.fields);
             }
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native("Struct.construct", (payload) -> {
+            return FW.telephonist_native_standalone("Struct.construct", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
-                Val[] fields = payload._UNPACK();
+                Val[] fields = payload._UNPACK_();
                 for (Val field : fields) {
                     if (!field.getType().equals(DeclarationFw.declaration))
                         return null; // some day I'll add proper errors
                 }
-                return Val.of(StructFw.struct, new Struct(fields));
+                return Val._NEW_INSTANCE_(StructFw.struct, new Struct(fields));
             });
         }
         return null;
     }).asType();
 
     public static Val toExpr(Val arg, CompEnv toExpr) {
-        StructFw.Struct value = arg._UNPACK();
+        StructFw.Struct value = arg._UNPACK_();
         List<Expr> finElements = new ArrayList<>();
         finElements.add(StructFw.struct.asVal().toExpr(toExpr));
         List<Expr> elements = new ArrayList<>();
@@ -68,7 +68,7 @@ public final class StructFw {
     }
 
     public static Val instanceToExpr(Val arg, CompEnv toExpr) {
-        Val[] value = arg._UNPACK();
+        Val[] value = arg._UNPACK_();
         List<Expr> elements = new ArrayList<>();
         elements.add(arg.getType().asVal().toExpr(toExpr));
         for (Val val : value) {
@@ -82,11 +82,11 @@ public final class StructFw {
             if (!value.getType().equals(DeclarationFw.declaration))
                 throw new IllegalArgumentException(value.toString());
         }
-        return Val.of(StructFw.struct, new Struct(fields)).asType();
+        return Val._NEW_INSTANCE_(StructFw.struct, new Struct(fields)).asType();
     }
 
     public static Val instance(Type struct, Val... values) {
-        return Val.of(struct, values);
+        return Val._NEW_INSTANCE_(struct, values);
     }
 
     private static final class Struct {
@@ -131,15 +131,15 @@ public final class StructFw {
     }
 
     private static Val structBuilder(Struct struct, Val sameStructButItsAVal) {
-        if (struct.fields.length == 0) return Val.of(sameStructButItsAVal.asType(), new Val[0]);
-        return Val.of(structBuilder, new StructBuilder(struct, sameStructButItsAVal, new Val[0]));
+        if (struct.fields.length == 0) return Val._NEW_INSTANCE_(sameStructButItsAVal.asType(), new Val[0]);
+        return Val._NEW_INSTANCE_(structBuilder, new StructBuilder(struct, sameStructButItsAVal, new Val[0]));
     }
 
-    private static final Type structBuilder = FW.telephonist_native("StructBuilder", (arg) -> {
+    private static final Type structBuilder = FW.telephonist_native_standalone("StructBuilder", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StructFw.structBuilder)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
-            StructBuilder payload = instance._UNPACK();
+            StructBuilder payload = instance._UNPACK_();
 
             Val constraint = DeclarationFw.getConstraint(payload.struct.fields[payload.progress.length]);
             if (constraint.call(symbol("check")).call(arg) != BoolFw._true) {
@@ -148,15 +148,15 @@ public final class StructFw {
 
             Val[] values = DVecFw.arAppended(payload.progress, arg);
             if (values.length == payload.struct.fields.length) {
-                return Val.of(payload.sameStructButItsAVal.asType(), values);
+                return Val._NEW_INSTANCE_(payload.sameStructButItsAVal.asType(), values);
             }
-            return Val.of(StructFw.structBuilder, new StructBuilder(payload.struct, payload.sameStructButItsAVal, values));
+            return Val._NEW_INSTANCE_(StructFw.structBuilder, new StructBuilder(payload.struct, payload.sameStructButItsAVal, values));
         }
         return null;
     }).asType();
 
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = arg.get("passing");
@@ -172,10 +172,10 @@ public final class StructFw {
             Val val = arg.get("passing");
             Val compEnv = arg.get("chain");
             if (val == struct.asVal()) {
-                return FW.telephonist_native(c -> {
+                return FW.telephonist_native_standalone(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
-                    Val[] args = c._UNPACK();
+                    Val[] args = c._UNPACK_();
                     if (args.length > 1)
                         return null;
                     Val b = val.get("construct");
@@ -185,11 +185,11 @@ public final class StructFw {
                     return Operation.pure(b).asVal();
                 });
             } else if (val.getType() == struct) {
-                int len = val._UNPACK(Struct.class).fields.length;
-                return FW.telephonist_native(c -> {
+                int len = val._UNPACK_(Struct.class).fields.length;
+                return FW.telephonist_native_standalone(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
-                    Val[] args = c._UNPACK();
+                    Val[] args = c._UNPACK_();
                     if (args.length > len)
                         return null;
                     Val b = val.get("builder");
@@ -202,7 +202,7 @@ public final class StructFw {
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._UNPACK(Expr.class);
+            Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -210,12 +210,12 @@ public final class StructFw {
                     case "struct": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Expr expr1 = exprVal.call(DIntFw.dint(i))._UNPACK();
+                            Expr expr1 = exprVal.call(DIntFw.dint(i))._UNPACK_();
                             Val val = compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.getType()))
                                 return val;
 
-                            builder = builder.call(val._UNPACK(Vit.class));
+                            builder = builder.call(val._UNPACK_(Vit.class));
                         }
                         builder = Vit.call(DVecBuilderFw.dvecbf, builder);
 

@@ -11,6 +11,6 @@ public final class JBooleanFw {
         return b ? _true : _false;
     }
 
-    public static final Val _true = Val.of(jboolean, true);
-    public static final Val _false = Val.of(jboolean, false);
+    public static final Val _true = Val._NEW_INSTANCE_(jboolean, true);
+    public static final Val _false = Val._NEW_INSTANCE_(jboolean, false);
 }

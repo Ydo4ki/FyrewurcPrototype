@@ -6,12 +6,12 @@ import org.fw.core.util.FwUtils;
 
 public final class WrapperTypeFw {
     
-    public static final Type wrapperType = FW.telephonist_native("wrapperType", arg -> {
+    public static final Type wrapperType = FW.telephonist_native_standalone("wrapperType", arg -> {
         if (FwUtils.isTypeApiCall(arg, WrapperTypeFw.wrapperType)) {
             Val wType = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
-            WrapperType wt = wType._UNPACK();
+            WrapperType wt = wType._UNPACK_();
             Type payloadType = wt.payloadType;
             Val callsHandler = wt.callsHandler;
             if (FwUtils.isTypeApiCall(arg, wType.asType())) {
@@ -20,14 +20,14 @@ public final class WrapperTypeFw {
 
                 // since we know the core type anyway there's no reason to create additional nesting levels
                 // so the value of wrapper type instance is exactly the same as the one in the wrapped type
-                Val rawPayload = Val.of(payloadType, instanceOfWt._UNPACK());
+                Val rawPayload = Val._NEW_INSTANCE_(payloadType, instanceOfWt._UNPACK_());
                 return callsHandler.call(instanceOfWt).call(rawPayload).call(arg);
             } else {
                 Val staticCallsHandler = wt.staticCallsHandler;
                 Val ret = staticCallsHandler.call(arg);
                 if (!Unspecified.isUnspecified(ret)) return ret;
                 if (arg.getType() == SymbolFw.symbol) {
-                    String sym = arg._UNPACK().toString();
+                    String sym = arg._UNPACK_().toString();
                     switch (sym) {
                         case "Payload":
                             return TypePayloadInfo.wrap(payloadType);
@@ -41,7 +41,7 @@ public final class WrapperTypeFw {
     }).asType();
 
     public static Type wrapperType(Type payloadType, Val callsHandler, Val staticCallsHandler) {
-        return Val.of(wrapperType, new WrapperType(payloadType, callsHandler, staticCallsHandler)).asType();
+        return Val._NEW_INSTANCE_(wrapperType, new WrapperType(payloadType, callsHandler, staticCallsHandler)).asType();
     }
 
     public static Type unwrapFully(Type type) {
@@ -58,7 +58,7 @@ public final class WrapperTypeFw {
     public static Val unwrapFully(Val val) {
         Type type = unwrapFully(val.getType());
         if (type != val.getType())
-            return Val.of(type, val._UNPACK());
+            return Val._NEW_INSTANCE_(type, val._UNPACK_());
         return val;
     }
 

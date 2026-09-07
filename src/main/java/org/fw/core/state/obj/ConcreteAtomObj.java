@@ -24,7 +24,7 @@ public final class ConcreteAtomObj extends AbstractObj implements AtomObj {
         value = x;
     }
 
-    private final Val asVal = Val.of(LaserPointerFw.laserPointer, this);
+    private final Val asVal = Val._NEW_INSTANCE_(LaserPointerFw.laserPointer, this);
 
     @Override
     public Val asVal() {

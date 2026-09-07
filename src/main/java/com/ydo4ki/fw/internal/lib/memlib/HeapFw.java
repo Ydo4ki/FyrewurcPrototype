@@ -15,21 +15,21 @@ import org.fw.core.util.FwUtils;
 // that would be a triple nested vm
 public final class HeapFw {
 
-    public static final Type heap = FW.telephonist_native(arg -> {
+    public static final Type heap = FW.telephonist_native_standalone(arg -> {
         if (FwUtils.isTypeApiCall(arg, HeapFw.heap)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
             if (arg.getType() == SymbolFw.symbol) {
-                String sym = arg._UNPACK().toString();
+                String sym = arg._UNPACK_().toString();
                 switch (sym) {
                     case "allocator":
-                        return Val.of(MemAllocatorFw.heapAllocator, instance._UNPACK(HeapObj.class));
+                        return Val._NEW_INSTANCE_(MemAllocatorFw.heapAllocator, instance._UNPACK_(HeapObj.class));
                 }
             }
         }
         return null;
     }).asType();
 
-    public static final Val systemHeap = Val.of(heap, HeapObj.systemHeap);
+    public static final Val systemHeap = Val._NEW_INSTANCE_(heap, HeapObj.systemHeap);
 }

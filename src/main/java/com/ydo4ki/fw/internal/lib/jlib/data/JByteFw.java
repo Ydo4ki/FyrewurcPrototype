@@ -9,10 +9,10 @@ import org.fw.lib.stdlib.WrapperTypeFw;
 import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 
 public final class JByteFw {
-    public static final Type jbyte = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.octet, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+    public static final Type jbyte = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.octet, FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
         Byte value = unwrap(rawPayload);
         if (arg.getType().equals(SymbolFw.symbol)) {
-            String sym = arg._UNPACK(Symbol.class).getValue();
+            String sym = arg._UNPACK_(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap((byte) -value);
                 case "+": return bopBBB(value, (a, b) -> (byte) (a + b));
@@ -35,7 +35,7 @@ public final class JByteFw {
             }
         }
         return null;
-    }))), FW.telephonist_native(arg -> null));
+    }))), FW.telephonist_native_standalone(arg -> null));
 
     public static byte rotateRight(byte value, int distance) {
         distance = distance & 7;
@@ -51,7 +51,7 @@ public final class JByteFw {
 
 
     private static Val bopBIB(Byte value, ByteIntByteOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.telephonist_native_standalone((arg1) -> {
             if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = JIntFw.unwrap(arg1);
                 return wrap(operator.apply(value, v2));
@@ -69,7 +69,7 @@ public final class JByteFw {
     }
 
     private static Val bopBBB(Byte value, ByteBinaryOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.telephonist_native_standalone((arg1) -> {
             if (arg1.getType().equals(JByteFw.jbyte)) {
                 Byte v2 = unwrap(arg1);
                 return wrap(operator.applyAsShort(value, v2));
@@ -79,11 +79,11 @@ public final class JByteFw {
     }
 
     public static Val wrap(Byte b) {
-        return Val.of(jbyte, b);
+        return Val._NEW_INSTANCE_(jbyte, b);
     }
 
     public static Byte unwrap(Val val) {
-        return val._UNPACK(Byte.class);
+        return val._UNPACK_(Byte.class);
     }
 }
 

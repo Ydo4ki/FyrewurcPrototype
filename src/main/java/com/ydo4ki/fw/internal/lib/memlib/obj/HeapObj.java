@@ -14,7 +14,7 @@ public final class HeapObj extends AbstractObj {
         super(scope);
     }
 
-    private final Val asVal = Val.of(HeapFw.heap, this);
+    private final Val asVal = Val._NEW_INSTANCE_(HeapFw.heap, this);
 
     @Override
     public Val asVal() {

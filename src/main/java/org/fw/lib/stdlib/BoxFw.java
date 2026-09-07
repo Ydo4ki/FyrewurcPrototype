@@ -13,7 +13,7 @@ import org.fw.core.ast.ExprList;
 import static org.fw.core.FW.symbol;
 
 public final class BoxFw {
-    public static final Type boxType = FW.telephonist_native("BoxType", (arg) -> {
+    public static final Type boxType = FW.telephonist_native_standalone("BoxType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoxFw.boxType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -26,16 +26,16 @@ public final class BoxFw {
                     return unbox(instance);
                 }
             } else if (arg.equalsSymbol("construct")) {
-                return FW.telephonist_native((arg1) -> Val.of(type, arg1));
+                return FW.telephonist_native_standalone((arg1) -> Val._NEW_INSTANCE_(type, arg1));
             }
             return null;
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native(arg1 -> Val.of(BoxFw.boxType, arg1));
+            return FW.telephonist_native_standalone(arg1 -> Val._NEW_INSTANCE_(BoxFw.boxType, arg1));
         }
         return null;
     }).asType();
 
-    public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
 
@@ -54,7 +54,7 @@ public final class BoxFw {
 
     // the only operation that doesn't need context xd
     public static Val unbox(Val arg) {
-        return arg._UNPACK();
+        return arg._UNPACK_();
     }
 
     public static Type newBoxType(Val key) {

@@ -7,23 +7,23 @@ import org.fw.core.base.BoolFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.telephonist_native_standalone;
 
 // it's not like this can't be implemented on the language itself, this just seems easier
 public final class IfOperation extends Operation {
-    public static final Val _If = FW.telephonist_native((condition) -> {
+    public static final Val _If = FW.telephonist_native_standalone((condition) -> {
         if (condition.getType() != OperationFw.operation)
             return null;
 
-        return FW.telephonist_native((ifTrue) -> {
+        return FW.telephonist_native_standalone((ifTrue) -> {
             if (ifTrue.getType() != OperationFw.operation)
                 return null;
 
-            return FW.telephonist_native((ifFalse) -> {
+            return FW.telephonist_native_standalone((ifFalse) -> {
                 if (ifFalse.getType() != OperationFw.operation)
                     return null;
 
-                return new IfOperation(condition._UNPACK(), ifTrue._UNPACK(), ifFalse._UNPACK()).asVal();
+                return new IfOperation(condition._UNPACK_(), ifTrue._UNPACK_(), ifFalse._UNPACK_()).asVal();
             });
         });
     });

@@ -9,10 +9,10 @@ import org.fw.lib.stdlib.WrapperTypeFw;
 import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 
 public final class JFloatFw {
-    public static final Type jfloat = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+    public static final Type jfloat = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
         Float value = unwrap(rawPayload);
         if (arg.getType().equals(SymbolFw.symbol)) {
-            String sym = arg._UNPACK(Symbol.class).getValue();
+            String sym = arg._UNPACK_(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap(-value);
                 case "+": return bop(value, Float::sum);
@@ -23,10 +23,10 @@ public final class JFloatFw {
             }
         }
         return null;
-    }))), FW.telephonist_native(arg -> null));
+    }))), FW.telephonist_native_standalone(arg -> null));
 
     private static Val bop(Float value, FloatBinaryOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.telephonist_native_standalone((arg1) -> {
             if (arg1.getType().equals(JFloatFw.jfloat)) {
                 Float v2 = unwrap(arg1);
                 return wrap(operator.applyAsFloat(value, v2));
@@ -40,11 +40,11 @@ public final class JFloatFw {
     }
 
     public static Val wrap(float b) {
-        return Val.of(jfloat, Float.floatToRawIntBits(b));
+        return Val._NEW_INSTANCE_(jfloat, Float.floatToRawIntBits(b));
     }
 
     public static Float unwrap(Val val) {
-        return Float.intBitsToFloat(val._UNPACK(Integer.class));
+        return Float.intBitsToFloat(val._UNPACK_(Integer.class));
     }
 }
 

@@ -16,28 +16,28 @@ import org.fw.core.util.FwUtils;
 import java.lang.invoke.MethodType;
 
 public final class JOopFw {
-    public static final Type jOop = FW.telephonist_native((arg) -> {
+    public static final Type jOop = FW.telephonist_native_standalone((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JOopFw.jOop)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
             if (arg.getType() != SymbolFw.symbol)
                 return null;
 
-            Object oop = instance._UNPACK();
+            Object oop = instance._UNPACK_();
             Class<?> cls = oop.getClass();
 
-            switch (arg._UNPACK(Symbol.class).getValue()) {
+            switch (arg._UNPACK_(Symbol.class).getValue()) {
                 case "get-method": {
-                    return FW.telephonist_native(nameV -> {
+                    return FW.telephonist_native_standalone(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
-                        String name = nameV._UNPACK();
-                        return FW.telephonist_native(arg1 -> {
+                        String name = nameV._UNPACK_();
+                        return FW.telephonist_native_standalone(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
-                            String descriptor = arg1._UNPACK();
+                            String descriptor = arg1._UNPACK_();
 
                             MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
                             try {
-                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findVirtual(cls, name, methodType).bindTo(oop));
+                                return Val._NEW_INSTANCE_(JMethodFw.jMethod, JVMHandles.lookup.findVirtual(cls, name, methodType).bindTo(oop));
                             } catch (NoSuchMethodException | IllegalAccessException e) {
                                 return Operation.unit;
                             }
@@ -52,7 +52,7 @@ public final class JOopFw {
                     return JIntFw.wrap(System.identityHashCode(oop));
                 }
                 case "typed": {
-                    return Val.of(JClassFw.wrap(oop.getClass()).asType(), oop);
+                    return Val._NEW_INSTANCE_(JClassFw.wrap(oop.getClass()).asType(), oop);
                 }
             }
 

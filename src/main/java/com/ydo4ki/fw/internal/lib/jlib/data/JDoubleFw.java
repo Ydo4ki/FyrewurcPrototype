@@ -11,10 +11,10 @@ import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 import java.util.function.DoubleBinaryOperator;
 
 public final class JDoubleFw {
-    public static final Type jdouble = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+    public static final Type jdouble = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist_native_standalone(instance -> FW.telephonist_native_standalone(rawPayload -> FW.telephonist_native_standalone(arg -> {
         Double value = unwrap(rawPayload);
         if (arg.getType().equals(SymbolFw.symbol)) {
-            String sym = arg._UNPACK(Symbol.class).getValue();
+            String sym = arg._UNPACK_(Symbol.class).getValue();
             switch (sym) {
                 case "neg": return wrap(-value);
                 case "+": return bop(value, Double::sum);
@@ -25,10 +25,10 @@ public final class JDoubleFw {
             }
         }
         return null;
-    }))), FW.telephonist_native(arg -> null));
+    }))), FW.telephonist_native_standalone(arg -> null));
 
     private static Val bop(Double value, DoubleBinaryOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.telephonist_native_standalone((arg1) -> {
             if (arg1.getType().equals(JDoubleFw.jdouble)) {
                 Double v2 = unwrap(arg1);
                 return wrap(operator.applyAsDouble(value, v2));
@@ -38,11 +38,11 @@ public final class JDoubleFw {
     }
 
     public static Val wrap(Double b) {
-        return Val.of(jdouble, Double.doubleToRawLongBits(b));
+        return Val._NEW_INSTANCE_(jdouble, Double.doubleToRawLongBits(b));
     }
 
     public static Double unwrap(Val val) {
-        return Double.longBitsToDouble(val._UNPACK(Long.class));
+        return Double.longBitsToDouble(val._UNPACK_(Long.class));
     }
 }
 

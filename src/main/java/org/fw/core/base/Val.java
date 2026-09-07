@@ -46,7 +46,8 @@ public final class Val implements ValAdapter, TypedValue {
 
     @Override
     public Value call(Value value) {
-        if (value instanceof Val) return this.call((Val) value);
+        if (value instanceof Val)
+            return this.call((Val) value);
         throw new UnsupportedOperationException();
     }
 
@@ -63,18 +64,18 @@ public final class Val implements ValAdapter, TypedValue {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T _UNPACK() {
+    public <T> T _UNPACK_() {
         return (T)value;
     }
 
     @SuppressWarnings({"unchecked"})
-    public <T> T _UNPACK(Class<T> cls) {
+    public <T> T _UNPACK_(Class<T> cls) {
         if ((cls == Symbol.class || cls == Expr.class) && type == SymbolFw.symbol) return (T) Symbol.of((String) value);
-        return _UNPACK();
+        return _UNPACK_();
     }
 
     public boolean equalsSymbol(String symbol) {
-        return this.getType() == SymbolFw.symbol && this._UNPACK().toString().equals(symbol);
+        return this.getType() == SymbolFw.symbol && this._UNPACK_().toString().equals(symbol);
     }
 
     @Override
@@ -82,7 +83,7 @@ public final class Val implements ValAdapter, TypedValue {
         return this.equals(val);
     }
 
-    public static Val of(Type type, Object value) {
+    public static Val _NEW_INSTANCE_(Type type, Object value) {
         if (value instanceof Value && !(value instanceof Val))
             throw new IllegalArgumentException("If the value is another val, it must be concrete: " + value);
         if (type instanceof Type.TelephonistType && type != ofTelephonist(0).asType()) {
@@ -92,6 +93,8 @@ public final class Val implements ValAdapter, TypedValue {
     }
 
     public static Val ofTelephonist(int depth) {
+        if (depth < 0)
+            throw new IllegalArgumentException();
         return Type.TelephonistType.of(depth).asVal();
     }
 
@@ -123,18 +126,24 @@ public final class Val implements ValAdapter, TypedValue {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        Val that = (Val) obj;
+        return equals0((Val) obj);
+    }
 
-        if (this.value.getClass() != that.value.getClass())
+    public boolean equals(Val val) {
+        return val != null && (val == this || equals0(val));
+    }
+
+    private boolean equals0(Val val) {
+        if (this.value.getClass() != val.value.getClass())
             return false;
 
-        if (!Objects.equals(this.type, that.type))
+        if (!Objects.equals(this.type, val.type))
             return false;
 
         if (this.value.getClass().isArray())
-            return _arrayEquals(this.value, that.value);
+            return _arrayEquals(this.value, val.value);
 
-        return this.value.equals(that.value);
+        return this.value.equals(val.value);
     }
 
     @Override

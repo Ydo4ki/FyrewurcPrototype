@@ -9,27 +9,27 @@ import java.util.Objects;
 @Deprecated // todo: replace with other implementations of value
 public final class Unspecified {
     public static final Val isUnspecified = FwUtils.valify(Unspecified::isUnspecified);
-    private static final Type unspecified_t = FW.telephonist_native((arg) -> {
+    private static final Type unspecified_t = FW.telephonist_native_standalone((arg) -> {
         if (FwUtils.isTypeApiCall(arg, Unspecified.unspecified_t)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
             return unspecified(instance, arg); // accumulate
         } else if (arg.getType() == SymbolFw.symbol) {
-            String v = arg._UNPACK().toString();
+            String v = arg._UNPACK_().toString();
             switch (v) {
                 case "builder":
-                    return FW.telephonist_native("Unspecified.builder",
-                            (func) -> FW.telephonist_native((argument) -> unspecified(func, argument)));
+                    return FW.telephonist_native_standalone("Unspecified.builder",
+                            (func) -> FW.telephonist_native_standalone((argument) -> unspecified(func, argument)));
                 case "val":
-                    return FW.telephonist_native(unspecified -> {
+                    return FW.telephonist_native_standalone(unspecified -> {
                         if (isUnspecified(unspecified))
-                            return unspecified._UNPACK(UnspecifiedRecord.class).val();
+                            return unspecified._UNPACK_(UnspecifiedRecord.class).val();
                         return null;
                     });
                 case "arg":
-                    return FW.telephonist_native(unspecified -> {
+                    return FW.telephonist_native_standalone(unspecified -> {
                         if (isUnspecified(unspecified))
-                            return unspecified._UNPACK(UnspecifiedRecord.class).arg();
+                            return unspecified._UNPACK_(UnspecifiedRecord.class).arg();
                         return null;
                     });
             }
@@ -38,7 +38,7 @@ public final class Unspecified {
     }).asType();
 
     public static Val unspecified(Val val, Val arg) {
-        return Val.of(unspecified_t, new UnspecifiedRecord(val, arg));
+        return Val._NEW_INSTANCE_(unspecified_t, new UnspecifiedRecord(val, arg));
     }
 
     public static boolean isUnspecified(Value val) {
@@ -46,11 +46,11 @@ public final class Unspecified {
     }
 
     public static Val getVal(Val val) {
-        return val._UNPACK(UnspecifiedRecord.class).val;
+        return val._UNPACK_(UnspecifiedRecord.class).val;
     }
 
     public static Val getArg(Val val) {
-        return val._UNPACK(UnspecifiedRecord.class).arg;
+        return val._UNPACK_(UnspecifiedRecord.class).arg;
     }
 
     private static final class UnspecifiedRecord {

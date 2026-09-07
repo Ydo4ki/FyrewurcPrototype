@@ -5,36 +5,36 @@ import org.fw.core.base.*;
 import org.fw.core.util.FwUtils;
 
 public final class ChainResolveFw {
-    public static final Type chainResolveType = FW.telephonist_native("ChainResolveType", (arg) -> {
+    public static final Type chainResolveType = FW.telephonist_native_standalone("ChainResolveType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ChainResolveFw.chainResolveType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
             Type type = instance.asType();
-            Val constraint = instance._UNPACK();
+            Val constraint = instance._UNPACK_();
             if (FwUtils.isTypeApiCall(arg, type)) {
                 instance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);
 
-                ChainResolve cr = instance._UNPACK();
+                ChainResolve cr = instance._UNPACK_();
                 if (arg.equalsSymbol("passing")) {
                     return cr.passing();
                 } else if (arg.equalsSymbol("chain")) {
                     return cr.chain();
                 }
             } else if (arg.equalsSymbol("builder")) {
-                return FW.telephonist_native((passingArg) -> {
+                return FW.telephonist_native_standalone((passingArg) -> {
                     if (constraint.get("check").call(passingArg) != BoolFw._true)
                         return null;
 
-                    return FW.telephonist_native((chain) -> {
-                        return Val.of(type, new ChainResolve(passingArg, chain));
+                    return FW.telephonist_native_standalone((chain) -> {
+                        return Val._NEW_INSTANCE_(type, new ChainResolve(passingArg, chain));
                     });
                 });
             }
             return null;
         } else if (arg.equalsSymbol("builder")) {
-            return FW.telephonist_native((constraint) -> {
+            return FW.telephonist_native_standalone((constraint) -> {
                 if (!ConstraintFw.isConstraint(constraint))
                     return null;
 
@@ -45,7 +45,7 @@ public final class ChainResolveFw {
     }).asType();
 
     public static Type chainResolveType(Val constraint) {
-        return Val.of(ChainResolveFw.chainResolveType, constraint).asType();
+        return Val._NEW_INSTANCE_(ChainResolveFw.chainResolveType, constraint).asType();
     }
 
     public static final class ChainResolve {

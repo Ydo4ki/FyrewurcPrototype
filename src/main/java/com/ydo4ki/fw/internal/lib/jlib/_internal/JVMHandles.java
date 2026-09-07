@@ -29,34 +29,34 @@ public final class JVMHandles {
     public static final Val jvmEnv = ModuleFw.module(
             // let's just assume find-X is an operation and get-X is pure
             // that would be more intuitive
-            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist_native_standalone((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String string = arg._UNPACK();
+                String string = arg._UNPACK_();
                 return jwrap(string, String.class);
             })),
-            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist_native((arg) -> {
-                if (!arg.getType().equals(JOopFw.jOop) || !(arg._UNPACK() instanceof String))
+            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist_native_standalone((arg) -> {
+                if (!arg.getType().equals(JOopFw.jOop) || !(arg._UNPACK_() instanceof String))
                     return null;
-                String string = arg._UNPACK();
+                String string = arg._UNPACK_();
                 return StrFw.str(string);
             })),
-            DeclaredFw.declared(symbol("find-type"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-type"), FW.telephonist_native_standalone((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._UNPACK();
+                String descriptor = arg._UNPACK_();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
                         Class<?> cls = findType(descriptor);
-                        return Val.of(JClassFw.jClass, cls);
+                        return Val._NEW_INSTANCE_(JClassFw.jClass, cls);
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist_native_standalone((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._UNPACK();
+                String descriptor = arg._UNPACK_();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
@@ -71,40 +71,40 @@ public final class JVMHandles {
                         } catch (NoSuchMethodException | IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
-                        return Val.of(JMethodFw.jMethod, arrayCtor.bindTo(elementType));
+                        return Val._NEW_INSTANCE_(JMethodFw.jMethod, arrayCtor.bindTo(elementType));
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist_native_standalone((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._UNPACK();
+                String descriptor = arg._UNPACK_();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
                         Class<?> arrayClass = findType(descriptor);
 
-                        return Val.of(JMethodFw.jMethod, MethodHandles.arrayElementSetter(arrayClass));
+                        return Val._NEW_INSTANCE_(JMethodFw.jMethod, MethodHandles.arrayElementSetter(arrayClass));
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist_native_standalone((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
-                String descriptor = arg._UNPACK();
+                String descriptor = arg._UNPACK_();
                 return new SystemOperation() {
                     @Override
                     protected Val apply0() {
                         Class<?> arrayClass = findType(descriptor);
 
-                        return Val.of(JMethodFw.jMethod, MethodHandles.arrayElementGetter(arrayClass));
+                        return Val._NEW_INSTANCE_(JMethodFw.jMethod, MethodHandles.arrayElementGetter(arrayClass));
                     }
                 }.asVal();
             }))
     );
 
     static Val jwrap(Object jObj, Class<?> aClass) {
-        if (aClass.isInstance(jObj)) return Val.of(JOopFw.jOop, jObj);
+        if (aClass.isInstance(jObj)) return Val._NEW_INSTANCE_(JOopFw.jOop, jObj);
         if (aClass == boolean.class && jObj instanceof Boolean) return JBooleanFw.wrap((Boolean) jObj);
         if (aClass == byte.class && jObj instanceof Byte) return JByteFw.wrap((Byte) jObj);
         if (aClass == char.class && jObj instanceof Character) return JCharFw.wrap((Character) jObj);
@@ -119,8 +119,8 @@ public final class JVMHandles {
 
     public static Object junwrap(Val val) {
         Type type = val.getType();
-        if (type == JOopFw.jOop) return val._UNPACK();
-        if (type == JBooleanFw.jboolean) return val._UNPACK(Boolean.class);
+        if (type == JOopFw.jOop) return val._UNPACK_();
+        if (type == JBooleanFw.jboolean) return val._UNPACK_(Boolean.class);
         if (type == JByteFw.jbyte) return JByteFw.unwrap(val);
         if (type == JCharFw.jchar) return (char)(short)JCharFw.unwrap(val);
         if (type == JShortFw.jshort) return JShortFw.unwrap(val);

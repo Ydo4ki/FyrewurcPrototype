@@ -18,27 +18,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class JClassFw {
-    public static final Type jClass = FW.telephonist_native((arg) -> {
+    public static final Type jClass = FW.telephonist_native_standalone((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JClassFw.jClass)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
             if (arg.getType() != SymbolFw.symbol)
                 return null;
 
-            Class<?> cls = instance._UNPACK();
+            Class<?> cls = instance._UNPACK_();
 
-            switch (arg._UNPACK(Symbol.class).getValue()) {
+            switch (arg._UNPACK_(Symbol.class).getValue()) {
                 case "get-static-method": {
-                    return FW.telephonist_native(nameV -> {
+                    return FW.telephonist_native_standalone(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
-                        String name = nameV._UNPACK();
-                        return FW.telephonist_native(arg1 -> {
+                        String name = nameV._UNPACK_();
+                        return FW.telephonist_native_standalone(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
-                            String descriptor = arg1._UNPACK();
+                            String descriptor = arg1._UNPACK_();
 
                             MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
                             try {
-                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStatic(cls, name, methodType));
+                                return Val._NEW_INSTANCE_(JMethodFw.jMethod, JVMHandles.lookup.findStatic(cls, name, methodType));
                             } catch (NoSuchMethodException | IllegalAccessException e) {
                                 return Operation.unit;
                             }
@@ -46,28 +46,28 @@ public final class JClassFw {
                     });
                 }
                 case "get-constructor": {
-                    return FW.telephonist_native(arg1 -> {
+                    return FW.telephonist_native_standalone(arg1 -> {
                         if (!arg1.getType().equals(StrFw.str)) return null;
-                        String descriptor = arg1._UNPACK();
+                        String descriptor = arg1._UNPACK_();
 
                         MethodType methodType = MethodType.fromMethodDescriptorString(descriptor, JVMHandles.fwClassLoader);
                         try {
-                            return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findConstructor(cls, methodType));
+                            return Val._NEW_INSTANCE_(JMethodFw.jMethod, JVMHandles.lookup.findConstructor(cls, methodType));
                         } catch (NoSuchMethodException | IllegalAccessException e) {
                             return Operation.unit;
                         }
                     });
                 }
                 case "get-static-getter": {
-                    return FW.telephonist_native(nameV -> {
+                    return FW.telephonist_native_standalone(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
-                        String name = nameV._UNPACK();
-                        return FW.telephonist_native(arg1 -> {
+                        String name = nameV._UNPACK_();
+                        return FW.telephonist_native_standalone(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
-                            String descriptor = arg1._UNPACK();
+                            String descriptor = arg1._UNPACK_();
                             try {
                                 MethodHandle mh = JVMHandles.lookup.findStaticGetter(cls, name, JVMHandles.findType(descriptor));
-                                return Val.of(JMethodFw.jMethod, mh);
+                                return Val._NEW_INSTANCE_(JMethodFw.jMethod, mh);
                             } catch (IllegalAccessException e) {
                                 return Operation.unit;
                             }
@@ -75,14 +75,14 @@ public final class JClassFw {
                     });
                 }
                 case "get-static-setter": {
-                    return FW.telephonist_native(nameV -> {
+                    return FW.telephonist_native_standalone(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
-                        String name = nameV._UNPACK();
-                        return FW.telephonist_native(arg1 -> {
+                        String name = nameV._UNPACK_();
+                        return FW.telephonist_native_standalone(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
-                            String descriptor = arg1._UNPACK();
+                            String descriptor = arg1._UNPACK_();
                             try {
-                                return Val.of(JMethodFw.jMethod, JVMHandles.lookup.findStaticSetter(cls, name, JVMHandles.findType(descriptor)));
+                                return Val._NEW_INSTANCE_(JMethodFw.jMethod, JVMHandles.lookup.findStaticSetter(cls, name, JVMHandles.findType(descriptor)));
                             } catch (IllegalAccessException e) {
                                 return Operation.unit;
                             }
@@ -116,9 +116,9 @@ public final class JClassFw {
                     return wrap(cls.getComponentType());
                 }
                 case "is-assignable-from": {
-                    return FW.telephonist_native(b -> {
+                    return FW.telephonist_native_standalone(b -> {
                         if (b.getType() != JClassFw.jClass) return null;
-                        return BoolFw.wrap(cls.isAssignableFrom(b._UNPACK(Class.class)));
+                        return BoolFw.wrap(cls.isAssignableFrom(b._UNPACK_(Class.class)));
                     });
                 }
                 case "Payload": {
@@ -139,7 +139,7 @@ public final class JClassFw {
 
     public static Val wrap(Class<?> cls) {
         if (cls == null) return null;
-        return Val.of(JClassFw.jClass, cls);
+        return Val._NEW_INSTANCE_(JClassFw.jClass, cls);
     }
 
     private static final Map<Class<?>, Type> PRIMITIVE_PAYLOADS = new HashMap<>();

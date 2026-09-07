@@ -17,30 +17,30 @@ import org.fw.core.vit.VitUtils;
 import org.fw.lib.stdlib.*;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.telephonist_native_standalone;
 
 public final class DoFw {
     public static final Type unaryStoreType = FW.telephonist((arg) -> {
         if (FwUtils.isTypeApiCall(arg, DoFw.unaryStoreType)) {
             Value instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
-            return Val.of(DoFw.unaryStoreType, arg);
+            return Val._NEW_INSTANCE_(DoFw.unaryStoreType, arg);
         }
         return null;
     }).asType();
 
-    public static final Val usLast = FW.telephonist_native((arg) -> {
+    public static final Val usLast = FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(DoFw.unaryStoreType)) {
-            return arg._UNPACK();
+            return arg._UNPACK_();
         }
         return null;
     });
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.get("expr");
             Val compEnv = arg.get("comp-env");
-            Expr expr = exprVal._UNPACK(Expr.class);
+            Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -59,9 +59,9 @@ public final class DoFw {
     }));
 
     private static Vit compileDo(Val exprVal, int start, int isize, Value compEnv) throws VitCompilationException {
-        Vit execution = Vit.val(Val.of(DoFw.unaryStoreType, Operation.unit));
+        Vit execution = Vit.val(Val._NEW_INSTANCE_(DoFw.unaryStoreType, Operation.unit));
         for (int i = start; i < isize - 1; i++) {
-            Expr line = exprVal.call(DIntFw.dint(i + 1))._UNPACK(Expr.class);
+            Expr line = exprVal.call(DIntFw.dint(i + 1))._UNPACK_(Expr.class);
             if (line instanceof ExprList && ((ExprList) line).size() == 3 && ((ExprList) line).get(0).toString().equals(":")) {
                 if (i == isize - 2) break;
 
@@ -112,7 +112,7 @@ public final class DoFw {
 
     public static final Lib lib = Lib.of(
             ModuleFw.module(
-                    DeclaredFw.declared(symbol("unary-store"), Val.of(DoFw.unaryStoreType, Operation.unit)),
+                    DeclaredFw.declared(symbol("unary-store"), Val._NEW_INSTANCE_(DoFw.unaryStoreType, Operation.unit)),
                     DeclaredFw.declared(symbol("unary-store-last"), DoFw.usLast)
             ),
             DoFw.directivesCenv.asValue()

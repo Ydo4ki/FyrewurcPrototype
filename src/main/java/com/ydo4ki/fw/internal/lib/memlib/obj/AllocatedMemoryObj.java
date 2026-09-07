@@ -39,7 +39,7 @@ public final class AllocatedMemoryObj implements Obj {
         return directMemoryBuffer;
     }
 
-    private final Val asVal = Val.of(AllocatedMemoryFw.allocatedMemory, this);
+    private final Val asVal = Val._NEW_INSTANCE_(AllocatedMemoryFw.allocatedMemory, this);
 
     @Override
     public Val asVal() {

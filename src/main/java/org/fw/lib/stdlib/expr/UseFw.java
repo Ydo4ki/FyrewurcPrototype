@@ -15,14 +15,14 @@ import org.fw.core.vit.VitUtils;
 import org.fw.core.vit.VitVal;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.telephonist_native_standalone;
 
 public final class UseFw {
-    public static final Val useDirectivesCenv = FW.telephonist_native((arg) -> {
+    public static final Val useDirectivesCenv = FW.telephonist_native_standalone((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(symbol("expr"));
             Val compEnv = arg.call(symbol("comp-env"));
-            Expr expr = exprVal._UNPACK(Expr.class);
+            Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -31,11 +31,11 @@ public final class UseFw {
                         if (isize != 3)
                             return null;
 
-                        Val moduleVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(), CompEnv.of(compEnv)));
+                        Val moduleVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(moduleVit.getType()))
                             return null; // could not compile module
 
-                        Vit vit = VitUtils.simplify(moduleVit._UNPACK(Vit.class));
+                        Vit vit = VitUtils.simplify(moduleVit._UNPACK_(Vit.class));
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
@@ -44,7 +44,7 @@ public final class UseFw {
                                 ModuleFw.ModuleCEnvFw.compEnv((Val)((VitVal) vit).val())
                         );
 
-                        Val value = (Val) newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(), CompEnv.of(newCompEnv)));
+                        Val value = (Val) newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK_(), CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 
@@ -54,11 +54,11 @@ public final class UseFw {
                         if (isize != 3)
                             return null;
 
-                        Val cEnvVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK(), CompEnv.of(compEnv)));
+                        Val cEnvVit = compEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(1))._UNPACK_(), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(cEnvVit.getType()))
                             return null; // could not compile cenv
 
-                        Vit vit = VitUtils.simplify(cEnvVit._UNPACK(Vit.class));
+                        Vit vit = VitUtils.simplify(cEnvVit._UNPACK_(Vit.class));
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
@@ -67,7 +67,7 @@ public final class UseFw {
                                 ((VitVal) vit).val()
                         );
 
-                        Val value = (Val) newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK(), CompEnv.of(newCompEnv)));
+                        Val value = (Val) newCompEnv.call(CompEnv.syntaxResolve(exprVal.call(DIntFw.dint(2))._UNPACK_(), CompEnv.of(newCompEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 

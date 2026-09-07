@@ -9,18 +9,18 @@ import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.telephonist_native_standalone;
 
 @Deprecated
 public final class WidePointerFw {
-    public static final Type widePointer = FW.telephonist_native("WidePointer", (arg) -> {
+    public static final Type widePointer = FW.telephonist_native_standalone("WidePointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, WidePointerFw.widePointer)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
-            ValArrayObj vao = instance._UNPACK();
+            ValArrayObj vao = instance._UNPACK_();
             if (arg.getType() == SymbolFw.symbol) {
-                String v = arg._UNPACK().toString();
+                String v = arg._UNPACK_().toString();
                 if (v.equals("size")) {
                     // this one's pure since array size cannot change after its creation
                     // wait I just realized
@@ -33,7 +33,7 @@ public final class WidePointerFw {
         return null;
     }).asType();
 
-    public static final Val _CreateNewArrayOperation = FW.telephonist_native(size -> FW.telephonist_native(init -> {
+    public static final Val _CreateNewArrayOperation = FW.telephonist_native_standalone(size -> FW.telephonist_native_standalone(init -> {
         return new CreateArrayOperation(
                 DIntFw.unwrap(size).intValueExact(),
                 i -> {
