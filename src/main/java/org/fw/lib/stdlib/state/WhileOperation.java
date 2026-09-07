@@ -1,6 +1,7 @@
 package org.fw.lib.stdlib.state;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -29,9 +30,9 @@ public final class WhileOperation extends Operation {
     }
 
     @Override
-    public Val apply(State state) {
-        Val ret = Operation.unit;
-        while (condition.apply(state) == BoolFw._true) {
+    public Value apply(State state) {
+        Value ret = Operation.unit;
+        while (condition.apply(state).impliesEquality(BoolFw._true)) {
             ret = body.apply(state);
         }
         return ret;

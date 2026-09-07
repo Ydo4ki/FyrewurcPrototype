@@ -1,4 +1,4 @@
-package org.fw.lib.stdlib.state;
+package org.fw.lib.stdlib.state.array;
 
 import org.fw.core.FW;
 import org.fw.core.base.CallFw;
@@ -6,12 +6,12 @@ import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
 import org.fw.core.base.Val;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
-import org.fw.lib.stdlib.state.array.CreateArrayOperation;
-import org.fw.lib.stdlib.state.array.ValArrayObj;
+import org.fw.lib.stdlib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 
 import static org.fw.core.FW.telephonist_native;
 
+@Deprecated
 public final class WidePointerFw {
     public static final Type widePointer = FW.telephonist_native("WidePointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, WidePointerFw.widePointer)) {

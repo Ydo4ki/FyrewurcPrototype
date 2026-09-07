@@ -4,7 +4,6 @@ import org.fw.core.FW;
 import org.fw.core.base.*;
 import org.fw.core.base.Constraint;
 import org.fw.core.util.FwUtils;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.util.WeakHashMap;
@@ -69,11 +68,10 @@ public final class ConstraintFw {
                 switch (val) {
                     case "check":
                         return FW.telephonist_native("Constraint.check", (arg1) -> {
-                            RtEnv rtEnv = RtEnv.of(arg1);
 
                             // we might as well do it in parallel
 
-                            return BoolFw.wrap(instance._UNPACK(Constraint.class).check(rtEnv.asVal()));
+                            return BoolFw.wrap(instance._UNPACK(Constraint.class).check(arg1));
                         });
     //                case "vit":
     //                    return VitFw.wrap(payload);

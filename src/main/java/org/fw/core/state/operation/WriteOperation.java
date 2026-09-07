@@ -1,5 +1,6 @@
 package org.fw.core.state.operation;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
@@ -23,7 +24,7 @@ public final class WriteOperation extends Operation {
     }
 
     @Override
-    public Val apply(State state) {
+    public Value apply(State state) {
         obj.write(state, x);
         return Operation.unit;
     }

@@ -1,7 +1,6 @@
 package com.ydo4ki.fw.internal.lib.jlib.util;
 
 import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 
@@ -45,7 +44,7 @@ public final class JvmUtils {
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         try {
             vitEvalM = lookup.findVirtual(Vit.class, "eval",
-                    MethodType.methodType(Val.class, RtEnv.class, State.class));
+                    MethodType.methodType(Val.class, Val.class, State.class));
         } catch (NoSuchMethodException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

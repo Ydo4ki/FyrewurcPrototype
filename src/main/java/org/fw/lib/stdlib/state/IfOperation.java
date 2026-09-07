@@ -1,6 +1,7 @@
 package org.fw.lib.stdlib.state;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
 import org.fw.core.base.BoolFw;
 import org.fw.core.state.obj.State;
@@ -37,7 +38,7 @@ public final class IfOperation extends Operation {
     }
 
     @Override
-    public Val apply(State state) {
+    public Value apply(State state) {
         if (condition.apply(state) == BoolFw._true) {
             return ifTrue.apply(state);
         } else {

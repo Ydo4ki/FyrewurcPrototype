@@ -49,5 +49,5 @@ public final class ToExprFw {
         return null;
     }));
 
-    public static final Lib lib = Lib.ofCEnv(directivesCenv.asVal());
+    public static final Lib lib = Lib.ofCEnv(directivesCenv.asValue());
 }

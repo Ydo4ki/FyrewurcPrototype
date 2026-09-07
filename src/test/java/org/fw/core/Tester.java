@@ -1,5 +1,6 @@
 package org.fw.core;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.*;
 import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
@@ -25,8 +26,8 @@ public final class Tester {
 
     public static void testFw(Class<?> cls, String filename, CompEnv compEnv) throws IOException {
         Operation op = FwUtils.getOperation(cls, filename, CompEnv.of(CompEnv.compEnv(
-                compEnv.asVal(),
-                testDirectivesCenv.asVal()
+                compEnv.asValue(),
+                testDirectivesCenv.asValue()
         )), true);
         op.apply(SystemOperation.systemState);
     }
@@ -83,8 +84,8 @@ public final class Tester {
         }
 
         @Override
-        public Val apply(State state) {
-            Val ret = _assert.apply(state);
+        public Value apply(State state) {
+            Value ret = _assert.apply(state);
             if (ret == BoolFw._true) return Operation.unit;
             else throw new AssertionError(_assert + " -> " + ret);
         }

@@ -115,6 +115,6 @@ public final class DoFw {
                     DeclaredFw.declared(symbol("unary-store"), Val.of(DoFw.unaryStoreType, Operation.unit)),
                     DeclaredFw.declared(symbol("unary-store-last"), DoFw.usLast)
             ),
-            DoFw.directivesCenv.asVal()
+            DoFw.directivesCenv.asValue()
     );
 }

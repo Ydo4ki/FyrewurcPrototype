@@ -6,6 +6,7 @@ import org.fw.core.util.FwUtils;
 
 import java.util.Objects;
 
+@Deprecated // todo: replace with other implementations of value
 public final class Unspecified {
     public static final Val isUnspecified = FwUtils.valify(Unspecified::isUnspecified);
     private static final Type unspecified_t = FW.telephonist_native((arg) -> {

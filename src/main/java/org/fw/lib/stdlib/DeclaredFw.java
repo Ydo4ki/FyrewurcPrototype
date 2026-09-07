@@ -187,6 +187,6 @@ public final class DeclaredFw {
             ModuleFw.module(
                     DeclaredFw.declared(symbol("Declared"), DeclaredFw.declared.asVal())
             ),
-            DeclaredFw.directivesCenv.asVal()
+            DeclaredFw.directivesCenv.asValue()
     );
 }

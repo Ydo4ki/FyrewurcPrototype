@@ -64,6 +64,6 @@ public final class BoxFw {
     public static final Lib lib = Lib.of(ModuleFw.module(
                     DeclaredFw.declared(symbol("BoxType"), boxType)
             ),
-            box2exprCenv.asVal()
+            box2exprCenv.asValue()
     );
 }

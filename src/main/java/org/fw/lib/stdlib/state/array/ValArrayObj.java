@@ -4,8 +4,8 @@ import org.fw.core.base.Val;
 import org.fw.core.state.obj.*;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.state.LaserPointerFw;
-import org.fw.lib.stdlib.state.WidePointerFw;
 
+@Deprecated
 public final class ValArrayObj extends AbstractObj {
     private final Val[] value; // todo: nested arrays
 

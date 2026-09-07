@@ -1,8 +1,6 @@
 package org.fw.core.vit;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 
 public final class VitUtils {
     public static Vit substitude(Vit vit, Vit replaceVarWith) {
@@ -40,8 +38,8 @@ public final class VitUtils {
     }
 
     // simplifies and applies var value from the given context (so there won't be any VitVars in the resulting tree)
-    public static Vit reduce(Vit vit, RtEnv rtEnv) {
-        return VitUtils.substitude(vit, Vit.val(rtEnv.asVal()));
+    public static Vit reduce(Vit vit, Value rtEnv) {
+        return VitUtils.substitude(vit, Vit.val(rtEnv));
     }
 
     public static Vit simplify(Vit vit) {

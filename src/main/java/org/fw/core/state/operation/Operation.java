@@ -1,12 +1,12 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.vit.Vit;
@@ -21,7 +21,7 @@ public abstract class Operation implements ValAdapter {
     // maybe I should make a separate unspecified type for failed operations :hmm:
     public static final Val unit = FW.telephonist_native((arg) -> Operation.unit);
 
-    public abstract Val apply(State state);
+    public abstract Value apply(State state);
 
     private final Val asVal;
     private Boolean isPure = null;
@@ -38,7 +38,7 @@ public abstract class Operation implements ValAdapter {
         return new WriteOperation(obj, x);
     }
 
-    public static Operation vit(Vit vit, RtEnv rtEnv) {
+    public static Operation vit(Vit vit, Val rtEnv) {
         if (vit instanceof VitInvoke) {
             Vit v = ((VitInvoke) vit).operation();
             if (v.isConst() && v.isPure()) {
@@ -49,7 +49,7 @@ public abstract class Operation implements ValAdapter {
     }
 
     public static Operation pure(Val val) {
-        return new VitOperation(Vit.val(val), RtEnv.unspecified);
+        return new VitOperation(Vit.val(val), FW.telephonist((arg) -> null));
     }
 
     public Expr toExpr() {

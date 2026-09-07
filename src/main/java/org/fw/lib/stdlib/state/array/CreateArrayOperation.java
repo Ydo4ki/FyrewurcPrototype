@@ -1,12 +1,13 @@
 package org.fw.lib.stdlib.state.array;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
-import org.fw.lib.stdlib.state.WidePointerFw;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 
 import java.util.function.IntFunction;
 
+@Deprecated
 public final class CreateArrayOperation extends Operation {
 
     private final int size;
@@ -18,10 +19,10 @@ public final class CreateArrayOperation extends Operation {
     }
 
     @Override
-    public Val apply(State state) {
+    public Value apply(State state) {
         Val[] value = new Val[size];
         for (int i = 0; i < value.length; i++) {
-            value[i] = initialize.apply(i).apply(state);
+            value[i] = (Val) initialize.apply(i).apply(state);
         }
         ValArrayObj obj = new ValArrayObj(value, state.scope());
         return Val.of(WidePointerFw.widePointer, obj);

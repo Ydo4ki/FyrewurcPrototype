@@ -1,6 +1,7 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
@@ -29,7 +30,7 @@ public final class AllocatedMemoryFw {
                             int v = arg1._UNPACK();
                             return new Operation() {
                                 @Override
-                                public Val apply(State state) {
+                                public Value apply(State state) {
                                     amo.buffer().putInt(v);
                                     return Operation.unit;
                                 }

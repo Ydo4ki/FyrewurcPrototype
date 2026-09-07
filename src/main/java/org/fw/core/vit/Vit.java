@@ -3,7 +3,6 @@ package org.fw.core.vit;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
 
 public abstract class Vit {
@@ -12,7 +11,7 @@ public abstract class Vit {
     public static final Vit var = new VitVar();
 
     public final Val eval() {
-        return eval(RtEnv.unspecified.asVal());
+        return eval(null);
     }
 
     public final Val eval(Val rtEnv) {
@@ -23,6 +22,7 @@ public abstract class Vit {
         return State.performAndDie(state -> eval(rtEnv, state));
     }
 
+    @Deprecated
     public final Val eval(Val rtEnv, State state) {
         return (Val) eval((Value) rtEnv, state);
     }

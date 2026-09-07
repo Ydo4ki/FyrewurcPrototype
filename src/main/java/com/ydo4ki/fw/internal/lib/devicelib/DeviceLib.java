@@ -7,6 +7,7 @@ import com.ydo4ki.fw.internal.lib.jlib.data.JOopFw;
 import com.ydo4ki.fw.internal.lib.memlib.MemLib;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.Expr;
 import org.fw.core.ast.LocatedExpr;
@@ -63,7 +64,7 @@ public final class DeviceLib {
                 JMethodFw.methodCallCEnv
         ));
         try {
-            Val dev = FwUtils.getOperation("org/fw/lib/dev", compEnv, true).apply(SystemOperation.systemState);
+            Value dev = FwUtils.getOperation("org/fw/lib/dev", compEnv, true).apply(SystemOperation.systemState);
             lib = Lib.ofModule(dev);
         } catch (IOException e) {
             throw new RuntimeException(e);

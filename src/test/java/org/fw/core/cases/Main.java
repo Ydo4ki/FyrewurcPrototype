@@ -19,7 +19,6 @@ import com.ydo4ki.fw.internal.lib.jlib.data.JIntFw;
 import com.ydo4ki.fw.internal.lib.memlib.HeapFw;
 import org.fw.core.state.obj.State;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 
@@ -30,7 +29,7 @@ import static org.fw.core.FW.symbol;
 
 public class Main {
 
-    public static final Val rtEnv = RtEnv.unspecified.asVal();
+    public static final Val rtEnv = FW.telephonist((arg) -> null);
 
     public static void main(String[] args) throws IOException {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
@@ -53,8 +52,8 @@ public class Main {
                         ))
                 )),
 
-                Tester.testDirectivesCenv.asVal(),
-                directivesCenv.asVal(),
+                Tester.testDirectivesCenv.asValue(),
+                directivesCenv.asValue(),
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_Flush"), new SystemOperation.FlushOperation(System.out).asVal()),
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
@@ -73,7 +72,7 @@ public class Main {
         ));
 
         compEnv = CompEnv.of(CompEnv.compEnv(
-                compEnv.asVal(),
+                compEnv.asValue(),
                 ModuleFw.ModuleCEnvFw.compEnv(FwUtils.getOperation(FW.class, "sysoperations", compEnv, true).apply(state))
         ));
 
@@ -90,7 +89,7 @@ public class Main {
             }
             Val val = vit.eval(rtEnv, state);
             if (val.getType() == DeclaredFw.declared) {
-                compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asVal()));
+                compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asValue()));
             } else {
                 System.out.println(val.toExpr(compEnv));
 //                System.out.println(val);

@@ -168,6 +168,6 @@ public final class DeclarationFw {
             ModuleFw.module(
                     DeclaredFw.declared(symbol("Declaration"), declaration.asVal())
             ),
-            directivesCenv.asVal()
+            directivesCenv.asValue()
     );
 }

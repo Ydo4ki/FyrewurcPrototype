@@ -3,7 +3,6 @@ package com.ydo4ki.fw.internal.lib.stdlib;
 import org.fw.core.FW;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.obj.State;
 import org.fw.lib.stdlib.DeclaredFw;
 import org.fw.lib.stdlib.ModuleFw;
@@ -126,10 +125,10 @@ public final class DIntFw {
                             .call(parseArg),
                     parseArg
             );
-            parseNumCenv = State.performAndDie(state -> FW.telephonist_native((arg1) -> body.eval(RtEnv.of(FW.telephonist_native((arg2) -> {
+            parseNumCenv = State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(FW.telephonist((arg2) -> {
                 if (arg2.equalsSymbol("arg")) return arg1;
                 return null;
-            })).asVal(), state)));
+            }), state)));
         }
     }
 
@@ -140,7 +139,7 @@ public final class DIntFw {
             ),
             CompEnv.compEnv(
                     ParseDIntCEnvFw.parseNumCenv,
-                    dint2exprCenv.asVal()
+                    dint2exprCenv.asValue()
             )
     );
 }

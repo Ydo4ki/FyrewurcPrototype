@@ -65,18 +65,18 @@ public final class Shell {
         ));
 
         CompEnv internalCompEnv = CompEnv.of(CompEnv.compEnv(
-                compEnv.asVal()
+                compEnv.asValue()
         ));
 
-        Val sysoperations = ModuleFw.ModuleCEnvFw.compEnv(FwUtils.getOperation(FW.class, "sysoperations", internalCompEnv, false).apply(state));
+        Val sysoperations = ModuleFw.ModuleCEnvFw.compEnv((Val) FwUtils.getOperation(FW.class, "sysoperations", internalCompEnv, false).apply(state));
 
         compEnv = CompEnv.of(CompEnv.compEnv(
-                compEnv.asVal(),
+                compEnv.asValue(),
                 sysoperations
         ));
 
         internalCompEnv = CompEnv.of(CompEnv.compEnv(
-                internalCompEnv.asVal(),
+                internalCompEnv.asValue(),
                 sysoperations
         ));
 //        BufferedReader reader = ;

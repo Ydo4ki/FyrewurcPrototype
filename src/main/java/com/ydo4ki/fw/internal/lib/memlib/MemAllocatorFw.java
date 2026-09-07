@@ -1,6 +1,7 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.CallFw;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Type;
@@ -35,7 +36,7 @@ public final class MemAllocatorFw {
             long size = DIntFw.unwrap0(arg).longValueExact();
             return new Operation() {
                 @Override
-                public Val apply(State state) {
+                public Value apply(State state) {
                     if (state != heap.state())
                         return Operation.unit;
                     return new AllocatedMemoryObj(heap, size).asVal();

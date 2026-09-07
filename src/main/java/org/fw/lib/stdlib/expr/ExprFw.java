@@ -242,8 +242,8 @@ public final class ExprFw {
                     DeclaredFw.declared(symbol("strToSymbol"), symbolConstructor)
             ),
             CompEnv.compEnv(
-                    ExprFw.directivesCenv.asVal(),
-                    esast2exprCenv.asVal()
+                    ExprFw.directivesCenv.asValue(),
+                    esast2exprCenv.asValue()
             )
     );
 

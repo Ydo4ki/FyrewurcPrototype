@@ -233,7 +233,7 @@ public final class StructFw {
 
     public static final Lib lib = Lib.of(
             module,
-            directivesCenv.asVal()
+            directivesCenv.asValue()
     );
 }
 // wow it actually worked from the first try

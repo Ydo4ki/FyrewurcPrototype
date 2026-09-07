@@ -7,7 +7,6 @@ import org.fw.core.ast.Expr;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.state.operation.Operation;
 import org.fw.lib.stdlib.*;
 import org.fw.lib.stdlib.expr.CompEnv;
@@ -15,6 +14,7 @@ import org.fw.lib.stdlib.expr.Lib;
 import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import org.fw.core.vit.Vit;
 import org.fw.lib.stdlib.expr.VitErrorFw;
+import org.fw.lib.stdlib.state.array.WidePointerFw;
 
 import static org.fw.core.FW.symbol;
 import static org.fw.core.FW.telephonist_native;
@@ -31,7 +31,7 @@ public final class OperationFw {
 
         Vit vit = arg._UNPACK();
 
-        return FW.telephonist_native((rtEnv) -> Operation.vit(vit, RtEnv.of(rtEnv)).asVal());
+        return FW.telephonist_native((rtEnv) -> Operation.vit(vit, rtEnv).asVal());
     });
     public static Val wrap(Operation operation) {
         if (operation == null) return null;

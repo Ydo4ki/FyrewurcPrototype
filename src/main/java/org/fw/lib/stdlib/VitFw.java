@@ -6,7 +6,6 @@ import org.fw.core.ast.BracketsTypes;
 import org.fw.core.ast.ExprList;
 import org.fw.core.ast.Symbol;
 import org.fw.core.base.*;
-import org.fw.core.base.context.RtEnv;
 import org.fw.lib.stdlib.expr.*;
 import org.fw.core.util.FwUtils;
 import org.fw.core.ast.Expr;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native;
 
 public final class VitFw {
 
@@ -182,7 +180,7 @@ public final class VitFw {
     public static final Val reduce = FW.telephonist_native("vit-reduce", (arg) -> {
         if (VitFw.isVit(arg.getType())) {
             return FW.telephonist_native(env
-                    -> VitFw.wrap(VitUtils.reduce(arg._UNPACK(), RtEnv.of(env)))); // thx java
+                    -> VitFw.wrap(VitUtils.reduce(arg._UNPACK(), env))); // thx java
         }
         return null;
     });
@@ -337,8 +335,8 @@ public final class VitFw {
                     DeclaredFw.declared(symbol("eval-vit"), VitFw.evalVit)
             ),
             CompEnv.compEnv(
-                    vit2exprCenv.asVal(),
-                    VitFw.directivesCenv.asVal()
+                    vit2exprCenv.asValue(),
+                    VitFw.directivesCenv.asValue()
             )
     );
 }

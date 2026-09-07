@@ -6,8 +6,8 @@ import org.fw.core.state.obj.State;
 public final class VitVar extends Vit {
 
     VitVar() {
+        //noinspection ConstantValue
         if (var != null) throw new UnsupportedOperationException();
-        // empty
     }
 
     @Override

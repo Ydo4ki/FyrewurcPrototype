@@ -117,7 +117,7 @@ public final class DVecFw {
                     Vit ctor = Vit.val(DVecBuilderFw.emptyBuilder);
                     for (int i = 0; i < list.size(); i++) {
                         Expr f = list.get(i);
-                        Val elVitVal = CompEnv.of(compEnv).compileV(ExprFw.wrap(f));
+                        Val elVitVal = (Val)CompEnv.of(compEnv).compileV(ExprFw.wrap(f));
                         if (!VitFw.isVit(elVitVal.getType()))
                             return elVitVal;
 
@@ -147,7 +147,7 @@ public final class DVecFw {
             ),
             CompEnv.compEnv(
                     DVecConstructorCEnvFw.dVecConstructorCenv,
-                    dvec2exprCenv.asVal()
+                    dvec2exprCenv.asValue()
             )
     );
 }

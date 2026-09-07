@@ -1,6 +1,5 @@
 package org.fw.core.base;
 
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitUtils;
 
@@ -34,6 +33,7 @@ public final class Constraint {
     }
 
     // constraint of the call result
+    @Deprecated
     public Constraint call(Constraint constraint) {
         return of(
                 VitUtils.substitude(a, constraint.a)

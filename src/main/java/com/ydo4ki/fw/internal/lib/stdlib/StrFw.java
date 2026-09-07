@@ -13,7 +13,6 @@ import org.fw.lib.stdlib.expr.ExprFw;
 import org.fw.lib.stdlib.expr.Lib;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 
 import java.math.BigInteger;

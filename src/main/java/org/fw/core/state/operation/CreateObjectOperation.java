@@ -1,5 +1,6 @@
 package org.fw.core.state.operation;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.state.obj.Scope;
@@ -19,7 +20,7 @@ public final class CreateObjectOperation extends Operation {
     }
 
     @Override
-    public Val apply(State state) {
+    public Value apply(State state) {
         if (state != scope.state()) 
             return Operation.unit;
         AtomObj obj = AtomObj.of(initialValue, scope);

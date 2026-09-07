@@ -15,7 +15,6 @@ import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.core.base.context.RtEnv;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
@@ -58,7 +57,7 @@ public final class FwUtils {
     public static Val getValueFromFile(File file, CompEnv compEnv) throws IOException {
         return State.performAndDie(s -> {
             try {
-                return getValueFromFile(file, compEnv, RtEnv.unspecified, s);
+                return getValueFromFile(file, compEnv, FW.telephonist((arg) -> null), s);
             } catch (IOException e) {
                 sneakyThrow(e);
                 return null;
@@ -71,7 +70,7 @@ public final class FwUtils {
         throw (T) t;
     }
 
-    public static Val getValueFromFile(File file, CompEnv compEnv, RtEnv rtEnv, State state) throws IOException {
+    public static Val getValueFromFile(File file, CompEnv compEnv, Val rtEnv, State state) throws IOException {
         Iterable<LocatedExpr<? extends Expr>> expressions = new ExprOutput(new TokenOutput(file, BracketsTypes.bracketsTypes));
         Val result = Operation.unit; // this will be returned if the file is empty
 
@@ -89,7 +88,7 @@ public final class FwUtils {
         })));
 
 
-        CompEnv env = CompEnv.of(CompEnv.compEnv(compEnv.asVal(), defined));
+        CompEnv env = CompEnv.of(CompEnv.compEnv(compEnv.asValue(), defined));
 
         for (LocatedExpr<? extends Expr> lExpr : expressions) {
             Expr expr = lExpr.getExpr();
@@ -99,7 +98,7 @@ public final class FwUtils {
             } catch (VitCompilationException e) {
                 throw new RuntimeException("Cannot compile: " + expr, e);
             }
-            result = vit.eval(rtEnv.asVal(), state);
+            result = vit.eval(rtEnv, state);
             if (result.getType().equals(DeclaredFw.declared)) {
                 Val key = DeclaredFw.getKey(result);
                 Val value = DeclaredFw.getValue(result);
@@ -154,7 +153,7 @@ public final class FwUtils {
         Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(in);
         return new Operation() {
             @Override
-            public Val apply(State state) {
+            public Value apply(State state) {
                 CompEnv compEnv1 = compEnv;
                 Val val = Operation.unit;
                 for (LocatedExpr<? extends Expr> locatedExpression : expressions) {
@@ -166,9 +165,9 @@ public final class FwUtils {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
-                    val = vit.eval(RtEnv.unspecified.asVal(), state);
+                    val = vit.eval(FW.telephonist((arg) -> null), state);
                     if (val.getType() == DeclaredFw.declared) {
-                        compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asVal(), ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
+                        compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asValue(), ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
                     } else if (val != Operation.unit)
                         if (debug) System.out.println(val.toExpr(compEnv));
                 }
@@ -181,7 +180,7 @@ public final class FwUtils {
         try {
             for (String file : files) {
                 lib0 = Lib.combine(lib0,
-                        Lib.ofCEnv(ModuleFw.ModuleCEnvFw.compEnv(
+                        Lib.ofCEnv(ModuleFw.ModuleCEnvFw.compEnv((Val)
                                 getOperation(caller, file, CompEnv.of(lib0.exports()), false)
                                         .apply(SystemOperation.systemState)))
                 );

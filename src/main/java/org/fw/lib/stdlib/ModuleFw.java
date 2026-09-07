@@ -219,6 +219,12 @@ public final class ModuleFw {
             return null;
         }).asType();
 
+        public static Value compEnv(Value module) {
+            return moduleCompEnv.asVal().get("construct").call(module);
+        }
+        public static Value toExprCompEnv(Value module) {
+            return moduleCompEnvToExpr.asVal().get("construct").call(module);
+        }
         public static Val compEnv(Val module) {
             return Val.of(moduleCompEnv, module);
         }
@@ -264,7 +270,7 @@ public final class ModuleFw {
             ),
             CompEnv.compEnv(
                     directivesCenv,
-                    module2exprCenv.asVal()
+                    module2exprCenv.asValue()
             )
     );
 }

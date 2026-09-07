@@ -179,7 +179,7 @@ public final class FunctionFw {
             ModuleFw.module(
                     DeclaredFw.declared(symbol("Function"), FunctionFw.function.asVal())
             ),
-            directivesCenv.asVal()
+            directivesCenv.asValue()
     );
 
     private static Val builderWrapper(Val builder) {
