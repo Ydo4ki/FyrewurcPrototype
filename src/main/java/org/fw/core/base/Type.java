@@ -2,10 +2,12 @@ package org.fw.core.base;
 
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
+import org.fw.lib.stdlib.TypePayloadInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class Type implements ValAdapter {
 
@@ -16,11 +18,25 @@ public abstract class Type implements ValAdapter {
 
     public abstract Val asVal();
 
+    public Type getPayloadType() {
+        return null;
+    }
+
+    @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "OptionalAssignedToNull"})
     static final class ValType extends Type {
 
         private final Val asVal;
+        private Optional<Type> payloadType = null;
 
-        public ValType(Val asVal) {
+        public Type getPayloadType() {
+            if (payloadType == null) {
+                Val ret = this.asVal().get("Payload");
+                payloadType = Optional.ofNullable(TypePayloadInfo.value(ret));
+            }
+            return payloadType.orElse(null);
+        }
+
+        ValType(Val asVal) {
             this.asVal = asVal;
         }
 

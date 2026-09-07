@@ -1,7 +1,6 @@
 package org.fw.core;
 
 import org.fw.core.base.*;
-import org.fw.lib.stdlib.TypePayloadInfo;
 import org.fw.core.vit.Vit;
 
 import static org.fw.core.base.EqFw.eq;
@@ -46,11 +45,6 @@ public final class FW {
 
     public static Vit vEq(Vit a, Vit b) {
         return val(eq).call(a).call(b);
-    }
-
-    public static Type payloadType(Type type) {
-        Val ret = type.asVal().get("Payload");
-        return TypePayloadInfo.value(ret);
     }
 
     public static Val payloadConstraint(Type type) {
