@@ -1,0 +1,28 @@
+package org.fw.core.state.operation;
+
+import org.fw.core.abstrait.Value;
+import org.fw.core.state.obj.State;
+
+public final class GetLocalStateOperation extends Operation {
+
+    private static final GetLocalStateOperation instance = new GetLocalStateOperation();
+
+    public static GetLocalStateOperation getInstance() {
+        return instance;
+    }
+
+    private GetLocalStateOperation() {
+        if (instance != null)
+            throw new SecurityException();
+    }
+
+    @Override
+    public Value apply(State state) {
+        return state.asVal();
+    }
+
+    @Override
+    public String toString() {
+        return "GetLocalStateOperation";
+    }
+}

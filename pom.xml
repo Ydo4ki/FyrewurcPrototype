@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ydo4ki</groupId>
-    <artifactId>Fyrewurc-Core</artifactId>
+    <artifactId>Fyrewurc</artifactId>
     <version>0.0.1</version>
+    <packaging>pom</packaging>
 
 
     <name>Fyrewurc-Core</name>
@@ -20,6 +21,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <modules>
+        <module>base</module>
+        <module>std</module>
+        <module>esast</module>
+        <module>prikol</module>
+    </modules>
     <scm>
         <url>https://github.com/Ydo4ki/FyrewurcPrototype</url>
         <connection>scm:git:git://github.com/Ydo4ki/FyrewurcPrototype.git</connection>
@@ -48,7 +55,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -71,7 +77,6 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
 
             <plugin>
