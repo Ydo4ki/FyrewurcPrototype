@@ -32,7 +32,7 @@ import static org.fw.core.FW.*;
 
 public final class DVecFw {
     // this already looks oldfashioned wtf
-    public static final Type dVec = FW.telephonist_native("DVec", (arg) -> {
+    public static final Type dVec = FW.lambda_native("DVec", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DVecFw.dVec)) {
             Val instance = (Val) CallFw.getVal(arg);
             Val cArg = (Val) CallFw.getArg(arg);
@@ -72,7 +72,7 @@ public final class DVecFw {
         return null;
     }).asType();
 
-    public static final CompEnv dvec2exprCenv = CompEnv.of(FW.telephonist_native("dvec2exprCenv", (arg) -> {
+    public static final CompEnv dvec2exprCenv = CompEnv.of(FW.lambda_native("dvec2exprCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = (Val) arg.get("passing");
@@ -112,7 +112,7 @@ public final class DVecFw {
     }
 
     public static final class DVecConstructorCEnvFw {
-        public static final Val dVecConstructorCenv = FW.telephonist_native("dVecConstructorCenv", (arg) -> {
+        public static final Val dVecConstructorCenv = FW.lambda_native("dVecConstructorCenv", (arg) -> {
             if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                 Val exprVal = (Val) arg.call(FW.symbol("expr"));
                 Val compEnv = (Val) arg.call(FW.symbol("comp-env"));

@@ -18,7 +18,7 @@ import static org.fw.core.FW.symbol;
 public final class ConstraintFw {
     private static final WeakHashMap<Val, Val> typeConstraints = new WeakHashMap<>();
 
-    public static final Val to_constraint = FW.telephonist_native("to-constraint", (arg) -> {
+    public static final Val to_constraint = FW.lambda_native("to-constraint", (arg) -> {
         if (arg.getType().equals(ConstraintFw.constraint))
             return arg;
 
@@ -56,13 +56,13 @@ public final class ConstraintFw {
         return (Val) to_constraint.call(type.asVal());
     }
 
-    public static final Val constraintBuilder = FW.telephonist_native("Constraint.constructor", (arg1) -> {
+    public static final Val constraintBuilder = FW.lambda_native("Constraint.constructor", (arg1) -> {
         if (!VitFw.isVit(arg1.getType()))
             return null;
         return Val._NEW_INSTANCE_(ConstraintFw.constraint, Constraint.of(arg1._UNPACK_(Vit.class)));
     });
 
-    public static final Type constraint = FW.telephonist_native("Constraint", (arg) -> {
+    public static final Type constraint = FW.lambda_native("Constraint", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ConstraintFw.constraint)) {
             Val instance = (Val) CallFw.getVal(arg);
             Val arg2 = (Val) CallFw.getArg(arg);
@@ -70,7 +70,7 @@ public final class ConstraintFw {
                 String val = arg2._UNPACK_().toString();
                 switch (val) {
                     case "check":
-                        return FW.telephonist_native("Constraint.check", (arg1) -> {
+                        return FW.lambda_native("Constraint.check", (arg1) -> {
 
                             // we might as well do it in parallel
 

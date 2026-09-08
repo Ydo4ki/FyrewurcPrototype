@@ -11,11 +11,11 @@ import org.fw.std.VitFw;
 import org.fw.core.vit.Vit;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.lambda_native;
 
 public final class OperatorsFw {
 
-    public static final Val exports = FW.telephonist_native((arg) -> {
+    public static final Val exports = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) (Val) arg.call(FW.symbol("comp-env"));

@@ -7,7 +7,7 @@ import com.ydo4ki.fw.internal.lib.ConstraintFw;
 import org.fw.core.util.FwUtils;
 
 public final class ChainResolveFw {
-    public static final Type chainResolveType = FW.telephonist_native("ChainResolveType", (arg) -> {
+    public static final Type chainResolveType = FW.lambda_native("ChainResolveType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ChainResolveFw.chainResolveType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -25,19 +25,19 @@ public final class ChainResolveFw {
                     return cr.chain();
                 }
             } else if (arg.equalsSymbol("builder")) {
-                return FW.telephonist_native((passingArg) -> {
+                return FW.lambda_native((passingArg) -> {
                     Val val = (Val) constraint.get("check");
                     if ((Val) val.call(passingArg) != BoolFw._true)
                         return null;
 
-                    return FW.telephonist_native((chain) -> {
+                    return FW.lambda_native((chain) -> {
                         return Val._NEW_INSTANCE_(type, new ChainResolve(passingArg, chain));
                     });
                 });
             }
             return null;
         } else if (arg.equalsSymbol("builder")) {
-            return FW.telephonist_native((constraint) -> {
+            return FW.lambda_native((constraint) -> {
                 if (!ConstraintFw.isConstraint(constraint))
                     return null;
 

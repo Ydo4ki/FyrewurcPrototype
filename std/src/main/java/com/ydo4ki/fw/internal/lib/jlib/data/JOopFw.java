@@ -1,6 +1,5 @@
 package com.ydo4ki.fw.internal.lib.jlib.data;
 
-import com.ydo4ki.esast.Expr;
 import org.fw.core.FW;
 import com.ydo4ki.esast.Symbol;
 import org.fw.base.CallFw;
@@ -18,7 +17,7 @@ import org.fw.esast.expr.ExprFw;
 import java.lang.invoke.MethodType;
 
 public final class JOopFw {
-    public static final Type jOop = FW.telephonist_native((arg) -> {
+    public static final Type jOop = FW.lambda_native((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JOopFw.jOop)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -30,10 +29,10 @@ public final class JOopFw {
 
             switch (((Symbol) ExprFw.unwrap(arg)).getValue()) {
                 case "get-method": {
-                    return FW.telephonist_native(nameV -> {
+                    return FW.lambda_native(nameV -> {
                         if (!nameV.getType().equals(StrFw.str)) return null;
                         String name = nameV._UNPACK_();
-                        return FW.telephonist_native(arg1 -> {
+                        return FW.lambda_native(arg1 -> {
                             if (!arg1.getType().equals(StrFw.str)) return null;
                             String descriptor = arg1._UNPACK_();
 

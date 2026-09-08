@@ -1,6 +1,5 @@
 package com.ydo4ki.fw.internal.lib;
 
-import com.ydo4ki.esast.Symbol;
 import com.ydo4ki.fw.internal.debug.Debug;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;
@@ -10,7 +9,6 @@ import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.Expr;
 import com.ydo4ki.esast.LocatedExpr;
 import com.ydo4ki.esast.lexer.ExprOutput;
 import com.ydo4ki.esast.lexer.TokenOutput;
@@ -44,7 +42,7 @@ public final class DeviceLib {
                 ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("bufr"), Val._NEW_INSTANCE_(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
-                        DeclaredFw.declared(symbol("parse-placeholder"), FW.telephonist_native(arg -> {
+                        DeclaredFw.declared(symbol("parse-placeholder"), FW.lambda_native(arg -> {
                             if (!arg.getType().equals(StrFw.str)) return null;
                             String str = arg._UNPACK_();
                             Iterable<LocatedExpr<?>> exprs = new ExprOutput(new TokenOutput(str, null, BracketsTypes.bracketsTypes));
@@ -55,7 +53,7 @@ public final class DeviceLib {
                             //noinspection SimplifyStreamApiCallChains
                             return DVecFw.vec(vals.stream().toArray(Val[]::new));
                         })),
-                        DeclaredFw.declared(symbol("expr2string"), FW.telephonist_native(arg -> {
+                        DeclaredFw.declared(symbol("expr2string"), FW.lambda_native(arg -> {
                             if (!ExprFw.isExpr(arg))
                                 return null;
                             return StrFw.str(ExprFw.unwrap(arg).toString());

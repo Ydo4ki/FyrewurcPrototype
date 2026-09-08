@@ -38,7 +38,7 @@ public final class FwUtils3 {
     public static Val getValueFromFile(File file, CompEnv compEnv) throws IOException {
         return State.performAndDie(s -> {
             try {
-                return getValueFromFile(file, compEnv, FW.telephonist((arg) -> null), s);
+                return getValueFromFile(file, compEnv, FW.lambda((arg) -> null), s);
             } catch (IOException e) {
                 sneakyThrow(e);
                 return null;
@@ -58,7 +58,7 @@ public final class FwUtils3 {
 
         Map<String, Val> defineds = new HashMap<>();
 
-        final Val defined = FwUtils.symbolMapVitEnv(val(FW.telephonist_native("vals", (arg1) -> {
+        final Val defined = FwUtils.symbolMapVitEnv(val(FW.lambda_native("vals", (arg1) -> {
             if (!arg1.getType().equals(SymbolFw.symbol))
                 return null;
             String string = arg1._UNPACK_().toString();
@@ -115,7 +115,7 @@ public final class FwUtils3 {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
-                    val = (Val) vit.eval(FW.telephonist((arg) -> null), state);
+                    val = (Val) vit.eval(FW.lambda((arg) -> null), state);
                     if (val.getType() == DeclaredFw.declared) {
                         compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asValue(), ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
                     } else if (val != Operation.unit)

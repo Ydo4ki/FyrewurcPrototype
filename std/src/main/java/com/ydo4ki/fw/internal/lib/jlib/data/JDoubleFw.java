@@ -1,6 +1,5 @@
 package com.ydo4ki.fw.internal.lib.jlib.data;
 
-import com.ydo4ki.esast.Expr;
 import org.fw.core.FW;
 import com.ydo4ki.esast.Symbol;
 import org.fw.base.SymbolFw;
@@ -13,7 +12,7 @@ import com.ydo4ki.fw.internal.lib.PrimitiveLayoutsFw;
 import java.util.function.DoubleBinaryOperator;
 
 public final class JDoubleFw {
-    public static final Type jdouble = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+    public static final Type jdouble = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dqword, FW.lambda_native(instance -> FW.lambda_native(rawPayload -> FW.lambda_native(arg -> {
         Double value = unwrap(rawPayload);
         if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = ((Symbol) ExprFw.unwrap(arg)).getValue();
@@ -27,10 +26,10 @@ public final class JDoubleFw {
             }
         }
         return null;
-    }))), FW.telephonist_native(arg -> null));
+    }))), FW.lambda_native(arg -> null));
 
     private static Val bop(Double value, DoubleBinaryOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(JDoubleFw.jdouble)) {
                 Double v2 = unwrap(arg1);
                 return wrap(operator.applyAsDouble(value, v2));

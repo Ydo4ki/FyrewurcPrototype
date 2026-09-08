@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.lambda_native;
 
 public final class FunctionFw {
     public static final Type function_struct = StructFw.struct(
@@ -28,7 +28,7 @@ public final class FunctionFw {
             DeclarationFw.declaration(symbol("rt-env"), ConstraintFw.free)
     );
 
-    public static final Type function = FW.telephonist_native((arg) -> {
+    public static final Type function = FW.lambda_native((arg) -> {
         Val val1 = function_struct.asVal();
         Val ret = (Val) val1.call(arg);
         if (arg.getType().equals(SymbolFw.symbol)) {
@@ -48,7 +48,7 @@ public final class FunctionFw {
                     case "fn-call":
                         Value constraint = (Val) value.get("arg-constraint");
                         Vit body = ((Val) (Val) value.get("body"))._UNPACK_();
-                        return FW.telephonist_native((arg1) -> {
+                        return FW.lambda_native((arg1) -> {
                             boolean qualifies = constraint.get("check").call(arg1).impliesEquality(BoolFw._true);
                             if (!qualifies) {
                                 return null;
@@ -61,7 +61,7 @@ public final class FunctionFw {
 //                                if (Unspecified.isUnspecified(ret0)) return oldRtEnv.call(arg2, context2);
 //                                return ret0;
 //                            });
-                            Val newRtEnv = FW.telephonist_native((arg2) -> {
+                            Val newRtEnv = FW.lambda_native((arg2) -> {
                                 if (arg2.equalsSymbol("%")) return arg1;
                                 if (arg2.equalsSymbol("%self%")) return instance;
                                 else return oldRtEnv.call(arg2);
@@ -76,7 +76,7 @@ public final class FunctionFw {
         return ret;
     }).asType();
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
@@ -130,7 +130,7 @@ public final class FunctionFw {
 
                         Expr bodyE = ((Val) exprVal.call(DIntFw.dint(3)))._UNPACK_();
 
-                        Value newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist_native((arg0) -> {
+                        Value newCompEnv = CompEnv.compEnv(compEnv, FW.lambda_native((arg0) -> {
                             if (arg0.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                                 Val exprVal0 = (Val) arg0.call(FW.symbol("expr"));
                                 Expr expr0 = (Expr) ExprFw.unwrap(exprVal0);
@@ -152,8 +152,8 @@ public final class FunctionFw {
 
                         Vit varValuesV = Vit.var.call(symbol("%"));
 
-                        Val newRtGetter = FW.telephonist_native((oldRt) -> FW.telephonist_native((varValues) -> {
-                            return FW.telephonist_native((argSym) -> {
+                        Val newRtGetter = FW.lambda_native((oldRt) -> FW.lambda_native((varValues) -> {
+                            return FW.lambda_native((argSym) -> {
                                 for (int i = 0; i < paramsList.size(); i++) {
                                     FnParam param = paramsList.get(i);
                                     Symbol name = param.name;
@@ -186,7 +186,7 @@ public final class FunctionFw {
     );
 
     private static Val builderWrapper(Val builder) {
-        return FW.telephonist_native((arg) -> {
+        return FW.lambda_native((arg) -> {
             Val ret = (Val) builder.call((Value) arg);
             if (ret.getType().equals(builder.getType()))
                 return builderWrapper(ret);

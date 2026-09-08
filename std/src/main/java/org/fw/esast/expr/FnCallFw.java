@@ -12,11 +12,11 @@ import org.fw.std.VitFw;
 import org.fw.std.dvec.DVecBuilderFw;
 import org.fw.core.vit.Vit;
 
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.lambda_native;
 
 // todo: make this generate a code that constructs vit so we can make old cenv static instead of storing it with the function
 public final class FnCallFw {
-    public static final Val fnCallCEnv = FW.telephonist_native((arg) -> {
+    public static final Val fnCallCEnv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Val val = (Val) arg.get("passing");
             Val compEnv = (Val) arg.get("chain");

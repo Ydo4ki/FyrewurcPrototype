@@ -8,14 +8,14 @@ import org.fw.core.state.operation.Operation;
 import org.fw.base.BoolFw;
 import org.fw.base.OperationFw;
 
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.lambda_native;
 
 public final class WhileOperation extends Operation {
-    public static final Val _While = FW.telephonist_native((condition) -> {
+    public static final Val _While = FW.lambda_native((condition) -> {
         if (condition.getType() != OperationFw.operation)
             return null;
 
-        return FW.telephonist_native((body) -> {
+        return FW.lambda_native((body) -> {
             if (body.getType() != OperationFw.operation)
                 return null;
 

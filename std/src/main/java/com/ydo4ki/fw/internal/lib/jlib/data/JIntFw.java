@@ -1,6 +1,5 @@
 package com.ydo4ki.fw.internal.lib.jlib.data;
 
-import com.ydo4ki.esast.Expr;
 import org.fw.core.FW;
 import com.ydo4ki.esast.Symbol;
 import org.fw.base.SymbolFw;
@@ -13,7 +12,7 @@ import com.ydo4ki.fw.internal.lib.PrimitiveLayoutsFw;
 import java.util.function.IntBinaryOperator;
 
 public final class JIntFw {
-    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+    public static final Type jint = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.dword, FW.lambda_native(instance -> FW.lambda_native(rawPayload -> FW.lambda_native(arg -> {
         Integer value = unwrap(rawPayload);
         assert value != null;
         if (arg.getType().equals(SymbolFw.symbol)) {
@@ -41,10 +40,10 @@ public final class JIntFw {
             }
         }
         return null;
-    }))), FW.telephonist_native(arg -> null));
+    }))), FW.lambda_native(arg -> null));
 
     private static Val bop(Integer value, IntBinaryOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = unwrap(arg1);
                 return wrap(operator.applyAsInt(value, v2));

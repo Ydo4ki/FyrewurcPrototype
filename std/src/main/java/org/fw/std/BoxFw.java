@@ -17,7 +17,7 @@ import com.ydo4ki.esast.ExprList;
 import static org.fw.core.FW.symbol;
 
 public final class BoxFw {
-    public static final Type boxType = FW.telephonist_native("BoxType", (arg) -> {
+    public static final Type boxType = FW.lambda_native("BoxType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoxFw.boxType)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -30,16 +30,16 @@ public final class BoxFw {
                     return unbox(instance);
                 }
             } else if (arg.equalsSymbol("construct")) {
-                return FW.telephonist_native((arg1) -> Val._NEW_INSTANCE_(type, arg1));
+                return FW.lambda_native((arg1) -> Val._NEW_INSTANCE_(type, arg1));
             }
             return null;
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native(arg1 -> Val._NEW_INSTANCE_(BoxFw.boxType, arg1));
+            return FW.lambda_native(arg1 -> Val._NEW_INSTANCE_(BoxFw.boxType, arg1));
         }
         return null;
     }).asType();
 
-    public static final CompEnv box2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv box2exprCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
 

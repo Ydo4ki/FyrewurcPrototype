@@ -10,7 +10,7 @@ import org.fw.std.WrapperTypeFw;
 import com.ydo4ki.fw.internal.lib.PrimitiveLayoutsFw;
 
 public final class JCharFw {
-    public static final Type jchar = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.word, FW.telephonist_native(instance -> FW.telephonist_native(rawPayload -> FW.telephonist_native(arg -> {
+    public static final Type jchar = WrapperTypeFw.wrapperType(PrimitiveLayoutsFw.word, FW.lambda_native(instance -> FW.lambda_native(rawPayload -> FW.lambda_native(arg -> {
         Short value = unwrap(rawPayload);
         if (arg.getType().equals(SymbolFw.symbol)) {
             String sym = ((Symbol) ExprFw.unwrap(arg)).getValue();
@@ -36,7 +36,7 @@ public final class JCharFw {
             }
         }
         return null;
-    }))), FW.telephonist_native(arg -> null));
+    }))), FW.lambda_native(arg -> null));
 
     public static short rotateRight(short value, int distance) {
         distance = distance & 15;
@@ -52,7 +52,7 @@ public final class JCharFw {
 
 
     private static Val bopSIS(Short value, ShortIntShortOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(JIntFw.jint)) {
                 Integer v2 = JIntFw.unwrap(arg1);
                 return wrap(operator.apply(value, v2));
@@ -70,7 +70,7 @@ public final class JCharFw {
     }
 
     private static Val bopSSS(Short value, ShortBinaryOperator operator) {
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(JCharFw.jchar)) {
                 Short v2 = unwrap(arg1);
                 return wrap(operator.applyAsShort(value, v2));

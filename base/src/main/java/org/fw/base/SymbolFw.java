@@ -2,10 +2,10 @@ package org.fw.base;
 
 import org.fw.core.FW;
 
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.lambda_native;
 
 public final class SymbolFw {
-    public static final Type symbol = FW.telephonist("Symbol", (arg) -> {
+    public static final Type symbol = FW.lambda("Symbol", (arg) -> {
         return null; // ы
     }).asType();
 

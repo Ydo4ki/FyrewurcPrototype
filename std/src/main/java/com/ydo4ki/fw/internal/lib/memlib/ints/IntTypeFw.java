@@ -27,7 +27,7 @@ import static org.fw.core.FW.symbol;
 
 public final class IntTypeFw {
 
-    public static final Type int_t = FW.telephonist_native(arg -> {
+    public static final Type int_t = FW.lambda_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, IntTypeFw.int_t)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -73,7 +73,7 @@ public final class IntTypeFw {
                     case "overflow":
                         return raw_payload.getOverflow();
                     case "construct":
-                        return FW.telephonist_native(arg1 -> {
+                        return FW.lambda_native(arg1 -> {
                             if (arg1.getType() != DIntFw.dint)
                                 return null;
 
@@ -93,11 +93,11 @@ public final class IntTypeFw {
             String s = arg._UNPACK_().toString();
             switch (s) {
                 case "construct": {
-                    return FW.telephonist_native(bw -> {
+                    return FW.lambda_native(bw -> {
                         if (bw.getType() != DIntFw.dint) return null;
-                        return FW.telephonist_native(sign -> {
+                        return FW.lambda_native(sign -> {
                             if (sign.getType() != Signedness.signedness) return null;
-                            return FW.telephonist_native(over -> {
+                            return FW.lambda_native(over -> {
                                 if (over.getType() != Overflow.overflow) return null;
                                 return Val._NEW_INSTANCE_(IntTypeFw.int_t, new IntType(DIntFw.unwrap0(bw).intValueExact(), sign, over));
                             });
@@ -121,7 +121,7 @@ public final class IntTypeFw {
     private static Val bop(Val instance, Type Int, BinaryOperator<Number> operator) {
         Number value = MemUtils.toBitsAsNumber(instance);
         assert value != null;
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(Int)) {
                 Number v2 = MemUtils.toBitsAsNumber(instance);
                 Number ret = operator.apply(value, v2);

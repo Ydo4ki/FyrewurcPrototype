@@ -1,12 +1,9 @@
 package com.ydo4ki.fw.internal.lib.jlib._internal;
 
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.Symbol;
 import com.ydo4ki.fw.internal.lib.jlib.data.*;
 import org.fw.core.FW;
 import org.fw.base.Type;
 import org.fw.base.Val;
-import org.fw.esast.expr.ExprFw;
 import org.fw.std.DeclaredFw;
 import org.fw.std.ModuleFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
@@ -32,19 +29,19 @@ public final class JVMHandles {
     public static final Val jvmEnv = ModuleFw.module(
             // let's just assume find-X is an operation and get-X is pure
             // that would be more intuitive
-            DeclaredFw.declared(symbol("str2jstring"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("str2jstring"), FW.lambda_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String string = arg._UNPACK_();
                 return jwrap(string, String.class);
             })),
-            DeclaredFw.declared(symbol("jstring2str"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("jstring2str"), FW.lambda_native((arg) -> {
                 if (!arg.getType().equals(JOopFw.jOop) || !(arg._UNPACK_() instanceof String))
                     return null;
                 String string = arg._UNPACK_();
                 return StrFw.str(string);
             })),
-            DeclaredFw.declared(symbol("find-type"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-type"), FW.lambda_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();
@@ -56,7 +53,7 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-constructor"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-array-constructor"), FW.lambda_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();
@@ -78,7 +75,7 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-setter"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-array-setter"), FW.lambda_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();
@@ -91,7 +88,7 @@ public final class JVMHandles {
                     }
                 }.asVal();
             })),
-            DeclaredFw.declared(symbol("find-array-getter"), FW.telephonist_native((arg) -> {
+            DeclaredFw.declared(symbol("find-array-getter"), FW.lambda_native((arg) -> {
                 if (!arg.getType().equals(StrFw.str))
                     return null;
                 String descriptor = arg._UNPACK_();

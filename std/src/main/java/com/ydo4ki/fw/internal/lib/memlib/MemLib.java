@@ -24,7 +24,7 @@ import java.util.BitSet;
 import static org.fw.core.FW.symbol;
 
 public final class MemLib {
-    public static final Val parseReifiedBits = FW.telephonist_native((arg) -> {
+    public static final Val parseReifiedBits = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
             Value compEnv = (Val) arg.call(FW.symbol("comp-env"));
@@ -76,7 +76,7 @@ public final class MemLib {
         return null;
     });
 
-    public static final Val constructReifiedType = FW.telephonist_native((arg) -> {
+    public static final Val constructReifiedType = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Value val = (Val) arg.get("passing");
             Value compEnv = (Val) arg.get("chain");

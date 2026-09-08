@@ -60,12 +60,18 @@ public final class Val implements ValAdapter, TypedValue {
     }
 
     @SuppressWarnings("unchecked")
+    @Deprecated
     public <T> T _UNPACK_() {
-        return (T)value;
+        return (T)getValue();
     }
 
+    @Deprecated
     public <T> T _UNPACK_(Class<T> cls) {
         return _UNPACK_();
+    }
+
+    Object getValue() {
+        return value;
     }
 
     public boolean equalsSymbol(String symbol) {
@@ -77,6 +83,7 @@ public final class Val implements ValAdapter, TypedValue {
         return this.equals(val);
     }
 
+    @Deprecated
     public static Val _NEW_INSTANCE_(Type type, Object value) {
         if (value instanceof Value && !(value instanceof Val))
             throw new IllegalArgumentException("If the value is another val, it must be concrete: " + value);
@@ -84,7 +91,11 @@ public final class Val implements ValAdapter, TypedValue {
         if (type instanceof Type.TelephonistType && type != ofTelephonist(0).asType())
             throw new IllegalArgumentException();
 
-        return new Val(Objects.requireNonNull(type), value, null);
+        return of(type, value);
+    }
+
+    static Val of(Type type, Object value) {
+        return new Val(type, value, null);
     }
 
     public static Val ofTelephonist(int depth) {
@@ -96,10 +107,10 @@ public final class Val implements ValAdapter, TypedValue {
     static Val telephonistVal(Type.TelephonistType asType) {
         return new Val(
                 Type.TelephonistType.of(asType.getDepth() + 1),
-                new Type.TelephonistType.Telephonist("Telephonist" + asType.getDepth(), (arg) -> {
-                    if (FwUtils.isTypeApiCall(arg, asType)) {
-                        Value instance = CallFw.getVal(arg);
-                        Value cArg = CallFw.getArg(arg);
+                new Type.TelephonistType.Telephonist("Telephonist" + asType.getDepth(), (k) -> {
+                    if (FwUtils.isTypeApiCall(k.arg(), asType)) {
+                        Value instance = CallFw.getVal(k.arg());
+                        Value cArg = CallFw.getArg(k.arg());
 
                         return instance.call(cArg); // so here we're going in the opposite direction
                     }

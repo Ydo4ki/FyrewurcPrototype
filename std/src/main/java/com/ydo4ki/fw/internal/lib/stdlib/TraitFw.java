@@ -25,7 +25,7 @@ import static org.fw.core.FW.symbol;
 
 final class TraitFw {
 
-    public static final Type trait = FW.telephonist_native("Trait", (arg) -> {
+    public static final Type trait = FW.lambda_native("Trait", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, TraitFw.trait)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -48,7 +48,7 @@ final class TraitFw {
 //            }
         }
         if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native("Trait.constructor", (payload) -> {
+            return FW.lambda_native("Trait.constructor", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
                 Val[] fields = payload._UNPACK_();

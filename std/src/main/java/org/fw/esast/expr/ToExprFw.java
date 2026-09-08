@@ -12,7 +12,7 @@ import org.fw.std.VitFw;
 
 public final class ToExprFw {
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = (Val) arg.get("passing");
             Val compEnv = (Val) arg.get("chain");

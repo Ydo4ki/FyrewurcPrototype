@@ -27,7 +27,7 @@ import static org.fw.core.FW.symbol;
 
 // no I literally just made a telemap XD
 public final class ModuleFw {
-    public static final Type module = FW.telephonist_native("Module", (arg) -> {
+    public static final Type module = FW.lambda_native("Module", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ModuleFw.module)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -39,7 +39,7 @@ public final class ModuleFw {
                 }
             }
         } else if (arg.equalsSymbol("construct")) {
-            return FW.telephonist_native("Module.constructor", (arg1) -> {
+            return FW.lambda_native("Module.constructor", (arg1) -> {
                 if (!arg1.getType().equals(DVecFw.dVec))
                     return null;
 
@@ -52,17 +52,17 @@ public final class ModuleFw {
                 return Val._NEW_INSTANCE_(ModuleFw.module, new Module(values));
             });
         } else if (arg.equalsSymbol("contains-key")) {
-            return FW.telephonist_native("Module.contains-key", (arg1) -> {
+            return FW.lambda_native("Module.contains-key", (arg1) -> {
                 if (!arg1.getType().equals(ModuleFw.module)) return null;
                 Module mod = arg1._UNPACK_();
-                return FW.telephonist_native((key) -> mod.containsKey(key) ? BoolFw._true : BoolFw._false);
+                return FW.lambda_native((key) -> mod.containsKey(key) ? BoolFw._true : BoolFw._false);
             });
         }
 
         return null;
     }).asType();
 
-    public static final CompEnv module2exprCenv = CompEnv.of(FW.telephonist_native("module2exprCenv",(arg) -> {
+    public static final CompEnv module2exprCenv = CompEnv.of(FW.lambda_native("module2exprCenv",(arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
             arg = (Val) (Val) arg.get("passing");
@@ -171,9 +171,9 @@ public final class ModuleFw {
     }
 
     public static final class ModuleCEnvFw {
-        public static final Type moduleCompEnv = FW.telephonist_native("ModuleCEnvFn", (arg) -> {
+        public static final Type moduleCompEnv = FW.lambda_native("ModuleCEnvFn", (arg) -> {
             if (arg.equalsSymbol("construct")) {
-                return FW.telephonist_native(ModuleCEnvFw::compEnv);
+                return FW.lambda_native(ModuleCEnvFw::compEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv)) {
                 Val instance = (Val) CallFw.getVal(arg);
@@ -204,9 +204,9 @@ public final class ModuleFw {
             return null;
         }).asType();
 
-        public static final Type moduleCompEnvToExpr = FW.telephonist_native("ModuleCEnvToExprFn", (arg) -> {
+        public static final Type moduleCompEnvToExpr = FW.lambda_native("ModuleCEnvToExprFn", (arg) -> {
             if (arg.equalsSymbol("construct")) {
-                return FW.telephonist_native(ModuleCEnvFw::toExprCompEnv);
+                return FW.lambda_native(ModuleCEnvFw::toExprCompEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnvToExpr)) {
                 Val instance = (Val) CallFw.getVal(arg);
@@ -252,7 +252,7 @@ public final class ModuleFw {
     }
 
 
-    public static final Val directivesCenv = FW.telephonist_native((arg) -> {
+    public static final Val directivesCenv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call((Value) FW.symbol("expr"));
             Val compEnv = (Val) arg.call((Value) FW.symbol("comp-env"));

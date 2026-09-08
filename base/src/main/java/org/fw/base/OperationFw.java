@@ -6,7 +6,7 @@ import org.fw.core.state.operation.Operation;
 
 public final class OperationFw {
 
-    public static final Type operation = FW.telephonist_native("Operation", (arg) -> {
+    public static final Type operation = FW.lambda_native("Operation", (arg) -> {
         return null;
     }).asType();
 

@@ -35,7 +35,7 @@ public final class ExprGetFw {
         return VitFw.wrap(first.call(symbol(property)));
     }
 
-    public static final Val getterCEnv = FW.telephonist_native("dot-getters-cenv-fw", (arg) -> {
+    public static final Val getterCEnv = FW.lambda_native("dot-getters-cenv-fw", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));

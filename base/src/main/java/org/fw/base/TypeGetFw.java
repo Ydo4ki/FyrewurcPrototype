@@ -3,5 +3,5 @@ package org.fw.base;
 import org.fw.core.FW;
 
 public final class TypeGetFw {
-    public static final Val typeGet = FW.telephonist_native("type-get", (arg) -> arg.getType().asVal());
+    public static final Val typeGet = FW.lambda_native("type-get", (arg) -> arg.getType().asVal());
 }

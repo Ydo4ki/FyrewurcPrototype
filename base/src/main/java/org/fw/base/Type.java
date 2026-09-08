@@ -93,7 +93,7 @@ public abstract class Type implements ValAdapter {
 
         @Override
         Val callInstance(Val instance, Value arg) {
-            Value v = instance._UNPACK_(Telephonist.class).call(arg);
+            Value v = instance._UNPACK_(Telephonist.class).call(instance, arg);
             if (!(v instanceof Val))
                 return Unspecified.unspecified(instance, arg);
 
@@ -133,10 +133,18 @@ public abstract class Type implements ValAdapter {
         }
 
         public interface NativeCallFunction {
+            Value call(DefinitiveValEnv<Val> arg) throws Exception;
+        }
+
+        public interface NativeLambdaCallFunction {
             Value call(Val arg) throws Exception;
         }
 
         public interface CallFunction {
+            Value call(DefinitiveValEnv<Value> dve);
+        }
+
+        public interface LambdaCallFunction {
             Value call(Value arg);
         }
 
@@ -182,11 +190,11 @@ public abstract class Type implements ValAdapter {
                 return marker;
             }
 
-            public Value call(Value arg) {
-                return function.call(arg);
+            Value call(Val self, Value arg) {
+                return function.call(new DefinitiveValEnv<>(self, arg));
             }
 
-            public Value invoke(State state) {
+            Value invoke(State state) {
                 return operation.invoke(state);
             }
         }

@@ -15,7 +15,7 @@ import org.fw.core.vit.VitUtils;
 import org.fw.core.vit.VitVal;
 
 public final class UseFw {
-    public static final Val useDirectivesCenv = FW.telephonist_native((arg) -> {
+    public static final Val useDirectivesCenv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));

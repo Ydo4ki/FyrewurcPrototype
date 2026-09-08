@@ -15,7 +15,7 @@ import org.fw.core.util.FwUtils;
 // that would be a triple nested vm
 public final class HeapFw {
 
-    public static final Type heap = FW.telephonist_native(arg -> {
+    public static final Type heap = FW.lambda_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, HeapFw.heap)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);

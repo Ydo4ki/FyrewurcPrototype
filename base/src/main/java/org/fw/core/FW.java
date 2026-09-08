@@ -1,6 +1,5 @@
 package org.fw.core;
 
-import org.fw.base.NativeExecutionException;
 import org.fw.base.SymbolFw;
 import org.fw.base.Type;
 import org.fw.base.Val;
@@ -20,9 +19,9 @@ public final class FW {
     }
 
     public static Val telephonist_native(String name, Type.TelephonistType.NativeCallFunction call) {
-        return telephonist(name, arg -> {
+        return telephonist(name, dve -> {
             try {
-                return call.call((Val)arg);
+                return call.call(dve.recast());
             } catch (NativeExecutionException e) {
                 throw e;
             } catch (Exception e) {
@@ -34,6 +33,34 @@ public final class FW {
     @Deprecated
     public static Val telephonist_native(Type.TelephonistType.NativeCallFunction call) {
         return telephonist_native(null, call);
+    }
+
+    @Deprecated
+    public static Val lambda(String name, Type.TelephonistType.LambdaCallFunction call) {
+        return telephonist(name, dve -> call.call(dve.arg()));
+    }
+
+    @Deprecated
+    public static Val lambda(Type.TelephonistType.LambdaCallFunction call) {
+        return lambda(null, call);
+    }
+
+    @Deprecated
+    public static Val lambda_native(String name, Type.TelephonistType.NativeLambdaCallFunction call) {
+        return lambda(name, arg -> {
+            try {
+                return call.call((Val)arg);
+            } catch (NativeExecutionException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new NativeExecutionException(e);
+            }
+        });
+    }
+
+    @Deprecated
+    public static Val lambda_native(Type.TelephonistType.NativeLambdaCallFunction call) {
+        return lambda_native(null, call);
     }
 
     public static Val symbol(String value) {

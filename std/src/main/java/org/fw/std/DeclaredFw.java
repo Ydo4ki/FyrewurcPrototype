@@ -51,7 +51,7 @@ public final class DeclaredFw {
 //    });
 
     // I hope it will be possible to make it a struct later
-    public static final Type declared = FW.telephonist_native("Declared", (arg) -> {
+    public static final Type declared = FW.lambda_native("Declared", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DeclaredFw.declared)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -63,8 +63,8 @@ public final class DeclaredFw {
                 return decl.value();
             }
         } else if (arg.equalsSymbol("builder")) {
-            return FW.telephonist_native("Declared.builder",
-                    (name) -> FW.telephonist_native(
+            return FW.lambda_native("Declared.builder",
+                    (name) -> FW.lambda_native(
                             (value) -> declared(name, value)));
         }
         return null;
@@ -133,7 +133,7 @@ public final class DeclaredFw {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native("DeclaredFw.directivesCenv", (arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native("DeclaredFw.directivesCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
             arg = (Val) (Val) arg.get("passing");
@@ -147,7 +147,7 @@ public final class DeclaredFw {
             Val val = (Val) (Val) arg.get("passing");
             Value compEnv = (Val) arg.get("chain");
             if (val == declared.asVal()) {
-                return FW.telephonist_native(c -> {
+                return FW.lambda_native(c -> {
                     if (c.getType() != DVecFw.dVec)
                         return null;
                     Val[] args = c._UNPACK_();

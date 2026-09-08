@@ -61,7 +61,7 @@ public final class Tester {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
-                    val = (Val) vit.eval(FW.telephonist((arg) -> null), state);
+                    val = (Val) vit.eval(FW.lambda((arg) -> null), state);
                     if (val.getType() == DeclaredFw.declared) {
                         defined.put(DeclaredFw.getKey(val)._UNPACK_().toString(), DeclaredFw.getValue(val));
                     } else if (val == BoolFw._false) {
@@ -103,7 +103,7 @@ public final class Tester {
     }
 
 
-    public static final CompEnv testDirectivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv testDirectivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
@@ -120,7 +120,7 @@ public final class Tester {
                     if (!VitFw.isVit(condition.getType()))
                         return condition;
                     Vit vitOperation = Vit.call(OperationLibFw._VitOperation, condition).call(Vit.var);
-                    Vit assertOperation = Vit.call(FW.telephonist_native(arg1 ->
+                    Vit assertOperation = Vit.call(FW.lambda_native(arg1 ->
                             new AssertOperation(arg1._UNPACK_(Operation.class)).asVal()), vitOperation);
                     return VitFw.wrap(Vit.invoke(assertOperation));
                 }

@@ -35,7 +35,7 @@ import static org.fw.core.FW.symbol;
 
 public class Main {
 
-    public static final Val rtEnv = FW.telephonist((arg) -> null);
+    public static final Val rtEnv = FW.lambda((arg) -> null);
 
     public static void main(String[] args) throws IOException {
 //        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(FW.class.getResourceAsStream("test-bullsandcows.fw"));
@@ -65,7 +65,7 @@ public class Main {
                         DeclaredFw.declared(symbol("_ReadLine"), new SystemOperation.ReadLineOperation(new Scanner(System.in)).asVal()),
                         DeclaredFw.declared(symbol("_CurrentTimeMillis"), SystemOperation.currentTimeMillis.asVal()),
                         DeclaredFw.declared(symbol("_NanoTime"), SystemOperation.nanoTime.asVal()),
-                        DeclaredFw.declared(symbol("_Sleep"), FW.telephonist_native((arg) -> {
+                        DeclaredFw.declared(symbol("_Sleep"), FW.lambda_native((arg) -> {
                             if (arg.getType() != DIntFw.dint)
                                 return null;
 
@@ -103,7 +103,7 @@ public class Main {
         }
     }
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = (Val) arg.get("passing");
             Val compEnv = (Val) arg.get("chain");

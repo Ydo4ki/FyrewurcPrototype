@@ -16,7 +16,7 @@ public abstract class Operation implements ValAdapter {
     // just without negative connotation
     // upd: ok nevermind it has kinda negative connotation now since unspecified is now very strict
     // maybe I should make a separate unspecified type for failed operations :hmm:
-    public static final Val unit = FW.telephonist_native((arg) -> Operation.unit);
+    public static final Val unit = FW.lambda_native((arg) -> Operation.unit);
 
     public abstract Value apply(State state);
 
@@ -46,7 +46,7 @@ public abstract class Operation implements ValAdapter {
     }
 
     public static Operation pure(Value val) {
-        return new VitOperation(Vit.val(val), FW.telephonist((arg) -> null));
+        return new VitOperation(Vit.val(val), FW.lambda((arg) -> null));
     }
 
     @Override

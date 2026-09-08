@@ -16,19 +16,19 @@ import static org.fw.core.FW.symbol;
 public final class BaseTests {
 
     static Val dstdt = ModuleFw.module(
-            DeclaredFw.declared(symbol("b-and"), FW.telephonist("b-and",
-                    a -> FW.telephonist(b -> {
+            DeclaredFw.declared(symbol("b-and"), FW.lambda("b-and",
+                    a -> FW.lambda(b -> {
                         return BoolFw.wrap(a.equals(BoolFw._true) && b.equals(BoolFw._true));
                     }))),
-            DeclaredFw.declared(symbol("b-or"), FW.telephonist("b-or",
-                    a -> FW.telephonist(b -> {
+            DeclaredFw.declared(symbol("b-or"), FW.lambda("b-or",
+                    a -> FW.lambda(b -> {
                         return BoolFw.wrap(a.equals(BoolFw._true) || b.equals(BoolFw._true));
                     }))),
-            DeclaredFw.declared(symbol("b-xor"), FW.telephonist("b-xor",
-                    a -> FW.telephonist(b -> {
+            DeclaredFw.declared(symbol("b-xor"), FW.lambda("b-xor",
+                    a -> FW.lambda(b -> {
                         return BoolFw.wrap(a.equals(BoolFw._true) != b.equals(BoolFw._true));
                     }))),
-            DeclaredFw.declared(symbol("b-not"), FW.telephonist("b-not",
+            DeclaredFw.declared(symbol("b-not"), FW.lambda("b-not",
                     a -> BoolFw.wrap(!a.equals(BoolFw._true))))
     );
 

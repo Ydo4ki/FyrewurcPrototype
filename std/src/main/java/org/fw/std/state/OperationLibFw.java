@@ -23,15 +23,15 @@ import org.fw.std.state.operation.WhileOperation;
 import static org.fw.core.FW.symbol;
 
 public final class OperationLibFw {
-    public static final Val _VitOperation = FW.telephonist_native((arg) -> {
+    public static final Val _VitOperation = FW.lambda_native((arg) -> {
         if (!VitFw.isVit(arg.getType()))
             return null;
 
         Vit vit = arg._UNPACK_();
 
-        return FW.telephonist_native((rtEnv) -> Operation.vit(vit, rtEnv).asVal());
+        return FW.lambda_native((rtEnv) -> Operation.vit(vit, rtEnv).asVal());
     });
-    public static final Val directivesCenv = FW.telephonist_native((arg) -> {
+    public static final Val directivesCenv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));

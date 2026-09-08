@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import java.util.function.BiFunction;
 
 public final class StrFw {
-    public static final Type str = FW.telephonist_native("Str", (arg) -> {
+    public static final Type str = FW.lambda_native("Str", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StrFw.str)) {
             Val instance = (Val) CallFw.getVal(arg);
             Val cArg = (Val) CallFw.getArg(arg);
@@ -32,12 +32,12 @@ public final class StrFw {
                 String s = cArg._UNPACK_().toString();
                 switch (s) {
                     case "sub": {
-                        return FW.telephonist_native((start) -> {
+                        return FW.lambda_native((start) -> {
                             if (start.getType() != DIntFw.dint)
                                 return null;
                             int st = start._UNPACK_(BigInteger.class).intValue();
 
-                            return FW.telephonist_native((end) -> {
+                            return FW.lambda_native((end) -> {
                                 if (end.getType() != DIntFw.dint)
                                     return null;
                                 int e = end._UNPACK_(BigInteger.class).intValue();
@@ -65,7 +65,7 @@ public final class StrFw {
     private static Val bop(Val instance, BiFunction<String, String, String> operator) {
         String value = instance._UNPACK_();
         assert value != null;
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(StrFw.str)) {
                 String v2 = arg1._UNPACK_();
                 return str(operator.apply(value, v2));
@@ -86,7 +86,7 @@ public final class StrFw {
         public static final Val parseStrCenv;
 
         static {
-            Vit parseArg = val(FW.telephonist_native("parseNum", (arg1) -> {
+            Vit parseArg = val(FW.lambda_native("parseNum", (arg1) -> {
                 Value str1 = (Val) ExprFw.symbolToString.call(arg1);
                 if (!str1.getTypeValue().impliesEquality(StrFw.str.asVal()))
                     return null;
@@ -107,8 +107,8 @@ public final class StrFw {
                     parseArg
             );
             // uh okay
-            parseStrCenv = State.performAndDie(state -> FW.telephonist((arg3) -> {
-                Val rtEnv = FW.telephonist((arg2) -> {
+            parseStrCenv = State.performAndDie(state -> FW.lambda((arg3) -> {
+                Val rtEnv = FW.lambda((arg2) -> {
                     if (arg2.equalsSymbol("arg")) return arg3;
                     return null;
                 });
@@ -120,7 +120,7 @@ public final class StrFw {
     public static final Lib lib = Lib.of(
             ModuleFw.module(
                     DeclaredFw.declared(symbol("Str"), StrFw.str.asVal()),
-                    DeclaredFw.declared(symbol("expr2str"), FW.telephonist_native((arg) -> {
+                    DeclaredFw.declared(symbol("expr2str"), FW.lambda_native((arg) -> {
                         if (ExprFw.isExpr(arg)) {
                             return StrFw.str(arg._UNPACK_().toString());
                         }

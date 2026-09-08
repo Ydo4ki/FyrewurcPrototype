@@ -21,7 +21,7 @@ public final class VitErrorFw {
         return vitError.get("builder").call(ExprFw.wrap(expr)).call(StrFw.str(message));
     }
 
-    public static final Val cantResolveAnythingCenv = FW.telephonist_native("cantResolveAnythingCenv", (arg) -> {
+    public static final Val cantResolveAnythingCenv = FW.lambda_native("cantResolveAnythingCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Value exprVal = (Val) arg.get("expr");
             Value compEnv = (Val) arg.get("comp-env");

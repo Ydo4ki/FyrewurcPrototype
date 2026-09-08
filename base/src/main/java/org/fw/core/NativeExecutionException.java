@@ -1,6 +1,4 @@
-package org.fw.base;
-
-import org.fw.core.RuntimeFyrewurcException;
+package org.fw.core;
 
 public class NativeExecutionException extends RuntimeFyrewurcException {
     public NativeExecutionException(Throwable cause) {

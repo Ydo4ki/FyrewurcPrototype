@@ -8,19 +8,19 @@ import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.base.OperationFw;
 
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.lambda_native;
 
 // it's not like this can't be implemented on the language itself, this just seems easier
 public final class IfOperation extends Operation {
-    public static final Val _If = FW.telephonist_native((condition) -> {
+    public static final Val _If = FW.lambda_native((condition) -> {
         if (condition.getType() != OperationFw.operation)
             return null;
 
-        return FW.telephonist_native((ifTrue) -> {
+        return FW.lambda_native((ifTrue) -> {
             if (ifTrue.getType() != OperationFw.operation)
                 return null;
 
-            return FW.telephonist_native((ifFalse) -> {
+            return FW.lambda_native((ifFalse) -> {
                 if (ifFalse.getType() != OperationFw.operation)
                     return null;
 

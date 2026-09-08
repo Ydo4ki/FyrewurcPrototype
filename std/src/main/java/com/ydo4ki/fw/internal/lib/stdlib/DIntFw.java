@@ -23,7 +23,7 @@ import static org.fw.core.vit.Vit.var;
 
 // lmao I completely forgot we wanted to get rid of this
 public final class DIntFw {
-    public static final Type dint = FW.telephonist_native("DInt", (arg) -> {
+    public static final Type dint = FW.lambda_native("DInt", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DIntFw.dint)) {
             Val instance = (Val) CallFw.getVal(arg);
             Val cArg = (Val) CallFw.getArg(arg);
@@ -54,7 +54,7 @@ public final class DIntFw {
                 }
             }
         } else if (arg.equalsSymbol("parse")) {
-            return FW.telephonist_native((arg1) -> {
+            return FW.lambda_native((arg1) -> {
                 if (arg1.getType().equals(StrFw.str)) {
                     String string = arg1._UNPACK_();
                     try {
@@ -70,7 +70,7 @@ public final class DIntFw {
         return null;
     }).asType();
 
-    public static final CompEnv dint2exprCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv dint2exprCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             Val val = (Val) (Val) arg.get("passing");
             Value compEnv = (Val) arg.get("chain");
@@ -84,7 +84,7 @@ public final class DIntFw {
     private static Val bop(Val instance, FwUtils.BigBinaryOperator operator) {
         BigInteger value = unwrap(instance);
         assert value != null;
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(DIntFw.dint)) {
                 BigInteger v2 = unwrap(arg1);
                 return dint(operator.apply(value, v2));
@@ -114,7 +114,7 @@ public final class DIntFw {
         public static final Val parseNumCenv;
 
         static {
-            Vit parseArg = val(FW.telephonist_native("parseNum", (arg1) -> {
+            Vit parseArg = val(FW.lambda_native("parseNum", (arg1) -> {
                 return Vit.val(dint.asVal()).call(symbol("parse")).call((Val) ExprFw.symbolToString.call(arg1))
                         .eval();
             })).call(var.call(symbol("arg")).call(symbol("expr")));
@@ -126,8 +126,8 @@ public final class DIntFw {
                             .call(parseArg),
                     parseArg
             );
-            parseNumCenv = State.performAndDie(state -> FW.telephonist((arg1) -> {
-                Val rtEnv = FW.telephonist((arg2) -> {
+            parseNumCenv = State.performAndDie(state -> FW.lambda((arg1) -> {
+                Val rtEnv = FW.lambda((arg2) -> {
                     if (arg2.equalsSymbol("arg")) return arg1;
                     return null;
                 });

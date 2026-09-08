@@ -4,7 +4,7 @@ import org.fw.core.FW;
 import org.fw.core.util.FwUtils;
 
 public final class TypePayloadInfo {
-    public static final Type typePayloadInfo = FW.telephonist_native(arg -> {
+    public static final Type typePayloadInfo = FW.lambda_native(arg -> {
         if (FwUtils.isTypeApiCall(arg, TypePayloadInfo.typePayloadInfo)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);

@@ -40,7 +40,7 @@ public final class FwUtils {
     }
 
     public static Val valify(Predicate<Val> tester) {
-        return FW.telephonist_native((arg) -> BoolFw.wrap(tester.test(arg)));
+        return FW.lambda_native((arg) -> BoolFw.wrap(tester.test(arg)));
     }
 
     public static Vit equals(Vit a, Vit b) {
@@ -51,7 +51,7 @@ public final class FwUtils {
         Vit arg = Vit.var.call(FW.symbol("arg"));
         Vit argExpr = arg.call(symbol("expr"));
         Vit parseArg = telemap.call(argExpr);
-        return FW.telephonist((arg1) -> {
+        return FW.lambda((arg1) -> {
             if (Unspecified.isUnspecified(arg1)) return null;
             else return parseArg.eval();
         });

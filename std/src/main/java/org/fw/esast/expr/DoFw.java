@@ -22,10 +22,10 @@ import org.fw.esast.ExprVitCompilationException;
 import org.fw.core.vit.VitUtils;
 
 import static org.fw.core.FW.symbol;
-import static org.fw.core.FW.telephonist_native;
+import static org.fw.core.FW.lambda_native;
 
 public final class DoFw {
-    public static final Type unaryStoreType = FW.telephonist((arg) -> {
+    public static final Type unaryStoreType = FW.lambda((arg) -> {
         if (FwUtils.isTypeApiCall(arg, DoFw.unaryStoreType)) {
             Value instance = CallFw.getVal(arg);
             arg = CallFw.getArg(arg);
@@ -34,14 +34,14 @@ public final class DoFw {
         return null;
     }).asType();
 
-    public static final Val usLast = FW.telephonist_native((arg) -> {
+    public static final Val usLast = FW.lambda_native((arg) -> {
         if (arg.getType().equals(DoFw.unaryStoreType)) {
             return arg._UNPACK_();
         }
         return null;
     });
 
-    public static final CompEnv directivesCenv = CompEnv.of(FW.telephonist_native((arg) -> {
+    public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.get("expr");
             Val compEnv = (Val) arg.get("comp-env");
@@ -80,8 +80,8 @@ public final class DoFw {
 
                 Val sname = symbol(name);
                 // OK FINE
-                Val newRtGetter = FW.telephonist((oldRt) -> FW.telephonist((varValue) -> {
-                    return FW.telephonist((arg) -> {
+                Val newRtGetter = FW.lambda((oldRt) -> FW.lambda((varValue) -> {
+                    return FW.lambda((arg) -> {
                         if (arg.impliesEquality(sname)) {
                             return varValue;
                         }
@@ -91,7 +91,7 @@ public final class DoFw {
                 // this looks cryptic as hell
                 // still probably conceptually the best way to do this
 
-                Value newCompEnv = CompEnv.compEnv(compEnv, FW.telephonist((arg) -> {
+                Value newCompEnv = CompEnv.compEnv(compEnv, FW.lambda((arg) -> {
                     if (arg.getTypeValue().impliesEquality(SyntaxResolveFw.syntaxResolve.asVal())) {
                         Value exprVal0 = arg.get("expr");
                         if (exprVal0.equalsSymbol(name)) {

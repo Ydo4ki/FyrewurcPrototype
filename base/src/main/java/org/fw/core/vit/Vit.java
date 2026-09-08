@@ -61,7 +61,7 @@ public abstract class Vit {
     }
 
     public final Val asLambdaVal() {
-        return FW.telephonist((env) -> State.performAndDie(scope ->
+        return FW.lambda((env) -> State.performAndDie(scope ->
                 this.eval(env, scope)));
     }
 }

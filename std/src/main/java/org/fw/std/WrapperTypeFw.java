@@ -7,7 +7,7 @@ import org.fw.core.util.FwUtils;
 
 public final class WrapperTypeFw {
     
-    public static final Type wrapperType = FW.telephonist_native("wrapperType", arg -> {
+    public static final Type wrapperType = FW.lambda_native("wrapperType", arg -> {
         if (FwUtils.isTypeApiCall(arg, WrapperTypeFw.wrapperType)) {
             Val wType = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);

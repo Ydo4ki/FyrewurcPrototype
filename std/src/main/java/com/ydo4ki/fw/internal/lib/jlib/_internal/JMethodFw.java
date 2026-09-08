@@ -1,6 +1,5 @@
 package com.ydo4ki.fw.internal.lib.jlib._internal;
 
-import com.ydo4ki.esast.Expr;
 import org.fw.core.FW;
 import com.ydo4ki.esast.Symbol;
 import org.fw.base.CallFw;
@@ -17,7 +16,7 @@ import org.fw.core.util.FwUtils;
 import java.lang.invoke.MethodHandle;
 
 public final class JMethodFw {
-    public static final Type jMethod = FW.telephonist_native((arg) -> {
+    public static final Type jMethod = FW.lambda_native((arg) -> {
         if (FwUtils.isTypeApiCall(arg, JMethodFw.jMethod)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
@@ -28,7 +27,7 @@ public final class JMethodFw {
 
             switch (((Symbol) ExprFw.unwrap(arg)).getValue()) {
                 case "invoke-method": {
-                    return FW.telephonist_native(argumentsVec -> {
+                    return FW.lambda_native(argumentsVec -> {
                         if (argumentsVec.getType() != DVecFw.dVec)
                             return null;
 
@@ -59,7 +58,7 @@ public final class JMethodFw {
     }).asType();
 
 
-    public static final Val methodCallCEnv = FW.telephonist_native((arg) -> {
+    public static final Val methodCallCEnv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Val val = (Val) arg.get("passing");
             Val compEnv = (Val) arg.get("chain");

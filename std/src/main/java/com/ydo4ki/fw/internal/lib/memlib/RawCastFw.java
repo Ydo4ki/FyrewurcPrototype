@@ -6,7 +6,7 @@ import org.fw.base.Val;
 import org.fw.std.WrapperTypeFw;
 
 public final class RawCastFw {
-    public static final Val rawcast = FW.telephonist_native(v -> FW.telephonist_native(targetType -> {
+    public static final Val rawcast = FW.lambda_native(v -> FW.lambda_native(targetType -> {
         Type originalType = v.getType();
         originalType = WrapperTypeFw.unwrapFully(originalType);
         if (originalType.asVal().getType() == ReifiedTypeFw.reifiedType) {

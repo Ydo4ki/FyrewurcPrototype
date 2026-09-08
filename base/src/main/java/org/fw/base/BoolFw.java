@@ -5,7 +5,7 @@ import org.fw.core.abstrait.Value;
 import org.fw.core.util.FwUtils;
 
 public final class BoolFw {
-    public static final Type bool = FW.telephonist_native("Bool", (arg) -> {
+    public static final Type bool = FW.lambda_native("Bool", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoolFw.bool)) {
             Val instance = (Val) CallFw.getVal(arg);
             Value cArg = (Val) CallFw.getArg(arg);
@@ -20,9 +20,9 @@ public final class BoolFw {
             } else if (cArg.equalsSymbol("xor")) {
                 return bop(instance, (a, b) -> a != b);
             } else if (cArg.equalsSymbol("if")) {
-                return FW.telephonist((arg1) -> { // probably one of the weirdest if implementations ever
-                    if (value) return FW.telephonist((arg2) -> arg1);
-                    else return FW.telephonist((arg2) -> arg2);
+                return FW.lambda((arg1) -> { // probably one of the weirdest if implementations ever
+                    if (value) return FW.lambda((arg2) -> arg1);
+                    else return FW.lambda((arg2) -> arg2);
                 });
             }
         }
@@ -31,7 +31,7 @@ public final class BoolFw {
 
     private static Val bop(Val instance, FwUtils.BoolBinaryOperator operator) {
         boolean value = instance._UNPACK_(Boolean.class);
-        return FW.telephonist_native((arg1) -> {
+        return FW.lambda_native((arg1) -> {
             if (arg1.getType().equals(BoolFw.bool)) {
                 boolean v2 = arg1._UNPACK_(Boolean.class);
                 return wrap(operator.apply(value, v2));

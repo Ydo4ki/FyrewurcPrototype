@@ -17,7 +17,7 @@ import org.fw.core.util.FwUtils;
 // remember local runtimes
 public final class MemAllocatorFw {
 
-    public static final Type heapAllocator = FW.telephonist_native("heapAllocator", arg -> {
+    public static final Type heapAllocator = FW.lambda_native("heapAllocator", arg -> {
         if (FwUtils.isTypeApiCall(arg, MemAllocatorFw.heapAllocator)) {
             Val instance = (Val) CallFw.getVal(arg);
             HeapObj heap = instance._UNPACK_();
