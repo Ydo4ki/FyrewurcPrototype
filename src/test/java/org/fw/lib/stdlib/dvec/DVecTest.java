@@ -10,6 +10,6 @@ import java.io.IOException;
 public final class DVecTest {
     @Test
     public void dvecTest() throws IOException {
-        Tester.testFw(DVecFw.class, "dvec", CompEnv.of(StdLib.lib.exports()));
+        Tester.testExprFw(DVecFw.class, "dvec.fw", CompEnv.of(StdLib.lib.exports()));
     }
 }

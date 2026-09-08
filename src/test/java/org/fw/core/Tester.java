@@ -1,28 +1,81 @@
 package org.fw.core;
 
+import org.fw.DirectCompEnv;
 import org.fw.core.abstrait.Value;
 import org.fw.core.ast.*;
+import org.fw.core.ast.lexer.ExprOutput;
 import org.fw.core.base.BoolFw;
 import org.fw.core.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
+import org.fw.core.vit.VitCompilationException;
+import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.lib.stdlib.ModuleFw;
+import org.fw.lib.stdlib.expr.*;
 import org.fw.lib.stdlib.state.OperationFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.SyntaxResolveFw;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public final class Tester {
-    public static void testFw(Class<?> cls, CompEnv compEnv) throws IOException {
-        testFw(cls, camelCaseTo_fw(cls.getSimpleName()), compEnv);
+    public static void testDirectFw(Class<?> cls, Val module) throws IOException {
+        testDirectFw(cls, camelCaseTo_fw(cls.getSimpleName()) + ".dfw", module);
     }
 
-    public static void testFw(Class<?> cls, String filename, CompEnv compEnv) throws IOException {
+    public static void testExprFw(Class<?> cls, CompEnv compEnv) throws IOException {
+        testExprFw(cls, camelCaseTo_fw(cls.getSimpleName()) + ".fw", compEnv);
+    }
+
+    public static void testDirectFw(Class<?> cls, String filename, Val module) throws IOException {
+        String filename1 = cls.getPackage().getName().replace(".", "/") + "/" + filename;
+        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename1);
+        if (in == null)
+            throw new IOException("Source not found: " + filename1);
+
+        Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(in);
+        Operation op = new Operation() {
+            @Override
+            public Value apply(State state) {
+                Map<String, Val> defined = new HashMap<>();
+                Function<String, Val> get = s -> {
+                    Val ret = defined.get(s);
+                    if (ret == null) ret = (Val) module.call(FW.symbol(s));
+                    return ret;
+                };
+                Val val = Operation.unit;
+                for (LocatedExpr<? extends Expr> locatedExpression : expressions) {
+                    Expr expression = locatedExpression.getExpr();
+                    Vit vit;
+                    try {
+                        vit = DirectCompEnv.compile(expression, get);
+                    } catch (VitCompilationException e) {
+                        System.err.println(expression);
+                        throw new RuntimeException(e);
+                    }
+                    val = (Val) vit.eval(FW.telephonist((arg) -> null), state);
+                    if (val.getType() == DeclaredFw.declared) {
+                        defined.put(DeclaredFw.getKey(val)._UNPACK_().toString(), DeclaredFw.getValue(val));
+                    } else if (val == BoolFw._false) {
+                        throw new AssertionError(expression);
+                    } else if (val != Operation.unit && val != BoolFw._true)
+                        System.out.println(val.toString());
+//                        if (debug) System.out.println(val);
+                }
+                return val;
+            }
+        };
+        op.apply(SystemOperation.systemState);
+    }
+
+    public static void testExprFw(Class<?> cls, String filename, CompEnv compEnv) throws IOException {
         Operation op = FwUtils.getOperation(cls, filename, CompEnv.of(CompEnv.compEnv(
                 compEnv.asValue(),
                 testDirectivesCenv.asValue()

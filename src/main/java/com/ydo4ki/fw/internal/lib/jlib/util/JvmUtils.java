@@ -43,7 +43,7 @@ public final class JvmUtils {
     static {
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         try {
-            vitEvalM = lookup.findVirtual(Vit.class, "eval",
+            vitEvalM = lookup.findVirtual(Vit.class, "evalV",
                     MethodType.methodType(Val.class, Val.class, State.class));
         } catch (NoSuchMethodException | IllegalAccessException e) {
             throw new RuntimeException(e);

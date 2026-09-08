@@ -10,6 +10,6 @@ import java.io.IOException;
 public final class BoxTest {
     @Test
     public void test() throws IOException {
-        Tester.testFw(BoxFw.class, CompEnv.of(StdLib.lib.exports()));
+        Tester.testExprFw(BoxFw.class, CompEnv.of(StdLib.lib.exports()));
     }
 }

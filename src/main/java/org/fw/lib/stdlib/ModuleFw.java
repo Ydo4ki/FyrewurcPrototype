@@ -111,8 +111,16 @@ public final class ModuleFw {
         return module;
     }
 
+    public static Val merge(Val module, Val... modules) {
+        for (Value val : modules) {
+            if (val == null) continue;
+            module = (Val) ChainLinkFw.chain(ExtendedFw.extended, module, val);
+        }
+        return module;
+    }
+
     // todo: replace with map, order shouldn't matter
-    private static final class Module {
+    public static final class Module {
         private final Val[] declareds;
 
         private Module(Val[] declareds) {

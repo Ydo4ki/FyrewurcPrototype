@@ -10,6 +10,6 @@ import java.io.IOException;
 public final class StructTest {
     @Test
     public void test() throws IOException {
-        Tester.testFw(StructFw.class, CompEnv.of(StdLib.lib.exports()));
+        Tester.testExprFw(StructFw.class, CompEnv.of(StdLib.lib.exports()));
     }
 }

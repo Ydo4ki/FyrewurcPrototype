@@ -22,11 +22,6 @@ public abstract class Vit {
         return State.performAndDie(state -> eval(rtEnv, state));
     }
 
-    @Deprecated
-    public final Val eval(Val rtEnv, State state) {
-        return (Val) eval((Value) rtEnv, state);
-    }
-
     public abstract Value eval(Value rtEnv, State state);
 
     public abstract boolean isConst();

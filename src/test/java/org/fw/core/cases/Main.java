@@ -73,7 +73,7 @@ public class Main {
 
         compEnv = CompEnv.of(CompEnv.compEnv(
                 compEnv.asValue(),
-                ModuleFw.ModuleCEnvFw.compEnv(FwUtils.getOperation(FW.class, "sysoperations", compEnv, true).apply(state))
+                ModuleFw.ModuleCEnvFw.compEnv(FwUtils.getOperation(FW.class, "sysoperations.fw", compEnv, true).apply(state))
         ));
 
 //        Tester.testFw(FW.class, "test-int", compEnv);
@@ -87,7 +87,7 @@ public class Main {
                 System.err.println(expression);
                 throw new RuntimeException(e);
             }
-            Val val = vit.eval(rtEnv, state);
+            Val val = (Val) vit.eval(rtEnv, state);
             if (val.getType() == DeclaredFw.declared) {
                 compEnv = CompEnv.of(CompEnv.compEnv(ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asValue()));
             } else {

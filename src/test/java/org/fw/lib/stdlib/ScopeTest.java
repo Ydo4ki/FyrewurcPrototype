@@ -11,6 +11,6 @@ import java.io.IOException;
 public class ScopeTest {
     @Test
     public void test() throws IOException {
-        Tester.testFw(ScopeFw.class, CompEnv.of(StdLib.lib.exports()));
+        Tester.testExprFw(ScopeFw.class, CompEnv.of(StdLib.lib.exports()));
     }
 }

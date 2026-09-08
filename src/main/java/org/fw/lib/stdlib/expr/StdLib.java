@@ -62,6 +62,6 @@ public final class StdLib {
             StructFw.lib,
 
             OperationFw.lib
-    ), "operationfns");
+    ), "operationfns.fw");
 
 }

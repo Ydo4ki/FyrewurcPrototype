@@ -68,7 +68,7 @@ public final class Shell {
                 compEnv.asValue()
         ));
 
-        Val sysoperations = ModuleFw.ModuleCEnvFw.compEnv((Val) FwUtils.getOperation(FW.class, "sysoperations", internalCompEnv, false).apply(state));
+        Val sysoperations = ModuleFw.ModuleCEnvFw.compEnv((Val) FwUtils.getOperation(FW.class, "sysoperations.fw", internalCompEnv, false).apply(state));
 
         compEnv = CompEnv.of(CompEnv.compEnv(
                 compEnv.asValue(),
@@ -89,7 +89,7 @@ public final class Shell {
 //        } catch (IOException e) {
 //            System.err.println("Error reading input: " + e.getMessage());
 //        }
-        Operation operation = FwUtils.getOperation("org/fw/shell", internalCompEnv, true);
+        Operation operation = FwUtils.getOperation("org/fw/shell.fw", internalCompEnv, true);
         operation.apply(state);
     }
 }

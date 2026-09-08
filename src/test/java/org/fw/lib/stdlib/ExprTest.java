@@ -11,6 +11,6 @@ import java.io.IOException;
 public final class ExprTest {
     @Test
     public void test() throws IOException {
-        Tester.testFw(ExprFw.class, CompEnv.of(StdLib.lib.exports()));
+        Tester.testExprFw(ExprFw.class, CompEnv.of(StdLib.lib.exports()));
     }
 }

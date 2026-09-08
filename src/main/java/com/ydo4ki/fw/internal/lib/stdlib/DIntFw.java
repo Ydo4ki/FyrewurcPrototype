@@ -126,10 +126,13 @@ public final class DIntFw {
                             .call(parseArg),
                     parseArg
             );
-            parseNumCenv = State.performAndDie(state -> FW.telephonist((arg1) -> body.eval(FW.telephonist((arg2) -> {
-                if (arg2.equalsSymbol("arg")) return arg1;
-                return null;
-            }), state)));
+            parseNumCenv = State.performAndDie(state -> FW.telephonist((arg1) -> {
+                Val rtEnv = FW.telephonist((arg2) -> {
+                    if (arg2.equalsSymbol("arg")) return arg1;
+                    return null;
+                });
+                return (Val) body.eval(rtEnv, state);
+            }));
         }
     }
 

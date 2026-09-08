@@ -98,7 +98,7 @@ public final class FwUtils {
             } catch (VitCompilationException e) {
                 throw new RuntimeException("Cannot compile: " + expr, e);
             }
-            result = vit.eval(rtEnv, state);
+            result = (Val) vit.eval(rtEnv, state);
             if (result.getType().equals(DeclaredFw.declared)) {
                 Val key = (Val) DeclaredFw.getKey(result);
                 Val value = (Val) DeclaredFw.getValue(result);
@@ -146,9 +146,9 @@ public final class FwUtils {
     }
 
     public static Operation getOperation(String filename, final CompEnv compEnv, boolean debug) throws IOException {
-        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename + ".fw");
+        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
         if (in == null)
-            throw new IOException("Source not found: " + filename + ".fw");
+            throw new IOException("Source not found: " + filename);
 
         Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(in);
         return new Operation() {
@@ -165,11 +165,12 @@ public final class FwUtils {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
-                    val = vit.eval(FW.telephonist((arg) -> null), state);
+                    val = (Val) vit.eval(FW.telephonist((arg) -> null), state);
                     if (val.getType() == DeclaredFw.declared) {
                         compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asValue(), ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
                     } else if (val != Operation.unit)
                         if (debug) System.out.println(val.toExpr(compEnv));
+//                        if (debug) System.out.println(val);
                 }
                 return val;
             }

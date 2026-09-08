@@ -1,0 +1,43 @@
+true
+
+{T true}
+{F false}
+
+(eq (type-get T) Bool)
+(eq (type-get F) Bool)
+
+(eq (b-not T) F)
+(eq (b-not F) T)
+
+(eq (T 'not') F)
+(eq (F 'not') T)
+
+(eq (b-and T T) T)
+(eq (b-and T F) F)
+(eq (b-and F T) F)
+(eq (b-and F F) F)
+
+(eq (T 'and' T) T)
+(eq (T 'and' F) F)
+(eq (F 'and' T) F)
+(eq (F 'and' F) F)
+
+(eq (b-or T T) T)
+(eq (b-or T F) T)
+(eq (b-or F T) T)
+(eq (b-or F F) F)
+
+(eq (T 'or' T) T)
+(eq (T 'or' F) T)
+(eq (F 'or' T) T)
+(eq (F 'or' F) F)
+
+(eq (b-xor T T) F)
+(eq (b-xor T F) T)
+(eq (b-xor F T) T)
+(eq (b-xor F F) F)
+
+(eq (T 'xor' T) F)
+(eq (T 'xor' F) T)
+(eq (F 'xor' T) T)
+(eq (F 'xor' F) F)

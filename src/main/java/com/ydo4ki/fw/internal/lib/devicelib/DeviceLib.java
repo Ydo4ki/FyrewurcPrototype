@@ -64,7 +64,7 @@ public final class DeviceLib {
                 JMethodFw.methodCallCEnv
         ));
         try {
-            Value dev = FwUtils.getOperation("org/fw/lib/dev", compEnv, true).apply(SystemOperation.systemState);
+            Value dev = FwUtils.getOperation("org/fw/lib/dev.fw", compEnv, true).apply(SystemOperation.systemState);
             lib = Lib.ofModule(dev);
         } catch (IOException e) {
             throw new RuntimeException(e);

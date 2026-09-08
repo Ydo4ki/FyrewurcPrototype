@@ -15,6 +15,26 @@ import org.fw.core.vit.VitCompilationException;
 import static org.fw.core.FW.symbol;
 
 public final class ExprGetFw {
+
+    public static Val handleDot(Symbol sym, CompEnv compEnv) {
+        String fullQualifier = sym.getValue();
+        int dotIndex = fullQualifier.lastIndexOf('.');
+        if (dotIndex == -1)
+            return null;
+        String origin = fullQualifier.substring(0, dotIndex);
+        String property = fullQualifier.substring(dotIndex + 1);
+
+        Vit first;
+        try {
+            first = compEnv.compile(FW.symbol(origin));
+        } catch (VitCompilationException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return VitFw.wrap(first.call(symbol(property)));
+    }
+
     public static final Val getterCEnv = FW.telephonist_native("dot-getters-cenv-fw", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
@@ -22,26 +42,10 @@ public final class ExprGetFw {
             Expr expr = exprVal._UNPACK_(Expr.class);
             if (expr instanceof Symbol) {
                 // handling value.x
-
-                Symbol sym = (Symbol) expr;
-                String fullQualifier = sym.getValue();
-                int dotIndex = fullQualifier.lastIndexOf('.');
-                if (dotIndex == -1)
-                    return null;
-                String origin = fullQualifier.substring(0, dotIndex);
-                String property = fullQualifier.substring(dotIndex + 1);
-
-                Vit first = null;
-                try {
-                    first = CompEnv.of(compEnv).compile(FW.symbol(origin));
-                } catch (VitCompilationException e) {
-                    return null;
-                }
-
-                return VitFw.wrap(first.call(symbol(property)));
+                return handleDot((Symbol) expr, CompEnv.of(compEnv));
             } else if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
-                // handling (get value x)
 
+                // handling (get value x)
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
                 if (f instanceof Symbol) if (((Symbol) f).getValue().equals("get")) {
