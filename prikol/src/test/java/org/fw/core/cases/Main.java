@@ -1,7 +1,7 @@
 package org.fw.core.cases;
 
 import com.ydo4ki.esast.*;
-import com.ydo4ki.fw.internal.lib.DeviceLib;
+import com.ydo4ki.fw.internal.lib.devicelib.DeviceLib;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;
 import com.ydo4ki.fw.internal.lib.jlib.data.JCharFw;

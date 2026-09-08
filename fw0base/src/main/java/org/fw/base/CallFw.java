@@ -1,0 +1,83 @@
+package org.fw.base;
+
+import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
+
+import java.util.Objects;
+
+import static org.fw.core.FW.*;
+
+// Remember local runtimes
+// what
+// what is local runtimes
+// what do i need to remember
+// aaioasopdiou when was this even written
+public final class CallFw {
+    public static final Type call_t = telephonist_native("Call", (d) -> {
+        Val arg = d.arg();
+        if (arg.getType().equals(CallFw.call_t)) {
+            // native
+            CallFw.CallRecord call = d.unpack(arg);
+            Val me = call.val();
+            Val cArg = call.arg();
+            CallFw.CallRecord meCall = d.unpack(me);
+            if (cArg.equalsSymbol("arg")) return meCall.arg();
+            if (cArg.equalsSymbol("val")) return meCall.val();
+        }
+        else if (arg.equalsSymbol("construct")) {
+            return FW.lambda_native("Call.construct", (func) -> FW.lambda_native((argument) -> d.instance(new CallRecord(func, argument))));
+        }
+        return null;
+    }).asType();
+
+    public static Val fwCall(Val instance, Val arg) {
+        return (Val) call_t.get("construct").call(instance).call(arg);
+    }
+
+    public static Value getVal(Value call) {
+        return call.get("val");
+    }
+
+    public static Value getArg(Value call) {
+        return call.get("arg");
+    }
+
+    private static final class CallRecord {
+        private final Val val;
+        private final Val arg;
+
+        private CallRecord(Val val, Val arg) {
+            this.val = val;
+            this.arg = arg;
+        }
+
+        public Val val() {
+            return val;
+        }
+
+        public Val arg() {
+            return arg;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            CallRecord that = (CallRecord) obj;
+            return Objects.equals(this.val, that.val) &&
+                    Objects.equals(this.arg, that.arg);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(val, arg);
+        }
+
+        @Override
+        public String toString() {
+            return "CallRecord[" +
+                    "val=" + val + ", " +
+                    "arg=" + arg + ']';
+        }
+    }
+}

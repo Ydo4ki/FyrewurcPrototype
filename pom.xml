@@ -22,10 +22,11 @@
         </license>
     </licenses>
     <modules>
-        <module>base</module>
-        <module>std</module>
         <module>esast</module>
+        <module>fw0base</module>
+        <module>fw1std</module>
         <module>prikol</module>
+        <module>fw3esast</module>
     </modules>
     <scm>
         <url>https://github.com/Ydo4ki/FyrewurcPrototype</url>
