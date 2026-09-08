@@ -1,0 +1,38 @@
+package org.fw.core.state.operation;
+
+import org.fw.core.abstrait.Value;
+import org.fw.base.Val;
+import org.fw.core.state.obj.*;
+
+import java.util.Objects;
+
+public final class CreateObjectOperation extends Operation {
+
+    private final Scope scope;
+    private final Val initialValue;
+
+    public CreateObjectOperation(Scope scope, Val initialValue) {
+        this.scope = scope;
+        this.initialValue = initialValue;
+    }
+
+    @Override
+    public Value apply(State state) {
+        if (state != scope.state()) 
+            return Operation.unit;
+        AtomObj obj = ConcreteAtomObj.of(initialValue, scope);
+        return Val._NEW_INSTANCE_(LaserPointerFw.laserPointer, obj);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CreateObjectOperation that = (CreateObjectOperation) o;
+        return Objects.equals(scope, that.scope) && Objects.equals(initialValue, that.initialValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(scope, initialValue);
+    }
+}
