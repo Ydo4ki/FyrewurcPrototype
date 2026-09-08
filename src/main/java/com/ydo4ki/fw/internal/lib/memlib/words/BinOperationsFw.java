@@ -1,8 +1,8 @@
 package com.ydo4ki.fw.internal.lib.memlib.words;
 
 import org.fw.core.FW;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import com.ydo4ki.fw.internal.lib.memlib.MemUtils;
 import org.fw.core.util.bits.Bits;
 

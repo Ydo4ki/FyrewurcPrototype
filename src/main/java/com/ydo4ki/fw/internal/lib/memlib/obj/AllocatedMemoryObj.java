@@ -1,7 +1,7 @@
 package com.ydo4ki.fw.internal.lib.memlib.obj;
 
 import com.ydo4ki.fw.internal.lib.memlib.AllocatedMemoryFw;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
 

@@ -1,15 +1,21 @@
 package com.ydo4ki.fw.internal.lib.memlib.ints;
 
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
+import org.fw.base.CallFw;
+import org.fw.base.SymbolFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import org.fw.core.FW;
-import org.fw.core.base.*;
+
 import org.fw.core.util.bits.Bits;
-import org.fw.lib.stdlib.*;
-import org.fw.lib.stdlib.expr.Lib;
+import org.fw.esast.expr.Lib;
 import com.ydo4ki.fw.internal.lib.memlib.MemUtils;
 import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
 import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 import org.fw.core.util.FwUtils;
+import org.fw.std.DeclaredFw;
+import org.fw.std.ModuleFw;
+import org.fw.std.TypePayloadInfo;
 
 import java.math.BigInteger;
 import java.util.Arrays;

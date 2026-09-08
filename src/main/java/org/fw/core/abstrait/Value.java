@@ -1,9 +1,9 @@
 package org.fw.core.abstrait;
 
-import org.fw.core.ast.Expr;
-import org.fw.core.base.*;
+import org.fw.base.*;
+import org.fw.esast.extern.Expr;
 import org.fw.core.state.obj.State;
-import org.fw.lib.stdlib.expr.CompEnv;
+import org.fw.esast.expr.CompEnv;
 
 import static org.fw.core.FW.symbol;
 

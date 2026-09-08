@@ -1,8 +1,8 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.Symbol;
+import org.fw.esast.extern.Expr;
+import org.fw.esast.extern.Symbol;
 import org.fw.core.state.obj.State;
 
 public final class GetLocalStateOperation extends Operation {

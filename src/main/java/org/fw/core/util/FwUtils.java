@@ -1,18 +1,17 @@
 package org.fw.core.util;
 
+import org.fw.base.*;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import org.fw.core.ast.*;
-import org.fw.core.ast.lexer.ExprOutput;
-import org.fw.core.ast.lexer.TokenOutput;
-import org.fw.core.base.*;
-import org.fw.core.base.BoolFw;
-import org.fw.lib.stdlib.DeclaredFw;
-import org.fw.core.base.TypeGetFw;
-import org.fw.lib.stdlib.expr.Lib;
-import org.fw.lib.stdlib.ModuleFw;
-import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.expr.CompEnv;
+import org.fw.esast.extern.*;
+import org.fw.esast.extern.lexer.ExprOutput;
+import org.fw.esast.extern.lexer.TokenOutput;
+
+import org.fw.std.DeclaredFw;
+import org.fw.esast.expr.Lib;
+import org.fw.std.ModuleFw;
+import org.fw.std.VitFw;
+import org.fw.esast.expr.CompEnv;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.vit.Vit;

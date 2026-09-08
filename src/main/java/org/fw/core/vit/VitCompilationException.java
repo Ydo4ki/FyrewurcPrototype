@@ -1,10 +1,10 @@
 package org.fw.core.vit;
 
 import org.fw.core.FyrewurcException;
-import org.fw.core.ast.Expr;
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.ExprFw;
+import org.fw.esast.extern.Expr;
+import org.fw.base.Val;
+import org.fw.esast.expr.CompEnv;
+import org.fw.esast.expr.ExprFw;
 
 public class VitCompilationException extends FyrewurcException {
     private final Val value;

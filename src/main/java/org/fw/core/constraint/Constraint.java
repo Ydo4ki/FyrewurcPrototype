@@ -1,6 +1,7 @@
 package org.fw.core.constraint;
 
-import org.fw.core.base.*;
+import org.fw.base.*;
+
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitUtils;
 

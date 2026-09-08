@@ -1,9 +1,9 @@
 package com.ydo4ki.fw.internal.lib.memlib.words;
 
 import org.fw.core.FW;
-import org.fw.core.base.CallFw;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.base.CallFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import org.fw.core.util.FwUtils;
 
 public final class BitFw {

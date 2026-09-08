@@ -1,11 +1,11 @@
 package com.ydo4ki.fw.internal.lib.jlib.data;
 
 import org.fw.core.FW;
-import org.fw.core.ast.Symbol;
-import org.fw.core.base.CallFw;
-import org.fw.core.base.SymbolFw;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.esast.extern.Symbol;
+import org.fw.base.CallFw;
+import org.fw.base.SymbolFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JClassFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;

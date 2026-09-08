@@ -1,11 +1,11 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.state.obj.Scope;
 import org.fw.core.state.obj.State;
-import org.fw.lib.stdlib.state.LaserPointerFw;
+import org.fw.std.state.LaserPointerFw;
 
 import java.util.Objects;
 

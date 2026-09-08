@@ -2,10 +2,10 @@ package com.ydo4ki.fw.internal.lib.jlib._internal;
 
 import com.ydo4ki.fw.internal.lib.jlib.data.*;
 import org.fw.core.FW;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.DeclaredFw;
-import org.fw.lib.stdlib.ModuleFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
+import org.fw.std.DeclaredFw;
+import org.fw.std.ModuleFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;

@@ -1,12 +1,12 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
 import org.fw.core.FW;
-import org.fw.core.base.CallFw;
-import org.fw.core.base.SymbolFw;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.base.CallFw;
+import org.fw.base.SymbolFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
-import org.fw.lib.stdlib.dvec.DVecFw;
+import org.fw.std.dvec.DVecFw;
 import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;

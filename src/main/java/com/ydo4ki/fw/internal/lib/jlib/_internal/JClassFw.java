@@ -1,8 +1,9 @@
 package com.ydo4ki.fw.internal.lib.jlib._internal;
 
+import org.fw.base.*;
 import org.fw.core.FW;
-import org.fw.core.ast.Symbol;
-import org.fw.core.base.*;
+import org.fw.esast.extern.Symbol;
+
 import com.ydo4ki.fw.internal.lib.devicelib.PrimitiveLayoutsFw;
 import com.ydo4ki.fw.internal.lib.jlib.data.JOopFw;
 import com.ydo4ki.fw.internal.lib.jlib.util.JvmUtils;

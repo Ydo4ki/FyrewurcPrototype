@@ -1,6 +1,6 @@
 package org.fw.core.state.obj;
 
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 
 public interface AtomObj extends Obj {
 

@@ -1,10 +1,13 @@
 package org.fw.core.state.obj;
 
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.state.StatePointerFw;
+import org.fw.base.Val;
+import org.fw.std.state.StatePointerFw;
 
 import java.util.function.Function;
 
+// todo: make it so any object can be state
+//  otherwise we can't move atom obj to std
+// but wait how do we ensure that state allows objects creation when its needed
 public final class State implements Obj {
     // questionable, maybe I should just allow states to be inside other states but keep this as optional
     private final Scope scope = new Scope(this);

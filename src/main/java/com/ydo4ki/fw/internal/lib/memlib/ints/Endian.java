@@ -1,8 +1,8 @@
 package com.ydo4ki.fw.internal.lib.memlib.ints;
 
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.EnumFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
+import org.fw.std.EnumFw;
 
 public final class Endian {
     private Endian() {

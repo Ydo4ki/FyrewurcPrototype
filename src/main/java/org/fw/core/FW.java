@@ -1,9 +1,14 @@
 package org.fw.core;
 
-import org.fw.core.base.*;
+import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
+import org.fw.base.NativeExecutionException;
+import org.fw.base.SymbolFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
+import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 
-import static org.fw.core.base.EqFw.eq;
+import static org.fw.base.EqFw.eq;
 import static org.fw.core.vit.Vit.val;
 
 public final class FW {

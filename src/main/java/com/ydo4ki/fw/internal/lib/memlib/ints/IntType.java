@@ -1,6 +1,6 @@
 package com.ydo4ki.fw.internal.lib.memlib.ints;
 
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 
 import java.math.BigInteger;
 import java.util.Objects;

@@ -1,14 +1,14 @@
 package org.fw;
 
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.ExprList;
-import org.fw.core.ast.Symbol;
-import org.fw.core.base.Unspecified;
-import org.fw.core.base.Val;
+import org.fw.esast.extern.BracketsTypes;
+import org.fw.esast.extern.Expr;
+import org.fw.esast.extern.ExprList;
+import org.fw.esast.extern.Symbol;
+import org.fw.base.Unspecified;
+import org.fw.base.Val;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;
-import org.fw.lib.stdlib.DeclaredFw;
+import org.fw.std.DeclaredFw;
 import java.util.function.Function;
 
 import static org.fw.core.FW.symbol;

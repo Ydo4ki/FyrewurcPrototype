@@ -1,11 +1,11 @@
 package com.ydo4ki.fw.internal.debug;
 
 import org.fw.core.FW;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.operation.Operation;
-import org.fw.lib.stdlib.DeclaredFw;
-import org.fw.lib.stdlib.expr.Lib;
-import org.fw.lib.stdlib.ModuleFw;
+import org.fw.std.DeclaredFw;
+import org.fw.esast.expr.Lib;
+import org.fw.std.ModuleFw;
 
 import static org.fw.core.FW.symbol;
 

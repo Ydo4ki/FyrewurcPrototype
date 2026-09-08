@@ -1,0 +1,79 @@
+package org.fw.std;
+
+import org.fw.base.*;
+import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
+import org.fw.core.util.FwUtils;
+
+public final class WrapperTypeFw {
+    
+    public static final Type wrapperType = FW.telephonist_native("wrapperType", arg -> {
+        if (FwUtils.isTypeApiCall(arg, WrapperTypeFw.wrapperType)) {
+            Val wType = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+
+            WrapperType wt = wType._UNPACK_();
+            Type payloadType = wt.payloadType;
+            Val callsHandler = wt.callsHandler;
+            if (FwUtils.isTypeApiCall(arg, wType.asType())) {
+                Val instanceOfWt = (Val) CallFw.getVal(arg);
+                arg = (Val) CallFw.getArg(arg);
+
+                // since we know the core type anyway there's no reason to create additional nesting levels
+                // so the value of wrapper type instance is exactly the same as the one in the wrapped type
+                Val rawPayload = Val._NEW_INSTANCE_(payloadType, instanceOfWt._UNPACK_());
+                Val val = ((Val) callsHandler.call(instanceOfWt));
+                Val val1 = ((Val) val.call(rawPayload));
+                return (Val) val1.call(arg);
+            } else {
+                Val staticCallsHandler = wt.staticCallsHandler;
+                Value ret = (Val) staticCallsHandler.call(arg);
+                if (!Unspecified.isUnspecified(ret)) return ret;
+                if (arg.getType() == SymbolFw.symbol) {
+                    String sym = arg._UNPACK_().toString();
+                    switch (sym) {
+                        case "Payload":
+                            return TypePayloadInfo.wrap(payloadType);
+                    }
+                }
+            }
+            
+            return null;
+        }
+        return null;
+    }).asType();
+
+    public static Type wrapperType(Type payloadType, Val callsHandler, Val staticCallsHandler) {
+        return Val._NEW_INSTANCE_(wrapperType, new WrapperType(payloadType, callsHandler, staticCallsHandler)).asType();
+    }
+
+    public static Type unwrapFully(Type type) {
+        Type payload = type.getPayloadType();
+        while (payload != null) {
+            type = payload;
+            payload = type.getPayloadType();
+        }
+//        while (type.asVal().type().equals(WrapperTypeFw.wrapperType))
+//            type = type.asVal()._unpack(WrapperTypeFw.WrapperType.class).payloadType;
+        return type;
+    }
+
+    public static Val unwrapFully(Val val) {
+        Type type = unwrapFully(val.getType());
+        if (type != val.getType())
+            return Val._NEW_INSTANCE_(type, val._UNPACK_());
+        return val;
+    }
+
+    public final static class WrapperType {
+        public final Type payloadType;
+        public final Val callsHandler;
+        public final Val staticCallsHandler;
+
+        WrapperType(Type payloadType, Val callsHandler, Val staticCallsHandler) {
+            this.payloadType = payloadType;
+            this.callsHandler = callsHandler;
+            this.staticCallsHandler = staticCallsHandler;
+        }
+    }
+}

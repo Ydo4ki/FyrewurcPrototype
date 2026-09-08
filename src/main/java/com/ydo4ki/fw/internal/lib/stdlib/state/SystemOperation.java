@@ -1,7 +1,7 @@
 package com.ydo4ki.fw.internal.lib.stdlib.state;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.operation.Operation;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;

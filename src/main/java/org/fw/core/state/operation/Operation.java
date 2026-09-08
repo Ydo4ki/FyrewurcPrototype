@@ -3,15 +3,15 @@ package org.fw.core.state.operation;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.ExprList;
-import org.fw.core.base.Val;
+import org.fw.esast.extern.BracketsTypes;
+import org.fw.esast.extern.Expr;
+import org.fw.esast.extern.ExprList;
+import org.fw.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.AtomObj;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
-import org.fw.lib.stdlib.state.OperationFw;
+import org.fw.std.state.OperationFw;
 
 public abstract class Operation implements ValAdapter {
     // a Val symbolizing successful completion of the operation

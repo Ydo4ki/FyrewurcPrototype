@@ -4,14 +4,15 @@ import static org.fw.core.FW.symbol;
 import static org.fw.core.vit.Vit.val;
 import static org.fw.core.vit.Vit.var;
 
+import org.fw.base.*;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.*;
-import org.fw.lib.stdlib.DeclaredFw;
-import org.fw.lib.stdlib.ModuleFw;
-import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.expr.ExprFw;
-import org.fw.lib.stdlib.expr.Lib;
+
+import org.fw.std.DeclaredFw;
+import org.fw.std.ModuleFw;
+import org.fw.std.VitFw;
+import org.fw.esast.expr.ExprFw;
+import org.fw.esast.expr.Lib;
 import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;

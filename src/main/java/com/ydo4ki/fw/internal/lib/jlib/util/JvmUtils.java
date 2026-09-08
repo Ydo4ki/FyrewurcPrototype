@@ -1,6 +1,6 @@
 package com.ydo4ki.fw.internal.lib.jlib.util;
 
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.vit.Vit;
 

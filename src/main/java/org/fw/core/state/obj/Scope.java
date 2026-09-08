@@ -1,7 +1,7 @@
 package org.fw.core.state.obj;
 
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.state.ScopeFw;
+import org.fw.base.Val;
+import org.fw.std.state.ScopeFw;
 
 import java.util.Map;
 import java.util.WeakHashMap;

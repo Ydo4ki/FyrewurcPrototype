@@ -1,7 +1,7 @@
 package com.ydo4ki.fw.internal.lib.memlib.obj;
 
 import com.ydo4ki.fw.internal.lib.memlib.HeapFw;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.obj.Scope;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.obj.AbstractObj;

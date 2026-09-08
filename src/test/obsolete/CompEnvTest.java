@@ -13,7 +13,7 @@ import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.CompEnv;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
-import org.fw.lib.stdlib.state.LaserPointerFw;
+import org.fw.std.state.LaserPointerFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCompilationException;

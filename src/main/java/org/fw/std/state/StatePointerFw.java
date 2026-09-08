@@ -1,0 +1,39 @@
+package org.fw.std.state;
+
+import org.fw.core.FW;
+import org.fw.base.CallFw;
+import org.fw.base.SymbolFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
+import org.fw.core.state.obj.State;
+import org.fw.core.state.operation.GetLocalStateOperation;
+import org.fw.core.util.FwUtils;
+
+public final class StatePointerFw {
+    public static final Type statePointer = FW.telephonist_native("StatePointer", (arg) -> {
+        if (FwUtils.isTypeApiCall(arg, StatePointerFw.statePointer)) {
+            Val instance = (Val) CallFw.getVal(arg);
+            arg = (Val) CallFw.getArg(arg);
+
+            State obj = instance._UNPACK_();
+
+            if (arg.getType() == SymbolFw.symbol) {
+                String s = arg._UNPACK_().toString();
+                switch (s) {
+                    case "scope":
+                        return obj.scope().asVal();
+                }
+            }
+            return null;
+        } else {
+            if (arg.getType() == SymbolFw.symbol) {
+                String s = arg._UNPACK_().toString();
+                if (s.equals("current")) {
+                    return GetLocalStateOperation.getInstance().asVal();
+                }
+            }
+        }
+        return null;
+    }).asType();
+}
+

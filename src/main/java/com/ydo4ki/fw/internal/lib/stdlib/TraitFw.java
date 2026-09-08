@@ -1,17 +1,18 @@
 package com.ydo4ki.fw.internal.lib.stdlib;
 
+import org.fw.base.*;
 import org.fw.core.FW;
-import org.fw.core.base.*;
-import org.fw.lib.stdlib.ConstraintFw;
-import org.fw.lib.stdlib.DeclarationFw;
-import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.dvec.DVecFw;
-import org.fw.lib.stdlib.expr.CompEnv;
+
+import org.fw.std.ConstraintFw;
+import org.fw.std.DeclarationFw;
+import org.fw.std.VitFw;
+import org.fw.std.dvec.DVecFw;
+import org.fw.esast.expr.CompEnv;
 import org.fw.core.util.FwUtils;
-import org.fw.core.ast.BracketsTypes;
-import org.fw.core.ast.Expr;
-import org.fw.core.ast.ExprList;
-import org.fw.lib.stdlib.expr.ExprFw;
+import org.fw.esast.extern.BracketsTypes;
+import org.fw.esast.extern.Expr;
+import org.fw.esast.extern.ExprList;
+import org.fw.esast.expr.ExprFw;
 import org.fw.core.vit.Vit;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package org.fw.core.vit;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
 import org.fw.core.state.obj.State;
 
 import java.util.Objects;

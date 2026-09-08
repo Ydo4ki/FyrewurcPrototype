@@ -2,7 +2,7 @@ package org.fw.core.vit;
 
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.obj.State;
 
 public abstract class Vit {

@@ -1,13 +1,10 @@
 package org.fw.core.vit;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.expr.StdLib;
-import org.fw.lib.stdlib.VitFw;
+import org.fw.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
-import org.fw.lib.stdlib.state.OperationFw;
-import org.fw.lib.stdlib.expr.CompEnv;
+import org.fw.std.state.OperationFw;
 
 import java.util.Objects;
 

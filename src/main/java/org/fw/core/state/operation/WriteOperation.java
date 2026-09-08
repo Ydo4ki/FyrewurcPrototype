@@ -1,7 +1,7 @@
 package org.fw.core.state.operation;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.obj.AtomObj;

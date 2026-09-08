@@ -1,9 +1,9 @@
 package com.ydo4ki.fw.internal.lib.devicelib;
 
-import org.fw.core.base.Type;
-import org.fw.lib.stdlib.DeclaredFw;
-import org.fw.lib.stdlib.expr.Lib;
-import org.fw.lib.stdlib.ModuleFw;
+import org.fw.base.Type;
+import org.fw.std.DeclaredFw;
+import org.fw.esast.expr.Lib;
+import org.fw.std.ModuleFw;
 import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
 import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 

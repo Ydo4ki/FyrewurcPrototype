@@ -1,11 +1,11 @@
 package org.fw.core.vit;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.ast.Expr;
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.VitFw;
+import org.fw.esast.extern.Expr;
+import org.fw.base.Val;
+import org.fw.std.VitFw;
 import org.fw.core.state.obj.State;
-import org.fw.lib.stdlib.expr.CompEnv;
+import org.fw.esast.expr.CompEnv;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,7 +1,10 @@
 package com.ydo4ki.fw.internal.lib.stdlib;
 
+import org.fw.base.CallFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import org.fw.core.FW;
-import org.fw.core.base.*;
+
 import org.fw.core.util.FwUtils;
 
 final class InstancerFw {

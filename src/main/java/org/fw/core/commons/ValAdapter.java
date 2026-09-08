@@ -1,7 +1,7 @@
 package org.fw.core.commons;
 
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.Val;
+import org.fw.base.Val;
 
 public interface ValAdapter {
     Val asVal();

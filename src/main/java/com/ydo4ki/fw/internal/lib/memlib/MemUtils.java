@@ -1,8 +1,8 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
-import org.fw.lib.stdlib.WrapperTypeFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
+import org.fw.std.WrapperTypeFw;
 import org.fw.core.util.bits.*;
 import com.ydo4ki.fw.internal.lib.memlib.ints.IntType;
 import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;

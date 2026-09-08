@@ -1,17 +1,17 @@
 package com.ydo4ki.fw.internal.lib.stdlib;
 
+import org.fw.base.*;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import org.fw.core.ast.Symbol;
-import org.fw.core.base.*;
+import org.fw.esast.extern.Symbol;
 import org.fw.core.state.obj.State;
-import org.fw.lib.stdlib.DeclaredFw;
-import org.fw.lib.stdlib.ModuleFw;
-import org.fw.lib.stdlib.VitFw;
-import org.fw.lib.stdlib.expr.CompEnv;
-import org.fw.lib.stdlib.expr.ExprFw;
-import org.fw.lib.stdlib.expr.Lib;
-import org.fw.lib.stdlib.expr.SyntaxResolveFw;
+import org.fw.std.DeclaredFw;
+import org.fw.std.ModuleFw;
+import org.fw.std.VitFw;
+import org.fw.esast.expr.CompEnv;
+import org.fw.esast.expr.ExprFw;
+import org.fw.esast.expr.Lib;
+import org.fw.esast.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 

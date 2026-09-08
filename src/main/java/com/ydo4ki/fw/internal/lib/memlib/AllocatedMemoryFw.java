@@ -2,10 +2,10 @@ package com.ydo4ki.fw.internal.lib.memlib;
 
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import org.fw.core.base.CallFw;
-import org.fw.core.base.SymbolFw;
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.base.CallFw;
+import org.fw.base.SymbolFw;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import com.ydo4ki.fw.internal.lib.memlib.obj.AllocatedMemoryObj;
 import com.ydo4ki.fw.internal.lib.jlib.data.JIntFw;
 import org.fw.core.state.obj.State;

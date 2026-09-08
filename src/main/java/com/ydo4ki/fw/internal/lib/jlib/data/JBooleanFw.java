@@ -1,7 +1,7 @@
 package com.ydo4ki.fw.internal.lib.jlib.data;
 
-import org.fw.core.base.Type;
-import org.fw.core.base.Val;
+import org.fw.base.Type;
+import org.fw.base.Val;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JClassFw;
 
 public final class JBooleanFw {
