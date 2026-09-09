@@ -3,12 +3,7 @@ package org.fw.std;
 import org.fw.base.*;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.ExprList;
-import com.ydo4ki.esast.Symbol;
 import com.ydo4ki.fw.internal.lib.ConstraintFw;
-import org.fw.esast.expr.CompEnv;
 import org.fw.core.util.FwUtils;
 
 import java.util.Objects;
@@ -135,9 +130,9 @@ public final class ChainLinkFw {
             return parent;
         }
 
-        public Expr toExpr(CompEnv toExpr) {
-            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), toExpr.toExpr(primary), toExpr.toExpr(parent));
-        }
+//        public Expr toExpr(CompEnv toExpr) {
+//            return ExprList.of(BracketsTypes.round, Symbol.of("chain-link"), toExpr.toExpr(primary), toExpr.toExpr(parent));
+//        }
 
         @Override
         public boolean equals(Object o) {

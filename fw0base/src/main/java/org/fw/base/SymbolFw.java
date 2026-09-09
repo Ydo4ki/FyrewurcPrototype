@@ -9,5 +9,9 @@ public final class SymbolFw {
         return null; // ы
     }).asType();
 
+    public static String unwrap(Val arg) {
+        return arg._UNPACK_().toString();
+    }
+
     // a perfect type, just as usual
 }

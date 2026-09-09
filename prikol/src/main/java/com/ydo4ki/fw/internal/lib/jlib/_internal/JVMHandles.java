@@ -5,10 +5,10 @@ import org.fw.core.FW;
 import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.std.DeclaredFw;
-import org.fw.std.ModuleFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
+import org.fw.std.ModuleFw;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;

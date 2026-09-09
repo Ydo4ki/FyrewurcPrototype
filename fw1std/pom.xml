@@ -27,6 +27,7 @@
             <groupId>com.ydo4ki</groupId>
             <artifactId>ESAST</artifactId>
             <version>1.0.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

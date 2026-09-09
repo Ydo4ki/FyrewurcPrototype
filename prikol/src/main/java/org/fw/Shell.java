@@ -15,10 +15,11 @@ import com.ydo4ki.esast.lexer.TokenOutput;
 import org.fw.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
+import org.fw.esast.expr.forstd.ModuleLib;
 import org.fw.esast.util.FwUtils3;
 import org.fw.std.DeclaredFw;
-import org.fw.std.ModuleFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
+import org.fw.std.ModuleFw;
 import org.fw.std.dvec.DVecFw;
 import org.fw.esast.expr.CompEnv;
 import org.fw.esast.expr.ExprFw;
@@ -39,7 +40,7 @@ public final class Shell {
                 StdLib.lib.exports(),
                 MemLib.lib.exports(),
                 DeviceLib.lib.exports(),
-                ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                ModuleLib.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("bufr"), Val._NEW_INSTANCE_(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
                         DeclaredFw.declared(symbol("parse-placeholder"), FW.lambda_native(arg -> {
@@ -67,7 +68,7 @@ public final class Shell {
                 compEnv.asValue()
         ));
 
-        Val sysoperations = ModuleFw.ModuleCEnvFw.compEnv((Val) FwUtils3.getOperation(FW.class, "sysoperations.fw", internalCompEnv, false).apply(state));
+        Val sysoperations = ModuleLib.ModuleCEnvFw.compEnv((Val) FwUtils3.getOperation(FW.class, "sysoperations.fw", internalCompEnv, false).apply(state));
 
         compEnv = CompEnv.of(CompEnv.compEnv(
                 compEnv.asValue(),

@@ -6,17 +6,10 @@ import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.core.FW;
 
-import org.fw.core.abstrait.Value;
 import org.fw.std.dvec.DVecFw;
 import org.fw.core.util.FwUtils;
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.ExprList;
-import org.fw.esast.expr.CompEnv;
-import org.fw.esast.expr.ExprFw;
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.List;
 
 import static org.fw.core.FW.symbol;
 
@@ -60,21 +53,7 @@ public final class EnumFw {
         return resultingType;
     }
 
-    public static Val toExpr(Val arg, CompEnv toExpr) {
-        EnumFw.Enum value = arg._UNPACK_();
-        List<Expr> finElements = new ArrayList<>();
-        Value value2 = EnumFw.enumeration.asVal();
-        finElements.add(toExpr.toExpr(value2));
-        List<Expr> elements = new ArrayList<>();
-        for (Val val : value.values()) {
-            Value value1 = (Val) val._UNPACK_();
-            elements.add(toExpr.toExpr(value1));
-        }
-        finElements.add(ExprList.of(BracketsTypes.square, elements));
-        return ExprFw.wrap(ExprList.of(BracketsTypes.round, finElements));
-    }
-
-    private static final class Enum {
+    public static final class Enum {
         private final Val[] values;
         private final Object[] payloads;
         private final int hash;

@@ -10,6 +10,8 @@ import org.fw.core.state.obj.AtomObj;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
 
+import java.util.Objects;
+
 public abstract class Operation implements ValAdapter {
     // a Val symbolizing successful completion of the operation
     // basically the same as the old 'unspecified'
@@ -39,7 +41,7 @@ public abstract class Operation implements ValAdapter {
         if (vit instanceof VitInvoke) {
             Vit v = ((VitInvoke) vit).operation();
             if (v.isConst() && v.isPure()) {
-                return OperationFw.unwrap(v.eval());
+                return Objects.requireNonNull(OperationFw.unwrap(v.eval()), "Not an operation: " + v.eval());
             }
         }
         return new VitOperation(vit, rtEnv);

@@ -5,14 +5,7 @@ import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.core.FW;
 
-import org.fw.core.abstrait.Value;
-import org.fw.esast.expr.CompEnv;
-import org.fw.esast.expr.ExprFw;
-import org.fw.esast.expr.Lib;
-import org.fw.esast.expr.SyntaxResolveFw;
 import org.fw.core.util.FwUtils;
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.ExprList;
 
 import static org.fw.core.FW.symbol;
 
@@ -39,25 +32,6 @@ public final class BoxFw {
         return null;
     }).asType();
 
-    public static final CompEnv box2exprCenv = CompEnv.of(FW.lambda_native((arg) -> {
-        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
-
-            arg = (Val) arg.call(FW.symbol("passing"));
-
-            Type type = arg.getType();
-            if (type.equals(boxType)) {
-                Value value = boxType.asVal();
-                return ExprFw.wrap(ExprList.of(BracketsTypes.round, compEnv.toExpr(value), compEnv.toExpr(unbox(arg))));
-            } else if (type.asVal().getType().equals(boxType)) {
-                Value value = type.asVal();
-                return ExprFw.wrap(ExprList.of(BracketsTypes.round, compEnv.toExpr(value), compEnv.toExpr(unbox(arg))));
-            }
-            return null;
-        }
-        return null;
-    }));
-
     // the only operation that doesn't need context xd
     public static Val unbox(Val arg) {
         return arg._UNPACK_();
@@ -69,9 +43,4 @@ public final class BoxFw {
         return ((Val) val1.call(key)).asType();
     }
 
-    public static final Lib lib = Lib.of(ModuleFw.module(
-                    DeclaredFw.declared(symbol("BoxType"), boxType)
-            ),
-            box2exprCenv.asValue()
-    );
 }

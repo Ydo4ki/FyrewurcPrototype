@@ -20,9 +20,10 @@
     <dependencies>
         <dependency>
             <groupId>com.ydo4ki</groupId>
-            <artifactId>Fyrewurc-Base</artifactId>
+            <artifactId>Fyrewurc-ESAST</artifactId>
             <version>0.0.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.ydo4ki</groupId>
             <artifactId>Fyrewurc-Std</artifactId>
@@ -32,13 +33,10 @@
         </dependency>
         <dependency>
             <groupId>com.ydo4ki</groupId>
-            <artifactId>ESAST</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ydo4ki</groupId>
-            <artifactId>Fyrewurc-Std</artifactId>
+            <artifactId>Fyrewurc-ESAST</artifactId>
             <version>0.0.1</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

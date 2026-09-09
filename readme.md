@@ -2,6 +2,8 @@
 
 A prototype implementation of the Fyrewurc programming language and evaluation model.
 
+Which is already the most overengineered programming language ever despite not even being a halfway done.
+
 The language description is still work in progress so you probably have no idea what are we talking about.
 
 The Fyrewurc google doc will be published when it's good enough

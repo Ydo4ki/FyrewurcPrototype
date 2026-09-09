@@ -13,14 +13,15 @@ import com.ydo4ki.esast.LocatedExpr;
 import com.ydo4ki.esast.lexer.ExprOutput;
 import com.ydo4ki.esast.lexer.TokenOutput;
 import org.fw.base.Val;
+import org.fw.esast.expr.forstd.ModuleLib;
 import org.fw.esast.util.FwUtils3;
 import org.fw.std.DeclaredFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
+import org.fw.std.ModuleFw;
 import org.fw.std.dvec.DVecFw;
 import org.fw.esast.expr.CompEnv;
 import org.fw.esast.expr.ExprFw;
 import org.fw.esast.expr.Lib;
-import org.fw.std.ModuleFw;
 import org.fw.esast.expr.StdLib;
 
 import java.io.BufferedReader;
@@ -39,7 +40,7 @@ public final class DeviceLib {
         CompEnv compEnv = CompEnv.of(CompEnv.compEnv(
                 StdLib.lib.exports(),
                 MemLib.lib.exports(),
-                ModuleFw.ModuleCEnvFw.compEnv(ModuleFw.module(
+                ModuleLib.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("bufr"), Val._NEW_INSTANCE_(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
                         DeclaredFw.declared(symbol("parse-placeholder"), FW.lambda_native(arg -> {

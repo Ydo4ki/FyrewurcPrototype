@@ -14,8 +14,8 @@ import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
 import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 import org.fw.core.util.FwUtils;
 import org.fw.std.DeclaredFw;
-import org.fw.std.ModuleFw;
 import org.fw.base.TypePayloadInfo;
+import org.fw.std.ModuleFw;
 
 import java.math.BigInteger;
 import java.util.Arrays;
