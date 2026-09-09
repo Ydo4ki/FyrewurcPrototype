@@ -120,7 +120,7 @@ public final class JVMHandles {
     public static Object junwrap(Val val) {
         Type type = val.getType();
         if (type == JOopFw.jOop) return val._UNPACK_();
-        if (type == JBooleanFw.jboolean) return (Boolean) val._UNPACK_();
+        if (type == JBooleanFw.jboolean) return val._UNPACK_();
         if (type == JByteFw.jbyte) return JByteFw.unwrap(val);
         if (type == JCharFw.jchar) return (char)(short)JCharFw.unwrap(val);
         if (type == JShortFw.jshort) return JShortFw.unwrap(val);

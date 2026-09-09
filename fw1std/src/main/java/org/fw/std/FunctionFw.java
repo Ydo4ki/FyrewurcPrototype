@@ -68,7 +68,7 @@ public final class FunctionFw {
 
     private static Val builderWrapper(Val builder) {
         return FW.lambda_native((arg) -> {
-            Val ret = (Val) builder.call((Value) arg);
+            Val ret = (Val) builder.call(arg);
             if (ret.getType().equals(builder.getType()))
                 return builderWrapper(ret);
             if (ret.getType() != function_struct)

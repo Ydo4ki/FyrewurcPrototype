@@ -84,7 +84,7 @@ public final class JByteFw {
     }
 
     public static Byte unwrap(Val val) {
-        return (Byte) val._UNPACK_();
+        return val._UNPACK_();
     }
 }
 

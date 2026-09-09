@@ -28,7 +28,7 @@ public final class OperationLib {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -39,7 +39,7 @@ public final class OperationLib {
 
 
                         Val val1 = ((Val) exprVal.call(DIntFw.dint(1)));
-                        Val val = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val1), CompEnv.of(compEnv)));
+                        Val val = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val1), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(val.getType()))
                             return null;
 
@@ -50,11 +50,11 @@ public final class OperationLib {
                             return VitErrorFw.rrror(expr, "3 elements expected");
 
                         Val val1 = ((Val) exprVal.call(DIntFw.dint(1)));
-                        Val condition = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val1), CompEnv.of(compEnv)));
+                        Val condition = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val1), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(condition.getType()))
                             return condition;
                         Val val = ((Val) exprVal.call(DIntFw.dint(2)));
-                        Val body = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                        Val body = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(body.getType()))
                             return body;
 
@@ -69,16 +69,16 @@ public final class OperationLib {
                             return null;
 
                         Val val3 = ((Val) exprVal.call(DIntFw.dint(1)));
-                        Val condition = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val3), CompEnv.of(compEnv)));
+                        Val condition = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val3), CompEnv.of(compEnv)));
                         Val val2 = ((Val) exprVal.call(DIntFw.dint(2)));
-                        Val ifTrue = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val2), CompEnv.of(compEnv)));
+                        Val ifTrue = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val2), CompEnv.of(compEnv)));
                         Val val1 = ((Val) exprVal.call(DIntFw.dint(3)));
-                        Expr ELSE = (Expr) ExprFw.unwrap(val1);
+                        Expr ELSE = ExprFw.unwrap(val1);
                         if (!ELSE.toString().equals("else"))
                             return null;
 
                         Val val = ((Val) exprVal.call(DIntFw.dint(4)));
-                        Val ifFalse = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                        Val ifFalse = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
 
                         Vit ret = Vit.invoke(Vit.val(IfOperation._If)
                                 .call(Vit.call(OperationLibFw._VitOperation, condition).call(Vit.var))

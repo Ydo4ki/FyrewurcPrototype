@@ -120,7 +120,7 @@ public final class JClassFw {
                 case "is-assignable-from": {
                     return FW.lambda_native(b -> {
                         if (b.getType() != JClassFw.jClass) return null;
-                        return BoolFw.wrap(cls.isAssignableFrom((Class) b._UNPACK_()));
+                        return BoolFw.wrap(cls.isAssignableFrom(b._UNPACK_()));
                     });
                 }
                 case "Payload": {

@@ -22,8 +22,8 @@ import static org.fw.core.vit.Vit.var;
 public final class DIntLib {
     public static final CompEnv dint2exprCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = (Val) (Val) arg.get("passing");
-            Value compEnv = (Val) arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Value compEnv = arg.get("chain");
             if (val.getType() == DIntFw.dint) {
                 return ExprFw.wrap(Symbol.of(val._UNPACK_().toString()));
             }
@@ -46,7 +46,7 @@ public final class DIntLib {
 
         static {
             Vit parseArg = val(FW.lambda_native("parseNum", (arg1) -> {
-                return Vit.val(DIntFw.dint.asVal()).call(symbol("parse")).call((Val) ExprFw.symbolToString.call(arg1))
+                return Vit.val(DIntFw.dint.asVal()).call(symbol("parse")).call(ExprFw.symbolToString.call(arg1))
                         .eval();
             })).call(var.call(symbol("arg")).call(symbol("expr")));
             // what the heck is this

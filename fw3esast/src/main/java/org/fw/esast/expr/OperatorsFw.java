@@ -17,9 +17,9 @@ public final class OperatorsFw {
 
     public static final Val exports = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
-            Val compEnv = (Val) (Val) arg.call(FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -57,11 +57,11 @@ public final class OperatorsFw {
                                 return null;
 
                             for (int i = 1; i < isize; i++) {
-                                Val val = ((Val) (Val) exprVal.call(DIntFw.dint(i)));
-                                Val term = (Val) (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                                Val val = ((Val) exprVal.call(DIntFw.dint(i)));
+                                Val term = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                                 if (!VitFw.isVit(term.getType()))
                                     return null;
-                                if (vit == null) vit = (Vit) term._UNPACK_();
+                                if (vit == null) vit = term._UNPACK_();
                                 else vit = vit.call(symbol(name)).call((Vit) term._UNPACK_());
                             }
                             return VitFw.wrap(vit);
@@ -73,8 +73,8 @@ public final class OperatorsFw {
                             if (isize != 2)
                                 return null;
 
-                            Val val = ((Val) (Val) exprVal.call(DIntFw.dint(1)));
-                            Val term = (Val) (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                            Val val = ((Val) exprVal.call(DIntFw.dint(1)));
+                            Val term = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                             if (!VitFw.isVit(term.getType()))
                                 return null;
                             return VitFw.wrap(((Vit) term._UNPACK_()).call(symbol(name)));

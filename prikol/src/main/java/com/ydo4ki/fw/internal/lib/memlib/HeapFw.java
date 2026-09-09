@@ -24,7 +24,7 @@ public final class HeapFw {
                 String sym = arg._UNPACK_().toString();
                 switch (sym) {
                     case "allocator":
-                        return Val._NEW_INSTANCE_(MemAllocatorFw.heapAllocator, (HeapObj) instance._UNPACK_());
+                        return Val._NEW_INSTANCE_(MemAllocatorFw.heapAllocator, instance._UNPACK_());
                 }
             }
         }

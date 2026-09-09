@@ -40,7 +40,7 @@ public final class SyntaxResolveFw {
                 if (arg.equalsSymbol("builder")) {
                     return FW.lambda_native((passingArg) -> {
                         Val val = ((Val) ConstraintFw.isSpecified.call(symbol("check")));
-                        if ((Val) val.call(passingArg) != BoolFw._true)
+                        if (val.call(passingArg) != BoolFw._true)
                             return null;
 
                         return FW.lambda_native((chain) -> {
@@ -55,7 +55,7 @@ public final class SyntaxResolveFw {
                 if (arg.equalsSymbol("builder")) {
                     return FW.lambda_native((passingArg) -> {
                         Val val = ((Val) ConstraintFw.isSpecified.call(symbol("check")));
-                        if ((Val) val.call(passingArg) != BoolFw._true)
+                        if (val.call(passingArg) != BoolFw._true)
                             return null;
 
                         return FW.lambda_native((chain) -> {

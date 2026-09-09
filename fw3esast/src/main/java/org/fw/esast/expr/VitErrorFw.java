@@ -14,7 +14,7 @@ import static org.fw.core.FW.symbol;
 public final class VitErrorFw {
     public static final Type vitError = StructFw.struct(
             DeclarationFw.declaration(symbol("expr"), ExprFw.isExpr),
-            DeclarationFw.declaration(symbol("message"), (Val) ConstraintFw.toConstraint(StrFw.str))
+            DeclarationFw.declaration(symbol("message"), ConstraintFw.toConstraint(StrFw.str))
     );
 
     public static Value rrror(Expr expr, String message) {
@@ -23,8 +23,8 @@ public final class VitErrorFw {
 
     public static final Val cantResolveAnythingCenv = FW.lambda_native("cantResolveAnythingCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Value exprVal = (Val) arg.get("expr");
-            Value compEnv = (Val) arg.get("comp-env");
+            Value exprVal = arg.get("expr");
+            Value compEnv = arg.get("comp-env");
             return vitError.get("builder").call(exprVal).call(StrFw.str("Can't resolve"));
         }
         return null;

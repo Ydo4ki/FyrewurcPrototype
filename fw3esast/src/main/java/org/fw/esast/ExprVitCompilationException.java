@@ -30,7 +30,7 @@ public class ExprVitCompilationException extends FyrewurcException {
     }
 
     public ExprVitCompilationException(Val value, CompEnv toExpr) {
-        super(toExpr.toExpr((Value) value).toString());
+        super(toExpr.toExpr(value).toString());
         this.value = value;
         this.string = null;
     }

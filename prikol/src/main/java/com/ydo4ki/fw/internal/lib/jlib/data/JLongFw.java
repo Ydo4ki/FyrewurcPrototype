@@ -69,7 +69,7 @@ public final class JLongFw {
     }
 
     public static Long unwrap(Val val) {
-        return (Long) val._UNPACK_();
+        return val._UNPACK_();
     }
 }
 

@@ -45,7 +45,7 @@ public final class JFloatFw {
     }
 
     public static Float unwrap(Val val) {
-        return Float.intBitsToFloat((Integer) val._UNPACK_());
+        return Float.intBitsToFloat(val._UNPACK_());
     }
 }
 

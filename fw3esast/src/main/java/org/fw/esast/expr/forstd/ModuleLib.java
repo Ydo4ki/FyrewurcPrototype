@@ -27,8 +27,8 @@ import static org.fw.core.FW.symbol;
 public final class ModuleLib {
     public static final CompEnv module2exprCenv = CompEnv.of(FW.lambda_native("module2exprCenv",(arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
-            arg = (Val) (Val) arg.get("passing");
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            arg = (Val) arg.get("passing");
 
             Type type = arg.getType();
             if (type.equals(ModuleFw.module)) {
@@ -40,9 +40,9 @@ public final class ModuleLib {
     }));
     public static final Val directivesCenv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) arg.call((Value) FW.symbol("expr"));
-            Val compEnv = (Val) arg.call((Value) FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -50,8 +50,8 @@ public final class ModuleLib {
                     case "module": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Expr expr1 = ((Val) exprVal.call((Value) DIntFw.dint(i)))._UNPACK_();
-                            Val val = (Val) compEnv.call((Value) CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
+                            Expr expr1 = ((Val) exprVal.call(DIntFw.dint(i)))._UNPACK_();
+                            Val val = (Val) compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.getType()))
                                 return val;
 
@@ -98,17 +98,17 @@ public final class ModuleLib {
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv)) {
                 Val instance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);
-                Val payload = (Val) instance._UNPACK_();
+                Val payload = instance._UNPACK_();
                 if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
                     Val exprVal = (Val) arg.call(FW.symbol("expr"));
                     Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
-                    Expr expr = (Expr) ExprFw.unwrap(exprVal);
+                    Expr expr = ExprFw.unwrap(exprVal);
                     if (expr instanceof Symbol) {
                         if (payload.getType() == ModuleFw.module) {
                             Val val = ModuleFw.module.asVal();
                             Val val1 = ((Val) val.call(symbol("contains-key")));
                             Val val2 = ((Val) val1.call(payload));
-                            if ((Val) val2.call(exprVal) == BoolFw._true) {
+                            if (val2.call(exprVal) == BoolFw._true) {
                                 Val value = (Val) payload.call(exprVal);
                                 return VitFw.wrap(Vit.val(value));
                             }
@@ -131,7 +131,7 @@ public final class ModuleLib {
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnvToExpr)) {
                 Val instance = (Val) CallFw.getVal(arg);
                 arg = (Val) CallFw.getArg(arg);
-                Val payload = (Val) instance._UNPACK_();
+                Val payload = instance._UNPACK_();
                 if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
                     Val val = (Val) arg.call(FW.symbol("passing"));
                     Val compEnv = (Val) arg.call(FW.symbol("chain"));
@@ -139,12 +139,12 @@ public final class ModuleLib {
                     if (payload.getType() == ModuleFw.module) {
                         Val val3 = ModuleFw.module.asVal();
                         Val val2 = (Val) val3.call(FW.symbol("contains-key"));
-                        Val val1 = (Val) val2.call((Value) payload);
-                        if ((Val) val1.call((Value) val) == BoolFw._true) {
-                            return (Val) payload.call((Value) val);
+                        Val val1 = (Val) val2.call(payload);
+                        if (val1.call(val) == BoolFw._true) {
+                            return (Val) payload.call(val);
                         }
                     }
-                    Val value = (Val) payload.call((Value) val);
+                    Val value = (Val) payload.call(val);
                     if (!ExprFw.isExpr(value))
                         return null;
 //                    if (Unspecified.isUnspecified(value))
@@ -157,11 +157,11 @@ public final class ModuleLib {
 
         public static Value compEnv(Value module) {
             Val val = moduleCompEnv.asVal();
-            return ((Val) val.get("construct")).call(module);
+            return val.get("construct").call(module);
         }
         public static Value toExprCompEnv(Value module) {
             Val val = moduleCompEnvToExpr.asVal();
-            return ((Val) val.get("construct")).call(module);
+            return val.get("construct").call(module);
         }
         public static Val compEnv(Val module) {
             return Val._NEW_INSTANCE_(moduleCompEnv, module);

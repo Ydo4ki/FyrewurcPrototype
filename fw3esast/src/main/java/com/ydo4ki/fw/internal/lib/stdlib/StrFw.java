@@ -87,7 +87,7 @@ public final class StrFw {
 
         static {
             Vit parseArg = val(FW.lambda_native("parseNum", (arg1) -> {
-                Value str1 = (Val) ExprFw.symbolToString.call(arg1);
+                Value str1 = ExprFw.symbolToString.call(arg1);
                 if (!str1.getTypeValue().impliesEquality(StrFw.str.asVal()))
                     return null;
 

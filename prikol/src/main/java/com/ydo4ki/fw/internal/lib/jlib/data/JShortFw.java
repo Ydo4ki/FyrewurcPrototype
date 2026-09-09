@@ -84,7 +84,7 @@ public final class JShortFw {
     }
 
     public static Short unwrap(Val val) {
-        return (Short) val._UNPACK_();
+        return val._UNPACK_();
     }
 }
 

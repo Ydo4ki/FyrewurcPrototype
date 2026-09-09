@@ -98,9 +98,9 @@ public final class ExprFw {
                             if (!isExpr(value))
                                 return null;
 
-                            actualValues[i] = (Expr) unwrap(value);
+                            actualValues[i] = unwrap(value);
                         }
-                        ExprList result = ExprList.of((BracketsType) bt._UNPACK_(), actualValues); // todo: add other bracket types
+                        ExprList result = ExprList.of(bt._UNPACK_(), actualValues); // todo: add other bracket types
 
                         return ExprFw.wrap(result);
                     });
@@ -164,9 +164,9 @@ public final class ExprFw {
 
     public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
-            Value compEnv = (Val) arg.call(FW.symbol("comp-env"));
-            Expr expr = (Expr) unwrap(exprVal);
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Value compEnv = arg.call(FW.symbol("comp-env"));
+            Expr expr = unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -174,8 +174,8 @@ public final class ExprFw {
                     case "symbol": {
                         if (isize != 2) return null;
 
-                        Val val = ((Val) (Val) exprVal.call(DIntFw.dint(1)));
-                        Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) unwrap(val), CompEnv.of(compEnv)));
+                        Val val = ((Val) exprVal.call(DIntFw.dint(1)));
+                        Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve(unwrap(val), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
@@ -216,8 +216,8 @@ public final class ExprFw {
 
     public static final CompEnv esast2exprCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = (Val) (Val) arg.get("passing");
-            Value compEnv = (Val) arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Value compEnv = arg.get("chain");
 
             Type type = val.getType();
             if (type.equals(exprList)) {
@@ -256,8 +256,8 @@ public final class ExprFw {
     );
 
     public static Expr unwrap(Val v) {
-        if (v.getType() == exprList) return (ExprList) v._UNPACK_();
-        if (v.getType() == SymbolFw.symbol) return Symbol.of((String) v._UNPACK_());
+        if (v.getType() == exprList) return v._UNPACK_();
+        if (v.getType() == SymbolFw.symbol) return Symbol.of(v._UNPACK_());
         return null;
     }
 }

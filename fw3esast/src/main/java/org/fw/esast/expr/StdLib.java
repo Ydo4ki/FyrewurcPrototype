@@ -18,22 +18,22 @@ import org.fw.esast.util.FwUtils3;
 public final class StdLib {
     private static final CompEnv somethingToExpr = CompEnv.of(FW.lambda_native(arg -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = (Val) (Val) arg.get("passing");
-            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            Val val = (Val) arg.get("passing");
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
             if (Unspecified.isUnspecified(val)) {
                 Value value = Unspecified.getArg(val);
                 Value value1 = Unspecified.getVal(val);
                 return ExprFw.wrap(ExprList.of(BracketsTypes.braces,
                         Symbol.of("unspecified"),
-                        (Expr) compEnv.toExpr(value1),
-                        (Expr) compEnv.toExpr(value))
+                        compEnv.toExpr(value1),
+                        compEnv.toExpr(value))
                 );
             }
             if (val.asType() instanceof Type.TelephonistType) {
                 return ExprFw.wrap(Symbol.of(val.asType().toString()));
             }
             Value value = val.getType().asVal();
-            return ExprFw.wrap(ExprList.of(BracketsTypes.braces, (Expr) compEnv.toExpr(value)));
+            return ExprFw.wrap(ExprList.of(BracketsTypes.braces, compEnv.toExpr(value)));
         }
         return null;
     }));

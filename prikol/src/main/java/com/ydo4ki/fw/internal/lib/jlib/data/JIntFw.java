@@ -57,7 +57,7 @@ public final class JIntFw {
     }
 
     public static Integer unwrap(Val val) {
-        return (Integer) val._UNPACK_();
+        return val._UNPACK_();
     }
 }
 

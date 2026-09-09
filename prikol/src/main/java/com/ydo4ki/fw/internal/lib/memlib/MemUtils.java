@@ -40,7 +40,7 @@ public final class MemUtils {
             if (obj instanceof Short) return (Short) obj;
             if (obj instanceof Integer) return (Integer) obj;
             if (obj instanceof Long) return (Long) obj;
-            if (obj instanceof long[]) return new BigInteger(MemUtils.toBytes((long[]) val._UNPACK_()));
+            if (obj instanceof long[]) return new BigInteger(MemUtils.toBytes(val._UNPACK_()));
             if (obj instanceof byte[]) return new BigInteger((byte[]) val._UNPACK_());
             throw new IllegalArgumentException(val._UNPACK_().toString());
         }

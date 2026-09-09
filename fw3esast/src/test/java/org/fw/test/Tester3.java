@@ -52,7 +52,7 @@ public class Tester3 extends Tester {
                         return condition;
                     Vit vitOperation = Vit.call(OperationLibFw._VitOperation, condition).call(Vit.var);
                     Vit assertOperation = Vit.call(FW.lambda_native(arg1 ->
-                            new AssertOperation((Operation)arg1._UNPACK_()).asVal()), vitOperation);
+                            new AssertOperation(arg1._UNPACK_()).asVal()), vitOperation);
                     return VitFw.wrap(Vit.invoke(assertOperation));
                 }
             }

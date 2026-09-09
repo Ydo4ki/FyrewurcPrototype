@@ -114,7 +114,7 @@ public final class StructFw {
 
             Val constraint = DeclarationFw.getConstraint(payload.struct.fields[payload.progress.length]);
             Val val = ((Val) constraint.call(symbol("check")));
-            if ((Val) val.call(arg) != BoolFw._true) {
+            if (val.call(arg) != BoolFw._true) {
                 return null;
             }
 

@@ -161,7 +161,7 @@ public final class Val implements ValAdapter, TypedValue {
         if (_asType instanceof Type.TelephonistType) return _asType.toString();
         if (value instanceof Object[]) return Arrays.toString((Object[]) value);
         if (type instanceof Type.TelephonistType) {
-            return ((Type.TelephonistType.Telephonist)value).toString();
+            return value.toString();
         }
         return "Val[" +
                 "type=" + type.asVal() + ", " +

@@ -19,7 +19,7 @@ import static org.fw.core.FW.symbol;
 public final class BoxLib {
     public static final CompEnv box2exprCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
 
             arg = (Val) arg.call(FW.symbol("passing"));
 

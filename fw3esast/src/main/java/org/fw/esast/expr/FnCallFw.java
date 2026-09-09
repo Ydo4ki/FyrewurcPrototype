@@ -28,7 +28,7 @@ public final class FnCallFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -41,7 +41,7 @@ public final class FnCallFw {
                 Vit varValuesV = Vit.val(DVecBuilderFw.emptyBuilder);
                 for (int i = 1; i < isize; i++) {
                     Val val = ((Val) exprVal.call(DIntFw.dint(i)));
-                    Expr eee = (Expr) ExprFw.unwrap(val);
+                    Expr eee = ExprFw.unwrap(val);
                     varValuesV = varValuesV.call(VitLib.unwrap((Val) compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv))), eee));
                 }
                 varValuesV = Vit.val(DVecBuilderFw.dvecbf).call(varValuesV);

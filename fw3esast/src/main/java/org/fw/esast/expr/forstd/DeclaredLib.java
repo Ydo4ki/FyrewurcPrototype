@@ -23,8 +23,8 @@ import static org.fw.core.FW.symbol;
 public final class DeclaredLib {
     public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native("DeclaredFw.directivesCenv", (arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
-            arg = (Val) (Val) arg.get("passing");
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
+            arg = (Val) arg.get("passing");
 
             Type type = arg.getType();
             if (type.equals(DeclaredFw.declared)) {
@@ -32,8 +32,8 @@ public final class DeclaredLib {
             }
             return null;
         } else if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = (Val) (Val) arg.get("passing");
-            Value compEnv = (Val) arg.get("chain");
+            Val val = (Val) arg.get("passing");
+            Value compEnv = arg.get("chain");
             if (val == DeclaredFw.declared.asVal()) {
                 return FW.lambda_native(c -> {
                     if (c.getType() != DVecFw.dVec)
@@ -42,7 +42,7 @@ public final class DeclaredLib {
                     if (args.length > 2)
                         return null;
                     Val val1 = DeclaredFw.declared.asVal();
-                    Value b = (Val) val1.get("builder");
+                    Value b = val1.get("builder");
                     for (Val arg1 : args) {
                         b = b.call(arg1);
                     }
@@ -50,9 +50,9 @@ public final class DeclaredLib {
                 });
             }
         }else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) (Val) arg.call(FW.symbol("expr"));
-            Val compEnv = (Val) (Val) arg.call(FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -61,12 +61,12 @@ public final class DeclaredLib {
                         if (isize != 3)
                             return VitErrorFw.rrror(f, "3 elements expected");
 
-                        Val name = (Val) (Val) exprVal.call(DIntFw.dint(1));
+                        Val name = (Val) exprVal.call(DIntFw.dint(1));
                         if (!name.getType().equals(SymbolFw.symbol))
                             return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
-                        Val val = ((Val) (Val) exprVal.call(DIntFw.dint(2)));
-                        Val value = (Val) (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                        Val val = ((Val) exprVal.call(DIntFw.dint(2)));
+                        Val value = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 
@@ -86,9 +86,9 @@ public final class DeclaredLib {
     );
 
     public static Expr toExpr(Val arg, CompEnv toExpr) {
-        DeclaredFw.Declared self = ((DeclaredFw.Declared) arg._UNPACK_());
+        DeclaredFw.Declared self = arg._UNPACK_();
         if (self.key().getType() == SymbolFw.symbol) {
-            return ExprList.of(BracketsTypes.round, Symbol.of(":"), (Symbol) ExprFw.unwrap(self.key()), toExpr.toExpr(self.value()));
+            return ExprList.of(BracketsTypes.round, Symbol.of(":"), ExprFw.unwrap(self.key()), toExpr.toExpr(self.value()));
         }
         return ExprList.of(BracketsTypes.round, Symbol.of("Declared"), toExpr.toExpr(self.key()), toExpr.toExpr(self.value()));
     }

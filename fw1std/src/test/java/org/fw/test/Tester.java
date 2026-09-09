@@ -58,7 +58,7 @@ public class Tester {
                     } else if (val == BoolFw._false) {
                         throw new AssertionError(expression);
                     } else if (val != Operation.unit && val != BoolFw._true)
-                        System.out.println(val.toString());
+                        System.out.println(val);
 //                        if (debug) System.out.println(val);
                 }
                 return val;

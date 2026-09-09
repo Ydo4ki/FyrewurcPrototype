@@ -20,7 +20,7 @@ public final class EnumLib {
         finElements.add(toExpr.toExpr(value2));
         List<Expr> elements = new ArrayList<>();
         for (Val val : value.values()) {
-            Value value1 = (Val) val._UNPACK_();
+            Value value1 = val._UNPACK_();
             elements.add(toExpr.toExpr(value1));
         }
         finElements.add(ExprList.of(BracketsTypes.square, elements));

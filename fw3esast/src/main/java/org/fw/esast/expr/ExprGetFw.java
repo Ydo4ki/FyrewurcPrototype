@@ -39,7 +39,7 @@ public final class ExprGetFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof Symbol) {
                 // handling value.x
                 return handleDot((Symbol) expr, CompEnv.of(compEnv));
@@ -54,7 +54,7 @@ public final class ExprGetFw {
                     }
 
                     Val val = ((Val) exprVal.call(DIntFw.dint(1)));
-                    Val retVitV = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                    Val retVitV = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(retVitV.getType()))
                         return retVitV; // compile error idk
                     Vit retVit = retVitV._UNPACK_();

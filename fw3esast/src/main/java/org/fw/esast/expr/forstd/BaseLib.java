@@ -32,8 +32,8 @@ public final class BaseLib {
                     if (isize != 2)
                         return null;
 
-                    Val val = ((Val) (Val) exprVal.call(DIntFw.dint(1)));
-                    Val operand = (Val) (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                    Val val = ((Val) exprVal.call(DIntFw.dint(1)));
+                    Val operand = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(operand.getType()))
                         return operand;
 
@@ -42,8 +42,8 @@ public final class BaseLib {
                     if (isize != 2)
                         return null;
 
-                    Val val = ((Val) (Val) exprVal.call(DIntFw.dint(1)));
-                    Val operand = (Val) (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                    Val val = ((Val) exprVal.call(DIntFw.dint(1)));
+                    Val operand = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(operand.getType()))
                         return operand;
 

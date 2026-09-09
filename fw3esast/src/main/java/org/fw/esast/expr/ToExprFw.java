@@ -23,7 +23,7 @@ public final class ToExprFw {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
             Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -32,7 +32,7 @@ public final class ToExprFw {
                         return null;
 
                     Val val = ((Val) exprVal.call(DIntFw.dint(1)));
-                    Val condition = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                    Val condition = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                     if (!VitFw.isVit(condition.getType()))
                         return null;
                     Vit v = condition._UNPACK_();
@@ -41,7 +41,7 @@ public final class ToExprFw {
                     if (isize != 2)
                         return null;
 
-                    return VitFw.wrap(Vit.val((Val) exprVal.call(DIntFw.dint(1))));
+                    return VitFw.wrap(Vit.val(exprVal.call(DIntFw.dint(1))));
                 }
             }
         }

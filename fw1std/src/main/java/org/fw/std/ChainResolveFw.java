@@ -27,7 +27,7 @@ public final class ChainResolveFw {
             } else if (arg.equalsSymbol("builder")) {
                 return FW.lambda_native((passingArg) -> {
                     Val val = (Val) constraint.get("check");
-                    if ((Val) val.call(passingArg) != BoolFw._true)
+                    if (val.call(passingArg) != BoolFw._true)
                         return null;
 
                     return FW.lambda_native((chain) -> {

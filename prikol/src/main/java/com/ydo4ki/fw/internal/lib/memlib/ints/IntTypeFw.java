@@ -216,7 +216,7 @@ public final class IntTypeFw {
                 DeclaredFw.declared(symbol("Overflow"), Overflow.overflow)
         );
         //                    intToExpr,
-        lib = Lib.of(module, (Val) null);
+        lib = Lib.of(module, null);
     }
 }
 

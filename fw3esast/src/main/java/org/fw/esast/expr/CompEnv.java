@@ -21,7 +21,7 @@ public final class CompEnv extends AbstractValueAdapter {
     static {
         Val val = ChainLinkFw.chainLinkType.asVal();
         Val val1 = ((Val) val.call(symbol("construct")));
-        compEnv = ((Val) (Val) val1.call(ConstraintFw.isSpecified))
+        compEnv = ((Val) val1.call(ConstraintFw.isSpecified))
                 .asType();
     }
 
@@ -42,12 +42,12 @@ public final class CompEnv extends AbstractValueAdapter {
     }
 
     public Value compileV(Val expr) {
-        return asValue().call(syntaxResolve((Expr) ExprFw.unwrap(expr), this));
+        return asValue().call(syntaxResolve(ExprFw.unwrap(expr), this));
     }
 
     public Vit compile(Val expr) throws ExprVitCompilationException {
-        Value v = asValue().call(syntaxResolve((Expr) ExprFw.unwrap(expr), this));
-        return VitLib.unwrap((Val) v, (Expr) ExprFw.unwrap(expr));
+        Value v = asValue().call(syntaxResolve(ExprFw.unwrap(expr), this));
+        return VitLib.unwrap((Val) v, ExprFw.unwrap(expr));
     }
 
     public static Val syntaxResolve(Expr expr, CompEnv env) {

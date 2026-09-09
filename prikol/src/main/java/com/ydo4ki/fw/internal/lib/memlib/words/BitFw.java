@@ -12,7 +12,7 @@ public final class BitFw {
             Val instance = (Val) CallFw.getVal(arg);
             Val cArg = (Val) CallFw.getArg(arg);
 
-            boolean value = (Boolean) instance._UNPACK_();
+            boolean value = instance._UNPACK_();
             if (cArg.equalsSymbol("~")) {
                 return wrap(!value);
             } else if (cArg.equalsSymbol("&")) { // and

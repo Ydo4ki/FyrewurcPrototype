@@ -17,7 +17,7 @@ public final class OperationFw {
 
     public static Operation unwrap(Val operation) {
         if (operation.getType() == OperationFw.operation)
-            return (Operation) operation._UNPACK_();
+            return operation._UNPACK_();
         return null;
     }
 }

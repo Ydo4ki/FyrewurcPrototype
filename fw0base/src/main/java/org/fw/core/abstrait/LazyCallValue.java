@@ -16,12 +16,18 @@ public class LazyCallValue implements Value {
     }
 
     void init() {
-        if (ret == null) ret = a.call(b);
+        if (ret == null) {
+//            Value a = this.a;
+//            while (a instanceof LazyCallValue) a = ((LazyCallValue) a).a.call(((LazyCallValue) a).b);
+            ret = a.call(b);
+        }
     }
 
     @Override
     public Value call(Value value) {
-        return new LazyCallValue(this, value);
+        init();
+        return ret.call(value);
+//        return new LazyCallValue(this, value);
     }
 
     @Override
@@ -33,7 +39,8 @@ public class LazyCallValue implements Value {
 
     @Override
     public boolean impliesEquality(Val val) {
-        return asVal().impliesEquality(val);
+        if (ret instanceof Val) return ret.equals((Object)val);
+        return false;
     }
 
     @Override

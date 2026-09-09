@@ -28,7 +28,7 @@ import static org.fw.core.FW.symbol;
 public final class StructLib {
     public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = (Val) arg.get("passing");
 
             Type type = arg.getType();
@@ -71,8 +71,8 @@ public final class StructLib {
             }
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = (Val) arg.call(FW.symbol("expr"));
-            Val compEnv = (Val) arg.call((Value) FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -80,8 +80,8 @@ public final class StructLib {
                     case "struct": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Expr expr1 = ((Val) exprVal.call((Value) DIntFw.dint(i)))._UNPACK_();
-                            Val val = (Val) compEnv.call((Value) CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
+                            Expr expr1 = ((Val) exprVal.call(DIntFw.dint(i)))._UNPACK_();
+                            Val val = (Val) compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(val.getType()))
                                 return val;
 

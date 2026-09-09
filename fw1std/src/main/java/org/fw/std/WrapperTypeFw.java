@@ -24,10 +24,10 @@ public final class WrapperTypeFw {
                 Val rawPayload = Val._NEW_INSTANCE_(payloadType, instanceOfWt._UNPACK_());
                 Val val = ((Val) callsHandler.call(instanceOfWt));
                 Val val1 = ((Val) val.call(rawPayload));
-                return (Val) val1.call(arg);
+                return val1.call(arg);
             } else {
                 Val staticCallsHandler = wt.staticCallsHandler;
-                Value ret = (Val) staticCallsHandler.call(arg);
+                Value ret = staticCallsHandler.call(arg);
                 if (!Unspecified.isUnspecified(ret)) return ret;
                 if (arg.getType() == SymbolFw.symbol) {
                     String sym = arg._UNPACK_().toString();

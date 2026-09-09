@@ -32,7 +32,7 @@ public final class UseFw {
                         if (!VitFw.isVit(moduleVit.getType()))
                             return null; // could not compile module
 
-                        Vit vit = VitUtils.simplify((Vit) moduleVit._UNPACK_());
+                        Vit vit = VitUtils.simplify(moduleVit._UNPACK_());
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 
@@ -55,7 +55,7 @@ public final class UseFw {
                         if (!VitFw.isVit(cEnvVit.getType()))
                             return null; // could not compile cenv
 
-                        Vit vit = VitUtils.simplify((Vit) cEnvVit._UNPACK_());
+                        Vit vit = VitUtils.simplify(cEnvVit._UNPACK_());
                         if (!(vit instanceof VitVal))
                             return null; // this is meant to be known at compile-time
 

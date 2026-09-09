@@ -36,9 +36,8 @@ public final class ChainLinkFw {
 //                    if (Unspecified.isUnspecified(ret))
                 Val arg1 = symbol("check");
                 Val val = ((Val) typeInfo.constraint.call(arg1));
-                if ((Val) val.call(ret) != BoolFw._true) {
-                    return (Val) instance
-                                        .parentCEnv().call(cArg);
+                if (val.call(ret) != BoolFw._true) {
+                    return instance.parentCEnv().call(cArg);
                 }
 
                 return ret;
@@ -74,7 +73,7 @@ public final class ChainLinkFw {
 
     public static Value chain(Type type, Value parent, Value primary) {
         Val val = type.asVal();
-        return ((Val) val.get("builder")).call(primary).call(parent);
+        return val.get("builder").call(primary).call(parent);
     }
 
 

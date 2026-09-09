@@ -53,7 +53,7 @@ public final class DeclarationLib {
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
             Val exprVal = arg.call(FW.symbol("expr")).asVal();
             Val compEnv = arg.call(FW.symbol("comp-env")).asVal();
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -86,7 +86,7 @@ public final class DeclarationLib {
     );
 
     public static Expr toExpr(Val arg, CompEnv toExpr) {
-        DeclarationFw.Declaration self = ((DeclarationFw.Declaration) arg._UNPACK_());
+        DeclarationFw.Declaration self = arg._UNPACK_();
         if (self.key().getType() == SymbolFw.symbol)
             return ExprList.of(BracketsTypes.round, Symbol.of("="), ExprFw.unwrap(self.key()), toExpr.toExpr(self.constraint()));
         return ExprList.of(BracketsTypes.round, Symbol.of("Declaration"), toExpr.toExpr(self.key()), toExpr.toExpr(self.constraint()));

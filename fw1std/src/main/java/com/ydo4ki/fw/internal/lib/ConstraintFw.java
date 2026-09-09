@@ -45,7 +45,7 @@ public final class ConstraintFw {
     }
 
     public static Constraint unwrap0(Val constraint) {
-        return (Constraint) constraint._UNPACK_();
+        return constraint._UNPACK_();
     }
 
     public static Val toConstraint(Val val) {
@@ -59,7 +59,7 @@ public final class ConstraintFw {
     public static final Val constraintBuilder = FW.lambda_native("Constraint.constructor", (arg1) -> {
         if (!VitFw.isVit(arg1.getType()))
             return null;
-        return Val._NEW_INSTANCE_(ConstraintFw.constraint, Constraint.of((Vit) arg1._UNPACK_()));
+        return Val._NEW_INSTANCE_(ConstraintFw.constraint, Constraint.of(arg1._UNPACK_()));
     });
 
     public static final Type constraint = FW.lambda_native("Constraint", (arg) -> {

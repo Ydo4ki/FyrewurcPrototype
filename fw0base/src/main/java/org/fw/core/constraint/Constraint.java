@@ -57,11 +57,7 @@ public final class Constraint {
             return false;
         }
 
-        if (this.equals(constraint)) {
-            return true;
-        }
-
-        return false;
+        return this.equals(constraint);
     }
 
     private boolean isFree() {

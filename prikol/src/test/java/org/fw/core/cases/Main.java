@@ -113,7 +113,7 @@ public class Main {
             if (val.getType() == DeclaredFw.declared) {
                 compEnv = CompEnv.of(CompEnv.compEnv(ModuleLib.ModuleCEnvFw.compEnv(ModuleFw.module(val)), compEnv.asValue()));
             } else {
-                System.out.println(compEnv.toExpr((Value) val));
+                System.out.println(compEnv.toExpr(val));
 //                System.out.println(val);
             }
         }

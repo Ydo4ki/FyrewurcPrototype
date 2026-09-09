@@ -165,7 +165,7 @@ public final class ReifiedTypeFw {
 
             RtBuilder builder = instance._UNPACK_();
             Val val = builder.rt.asVal();
-            ReifiedType rt = (ReifiedType) val._UNPACK_();
+            ReifiedType rt = val._UNPACK_();
             if (arg.getType().equals(rt.atom_t)) {
                 Object[] na = DVecFw.arAppended(builder.data, arg._UNPACK_());
                 if (na.length == rt.size) {

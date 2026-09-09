@@ -25,7 +25,7 @@ import static org.fw.core.FW.symbol;
 public final class VitLib {
     public static final CompEnv vit2exprCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            CompEnv compEnv = CompEnv.of((Val) arg.get("chain"));
+            CompEnv compEnv = CompEnv.of(arg.get("chain"));
             arg = (Val) arg.get("passing");
 
             Type type = arg.getType();
@@ -56,9 +56,9 @@ public final class VitLib {
     }));
     public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) arg.call((Value) FW.symbol("expr"));
-            Val compEnv = (Val) arg.call((Value) FW.symbol("comp-env"));
-            Expr expr = (Expr) ExprFw.unwrap(exprVal);
+            Val exprVal = (Val) arg.call(FW.symbol("expr"));
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
                 int isize = ((ExprList) expr).size();
@@ -73,16 +73,16 @@ public final class VitLib {
                         if (isize == 1) {
                             return null;
                         }
-                        Val val1 = ((Val) exprVal.call((Value) DIntFw.dint(1)));
-                        Expr eee = (Expr) ExprFw.unwrap(val1);
-                        Val retVit = (Val) compEnv.call((Value) CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
+                        Val val1 = ((Val) exprVal.call(DIntFw.dint(1)));
+                        Expr eee = ExprFw.unwrap(val1);
+                        Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
                         for (int i = 1; i < (isize - 1); i++) {
-                            Val val = ((Val) exprVal.call((Value) DIntFw.dint(i + 1)));
-                            Expr eeeN = (Expr) ExprFw.unwrap(val);
-                            Val argNVit = (Val) compEnv.call((Value) CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv)));
+                            Val val = ((Val) exprVal.call(DIntFw.dint(i + 1)));
+                            Expr eeeN = ExprFw.unwrap(val);
+                            Val argNVit = (Val) compEnv.call(CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv)));
                             if (!VitFw.isVit(argNVit.getType()))
                                 return argNVit; // compile error idk
 
@@ -99,8 +99,8 @@ public final class VitLib {
                             return null;
                         }
 
-                        Val val = ((Val) exprVal.call((Value) DIntFw.dint(1)));
-                        Val retVit = (Val) compEnv.call((Value) CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                        Val val = ((Val) exprVal.call(DIntFw.dint(1)));
+                        Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
@@ -112,18 +112,18 @@ public final class VitLib {
                         if (isize != 2)
                             return null;
 
-                        Val val = ((Val) exprVal.call((Value) DIntFw.dint(1)));
+                        Val val = ((Val) exprVal.call(DIntFw.dint(1)));
                         return VitFw.wrap(VitUtils.simplify(Vit.val(
-                                (Val) compEnv.call((Value) CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)))
+                                compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)))
                         )));
                     }
                     case "compile-vit-fast": {
                         if (isize != 2)
                             return null;
 
-                        Val val = ((Val) exprVal.call((Value) DIntFw.dint(1)));
+                        Val val = ((Val) exprVal.call(DIntFw.dint(1)));
                         return VitFw.wrap(Vit.val(
-                                (Val) compEnv.call((Value) CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)))
+                                compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)))
                         ));
                     }
                 }

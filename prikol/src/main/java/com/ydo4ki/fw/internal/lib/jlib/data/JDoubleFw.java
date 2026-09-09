@@ -43,7 +43,7 @@ public final class JDoubleFw {
     }
 
     public static Double unwrap(Val val) {
-        return Double.longBitsToDouble((Long) val._UNPACK_());
+        return Double.longBitsToDouble(val._UNPACK_());
     }
 }
 

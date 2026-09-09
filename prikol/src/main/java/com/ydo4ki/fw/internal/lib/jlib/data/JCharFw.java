@@ -88,7 +88,7 @@ public final class JCharFw {
     }
 
     public static Short unwrap(Val val) {
-        return (Short) val._UNPACK_();
+        return val._UNPACK_();
     }
 }
 

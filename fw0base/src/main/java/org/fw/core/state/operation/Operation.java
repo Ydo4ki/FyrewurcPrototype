@@ -23,7 +23,7 @@ public abstract class Operation implements ValAdapter {
     public abstract Value apply(State state);
 
     private final Val asVal;
-    private Boolean isPure = null;
+    private final Boolean isPure = null;
 
     protected Operation() {
         this.asVal = Val._NEW_INSTANCE_(OperationFw.operation, this);
@@ -60,7 +60,7 @@ public abstract class Operation implements ValAdapter {
 //        if (isPure == null) {
 //            isPure = contract().isPure();
 //        }
-        return isPure == null ? false : true;
+        return isPure != null;
     }
 }
 
