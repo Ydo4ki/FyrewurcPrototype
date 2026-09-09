@@ -7,6 +7,7 @@ import org.fw.core.commons.ValAdapter;
 import com.ydo4ki.fw.internal.lib.ConstraintFw;
 import org.fw.std.combine.ConstFw;
 import org.fw.std.combine.MirrorFw;
+import org.fw.std.combine.RecurserFw;
 import org.fw.std.combine.SubstitutorFw;
 import org.fw.std.dvec.DVecFw;
 import org.fw.core.state.obj.LaserPointerFw;
@@ -34,6 +35,9 @@ public final class Std {
     public static final Val mirror = MirrorFw.mirror;
     public static final Val $const = ConstFw._const;
     public static final Val substitutor = SubstitutorFw.substitutor;
+
+    public static final Val yRecurser = RecurserFw.yRecurser;
+    public static final Val zRecurser = RecurserFw.zRecurser;
 
     public static final Type productType = ProductTypeFw.productType;
     public static final Type sumType = SumTypeFw.sumType;

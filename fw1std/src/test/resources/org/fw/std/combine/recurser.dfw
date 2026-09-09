@@ -1,0 +1,2 @@
+{eq y-recurser y-recurser} // todo: lazy evaluation (without it this value is useless)
+{eq {z-recurser true} {z-recurser true}}
