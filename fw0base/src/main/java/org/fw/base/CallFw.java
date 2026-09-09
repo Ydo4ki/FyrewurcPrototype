@@ -12,10 +12,7 @@ import static org.fw.core.FW.*;
 // what is local runtimes
 // what do i need to remember
 // aaioasopdiou when was this even written
-
 public final class CallFw {
-
-    private static final Val constructId = FW.telephonist(a -> null);
 
     public static final Type call_t = telephonist_native("Call", (d) -> {
         Val arg = d.arg();
