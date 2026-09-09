@@ -13,8 +13,8 @@ public final class DeclarationFw {
     // I hope it will be possible to make it a struct later
     public static final Type declaration = FW.lambda_native("Declaration", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DeclarationFw.declaration)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            arg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            arg = CallFw.getArg(arg).asVal();
 
             Declaration decl = instance._UNPACK_();
             if (arg.equalsSymbol("key")) {
@@ -36,11 +36,11 @@ public final class DeclarationFw {
     }).asType();
 
     public static Val getKey(Val declaration) {
-        return (Val) declaration.get("key");
+        return declaration.get("key").asVal();
     }
 
     public static Val getConstraint(Val declaration) {
-        return (Val) declaration.get("constraint");
+        return declaration.get("constraint").asVal();
     }
 
     public static Val declaration(Val key, Val constraint) {

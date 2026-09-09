@@ -1,6 +1,7 @@
 package org.fw.core.abstrait;
 
 import org.fw.base.*;
+import org.fw.core.NativeExecutionException;
 import org.fw.core.state.obj.State;
 
 import static org.fw.core.FW.symbol;
@@ -30,6 +31,8 @@ public interface Value {
             return false;
         return this.equals(symbol(symbol));
     }
+
+    Val asVal() throws NativeExecutionException;
 
     boolean impliesEquality(Val val);
 

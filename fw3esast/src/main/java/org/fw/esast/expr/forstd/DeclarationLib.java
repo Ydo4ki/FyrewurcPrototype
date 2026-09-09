@@ -24,11 +24,11 @@ public final class DeclarationLib {
     public static final CompEnv directivesCenv = CompEnv.of(FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            arg = (Val) arg.get("passing");
+            arg = arg.get("passing").asVal();
 
             Type type = arg.getType();
             if (type.equals(DeclarationFw.declaration)) {
-                Val key = (Val) arg.get("key");
+                Val key = arg.get("key").asVal();
                 return ExprFw.wrap(toExpr(arg, compEnv));
             }
             return null;
@@ -51,8 +51,8 @@ public final class DeclarationLib {
                 });
             }
         } else if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) arg.call(FW.symbol("expr"));
-            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Val exprVal = arg.call(FW.symbol("expr")).asVal();
+            Val compEnv = arg.call(FW.symbol("comp-env")).asVal();
             Expr expr = (Expr) ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -62,12 +62,12 @@ public final class DeclarationLib {
                         if (isize != 3)
                             return VitErrorFw.rrror(f, "3 elements expected");
 
-                        Val name = (Val) exprVal.call(DIntFw.dint(1));
+                        Val name = exprVal.call(DIntFw.dint(1)).asVal();
                         if (!name.getType().equals(SymbolFw.symbol))
                             return VitErrorFw.rrror(ExprFw.unwrap(name), "Symbol expected"); // symbol expected
 
-                        Val val = ((Val) exprVal.call(DIntFw.dint(2)));
-                        Val value = (Val) compEnv.call(CompEnv.syntaxResolve((Expr) ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                        Val val = exprVal.call(DIntFw.dint(2)).asVal();
+                        Val value = compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv))).asVal();
                         if (!VitFw.isVit(value.getType()))
                             return value; // error idk
 

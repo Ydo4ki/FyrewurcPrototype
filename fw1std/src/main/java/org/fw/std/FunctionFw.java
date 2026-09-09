@@ -20,7 +20,7 @@ public final class FunctionFw {
 
     public static final Type function = FW.lambda_native((arg) -> {
         Val val1 = function_struct.asVal();
-        Val ret = (Val) val1.call(arg);
+        Val ret = val1.call(arg).asVal();
         if (arg.getType().equals(SymbolFw.symbol)) {
             String value = SymbolFw.unwrap(arg);
             switch (value) {
@@ -29,15 +29,15 @@ public final class FunctionFw {
             }
         }
         if (FwUtils.isTypeApiCall(arg, FunctionFw.function)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            Val cArg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            Val cArg = CallFw.getArg(arg).asVal();
 
             Val value = instance._UNPACK_();
             if (cArg.getType().equals(SymbolFw.symbol)) {
                 switch (SymbolFw.unwrap(cArg)) {
                     case "fn-call":
-                        Value constraint = (Val) value.get("arg-constraint");
-                        Vit body = ((Val) (Val) value.get("body"))._UNPACK_();
+                        Value constraint = value.get("arg-constraint");
+                        Vit body = value.get("body").asVal()._UNPACK_();
                         return FW.lambda_native((arg1) -> {
                             boolean qualifies = constraint.get("check").call(arg1).impliesEquality(BoolFw._true);
                             if (!qualifies) {
@@ -45,7 +45,7 @@ public final class FunctionFw {
                             }
 
                             // this is questionable
-                            Value oldRtEnv = (Val) value.get("rt-env");
+                            Value oldRtEnv = value.get("rt-env");
 //                            Val newRtEnv = FW.telephonist((arg2, context2) -> {
 //                                Val ret0 = arg1.call(arg2, context2);
 //                                if (Unspecified.isUnspecified(ret0)) return oldRtEnv.call(arg2, context2);
@@ -57,8 +57,8 @@ public final class FunctionFw {
                                 else return oldRtEnv.call(arg2);
                             });
                             //                                    .call(arg1, context);
-                            Val val = ((Val) OperationLibFw._VitOperation.call(VitFw.wrap(body)));
-                            return (Val) val.call(newRtEnv);
+                            Val val = OperationLibFw._VitOperation.call(VitFw.wrap(body)).asVal();
+                            return val.call(newRtEnv);
                         });
                 }
             }
