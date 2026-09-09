@@ -1,4 +1,6 @@
 
+{eq {const true} {const true}}
+
 {eq {const true false} true}
 {eq {const true true} true}
 {eq {const mirror const} mirror}

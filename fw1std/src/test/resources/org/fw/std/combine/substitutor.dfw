@@ -1,0 +1,10 @@
+[x const]
+[y mirror]
+[z substitutor]
+
+{eq substitutor substitutor}
+{eq {substitutor x} {substitutor x}}
+{eq {substitutor x y} {substitutor x y}}
+{eq {substitutor x y z} {substitutor x y z}}
+
+{eq {substitutor x y z} {x z {y z}}}
