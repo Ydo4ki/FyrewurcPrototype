@@ -1,11 +1,12 @@
 [BxB {ProductType 'cons' Bool Bool}]
 
+{eq {type-get BxB} ProductType}
+
 [p {BxB 'cons' true false}]
+
+{eq {type-get p} BxB}
 
 {eq {p 'first'} true}
 {eq {p 'second'} false}
 
 {eq p {ProductType 'pair' true false}}
-
-{eq {type-get p} BxB}
-{eq {type-get BxB} ProductType}

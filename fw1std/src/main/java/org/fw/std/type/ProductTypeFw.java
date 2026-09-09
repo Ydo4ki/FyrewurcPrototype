@@ -54,10 +54,10 @@ public final class ProductTypeFw {
         return null;
     }).asType();
 
-    private static class Product<T> {
+    static class Product<T> {
         public final T a, b;
 
-        private Product(T a, T b) {
+        Product(T a, T b) {
             this.a = a;
             this.b = b;
         }
