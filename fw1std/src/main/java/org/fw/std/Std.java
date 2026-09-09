@@ -26,6 +26,8 @@ public final class Std {
     public static final Val $true = BoolFw._true;
     public static final Val $false = BoolFw._false;
 
+    public static final Val mirror = MirrorFw.mirror;
+
     public static final Type boxType = BoxFw.boxType;
     public static final Type dVec = DVecFw.dVec;
     public static final Type declared = DeclaredFw.declared;

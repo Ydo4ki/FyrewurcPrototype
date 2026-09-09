@@ -12,6 +12,10 @@ import static org.fw.core.FW.*;
 // what is local runtimes
 // what do i need to remember
 // aaioasopdiou when was this even written
+
+// todo: replace this fully with DefinitiveValEnv
+//  wait nothing stops me from doing it right now by just changing its payload and adding two extra methods
+//  finally some clearance
 public final class CallFw {
     public static final Type call_t = telephonist_native("Call", (d) -> {
         Val arg = d.arg();
