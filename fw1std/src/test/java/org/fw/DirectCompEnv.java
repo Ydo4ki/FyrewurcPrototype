@@ -24,7 +24,7 @@ public final class DirectCompEnv {
             }
             Val ret = get.apply(v);
             if (ret == null || Unspecified.isUnspecified(ret))
-                throw new DirectVitCompilationException(expr);
+                throw new DirectVitCompilationException(expr, String.valueOf(ret));
 
             return Vit.val(ret);
         } else if (expr instanceof ExprList) {

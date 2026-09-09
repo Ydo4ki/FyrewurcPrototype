@@ -2,8 +2,7 @@
 
 {eq {type-get B+T} SumType}
 
-[l true]
-[r mirror]
+[l true] [r mirror]
 
 [a {B+T 'inject-left' l}]
 [b {B+T 'inject-right' r}]
@@ -11,5 +10,5 @@
 {eq {type-get a} B+T}
 {eq {type-get b} B+T}
 
-{eq {a 'match' mirror mirror} l}
-{eq {b 'match' mirror mirror} r}
+{eq {a 'match' mirror false} l}
+{eq {b 'match' false mirror} r}

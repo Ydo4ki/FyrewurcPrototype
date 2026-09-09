@@ -41,9 +41,6 @@ public final class SumTypeFw {
                         }
                     }));
                 }
-//                if (arg.equalsSymbol("second")) {
-//                    return payload.b;
-//                }
                 return null;
             }
             return null;

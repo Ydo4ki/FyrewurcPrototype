@@ -1,4 +1,4 @@
-package org.fw.std;
+package org.fw.std.combine;
 
 import org.fw.base.Val;
 import org.fw.core.FW;

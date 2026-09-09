@@ -5,6 +5,8 @@ import org.fw.core.FW;
 
 import org.fw.core.commons.ValAdapter;
 import com.ydo4ki.fw.internal.lib.ConstraintFw;
+import org.fw.std.combine.ConstFw;
+import org.fw.std.combine.MirrorFw;
 import org.fw.std.dvec.DVecFw;
 import org.fw.core.state.obj.LaserPointerFw;
 import org.fw.base.OperationFw;
@@ -29,6 +31,7 @@ public final class Std {
     public static final Val $false = BoolFw._false;
 
     public static final Val mirror = MirrorFw.mirror;
+    public static final Val $const = ConstFw._const;
 
     public static final Type productType = ProductTypeFw.productType;
     public static final Type sumType = SumTypeFw.sumType;
