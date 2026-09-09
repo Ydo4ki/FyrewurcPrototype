@@ -13,29 +13,37 @@ import static org.fw.core.FW.*;
 // what do i need to remember
 // aaioasopdiou when was this even written
 
-// todo: replace this fully with DefinitiveValEnv
-//  wait nothing stops me from doing it right now by just changing its payload and adding two extra methods
-//  finally some clearance
 public final class CallFw {
+
+    private static final Val constructId = FW.telephonist(a -> null);
+
     public static final Type call_t = telephonist_native("Call", (d) -> {
         Val arg = d.arg();
         if (arg.getType().equals(CallFw.call_t)) {
             // native
-            CallFw.CallRecord call = d.unpack(arg);
-            Val me = call.val();
-            Val cArg = call.arg();
-            CallFw.CallRecord meCall = d.unpack(me);
+            DefinitiveValEnv<Value> call = d.unpack(arg);
+            Val me = call.self();
+            Value cArg = call.arg();
+            DefinitiveValEnv<Value> meCall = d.unpack(me);
             if (cArg.equalsSymbol("arg")) return meCall.arg();
-            if (cArg.equalsSymbol("val")) return meCall.val();
-        }
-        else if (arg.equalsSymbol("construct")) {
-            return FW.lambda_native("Call.construct", (func) -> FW.lambda_native((argument) -> d.instance(new CallRecord(func, argument))));
+            if (cArg.equalsSymbol("val")) return meCall.self();
+            if (cArg.equalsSymbol("instance")) return meCall.instancer();
+            if (cArg.equalsSymbol("unpack")) return meCall.unpacker();
         }
         return null;
     }).asType();
 
-    public static Val fwCall(Val instance, Val arg) {
-        return (Val) call_t.get("construct").call(instance).call(arg);
+    private static final Val construct = FW.lambda_native("Call.construct",
+            (func) -> FW.lambda(
+                    (argument) -> Val.of(call_t, new DefinitiveValEnv<>(func, argument))));
+
+    static Value fwCall(Value instance, Value arg) {
+        return construct.call(instance).call(arg);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <V extends Value> DefinitiveValEnv<V> unwrap0(Val call) {
+        return (DefinitiveValEnv<V>) call.getValue();
     }
 
     public static Value getVal(Value call) {
@@ -44,44 +52,5 @@ public final class CallFw {
 
     public static Value getArg(Value call) {
         return call.get("arg");
-    }
-
-    private static final class CallRecord {
-        private final Val val;
-        private final Val arg;
-
-        private CallRecord(Val val, Val arg) {
-            this.val = val;
-            this.arg = arg;
-        }
-
-        public Val val() {
-            return val;
-        }
-
-        public Val arg() {
-            return arg;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this) return true;
-            if (obj == null || obj.getClass() != this.getClass()) return false;
-            CallRecord that = (CallRecord) obj;
-            return Objects.equals(this.val, that.val) &&
-                    Objects.equals(this.arg, that.arg);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(val, arg);
-        }
-
-        @Override
-        public String toString() {
-            return "CallRecord[" +
-                    "val=" + val + ", " +
-                    "arg=" + arg + ']';
-        }
     }
 }

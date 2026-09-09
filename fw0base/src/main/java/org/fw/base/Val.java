@@ -78,6 +78,8 @@ public final class Val implements ValAdapter, TypedValue {
         return this.equals(val);
     }
 
+    // why have one unsafe
+    // if we can have two
     @Deprecated
     public static Val _NEW_INSTANCE_(Type type, Object value) {
         if (value instanceof Value && !(value instanceof Val))

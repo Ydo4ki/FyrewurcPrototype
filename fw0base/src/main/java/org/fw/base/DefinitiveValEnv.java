@@ -2,6 +2,8 @@ package org.fw.base;
 
 import org.fw.core.abstrait.Value;
 
+import java.util.Objects;
+
 public final class DefinitiveValEnv<V extends Value> {
     private final Val self;
     private final V arg;
@@ -40,5 +42,33 @@ public final class DefinitiveValEnv<V extends Value> {
     @SuppressWarnings("unchecked")
     public <T extends Value> DefinitiveValEnv<T> recast() {
         return (DefinitiveValEnv<T>) this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        DefinitiveValEnv<?> that = (DefinitiveValEnv<?>) o;
+        return Objects.equals(self, that.self) && Objects.equals(arg, that.arg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(self, arg);
+    }
+
+    @Override
+    public String toString() {
+        return "DefinitiveValEnv{" +
+                "self=" + self +
+                ", arg=" + arg +
+                '}';
+    }
+
+    public Val instancer() {
+        return self.asType().instancer();
+    }
+
+    public Val unpacker() {
+        return self.asType().unpacker();
     }
 }

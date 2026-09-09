@@ -12,6 +12,8 @@ import java.util.Optional;
 
 public abstract class Type implements ValAdapter {
 
+    private Val instancer, unpacker;
+
     Type() { }
 
     abstract Value callInstance(Val instance, Value arg);
@@ -22,6 +24,18 @@ public abstract class Type implements ValAdapter {
 
     public Type getPayloadType() {
         return null;
+    }
+
+    public Val instancer() {
+        if (instancer == null)
+            instancer = InstancerFw.mkInstancer(this);
+        return instancer;
+    }
+
+    public Val unpacker() {
+        if (unpacker == null)
+            unpacker = UnpackerFw.mkUnpacker(this);
+        return unpacker;
     }
 
     @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "OptionalAssignedToNull"})
@@ -45,7 +59,7 @@ public abstract class Type implements ValAdapter {
         @Override
         public Value callInstance(Val instance, Value arg) {
             if (arg instanceof Val)
-                return asVal.call(CallFw.fwCall(instance, (Val) arg));
+                return asVal.call(CallFw.fwCall(instance, arg));
             return asVal.call(CallFw.call_t.get("construct").call(instance).call(arg));
         }
 
