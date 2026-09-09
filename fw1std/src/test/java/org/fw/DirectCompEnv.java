@@ -29,13 +29,13 @@ public final class DirectCompEnv {
             return Vit.val(ret);
         } else if (expr instanceof ExprList) {
             ExprList list = ((ExprList) expr);
-            if (list.getBracketsType().equals(BracketsTypes.braces) && list.size() == 2) {
+            if (list.getBracketsType().equals(BracketsTypes.square) && list.size() == 2) {
                 Expr name = list.get(0);
                 if (!(name instanceof Symbol))
                     throw new DirectVitCompilationException(name, "Symbol exprected");
                 Vit value = compile(list.get(1), get);
                 return Vit.val(DeclaredFw.declared.asVal()).call(symbol("builder")).call(symbol(name.toString())).call(value);
-            } else if (list.getBracketsType().equals(BracketsTypes.round) && list.size() > 0) {
+            } else if (list.getBracketsType().equals(BracketsTypes.braces) && list.size() > 0) {
                 // (value x)
                 Expr f = list.get(0);
                 int isize = list.size();

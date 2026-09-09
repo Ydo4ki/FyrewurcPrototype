@@ -32,7 +32,7 @@ public final class DefinitiveValEnv<V extends Value> {
         if (val.getType().equals(self.asType()))
             return (T) val.getValue();
 
-        throw new SecurityException("Attempt to unpack external type: " + self.asType());
+        throw new SecurityException("Attempt to unpack external type: " + self.asType() + " while this unpacker is for " + self.asType());
     }
 
     public <T> T unpack(Val val, Class<T> cls) {

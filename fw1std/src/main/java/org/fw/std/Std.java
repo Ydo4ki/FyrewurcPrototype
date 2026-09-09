@@ -10,6 +10,7 @@ import org.fw.core.state.obj.LaserPointerFw;
 import org.fw.base.OperationFw;
 import org.fw.core.state.obj.ScopeFw;
 import org.fw.core.state.obj.StatePointerFw;
+import org.fw.std.type.ProductTypeFw;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -27,6 +28,8 @@ public final class Std {
     public static final Val $false = BoolFw._false;
 
     public static final Val mirror = MirrorFw.mirror;
+
+    public static final Type productType = ProductTypeFw.productType;
 
     public static final Type boxType = BoxFw.boxType;
     public static final Type dVec = DVecFw.dVec;

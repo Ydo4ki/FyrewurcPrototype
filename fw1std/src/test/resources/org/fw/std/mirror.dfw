@@ -1,1 +1,1 @@
-(eq (mirror true) true)
+{eq {mirror true} true}
