@@ -16,6 +16,7 @@ import org.fw.core.state.obj.ScopeFw;
 import org.fw.core.state.obj.StatePointerFw;
 import org.fw.std.type.ProductTypeFw;
 import org.fw.std.type.SumTypeFw;
+import org.fw.std.type.UnitTypeFw;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -39,6 +40,7 @@ public final class Std {
     public static final Val yRecurser = RecurserFw.yRecurser;
     public static final Val zRecurser = RecurserFw.zRecurser;
 
+    public static final Type unitType = UnitTypeFw.unitType;
     public static final Type productType = ProductTypeFw.productType;
     public static final Type sumType = SumTypeFw.sumType;
 

@@ -18,6 +18,7 @@ public abstract class Operation implements ValAdapter {
     // just without negative connotation
     // upd: ok nevermind it has kinda negative connotation now since unspecified is now very strict
     // maybe I should make a separate unspecified type for failed operations :hmm:
+    @Deprecated
     public static final Val unit = FW.lambda_native((arg) -> Operation.unit);
 
     public abstract Value apply(State state);
