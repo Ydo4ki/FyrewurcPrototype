@@ -10,8 +10,8 @@ import java.math.BigInteger;
 public final class DIntFw {
     public static final Type dint = FW.lambda_native("DInt", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DIntFw.dint)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            Val cArg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            Val cArg = CallFw.getArg(arg).asVal();
 
             BigInteger value = unwrap(instance);
             assert value != null;

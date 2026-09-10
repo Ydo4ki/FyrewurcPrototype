@@ -24,6 +24,7 @@ import java.util.*;
 
 import org.fw.esast.expr.ExprFw;
 import org.fw.esast.expr.forstd.ModuleLib;
+import org.fw.esast.expr.forstd.VitLib;
 import org.fw.std.DeclaredFw;
 import org.fw.esast.expr.Lib;
 import org.fw.std.ModuleFw;
@@ -111,14 +112,18 @@ public final class FwUtils3 {
                     Expr expression = locatedExpression.getExpr();
                     Vit vit;
                     try {
-                        vit = compEnv1.compile(expression);
+                        Val expr = ExprFw.wrap(expression);
+                        Val v = compEnv1.asValue().call(CompEnv.syntaxResolve(ExprFw.unwrap(expr), compEnv1)).asVal();
+                        if (!VitFw.isVit(v.getType()))
+                            return v;
+                        vit = VitLib.unwrap(v.asVal(), ExprFw.unwrap(expr));
                     } catch (ExprVitCompilationException e) {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
-                    Value v = vit.eval(FW.lambda((arg) -> null), state);
-                    if (v instanceof Val) {
-                        val = (Val) v;
+                    Val v = vit.eval(FW.lambda((arg) -> null), state).asVal();
+                    if (v != null) {
+                        val = v;
                         if (val.getType() == DeclaredFw.declared) {
                             compEnv1 = CompEnv.of(CompEnv.compEnv(compEnv1.asValue(), ModuleLib.ModuleCEnvFw.compEnv(ModuleFw.module(val))));
                         } else if (val != Operation.unit)

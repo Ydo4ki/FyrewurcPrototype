@@ -42,8 +42,8 @@ public final class DeclaredFw {
     // I hope it will be possible to make it a struct later
     public static final Type declared = FW.lambda_native("Declared", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DeclaredFw.declared)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            arg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            arg = CallFw.getArg(arg).asVal();
 
             Declared decl = instance._UNPACK_();
             if (arg.equalsSymbol("key")) {
@@ -60,11 +60,11 @@ public final class DeclaredFw {
     }).asType();
 
     public static Val getKey(Val declared) {
-        return (Val) declared.call(symbol("key"));
+        return declared.call(symbol("key")).asVal();
     }
 
     public static Val getValue(Val declared) {
-        return (Val) declared.call(symbol("value"));
+        return declared.call(symbol("value")).asVal();
     }
 
 

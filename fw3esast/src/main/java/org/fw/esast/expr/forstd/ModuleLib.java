@@ -28,7 +28,7 @@ public final class ModuleLib {
     public static final CompEnv module2exprCenv = CompEnv.of(FW.lambda_native("module2exprCenv",(arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            arg = (Val) arg.get("passing");
+            arg = arg.get("passing").asVal();
 
             Type type = arg.getType();
             if (type.equals(ModuleFw.module)) {
@@ -40,8 +40,8 @@ public final class ModuleLib {
     }));
     public static final Val directivesCenv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) arg.call(FW.symbol("expr"));
-            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Val exprVal = (Val) arg.call(FW.symbol("expr")).asVal();
+            Val compEnv = (Val) arg.call(FW.symbol("comp-env")).asVal();
             Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -50,8 +50,8 @@ public final class ModuleLib {
                     case "module": {
                         Vit builder = Vit.val(DVecBuilderFw.emptyBuilder);
                         for (int i = 1; i < isize; i++) {
-                            Expr expr1 = ((Val) exprVal.call(DIntFw.dint(i)))._UNPACK_();
-                            Val val = (Val) compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv)));
+                            Expr expr1 = ((Val) exprVal.call(DIntFw.dint(i)).asVal())._UNPACK_();
+                            Val val = (Val) compEnv.call(CompEnv.syntaxResolve(expr1, CompEnv.of(compEnv))).asVal();
                             if (!VitFw.isVit(val.getType()))
                                 return val;
 
@@ -96,24 +96,24 @@ public final class ModuleLib {
                 return FW.lambda_native(ModuleCEnvFw::compEnv);
             }
             if (FwUtils.isTypeApiCall(arg, ModuleCEnvFw.moduleCompEnv)) {
-                Val instance = (Val) CallFw.getVal(arg);
-                arg = (Val) CallFw.getArg(arg);
+                Val instance = CallFw.getVal(arg).asVal();
+                arg = CallFw.getArg(arg).asVal();
                 Val payload = instance._UNPACK_();
                 if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-                    Val exprVal = (Val) arg.call(FW.symbol("expr"));
-                    Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+                    Val exprVal = arg.call(FW.symbol("expr")).asVal();
+                    Value compEnv = arg.call(FW.symbol("comp-env"));
                     Expr expr = ExprFw.unwrap(exprVal);
                     if (expr instanceof Symbol) {
                         if (payload.getType() == ModuleFw.module) {
                             Val val = ModuleFw.module.asVal();
-                            Val val1 = ((Val) val.call(symbol("contains-key")));
-                            Val val2 = ((Val) val1.call(payload));
-                            if (val2.call(exprVal) == BoolFw._true) {
-                                Val value = (Val) payload.call(exprVal);
+                            Value val1 = val.call(symbol("contains-key"));
+                            Value val2 = val1.call(payload);
+                            if (val2.call(exprVal).impliesEquality(BoolFw._true)) {
+                                Value value = payload.call(exprVal);
                                 return VitFw.wrap(Vit.val(value));
                             }
                         }
-                        Val value = (Val) payload.call(exprVal);
+                        Value value = payload.call(exprVal);
                         if (Unspecified.isUnspecified(value))
                             return null;
                         return VitFw.wrap(Vit.val(value));
@@ -138,13 +138,13 @@ public final class ModuleLib {
 
                     if (payload.getType() == ModuleFw.module) {
                         Val val3 = ModuleFw.module.asVal();
-                        Val val2 = (Val) val3.call(FW.symbol("contains-key"));
-                        Val val1 = (Val) val2.call(payload);
-                        if (val1.call(val) == BoolFw._true) {
-                            return (Val) payload.call(val);
+                        Value val2 = val3.call(FW.symbol("contains-key"));
+                        Value val1 = val2.call(payload);
+                        if (val1.call(val).impliesEquality(BoolFw._true)) {
+                            return payload.call(val);
                         }
                     }
-                    Val value = (Val) payload.call(val);
+                    Val value = payload.call(val).asVal();
                     if (!ExprFw.isExpr(value))
                         return null;
 //                    if (Unspecified.isUnspecified(value))

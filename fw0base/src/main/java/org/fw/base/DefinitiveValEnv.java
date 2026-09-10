@@ -40,8 +40,8 @@ public final class DefinitiveValEnv<V extends Value> {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Value> DefinitiveValEnv<T> recast() {
-        return (DefinitiveValEnv<T>) this;
+    public DefinitiveValEnv<Val> recastAsVal() {
+        return new DefinitiveValEnv<>(self, arg.asVal());
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.fw.base.SymbolFw;
 import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.vit.Vit;
 import org.fw.esast.expr.*;
@@ -33,8 +34,8 @@ public final class DeclarationLib {
             }
             return null;
         } else if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = (Val) arg.get("passing");
-            Val compEnv = (Val) arg.get("chain");
+            Val val = arg.get("passing").asVal();
+            Value compEnv = arg.get("chain");
             if (val == DeclarationFw.declaration.asVal()) {
                 return FW.lambda_native(c -> {
                     if (c.getType() != DVecFw.dVec)
@@ -43,9 +44,9 @@ public final class DeclarationLib {
                     if (args.length > 2)
                         return null;
                     Val val1 = DeclarationFw.declaration.asVal();
-                    Val b = (Val) val1.get("builder");
+                    Val b = val1.get("builder").asVal();
                     for (Val arg1 : args) {
-                        b = (Val) b.call(arg1);
+                        b = b.call(arg1).asVal();
                     }
                     return Operation.pure(b).asVal();
                 });

@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 public final class Symbol extends Expr {
 	private final String value;
 	
-	public Symbol(String value) {
-		this.value = value;
+	private Symbol(String value) {
+		this.value = Objects.requireNonNull(value);
 	}
 	
 	public static Symbol of(String value) {

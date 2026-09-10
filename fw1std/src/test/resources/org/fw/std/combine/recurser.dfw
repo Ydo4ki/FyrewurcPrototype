@@ -1,2 +1,2 @@
-{eq y-recurser y-recurser} // todo: lazy evaluation (without it this value is useless)
+{eq {y-recurser {const mirror}} mirror}
 {eq {z-recurser true} {z-recurser true}}

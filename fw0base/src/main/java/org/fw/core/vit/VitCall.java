@@ -1,5 +1,6 @@
 package org.fw.core.vit;
 
+import org.fw.core.abstrait.LazyCallValue;
 import org.fw.core.abstrait.Value;
 import org.fw.base.Val;
 import org.fw.core.state.obj.State;
@@ -16,7 +17,7 @@ public final class VitCall extends Vit {
     public Value eval(Value rtEnv, State state) {
         if (isPreDetermied != null)
             return isPreDetermied;
-        return func.eval(rtEnv, state).call(arg.eval(rtEnv, state));
+        return new LazyCallValue(func.eval(rtEnv, state), arg.eval(rtEnv, state)); // func.eval(rtEnv, state).call(arg.eval(rtEnv, state));
     }
 
     @Override
@@ -38,8 +39,8 @@ public final class VitCall extends Vit {
         this.isPure = isPure;
         this.isConst = isConst;
         if (isConst && isPure) {
-            Val val = func.eval();
-            this.isPreDetermied = val.call(arg.eval());
+            Value val = func.eval();
+            this.isPreDetermied = new LazyCallValue(val, arg.eval());// val.call(arg.eval());
         } else {
             this.isPreDetermied = null;
         }

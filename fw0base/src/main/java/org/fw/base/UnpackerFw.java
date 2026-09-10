@@ -2,6 +2,7 @@ package org.fw.base;
 
 import org.fw.core.FW;
 
+import org.fw.core.abstrait.Value;
 import org.fw.core.util.FwUtils;
 
 final class UnpackerFw {
@@ -12,7 +13,7 @@ final class UnpackerFw {
             arg = (Val) CallFw.getArg(arg);
 
             Type targetType = d.unpack(instance);
-            if (!arg.getType().equals(targetType) || !(arg.getValue() instanceof Val)) {
+            if (!arg.getType().equals(targetType) || !(arg.getValue() instanceof Value)) {
                 return null; // wrong unpacker / unsupported value / consider using boxes
             }
             return (Val) arg.getValue();

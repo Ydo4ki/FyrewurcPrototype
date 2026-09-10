@@ -73,7 +73,7 @@ public final class FW {
         @Override
         public Value call(DefinitiveValEnv<Value> dve) {
             try {
-                return call.call(dve.recast());
+                return call.call(dve.recastAsVal());
             } catch (NativeExecutionException e) {
                 throw e;
             } catch (Exception e) {
@@ -101,7 +101,7 @@ public final class FW {
         @Override
         public Value call(Value arg) {
             try {
-                return call.call((Val)arg);
+                return call.call(arg.asVal());
             } catch (NativeExecutionException e) {
                 throw e;
             } catch (Exception e) {

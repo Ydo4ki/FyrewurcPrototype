@@ -11,8 +11,8 @@ import static org.fw.core.FW.lambda_native;
 public final class DVecBuilderFw {
     public static final Type dVecBuilder = FW.lambda_native("DVecBuilder", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DVecBuilderFw.dVecBuilder)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            Val cArg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            Val cArg = CallFw.getArg(arg).asVal();
             Val[] value = instance._UNPACK_();
 
             return Val._NEW_INSTANCE_(DVecBuilderFw.dVecBuilder, DVecFw.arAppended(value, cArg));

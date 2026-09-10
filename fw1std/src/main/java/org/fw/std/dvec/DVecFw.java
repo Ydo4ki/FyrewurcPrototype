@@ -16,8 +16,8 @@ public final class DVecFw {
     // this already looks oldfashioned wtf
     public static final Type dVec = FW.lambda_native("DVec", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, DVecFw.dVec)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            Val cArg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            Val cArg = CallFw.getArg(arg).asVal();
             Val[] vec = instance._UNPACK_();
 
             if (cArg.getType().equals(SymbolFw.symbol)) {

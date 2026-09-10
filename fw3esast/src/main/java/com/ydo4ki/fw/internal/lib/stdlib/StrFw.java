@@ -23,8 +23,8 @@ import java.util.function.BiFunction;
 public final class StrFw {
     public static final Type str = FW.lambda_native("Str", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, StrFw.str)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            Val cArg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            Val cArg = CallFw.getArg(arg).asVal();
 
             String value = instance._UNPACK_();
             assert value != null;
@@ -112,7 +112,7 @@ public final class StrFw {
                     if (arg2.equalsSymbol("arg")) return arg3;
                     return null;
                 });
-                return (Val) body.eval(rtEnv, state);
+                return body.eval(rtEnv, state);
             }));
         }
     }

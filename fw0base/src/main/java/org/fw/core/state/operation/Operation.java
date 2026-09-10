@@ -41,7 +41,7 @@ public abstract class Operation implements ValAdapter {
         if (vit instanceof VitInvoke) {
             Vit v = ((VitInvoke) vit).operation();
             if (v.isConst() && v.isPure()) {
-                return Objects.requireNonNull(OperationFw.unwrap(v.eval()), "Not an operation: " + v.eval());
+                return Objects.requireNonNull(OperationFw.unwrap(v.eval().asVal()), "Not an operation: " + v.eval());
             }
         }
         return new VitOperation(vit, rtEnv);

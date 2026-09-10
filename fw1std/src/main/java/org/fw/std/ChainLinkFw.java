@@ -22,21 +22,21 @@ public final class ChainLinkFw {
             });
         }
         if (FwUtils.isTypeApiCall(arg, ChainLinkFw.chainLinkType)) {
-            Val instanceType = (Val) CallFw.getVal(arg);
-            arg = (Val) CallFw.getArg(arg);
+            Val instanceType = CallFw.getVal(arg).asVal();
+            arg = CallFw.getArg(arg).asVal();
             ChainLinkTypeRecord typeInfo = instanceType._UNPACK_();
             Type type = instanceType.asType();
 
             if (FwUtils.isTypeApiCall(arg, type)) {
-                ChainLinkFw.ChainLinkRecord instance = ((Val) CallFw.getVal(arg))._UNPACK_();
-                Val cArg = (Val) CallFw.getArg(arg);
+                ChainLinkFw.ChainLinkRecord instance = CallFw.getVal(arg).asVal()._UNPACK_();
+                Val cArg = CallFw.getArg(arg).asVal();
 
-                Val ret = (Val) instance.resolver().call(cArg);
+                Val ret = instance.resolver().call(cArg).asVal();
 
 //                    if (Unspecified.isUnspecified(ret))
-                Val arg1 = symbol("check");
-                Val val = ((Val) typeInfo.constraint.call(arg1));
-                if (val.call(ret) != BoolFw._true) {
+                Value val = typeInfo.constraint.get("check");
+                val = val.call(ret);
+                if (!val.impliesEquality(BoolFw._true)) {
                     return instance.parentCEnv().call(cArg);
                 }
 

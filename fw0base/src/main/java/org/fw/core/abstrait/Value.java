@@ -10,9 +10,20 @@ import static org.fw.core.FW.symbol;
 // and in Val's context it turns into unspecified
 // make sense
 // but we can't do stuff like null.call
-// ok we'll get to this later as we see wether we actually need it or not
+// ok we'll get to this later as we see whether we actually need it or not
 public interface Value {
-    Value call(Value value);
+
+    Value call(Value arg);
+
+    Val asVal() throws NativeExecutionException;
+
+    boolean impliesEquality(Val val);
+
+    Value invoke(State state);
+
+    default Value callLazy(Value arg) {
+        return new LazyCallValue(this, arg);
+    }
 
     default Value get(String property) {
         return call(symbol(property));
@@ -23,7 +34,8 @@ public interface Value {
     }
 
     default boolean equals(Val val) {
-        return EqFw.eq.call(this).call(val).impliesEquality(BoolFw._true);
+        return impliesEquality(val);
+//        return EqFw.eq.call(this).call(val).impliesEquality(BoolFw._true);
     }
 
     default boolean equalsSymbol(String symbol) {
@@ -31,10 +43,4 @@ public interface Value {
             return false;
         return this.equals(symbol(symbol));
     }
-
-    Val asVal() throws NativeExecutionException;
-
-    boolean impliesEquality(Val val);
-
-    Value invoke(State state);
 }

@@ -12,13 +12,13 @@ import static org.fw.core.FW.symbol;
 public final class BoxFw {
     public static final Type boxType = FW.lambda_native("BoxType", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, BoxFw.boxType)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            arg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            arg = CallFw.getArg(arg).asVal();
 
             Type type = instance.asType();
             if (FwUtils.isTypeApiCall(arg, type)) {
-                instance = (Val) CallFw.getVal(arg);
-                Val cArg = (Val) CallFw.getArg(arg);
+                instance = CallFw.getVal(arg).asVal();
+                Val cArg = CallFw.getArg(arg).asVal();
                 if (cArg.equalsSymbol("unbox")) {
                     return unbox(instance);
                 }
@@ -39,8 +39,8 @@ public final class BoxFw {
 
     public static Type newBoxType(Val key) {
         Val val = boxType.asVal();
-        Val val1 = ((Val) val.call(symbol("construct")));
-        return ((Val) val1.call(key)).asType();
+        Val val1 = val.call(symbol("construct")).asVal();
+        return val1.call(key).asVal().asType();
     }
 
 }

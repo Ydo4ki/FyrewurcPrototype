@@ -67,7 +67,7 @@ public final class DoFw {
     private static Vit compileDo(Val exprVal, int start, int isize, Value compEnv) throws ExprVitCompilationException {
         Vit execution = Vit.val(Val._NEW_INSTANCE_(DoFw.unaryStoreType, Operation.unit));
         for (int i = start; i < isize - 1; i++) {
-            Val val = ((Val) exprVal.call(DIntFw.dint(i + 1)));
+            Val val = exprVal.call(DIntFw.dint(i + 1)).asVal();
             Expr line = ExprFw.unwrap(val);
             if (line instanceof ExprList && ((ExprList) line).size() == 3 && ((ExprList) line).get(0).toString().equals(":")) {
                 if (i == isize - 2) break;
@@ -95,8 +95,8 @@ public final class DoFw {
                 Value newCompEnv = CompEnv.compEnv(compEnv, FW.lambda((arg) -> {
                     if (arg.getTypeValue().impliesEquality(SyntaxResolveFw.syntaxResolve.asVal())) {
                         Value exprVal0 = arg.get("expr");
-                        if (exprVal0.equalsSymbol(name)) {
-                            return VitFw.wrap(Vit.var.call(symbol(name)));
+                        if (exprVal0.impliesEquality(sname)) {
+                            return VitFw.wrap(Vit.var.call(sname));
                         }
                     }
                     return null;

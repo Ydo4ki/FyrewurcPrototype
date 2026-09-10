@@ -21,7 +21,7 @@ public final class BoxLib {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
 
-            arg = (Val) arg.call(FW.symbol("passing"));
+            arg = arg.call(FW.symbol("passing")).asVal();
 
             Type type = arg.getType();
             if (type.equals(BoxFw.boxType)) {

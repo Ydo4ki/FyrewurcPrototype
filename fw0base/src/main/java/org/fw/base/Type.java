@@ -1,5 +1,6 @@
 package org.fw.base;
 
+import org.fw.core.NativeExecutionException;
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.state.obj.State;
@@ -58,9 +59,11 @@ public abstract class Type implements ValAdapter {
 
         @Override
         public Value callInstance(Val instance, Value arg) {
-            if (arg instanceof Val)
-                return asVal.call(CallFw.fwCall(instance, arg));
-            return asVal.call(CallFw.call_t.get("construct").call(instance).call(arg));
+            try {
+                return asVal.call(CallFw.fwCall(instance, arg.asVal()));
+            } catch (NativeExecutionException e) {
+                return asVal.call(CallFw.call_t.get("construct").call(instance).call(arg));
+            }
         }
 
         @Override
@@ -108,10 +111,9 @@ public abstract class Type implements ValAdapter {
         @Override
         Val callInstance(Val instance, Value arg) {
             Value v = ((Telephonist)instance.getValue()).call(instance, arg);
-            if (!(v instanceof Val))
-                return Unspecified.unspecified(instance, arg);
-
-            return (Val) v;
+            
+            if (v != null) return v.asVal();
+            return Unspecified.unspecified(instance, arg);
 //            try {
 //                Value v = instance._unpack(Telephonist.class).function().call(arg);
 //                if (!(v instanceof Val))

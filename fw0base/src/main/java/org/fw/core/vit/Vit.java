@@ -10,12 +10,12 @@ public abstract class Vit {
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Vit var = new VitVar();
 
-    public final Val eval() {
+    public final Value eval() {
         return eval(null);
     }
 
-    public final Val eval(Val rtEnv) {
-        return (Val) eval((Value) rtEnv);
+    public final Value eval(Val rtEnv) {
+        return eval((Value) rtEnv);
     }
 
     public final Value eval(Value rtEnv) {

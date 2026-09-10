@@ -8,6 +8,8 @@ import com.ydo4ki.esast.Symbol;
 import org.fw.base.SymbolFw;
 import org.fw.base.Val;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
+import org.fw.core.abstrait.Value;
+import org.fw.esast.expr.forstd.VitLib;
 import org.fw.std.VitFw;
 import org.fw.core.vit.Vit;
 import org.fw.esast.ExprVitCompilationException;
@@ -26,7 +28,11 @@ public final class ExprGetFw {
 
         Vit first;
         try {
-            first = compEnv.compile(FW.symbol(origin));
+            Val expr = symbol(origin);
+            Val v = compEnv.asValue().call(CompEnv.syntaxResolve(ExprFw.unwrap(expr), compEnv)).asVal();
+            if (!VitFw.isVit(v.getType()))
+                return v;
+            first = VitLib.unwrap(v.asVal(), ExprFw.unwrap(expr));
         } catch (ExprVitCompilationException e) {
             e.printStackTrace();
             return null;

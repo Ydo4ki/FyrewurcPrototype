@@ -47,7 +47,7 @@ public final class CompEnv extends AbstractValueAdapter {
 
     public Vit compile(Val expr) throws ExprVitCompilationException {
         Value v = asValue().call(syntaxResolve(ExprFw.unwrap(expr), this));
-        return VitLib.unwrap((Val) v, ExprFw.unwrap(expr));
+        return VitLib.unwrap(v.asVal(), ExprFw.unwrap(expr));
     }
 
     public static Val syntaxResolve(Expr expr, CompEnv env) {

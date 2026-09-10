@@ -14,8 +14,8 @@ import java.util.Arrays;
 public final class ModuleFw {
     public static final Type module = FW.lambda_native("Module", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, ModuleFw.module)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            arg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            arg = CallFw.getArg(arg).asVal();
 
             Module module = instance._UNPACK_();
             for (Val declared : module.declareds()) {
@@ -74,7 +74,7 @@ public final class ModuleFw {
     public static Val merge(Val module, Val... modules) {
         for (Value val : modules) {
             if (val == null) continue;
-            module = (Val) ChainLinkFw.chain(ExtendedFw.extended, module, val);
+            module = ChainLinkFw.chain(ExtendedFw.extended, module, val).asVal();
         }
         return module;
     }

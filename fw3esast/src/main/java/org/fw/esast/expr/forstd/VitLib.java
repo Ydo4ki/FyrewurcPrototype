@@ -73,16 +73,16 @@ public final class VitLib {
                         if (isize == 1) {
                             return null;
                         }
-                        Val val1 = ((Val) exprVal.call(DIntFw.dint(1)));
+                        Val val1 = exprVal.call(DIntFw.dint(1)).asVal();
                         Expr eee = ExprFw.unwrap(val1);
                         Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve(eee, CompEnv.of(compEnv)));
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 
                         for (int i = 1; i < (isize - 1); i++) {
-                            Val val = ((Val) exprVal.call(DIntFw.dint(i + 1)));
+                            Val val = exprVal.call(DIntFw.dint(i + 1)).asVal();
                             Expr eeeN = ExprFw.unwrap(val);
-                            Val argNVit = (Val) compEnv.call(CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv)));
+                            Val argNVit = compEnv.call(CompEnv.syntaxResolve(eeeN, CompEnv.of(compEnv))).asVal();
                             if (!VitFw.isVit(argNVit.getType()))
                                 return argNVit; // compile error idk
 
@@ -99,8 +99,8 @@ public final class VitLib {
                             return null;
                         }
 
-                        Val val = ((Val) exprVal.call(DIntFw.dint(1)));
-                        Val retVit = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                        Val val = exprVal.call(DIntFw.dint(1)).asVal();
+                        Val retVit = compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv))).asVal();
                         if (!VitFw.isVit(retVit.getType()))
                             return retVit; // compile error idk
 

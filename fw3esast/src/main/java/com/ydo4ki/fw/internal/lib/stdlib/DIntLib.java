@@ -62,7 +62,7 @@ public final class DIntLib {
                     if (arg2.equalsSymbol("arg")) return arg1;
                     return null;
                 });
-                return (Val) body.eval(rtEnv, state);
+                return body.eval(rtEnv, state);
             }));
         }
     }

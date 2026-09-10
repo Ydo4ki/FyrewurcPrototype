@@ -1,6 +1,7 @@
 package org.fw.base;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.Value;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
@@ -10,14 +11,14 @@ public final class EqFw {
     public static final Type eqChecker;
 
     static {
-        eq = FW.lambda_native("eq", (arg1) -> Val.of(EqFw.eqChecker, arg1));
+        eq = FW.lambda("eq", (arg1) -> Val.of(EqFw.eqChecker, arg1));
         eqChecker = FW.lambda_native("eqChecker", arg -> {
             if (FwUtils.isTypeApiCall(arg, EqFw.eqChecker)) {
-                Val instance = (Val) CallFw.getVal(arg);
-                arg = (Val) CallFw.getArg(arg);
+                Val instance = CallFw.getVal(arg).asVal();
+                arg = CallFw.getArg(arg).asVal();
 
-                Val a = (Val) instance.getValue();
-                return BoolFw.wrap(arg.equals(a));
+                Value a = (Value) instance.getValue();
+                return BoolFw.wrap(a.impliesEquality(arg));
             }
             return null;
         }).asType();

@@ -52,7 +52,7 @@ public class Tester3 extends Tester {
                         return condition;
                     Vit vitOperation = Vit.call(OperationLibFw._VitOperation, condition).call(Vit.var);
                     Vit assertOperation = Vit.call(FW.lambda_native(arg1 ->
-                            new AssertOperation(arg1._UNPACK_()).asVal()), vitOperation);
+                            new AssertOperation(arg1._UNPACK_(), expr).asVal()), vitOperation);
                     return VitFw.wrap(Vit.invoke(assertOperation));
                 }
             }
@@ -62,16 +62,18 @@ public class Tester3 extends Tester {
 
     public static class AssertOperation extends Operation {
         private final Operation _assert;
+        private final Expr src;
 
-        AssertOperation(Operation anAssert) {
+        AssertOperation(Operation anAssert, Expr src) {
             _assert = anAssert;
+            this.src = src;
         }
 
         @Override
         public Value apply(State state) {
             Value ret = _assert.apply(state);
-            if (ret == BoolFw._true) return Operation.unit;
-            else throw new AssertionError(_assert + " -> " + ret);
+            if (ret.impliesEquality(BoolFw._true)) return Operation.unit;
+            else throw new AssertionError(src + " -> " + ret);
         }
     }
 }

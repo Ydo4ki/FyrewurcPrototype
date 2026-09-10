@@ -22,8 +22,8 @@ import static org.fw.core.FW.symbol;
 public final class BaseLib {
     private static final Val directivesCenv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) arg.call(FW.symbol("expr"));
-            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Val exprVal = arg.call(FW.symbol("expr")).asVal();
+            Val compEnv = arg.call(FW.symbol("comp-env")).asVal();
             Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);
@@ -32,8 +32,8 @@ public final class BaseLib {
                     if (isize != 2)
                         return null;
 
-                    Val val = ((Val) exprVal.call(DIntFw.dint(1)));
-                    Val operand = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                    Val val = exprVal.call(DIntFw.dint(1)).asVal();
+                    Val operand = compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv))).asVal();
                     if (!VitFw.isVit(operand.getType()))
                         return operand;
 
@@ -42,8 +42,8 @@ public final class BaseLib {
                     if (isize != 2)
                         return null;
 
-                    Val val = ((Val) exprVal.call(DIntFw.dint(1)));
-                    Val operand = (Val) compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv)));
+                    Val val = exprVal.call(DIntFw.dint(1)).asVal();
+                    Val operand = compEnv.call(CompEnv.syntaxResolve(ExprFw.unwrap(val), CompEnv.of(compEnv))).asVal();
                     if (!VitFw.isVit(operand.getType()))
                         return operand;
 

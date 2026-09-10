@@ -52,7 +52,7 @@ public class Tester {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
-                    val = (Val) vit.eval(FW.lambda((arg) -> null), state);
+                    val = vit.eval(FW.lambda((arg) -> null), state).asVal();
                     if (val.getType() == DeclaredFw.declared) {
                         defined.put(DeclaredFw.getKey(val)._UNPACK_().toString(), DeclaredFw.getValue(val));
                     } else if (val == BoolFw._false) {

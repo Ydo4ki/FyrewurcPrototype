@@ -74,7 +74,9 @@ public final class ConstraintFw {
 
                             // we might as well do it in parallel
 
-                            return BoolFw.wrap(((Constraint) instance._UNPACK_()).check(arg1));
+                            boolean ret = ((Constraint) instance._UNPACK_()).check(arg1);
+
+                            return BoolFw.wrap(ret);
                         });
     //                case "vit":
     //                    return VitFw.wrap(payload);

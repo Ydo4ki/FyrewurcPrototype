@@ -32,7 +32,7 @@ public final class DirectCompEnv {
             if (list.getBracketsType().equals(BracketsTypes.square) && list.size() == 2) {
                 Expr name = list.get(0);
                 if (!(name instanceof Symbol))
-                    throw new DirectVitCompilationException(name, "Symbol exprected");
+                    throw new DirectVitCompilationException(name, "Symbol expected");
                 Vit value = compile(list.get(1), get);
                 return Vit.val(DeclaredFw.declared.asVal()).call(symbol("builder")).call(symbol(name.toString())).call(value);
             } else if (list.getBracketsType().equals(BracketsTypes.braces) && list.size() > 0) {

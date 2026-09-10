@@ -6,6 +6,7 @@ import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.core.FW;
 
+import org.fw.core.abstrait.Value;
 import org.fw.std.dvec.DVecFw;
 import org.fw.core.util.FwUtils;
 
@@ -17,11 +18,11 @@ public final class EnumFw {
     public static final Type enumeration = FW.telephonist_native("Enum", (d) -> {
         Val arg = d.arg();
         if (FwUtils.isTypeApiCall(arg, EnumFw.enumeration)) {
-            Val instance = (Val) CallFw.getVal(arg);
-            arg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            arg = CallFw.getArg(arg).asVal();
             Enum anEnum = instance._UNPACK_();
             for (Val value : anEnum.values) {
-                if (((Val) value._UNPACK_()).equals(arg)) return value;
+                if (((Value) value._UNPACK_()).asVal().equals(arg)) return value;
             }
             return null;
         }
