@@ -1,7 +1,9 @@
 package org.fw.base;
 
 import org.fw.core.FW;
+import org.fw.core.abstrait.ConstraintValue;
 import org.fw.core.abstrait.Value;
+import org.fw.core.constraint.Constraint;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
@@ -18,6 +20,8 @@ public final class EqFw {
                 arg = CallFw.getArg(arg).asVal();
 
                 Value a = (Value) instance.getValue();
+                if (a.asVal(null) == null)
+                    return new ConstraintValue(Constraint.type(BoolFw.bool));
                 return BoolFw.wrap(a.impliesEquality(arg));
             }
             return null;

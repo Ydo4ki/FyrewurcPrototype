@@ -25,6 +25,11 @@ public final class Val implements ValAdapter, TypedValue {
         return this;
     }
 
+    @Override
+    public Val asVal(Val orElse) {
+        return this;
+    }
+
     public Type getType() {
         return type;
     }

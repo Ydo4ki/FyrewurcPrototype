@@ -15,11 +15,22 @@ public interface Value {
 
     Value call(Value arg);
 
-    Val asVal() throws NativeExecutionException;
-
     boolean impliesEquality(Val val);
 
-    Value invoke(State state);
+    default Val asVal() throws NativeExecutionException {
+        Val ret = asVal(null);
+        if (ret == null)
+            throw new NativeExecutionException("Not a val: " + this);
+        return ret;
+    }
+
+    default Val asVal(Val orElse) {
+        return orElse;
+    }
+
+    default Value invoke(State state) {
+        return null;
+    }
 
     default Value callLazy(Value arg) {
         return new LazyCallValue(this, arg);

@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public final class UnitTypeTest {
+public final class UnitTest {
     @Test
     public void unitTest() throws IOException {
-        Tester.testDirectFw(UnitTypeFw.class, Std.std);
+        Tester.testDirectFw(UnitFw.class, Std.std);
     }
 }

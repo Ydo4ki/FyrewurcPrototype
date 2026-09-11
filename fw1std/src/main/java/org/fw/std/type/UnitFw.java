@@ -5,13 +5,13 @@ import org.fw.base.Val;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 
-public final class UnitTypeFw {
-    public static final Type unitType = FW.telephonist("UnitType", d -> {
+public final class UnitFw {
+    public static final Type unitType = FW.telephonist("Unit", d -> {
         Value arg = d.arg();
         if (arg.equalsSymbol("cons")) {
-            if (UnitTypeFw.unit == null) // initialization of the unit field itself
+            if (UnitFw.unit == null) // initialization of the unit field itself
                 return d.instance(new U());
-            return UnitTypeFw.unit;
+            return UnitFw.unit;
         }
         return null;
     }).asType();

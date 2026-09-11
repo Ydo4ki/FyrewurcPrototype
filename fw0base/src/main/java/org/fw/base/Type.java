@@ -1,6 +1,7 @@
 package org.fw.base;
 
 import org.fw.core.NativeExecutionException;
+import org.fw.core.abstrait.ImpossibleValue;
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.state.obj.State;
@@ -59,11 +60,7 @@ public abstract class Type implements ValAdapter {
 
         @Override
         public Value callInstance(Val instance, Value arg) {
-            try {
-                return asVal.call(CallFw.fwCall(instance, arg.asVal()));
-            } catch (NativeExecutionException e) {
-                return asVal.call(CallFw.call_t.get("construct").call(instance).call(arg));
-            }
+            return asVal.call(CallFw.fwCall(instance, arg));
         }
 
         @Override
@@ -112,7 +109,7 @@ public abstract class Type implements ValAdapter {
         Val callInstance(Val instance, Value arg) {
             Value v = ((Telephonist)instance.getValue()).call(instance, arg);
             
-            if (v != null) return v.asVal();
+            if (v.asVal(null) != null) return v.asVal();
             return Unspecified.unspecified(instance, arg);
 //            try {
 //                Value v = instance._unpack(Telephonist.class).function().call(arg);
@@ -207,11 +204,15 @@ public abstract class Type implements ValAdapter {
             }
 
             Value call(Val self, Value arg) {
-                return function.call(new DefinitiveValEnv<>(self, arg));
+                Value ret = function.call(new DefinitiveValEnv<>(self, arg));
+                if (ret == null) ret = ImpossibleValue.value;
+                return ret;
             }
 
             Value invoke(State state) {
-                return operation.invoke(state);
+                Value ret = operation.invoke(state);
+                if (ret == null) return ImpossibleValue.value;
+                return ret;
             }
         }
     }

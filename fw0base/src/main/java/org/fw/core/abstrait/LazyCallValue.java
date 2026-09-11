@@ -6,7 +6,7 @@ import org.fw.core.state.obj.State;
 
 import java.util.Objects;
 
-public class LazyCallValue implements Value {
+public final class LazyCallValue implements Value {
     private final Value a, b;
     private Value __ret;
 
@@ -31,9 +31,8 @@ public class LazyCallValue implements Value {
     }
 
     @Override
-    public Val asVal() throws NativeExecutionException {
-        if (ret() instanceof Val) return (Val) ret();
-        throw new NativeExecutionException("Not val: " + ret());
+    public Val asVal(Val orElse) throws NativeExecutionException {
+        return ret().asVal(orElse);
     }
 
     @Override

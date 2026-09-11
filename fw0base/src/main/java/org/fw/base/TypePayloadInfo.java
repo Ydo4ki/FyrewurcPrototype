@@ -13,7 +13,7 @@ public final class TypePayloadInfo {
                 String s = arg._UNPACK_().toString();
                 switch (s) {
                     case "value":
-                        return (Val) instance._UNPACK_();
+                        return instance._UNPACK_();
                 }
             }
         }

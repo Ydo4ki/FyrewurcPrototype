@@ -19,8 +19,8 @@ public final class SumTypeFw {
         } else if (FwUtils.isTypeApiCall(arg, SumTypeFw.sumType)) {
             DefinitiveValEnv<Val> di = CallFw.unwrap0(arg);
 
-            Val instance = (Val) CallFw.getVal(arg);
-            arg = (Val) CallFw.getArg(arg);
+            Val instance = CallFw.getVal(arg).asVal();
+            arg = CallFw.getArg(arg).asVal();
 
             ProductTypeFw.Product<Type> pt = d.unpack(instance);
             if (arg.equalsSymbol("inject-left")) {

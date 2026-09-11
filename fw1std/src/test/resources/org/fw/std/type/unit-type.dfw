@@ -1,2 +1,0 @@
-{eq {type-get {UnitType 'cons'}} UnitType}
-{eq {UnitType 'cons'} {UnitType 'cons'}}
