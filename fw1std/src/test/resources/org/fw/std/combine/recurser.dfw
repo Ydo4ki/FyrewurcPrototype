@@ -1,4 +1,4 @@
 {eq {y-recurser {const mirror}} mirror}
 {eq {{y-recurser const} true} {y-recurser const}}
 
-{eq {z-recurser true} {z-recurser true}}
+{eq {z-recurser const} {z-recurser const}}

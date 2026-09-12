@@ -12,7 +12,7 @@ public final class ConstraintValue implements Value {
 
     @Override
     public Value call(Value arg) {
-        return new LazyCallValue(this, arg);
+        return new ImpossibleCallValue(this, arg);
     }
 
     @Override

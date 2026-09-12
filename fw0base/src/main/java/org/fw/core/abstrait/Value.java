@@ -20,7 +20,8 @@ public interface Value {
     default Val asVal() throws NativeExecutionException {
         Val ret = asVal(null);
         if (ret == null)
-            throw new NativeExecutionException("Not a val: " + this);
+            throw new NotAValException("Not a val: " + this);
+
         return ret;
     }
 

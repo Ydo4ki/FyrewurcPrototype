@@ -31,7 +31,7 @@ public final class ChainLinkFw {
                 ChainLinkFw.ChainLinkRecord instance = CallFw.getVal(arg).asVal()._UNPACK_();
                 Val cArg = CallFw.getArg(arg).asVal();
 
-                Val ret = instance.resolver().call(cArg).asVal();
+                Value ret = instance.resolver().call(cArg);
 
 //                    if (Unspecified.isUnspecified(ret))
                 Value val = typeInfo.constraint.get("check");

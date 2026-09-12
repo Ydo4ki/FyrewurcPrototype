@@ -5,6 +5,7 @@ import com.ydo4ki.esast.BracketsTypes;
 import com.ydo4ki.esast.Expr;
 import com.ydo4ki.esast.ExprList;
 import org.fw.base.Val;
+import org.fw.core.abstrait.Value;
 import org.fw.core.vit.VitUtils;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.esast.expr.forstd.VitLib;
@@ -19,15 +20,15 @@ import static org.fw.core.FW.lambda_native;
 public final class FnCallFw {
     public static final Val fnCallCEnv = FW.lambda_native((arg) -> {
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
-            Val val = (Val) arg.get("passing");
-            Val compEnv = (Val) arg.get("chain");
-            if (val.getType() == FunctionFw.function) {
-                return (Val) val.get("fn-call");
+            Value val = arg.get("passing");
+            Value compEnv = arg.get("chain");
+            if (val.getTypeValue().impliesEquality(FunctionFw.function.asVal())) {
+                return val.get("fn-call");
             }
         }
         if (arg.getType().equals(SyntaxResolveFw.syntaxResolve)) {
-            Val exprVal = (Val) arg.call(FW.symbol("expr"));
-            Val compEnv = (Val) arg.call(FW.symbol("comp-env"));
+            Val exprVal = arg.call(FW.symbol("expr")).asVal();
+            Value compEnv = arg.call(FW.symbol("comp-env"));
             Expr expr = ExprFw.unwrap(exprVal);
             if (expr instanceof ExprList && ((ExprList) expr).getBracketsType().equals(BracketsTypes.round) && ((ExprList) expr).size() > 0) {
                 Expr f = ((ExprList) expr).get(0);

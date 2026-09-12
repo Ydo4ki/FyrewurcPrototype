@@ -39,7 +39,6 @@ public final class DefinitiveValEnv<V extends Value> {
         return unpack(val);
     }
 
-    @SuppressWarnings("unchecked")
     public DefinitiveValEnv<Val> recastAsVal() {
         return new DefinitiveValEnv<>(self, arg.asVal());
     }
@@ -58,10 +57,7 @@ public final class DefinitiveValEnv<V extends Value> {
 
     @Override
     public String toString() {
-        return "DefinitiveValEnv{" +
-                "self=" + self +
-                ", arg=" + arg +
-                '}';
+        return "'" + self + "(" + arg + ')';
     }
 
     public Val instancer() {

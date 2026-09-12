@@ -39,8 +39,8 @@ public final class FwUtils {
         return set;
     }
 
-    public static Val valify(Predicate<Val> tester) {
-        return FW.lambda_native((arg) -> BoolFw.wrap(tester.test(arg)));
+    public static Val valify(Predicate<Value> tester) {
+        return FW.lambda((arg) -> BoolFw.wrap(tester.test(arg)));
     }
 
     public static Vit equals(Vit a, Vit b) {
@@ -52,7 +52,7 @@ public final class FwUtils {
         Vit argExpr = arg.call(symbol("expr"));
         Vit parseArg = telemap.call(argExpr);
         return FW.lambda((arg1) -> {
-            if (Unspecified.isUnspecified(arg1)) return null;
+            if (arg1.asVal(null) == null) return null;
             else return parseArg.eval();
         });
 //        return VitiateTelephonistFw.vitiate(

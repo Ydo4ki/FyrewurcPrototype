@@ -28,7 +28,7 @@ public final class WrapperTypeFw {
             } else {
                 Val staticCallsHandler = wt.staticCallsHandler;
                 Value ret = staticCallsHandler.call(arg);
-                if (!Unspecified.isUnspecified(ret)) return ret;
+                if (!(ret.asVal(null) == null)) return ret;
                 if (arg.getType() == SymbolFw.symbol) {
                     String sym = arg._UNPACK_().toString();
                     switch (sym) {

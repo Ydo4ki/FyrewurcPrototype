@@ -18,21 +18,21 @@ import org.fw.esast.util.FwUtils3;
 public final class StdLib {
     private static final CompEnv somethingToExpr = CompEnv.of(FW.lambda_native(arg -> {
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            Val val = (Val) arg.get("passing");
+            Value val = arg.get("passing");
             CompEnv compEnv = CompEnv.of(arg.get("chain"));
-            if (Unspecified.isUnspecified(val)) {
-                Value value = Unspecified.getArg(val);
-                Value value1 = Unspecified.getVal(val);
-                return ExprFw.wrap(ExprList.of(BracketsTypes.braces,
-                        Symbol.of("unspecified"),
-                        compEnv.toExpr(value1),
-                        compEnv.toExpr(value))
-                );
+//            if (Unspecified.isUnspecified(value)) {
+//                Value value = Unspecified.getArg(val);
+//                Value value1 = Unspecified.getVal(val);
+//                return ExprFw.wrap(ExprList.of(BracketsTypes.braces,
+//                        Symbol.of("unspecified"),
+//                        compEnv.toExpr(value1),
+//                        compEnv.toExpr(value))
+//                );
+//            }
+            if (val.asVal().asType() instanceof Type.TelephonistType) {
+                return ExprFw.wrap(Symbol.of(val.asVal().asType().toString()));
             }
-            if (val.asType() instanceof Type.TelephonistType) {
-                return ExprFw.wrap(Symbol.of(val.asType().toString()));
-            }
-            Value value = val.getType().asVal();
+            Value value = val.asVal().getType().asVal();
             return ExprFw.wrap(ExprList.of(BracketsTypes.braces, compEnv.toExpr(value)));
         }
         return null;

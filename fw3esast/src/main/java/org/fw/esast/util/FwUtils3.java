@@ -5,6 +5,7 @@ import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.base.SymbolFw;
 import org.fw.base.Val;
 import org.fw.core.FW;
+import org.fw.core.NativeExecutionException;
 import org.fw.core.abstrait.Value;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -117,7 +118,7 @@ public final class FwUtils3 {
                         if (!VitFw.isVit(v.getType()))
                             return v;
                         vit = VitLib.unwrap(v.asVal(), ExprFw.unwrap(expr));
-                    } catch (ExprVitCompilationException e) {
+                    } catch (ExprVitCompilationException | NativeExecutionException e) {
                         System.err.println(expression);
                         throw new RuntimeException(e);
                     }
@@ -143,9 +144,8 @@ public final class FwUtils3 {
         try {
             for (String file : files) {
                 lib0 = Lib.combine(lib0,
-                        Lib.ofCEnv(ModuleLib.ModuleCEnvFw.compEnv((Val)
-                                getOperation(caller, file, CompEnv.of(lib0.exports()), false)
-                                        .apply(SystemOperation.systemState)))
+                        Lib.ofCEnv(ModuleLib.ModuleCEnvFw.compEnv(getOperation(caller, file, CompEnv.of(lib0.exports()), false)
+                                .apply(SystemOperation.systemState)))
                 );
             }
         } catch (IOException e) {

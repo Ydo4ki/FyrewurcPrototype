@@ -168,9 +168,7 @@ public final class Val implements ValAdapter, TypedValue {
         if (type instanceof Type.TelephonistType) {
             return value.toString();
         }
-        return "Val[" +
-                "type=" + type.asVal() + ", " +
-                "value=" + value + ']';
+        return "{" + type.asVal() + ", " + value + '}';
     }
 
     private static boolean _arrayEquals(Object e1, Object e2) {

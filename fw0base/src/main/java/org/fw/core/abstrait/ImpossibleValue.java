@@ -10,11 +10,16 @@ public final class ImpossibleValue implements Value {
 
     @Override
     public Value call(Value arg) {
-        return new LazyCallValue(this, arg);
+        return new ImpossibleCallValue(this, arg);
     }
 
     @Override
     public boolean impliesEquality(Val val) {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "∅";
     }
 }

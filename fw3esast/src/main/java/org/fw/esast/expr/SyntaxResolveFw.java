@@ -36,7 +36,7 @@ public final class SyntaxResolveFw {
 //    public static final Type toExprResolve = crtcis;
 
     public static final Type toExprResolve = WrapperTypeFw.wrapperType(crtcis,
-            FW.lambda_native(instance -> FW.lambda_native(rawPayload -> FW.lambda_native(arg -> (Val) rawPayload.call(arg)))), FW.lambda_native(arg -> {
+            FW.lambda_native(instance -> FW.lambda(rawPayload -> FW.lambda(arg -> rawPayload.call(arg)))), FW.lambda(arg -> {
                 if (arg.equalsSymbol("builder")) {
                     return FW.lambda_native((passingArg) -> {
                         Val val = ((Val) ConstraintFw.isSpecified.call(symbol("check")));
@@ -51,7 +51,7 @@ public final class SyntaxResolveFw {
                 return null;
             }));
     public static final Type toFnResolve = WrapperTypeFw.wrapperType(crtcis,
-            FW.lambda_native(instance -> FW.lambda_native(rawPayload -> FW.lambda_native(arg -> (Val) rawPayload.call(arg)))), FW.lambda_native(arg -> {
+            FW.lambda_native(instance -> FW.lambda(rawPayload -> FW.lambda(arg -> rawPayload.call(arg)))), FW.lambda(arg -> {
                 if (arg.equalsSymbol("builder")) {
                     return FW.lambda_native((passingArg) -> {
                         Val val = ((Val) ConstraintFw.isSpecified.call(symbol("check")));

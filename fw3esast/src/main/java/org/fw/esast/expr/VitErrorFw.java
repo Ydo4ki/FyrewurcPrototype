@@ -27,6 +27,13 @@ public final class VitErrorFw {
             Value compEnv = arg.get("comp-env");
             return vitError.get("builder").call(exprVal).call(StrFw.str("Can't resolve"));
         }
+        if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
+            throw new Error();
+        }
+        if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
+            Value exprVal = arg.get("passing");
+            throw new Error(exprVal.toString());
+        }
         return null;
     });
 

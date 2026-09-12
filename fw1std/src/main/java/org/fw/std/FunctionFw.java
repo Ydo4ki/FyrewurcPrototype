@@ -20,12 +20,11 @@ public final class FunctionFw {
 
     public static final Type function = FW.lambda_native((arg) -> {
         Val val1 = function_struct.asVal();
-        Val ret = val1.call(arg).asVal();
         if (arg.getType().equals(SymbolFw.symbol)) {
             String value = SymbolFw.unwrap(arg);
             switch (value) {
                 case "builder":
-                    return builderWrapper(ret);
+                    return builderWrapper(val1.call(arg).asVal());
             }
         }
         if (FwUtils.isTypeApiCall(arg, FunctionFw.function)) {
@@ -63,7 +62,7 @@ public final class FunctionFw {
                 }
             }
         }
-        return ret;
+        return val1.call(arg);
     }).asType();
 
     private static Val builderWrapper(Val builder) {

@@ -114,7 +114,7 @@ public final class ModuleLib {
                             }
                         }
                         Value value = payload.call(exprVal);
-                        if (Unspecified.isUnspecified(value))
+                        if (value.asVal(null) == null)
                             return null;
                         return VitFw.wrap(Vit.val(value));
                     }

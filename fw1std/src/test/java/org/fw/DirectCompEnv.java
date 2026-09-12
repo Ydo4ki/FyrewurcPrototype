@@ -4,10 +4,7 @@ import com.ydo4ki.esast.BracketsTypes;
 import com.ydo4ki.esast.Expr;
 import com.ydo4ki.esast.ExprList;
 import com.ydo4ki.esast.Symbol;
-import org.fw.base.Unspecified;
 import org.fw.base.Val;
-import org.fw.core.FyrewurcException;
-import org.fw.core.abstrait.Value;
 import org.fw.core.vit.Vit;
 import org.fw.std.DeclaredFw;
 import java.util.function.Function;
@@ -23,7 +20,7 @@ public final class DirectCompEnv {
                 return Vit.val(symbol(v.substring(1, v.length() - 1)));
             }
             Val ret = get.apply(v);
-            if (ret == null || Unspecified.isUnspecified(ret))
+            if (ret == null)
                 throw new DirectVitCompilationException(expr, String.valueOf(ret));
 
             return Vit.val(ret);

@@ -1,8 +1,6 @@
 package org.fw.base;
 
-import org.fw.core.NativeExecutionException;
-import org.fw.core.abstrait.ImpossibleValue;
-import org.fw.core.abstrait.Value;
+import org.fw.core.abstrait.*;
 import org.fw.core.commons.ValAdapter;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -106,11 +104,12 @@ public abstract class Type implements ValAdapter {
         }
 
         @Override
-        Val callInstance(Val instance, Value arg) {
+        Value callInstance(Val instance, Value arg) {
             Value v = ((Telephonist)instance.getValue()).call(instance, arg);
-            
-            if (v.asVal(null) != null) return v.asVal();
-            return Unspecified.unspecified(instance, arg);
+
+            Val asVal = v.asVal(null);
+            if (asVal != null) return asVal;
+            return v;
 //            try {
 //                Value v = instance._unpack(Telephonist.class).function().call(arg);
 //                if (!(v instanceof Val))
@@ -200,13 +199,19 @@ public abstract class Type implements ValAdapter {
 
             @Override
             public String toString() {
-                return marker;
+                return marker == null ? "*" : marker;
             }
 
             Value call(Val self, Value arg) {
-                Value ret = function.call(new DefinitiveValEnv<>(self, arg));
-                if (ret == null) ret = ImpossibleValue.value;
-                return ret;
+                try {
+                    Value ret = function.call(new DefinitiveValEnv<>(self, arg));
+                    if (ret == null) {
+                        ret = new ImpossibleCallValue(self, arg); // ImpossibleValue.value;
+                    }
+                    return ret;
+                } catch (NotAValException e) {
+                    return new ImpossibleCallValue(self, arg);
+                }
             }
 
             Value invoke(State state) {

@@ -31,8 +31,13 @@ public final class LazyCallValue implements Value {
     }
 
     @Override
-    public Val asVal(Val orElse) throws NativeExecutionException {
+    public Val asVal(Val orElse) {
         return ret().asVal(orElse);
+    }
+
+    @Override
+    public Val asVal() throws NativeExecutionException {
+        return ret().asVal();
     }
 
     @Override
