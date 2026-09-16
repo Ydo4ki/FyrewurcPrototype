@@ -2,40 +2,24 @@ package org.fw.core.state.obj;
 
 import org.fw.base.Val;
 
-public interface Obj {
+public interface Obj extends State {
 
-    State state();
+    Obj parent();
 
-    Obj partOf();
-
-    Val asVal();
+    Val asValHandle();
 
     default void shmert() {
 
     }
+
+    default boolean isInside(State state) {
+        State p = this;
+        while (p != null) {
+            if (p == state)
+                return true;
+
+            p = p.parent();
+        }
+        return false;
+    }
 }
-
-/*
-
-(ObjImpl
- (struct [
-  (= x (mut DInt))
-  (= y (mut DInt))
- ])
- (fn [(= x DInt) (= y DInt)] -> (payloadT (mutable x) (mutable y)))
- (write-handler payload x (do
-    (set! payload.x x.x)
-    (set! payload.y x.y)
- ))
- (read-handler payload ((struct [
-    (= x DInt)
-    (= y DInt)
- ]) payload.x payload.y))
-)
-
-what the hell is this
-
-
-
-
-*/

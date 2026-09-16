@@ -63,7 +63,7 @@ public final class Std {
 
     public static final Type operation = OperationFw.operation;
     public static final Type scope = ScopeFw.scopePointer;
-    public static final Type statePointer = StatePointerFw.statePointer;
+    public static final Val statePointer = StatePointerFw.statePointer;
     public static final Type laserPointer = LaserPointerFw.laserPointer;
 
     public static final Val std = modulerize();

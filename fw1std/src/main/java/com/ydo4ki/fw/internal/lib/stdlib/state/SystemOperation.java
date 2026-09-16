@@ -2,12 +2,13 @@ package com.ydo4ki.fw.internal.lib.stdlib.state;
 
 import org.fw.core.abstrait.Value;
 import org.fw.base.Val;
+import org.fw.core.state.obj.Scope;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.state.obj.State;
 
 public abstract class SystemOperation extends Operation {
 
-    public static final State systemState = State.eternal();
+    public static final State systemState = new Scope(null);
 
     public SystemOperation() {}
 

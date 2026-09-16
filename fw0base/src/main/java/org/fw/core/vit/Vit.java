@@ -3,6 +3,7 @@ package org.fw.core.vit;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 import org.fw.base.Val;
+import org.fw.core.state.obj.Scope;
 import org.fw.core.state.obj.State;
 
 public abstract class Vit {
@@ -19,7 +20,7 @@ public abstract class Vit {
     }
 
     public final Value eval(Value rtEnv) {
-        return State.performAndDie(state -> eval(rtEnv, state));
+        return Scope.performAndDie(state -> eval(rtEnv, state), null);
     }
 
     public abstract Value eval(Value rtEnv, State state);
@@ -61,7 +62,7 @@ public abstract class Vit {
     }
 
     public final Val asLambdaVal() {
-        return FW.lambda((env) -> State.performAndDie(scope ->
-                this.eval(env, scope)));
+        return FW.lambda((env) -> Scope.performAndDie(scope ->
+                this.eval(env, scope), null));
     }
 }

@@ -4,13 +4,21 @@ import org.fw.base.Val;
 
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.function.Function;
 
 public final class Scope implements Obj {
     private final Obj owner;
     private final Map<Obj, Obj> objects = new WeakHashMap<>();
 
-    Scope(Obj owner) {
+    public Scope(Obj owner) {
         this.owner = owner;
+    }
+
+    public static <T> T performAndDie(Function<Scope, T> function, Obj owner) {
+        Scope state = new Scope(owner);
+        T ret = function.apply(state);
+        state.shmert();
+        return ret;
     }
 
     void add(Obj obj) {
@@ -18,19 +26,14 @@ public final class Scope implements Obj {
     }
 
     @Override
-    public State state() {
-        return owner.state();
-    }
-
-    @Override
-    public Obj partOf() {
+    public Obj parent() {
         return owner;
     }
 
     private final Val asVal = Val._NEW_INSTANCE_(ScopeFw.scopePointer, this);
 
     @Override
-    public Val asVal() {
+    public Val asValHandle() {
         return asVal;
     }
 

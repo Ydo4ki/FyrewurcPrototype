@@ -5,7 +5,7 @@ import org.fw.base.Unspecified;
 import org.fw.base.Val;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import org.fw.core.state.obj.State;
+import org.fw.core.state.obj.Scope;
 import org.fw.core.vit.Vit;
 import org.fw.esast.expr.CompEnv;
 import org.fw.esast.expr.ExprFw;
@@ -57,13 +57,13 @@ public final class DIntLib {
                             .call(parseArg),
                     parseArg
             );
-            parseNumCenv = State.performAndDie(state -> FW.lambda((arg1) -> {
+            parseNumCenv = Scope.performAndDie(state -> FW.lambda((arg1) -> {
                 Val rtEnv = FW.lambda((arg2) -> {
                     if (arg2.equalsSymbol("arg")) return arg1;
                     return null;
                 });
                 return body.eval(rtEnv, state);
-            }));
+            }), null);
         }
     }
 }

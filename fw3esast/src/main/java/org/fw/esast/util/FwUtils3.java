@@ -7,6 +7,7 @@ import org.fw.base.Val;
 import org.fw.core.FW;
 import org.fw.core.NativeExecutionException;
 import org.fw.core.abstrait.Value;
+import org.fw.core.state.obj.Scope;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
@@ -39,14 +40,14 @@ public final class FwUtils3 {
     }
 
     public static Val getValueFromFile(File file, CompEnv compEnv) throws IOException {
-        return State.performAndDie(s -> {
+        return Scope.performAndDie(s -> {
             try {
                 return getValueFromFile(file, compEnv, FW.lambda((arg) -> null), s);
             } catch (IOException e) {
                 sneakyThrow(e);
                 return null;
             }
-        });
+        }, null);
     }
 
     @SuppressWarnings("unchecked")

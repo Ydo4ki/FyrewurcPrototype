@@ -2,7 +2,7 @@
 
 (assert! (== (to-expr Operation) (symbol "Operation")))
 (do
- (: scope (get (invoke! StatePointer.current) scope))
+ (: scope (get (invoke! statePointer)))
  (: o1 (invoke! (call scope.new 17)))
  (: o2 (new! 17))
 

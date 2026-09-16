@@ -3,26 +3,36 @@ package org.fw.core.state.obj;
 import org.fw.base.Val;
 import org.fw.core.state.operation.Operation;
 
-public final class ConcreteAtomObj extends AbstractObj implements AtomObj {
+import java.util.Objects;
+
+public final class ValObj implements AtomObj {
+    private final Obj owner;
     private Val value;
 
-    public ConcreteAtomObj(Val value, Scope owner) {
-        super(owner);
+    public ValObj(Val value, Scope owner) {
+        Objects.requireNonNull(owner);
+        this.owner = owner;
+        owner.add(this);
         this.value = value;
     }
 
-    public static ConcreteAtomObj of(Val value, Scope owner) {
-        return new ConcreteAtomObj(value, owner);
+    @Override
+    public Obj parent() {
+        return owner;
+    }
+
+    public static ValObj of(Val value, Scope owner) {
+        return new ValObj(value, owner);
     }
 
     public Val read(State state) {
-        if (state() != state)
+        if (this.isInside(state))
             return Operation.unit; // c'mon at least use exceptions you're getting too far with this
         return value;
     }
 
     public void write(State state, Val x) {
-        if (state() != state)
+        if (this.isInside(state))
             return;
         value = x;
     }
@@ -30,7 +40,7 @@ public final class ConcreteAtomObj extends AbstractObj implements AtomObj {
     private final Val asVal = Val._NEW_INSTANCE_(LaserPointerFw.laserPointer, this);
 
     @Override
-    public Val asVal() {
+    public Val asValHandle() {
         return asVal;
     }
 }

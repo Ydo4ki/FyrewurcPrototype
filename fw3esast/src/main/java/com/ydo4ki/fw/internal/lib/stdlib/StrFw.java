@@ -8,12 +8,12 @@ import org.fw.base.*;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 
+import org.fw.core.state.obj.Scope;
 import org.fw.std.DeclaredFw;
 import org.fw.std.ModuleFw;
 import org.fw.std.VitFw;
 import org.fw.esast.expr.ExprFw;
 import org.fw.esast.expr.Lib;
-import org.fw.core.state.obj.State;
 import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
@@ -107,13 +107,13 @@ public final class StrFw {
                     parseArg
             );
             // uh okay
-            parseStrCenv = State.performAndDie(state -> FW.lambda((arg3) -> {
+            parseStrCenv = Scope.performAndDie(state -> FW.lambda((arg3) -> {
                 Val rtEnv = FW.lambda((arg2) -> {
                     if (arg2.equalsSymbol("arg")) return arg3;
                     return null;
                 });
                 return body.eval(rtEnv, state);
-            }));
+            }), null);
         }
     }
 

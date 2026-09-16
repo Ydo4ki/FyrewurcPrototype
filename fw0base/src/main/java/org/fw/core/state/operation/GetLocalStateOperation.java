@@ -18,7 +18,7 @@ public final class GetLocalStateOperation extends Operation {
 
     @Override
     public Value apply(State state) {
-        return state.asVal();
+        return state.asValHandle();
     }
 
     @Override

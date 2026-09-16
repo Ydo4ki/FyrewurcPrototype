@@ -28,7 +28,7 @@ public final class ScopeFw {
                     String s = arg._UNPACK_().toString();
                     switch (s) {
                         case "owner":
-                            return obj.partOf().asVal();
+                            return obj.parent().asValHandle();
                         case "new":
                             return FW.lambda_native(value -> new CreateObjectOperation(obj, value).asVal());
                     }

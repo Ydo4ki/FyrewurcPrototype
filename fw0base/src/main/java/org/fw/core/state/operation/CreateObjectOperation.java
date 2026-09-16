@@ -18,9 +18,9 @@ public final class CreateObjectOperation extends Operation {
 
     @Override
     public Value apply(State state) {
-        if (state != scope.state()) 
+        if (scope.isInside(state))
             return Operation.unit;
-        AtomObj obj = ConcreteAtomObj.of(initialValue, scope);
+        AtomObj obj = ValObj.of(initialValue, scope);
         return Val._NEW_INSTANCE_(LaserPointerFw.laserPointer, obj);
     }
 

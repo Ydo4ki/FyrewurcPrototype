@@ -21,7 +21,7 @@ public final class LaserPointerFw {
                 String s = arg._UNPACK_().toString();
                 switch (s) {
                     case "owner":
-                        return obj.partOf().asVal();
+                        return obj.parent().asValHandle();
                     case "read":
                         return Operation.read((AtomObj) obj).asVal();
                     case "write":
