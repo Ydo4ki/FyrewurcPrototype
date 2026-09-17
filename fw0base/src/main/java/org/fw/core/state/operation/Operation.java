@@ -5,8 +5,8 @@ import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 import org.fw.core.commons.ValAdapter;
 import org.fw.base.Val;
+import org.fw.core.state.obj.LaserPointerFw;
 import org.fw.core.state.obj.State;
-import org.fw.core.state.obj.AtomObj;
 import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitInvoke;
 
@@ -30,11 +30,11 @@ public abstract class Operation implements ValAdapter {
         this.asVal = Val._NEW_INSTANCE_(OperationFw.operation, this);
     }
 
-    public static Operation read(AtomObj obj) {
+    public static Operation read(LaserPointerFw.ValObj obj) {
         return new ReadOperation(obj);
     }
 
-    public static Operation write(AtomObj obj, Val x) {
+    public static Operation write(LaserPointerFw.ValObj obj, Val x) {
         return new WriteOperation(obj, x);
     }
 

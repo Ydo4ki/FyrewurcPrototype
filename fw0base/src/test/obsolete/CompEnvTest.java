@@ -8,7 +8,6 @@ import org.fw.core.ast.lexer.TokenOutput;
 import org.fw.core.base.SymbolFw;
 import org.fw.core.base.Val;
 import org.fw.core.cases.Main;
-import org.fw.core.state.obj.AtomObj;
 import org.fw.lib.stdlib.DIntFw;
 import org.fw.lib.stdlib.VitFw;
 import org.fw.lib.stdlib.expr.CompEnv;

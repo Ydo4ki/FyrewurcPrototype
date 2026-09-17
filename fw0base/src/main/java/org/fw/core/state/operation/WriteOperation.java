@@ -2,25 +2,17 @@ package org.fw.core.state.operation;
 
 import org.fw.core.abstrait.Value;
 import org.fw.base.Val;
+import org.fw.core.state.obj.LaserPointerFw;
 import org.fw.core.state.obj.Obj;
 import org.fw.core.state.obj.State;
-import org.fw.core.state.obj.AtomObj;
 
 public final class WriteOperation extends Operation {
-    private final AtomObj obj;
+    private final LaserPointerFw.ValObj obj;
     private final Val x;
 
-    WriteOperation(AtomObj obj, Val x) {
+    WriteOperation(LaserPointerFw.ValObj obj, Val x) {
         this.obj = obj;
         this.x = x;
-    }
-
-    public Val x() {
-        return x;
-    }
-
-    public Obj obj() {
-        return obj;
     }
 
     @Override

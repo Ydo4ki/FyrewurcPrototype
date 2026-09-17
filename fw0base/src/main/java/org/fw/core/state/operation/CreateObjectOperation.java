@@ -20,8 +20,7 @@ public final class CreateObjectOperation extends Operation {
     public Value apply(State state) {
         if (scope.isInside(state))
             return Operation.unit;
-        AtomObj obj = ValObj.of(initialValue, scope);
-        return Val._NEW_INSTANCE_(LaserPointerFw.laserPointer, obj);
+        return scope.create(initialValue).asValHandle();
     }
 
     @Override
