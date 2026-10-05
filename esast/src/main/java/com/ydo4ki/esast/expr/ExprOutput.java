@@ -1,6 +1,9 @@
-package com.ydo4ki.esast.lexer;
+package com.ydo4ki.esast.expr;
 
 import com.ydo4ki.esast.*;
+import com.ydo4ki.esast.token.Token;
+import com.ydo4ki.esast.token.TokenOutput;
+import com.ydo4ki.esast.token.TokenType;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,36 +11,78 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * An expression output that parses a sequence of tokens into an expressly-symbolic abstract
+ * syntax tree (ESAST) of located expressions.
+ *
+ * <p>This class implements {@link Iterable} and produces a sequence of
+ * {@link LocatedExpr} objects representing the parsed expressions.</p>
+ *
+ * @see LocatedExpr
+ * @see TokenOutput
+ * @see BracketsTypes
+ *
  * @author Sulphuris
  * @since 4/16/2025 7:50 PM
  */
 public final class ExprOutput implements Iterable<LocatedExpr<? extends Expr>> {
 
+	/**
+	 * Creates an {@code ExprOutput} by reading from the given input stream.
+	 *
+	 * @param in the input stream to read from
+	 * @return a new {@code ExprOutput}
+	 * @see TokenOutput#valueOf(InputStream)
+	 */
 	public static ExprOutput valueOf(InputStream in) {
 		return new ExprOutput(TokenOutput.valueOf(in));
 	}
 
 	private final Iterable<Token> tokenOutput;
 	private final BracketsTypes bracketsTypes;
-	
+
+	/**
+	 * Creates an {@code ExprOutput} from the given token output
+	 *
+	 * @param tokenOutput the token output to parse
+	 */
 	public ExprOutput(TokenOutput tokenOutput) {
 		this(tokenOutput, tokenOutput.getBracketsTypes());
 	}
 
-    public ExprOutput(Iterable<Token> tokenOutput, BracketsTypes bracketsTypes) {
+	/**
+	 * Creates an {@code ExprOutput} from the given token iterable and bracket
+	 * types.
+	 *
+	 * @param tokenOutput   the token iterable to parse
+	 * @param bracketsTypes the bracket types to recognize
+	 */
+    private ExprOutput(Iterable<Token> tokenOutput, BracketsTypes bracketsTypes) {
         this.tokenOutput = tokenOutput;
 		this.bracketsTypes = bracketsTypes;
 	}
-	
-	public BracketsTypes getBracketsTypes() {
+
+	/**
+	 * Returns the bracket types recognized by this expression output.
+	 *
+	 * @return the bracket types
+	 */
+	BracketsTypes getBracketsTypes() {
 		return bracketsTypes;
 	}
-	
+
+	/**
+	 * Returns an iterator over the parsed expressions.
+	 *
+	 * @return an iterator
+	 */
 	@Override
     public Iterator<LocatedExpr<? extends Expr>> iterator() {
         return new ExprIterator();
     }
 
+	/**
+	 * An iterator that parses tokens into located expressions.
+	 */
     private class ExprIterator implements Iterator<LocatedExpr<? extends Expr>> {
 		private LocatedExpr<? extends Expr> next;
 		

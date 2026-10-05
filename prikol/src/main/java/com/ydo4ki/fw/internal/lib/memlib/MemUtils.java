@@ -1,11 +1,10 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
-import com.ydo4ki.fw.internal.lib.memlib.utils.bits.*;
+import com.ydo4ki.fw.internal.lib.memlib.bits.*;
+import com.ydo4ki.fw.internal.lib.memlib.ints.IntType;
 import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.std.WrapperTypeFw;
-import com.ydo4ki.fw.internal.lib.memlib.ints.IntType;
-import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;

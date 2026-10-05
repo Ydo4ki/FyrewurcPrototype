@@ -1,4 +1,4 @@
-package com.ydo4ki.fw.internal.lib.memlib.utils.bits;
+package com.ydo4ki.fw.internal.lib.memlib.bits;
 
 import java.util.BitSet;
 
@@ -51,7 +51,7 @@ public class MnogaBits extends Bits {
         for (int i = 0; i < data.length; i++) {
             data[i] = this.getLong(i) | bits.getLong(i);
         }
-        return Bits.of(BitSet.valueOf(data), size);
+        return of(BitSet.valueOf(data), size);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MnogaBits extends Bits {
         for (int i = 0; i < data.length; i++) {
             data[i] = this.getLong(i) & bits.getLong(i);
         }
-        return Bits.of(BitSet.valueOf(data), size);
+        return of(BitSet.valueOf(data), size);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class MnogaBits extends Bits {
         for (int i = 0; i < data.length; i++) {
             data[i] = this.getLong(i) ^ bits.getLong(i);
         }
-        return Bits.of(BitSet.valueOf(data), size);
+        return of(BitSet.valueOf(data), size);
     }
 
     @Override
@@ -88,6 +88,6 @@ public class MnogaBits extends Bits {
         for (int i = 0; i < data.length; i++) {
             data[i] = ~this.getLong(i);
         }
-        return Bits.of(BitSet.valueOf(data), size);
+        return of(BitSet.valueOf(data), size);
     }
 }

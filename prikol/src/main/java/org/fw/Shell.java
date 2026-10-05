@@ -5,13 +5,12 @@ import com.ydo4ki.fw.internal.lib.devicelib.DeviceLib;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;
 import com.ydo4ki.fw.internal.lib.jlib.data.JOopFw;
-import com.ydo4ki.fw.internal.lib.memlib.MemLib;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.FW;
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.LocatedExpr;
-import com.ydo4ki.esast.lexer.ExprOutput;
-import com.ydo4ki.esast.lexer.TokenOutput;
+import com.ydo4ki.esast.expr.BracketsTypes;
+import com.ydo4ki.esast.expr.LocatedExpr;
+import com.ydo4ki.esast.expr.ExprOutput;
+import com.ydo4ki.esast.token.TokenOutput;
 import org.fw.base.Val;
 import org.fw.core.state.obj.State;
 import org.fw.core.state.operation.Operation;
@@ -35,11 +34,16 @@ import static org.fw.core.FW.symbol;
 
 public final class Shell {
     public static void main(String[] args) throws IOException {
+        String filename = null;
+        if (args.length != 0) {
+            filename = args[0];
+        }
         State state = SystemOperation.systemState;
         CompEnv compEnv = CompEnv.of(CompEnv.compEnv(
                 StdLib.lib.exports(),
-                MemLib.lib.exports(),
+//                MemLib.lib.exports(),
                 DeviceLib.lib.exports(),
+                StrFw.lib.exports(),
                 ModuleLib.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("bufr"), Val._NEW_INSTANCE_(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),
@@ -79,16 +83,7 @@ public final class Shell {
                 internalCompEnv.asValue(),
                 sysoperations
         ));
-//        BufferedReader reader = ;
-//
-//        System.out.print("Enter your text: ");
-//        try {
-//            // Read the full line
-//            String input = reader.readLine();
-//            System.out.println("You entered: " + input);
-//        } catch (IOException e) {
-//            System.err.println("Error reading input: " + e.getMessage());
-//        }
+
         Operation operation = FwUtils3.getOperation("org/fw/shell.fw", internalCompEnv, true);
         operation.apply(state);
     }

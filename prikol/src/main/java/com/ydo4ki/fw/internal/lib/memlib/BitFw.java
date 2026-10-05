@@ -1,4 +1,4 @@
-package com.ydo4ki.fw.internal.lib.memlib.words;
+package com.ydo4ki.fw.internal.lib.memlib;
 
 import org.fw.core.FW;
 import org.fw.base.CallFw;

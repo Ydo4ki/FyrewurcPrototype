@@ -6,7 +6,7 @@ import org.fw.core.abstrait.Value;
 import org.fw.core.commons.AbstractValueAdapter;
 import org.fw.esast.expr.forstd.VitLib;
 import org.fw.std.ChainLinkFw;
-import com.ydo4ki.esast.Expr;
+import com.ydo4ki.esast.expr.Expr;
 import org.fw.std.ChainResolveFw;
 import com.ydo4ki.fw.internal.lib.ConstraintFw;
 import org.fw.core.vit.Vit;

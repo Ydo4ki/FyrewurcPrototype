@@ -10,9 +10,9 @@ import org.fw.std.VitFw;
 import org.fw.std.dvec.DVecFw;
 import org.fw.esast.expr.CompEnv;
 import org.fw.core.util.FwUtils;
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.ExprList;
+import com.ydo4ki.esast.expr.BracketsTypes;
+import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.expr.ExprList;
 import org.fw.esast.expr.ExprFw;
 import org.fw.core.vit.Vit;
 

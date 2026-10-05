@@ -1,9 +1,9 @@
 package org.fw.esast.expr.forstd;
 
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.ExprList;
-import com.ydo4ki.esast.Symbol;
+import com.ydo4ki.esast.expr.BracketsTypes;
+import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.expr.ExprList;
+import com.ydo4ki.esast.expr.Symbol;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.base.OperationFw;
 import org.fw.base.Val;
@@ -94,7 +94,7 @@ public final class OperationLib {
     });
     public static final Lib lib = Lib.of(
             ModuleFw.module(
-                    DeclaredFw.declared(symbol("StatePointer"), StatePointerFw.statePointer),
+                    DeclaredFw.declared(symbol("statePointer"), StatePointerFw.statePointer),
                     DeclaredFw.declared(symbol("ScopePointer"), ScopeFw.scopePointer),
                     DeclaredFw.declared(symbol("LaserPointer"), LaserPointerFw.laserPointer),
                     DeclaredFw.declared(symbol("Operation"), OperationFw.operation),

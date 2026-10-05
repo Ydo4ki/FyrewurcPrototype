@@ -1,9 +1,9 @@
 package org.fw.esast.expr;
 
 import org.fw.core.FW;
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.ExprList;
+import com.ydo4ki.esast.expr.BracketsTypes;
+import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.expr.ExprList;
 import org.fw.base.Val;
 import org.fw.core.abstrait.Value;
 import org.fw.core.vit.VitUtils;

@@ -1,7 +1,7 @@
 package com.ydo4ki.fw.internal.lib.jlib.data;
 
 import org.fw.core.FW;
-import com.ydo4ki.esast.Symbol;
+import com.ydo4ki.esast.expr.Symbol;
 import org.fw.base.SymbolFw;
 import org.fw.base.Type;
 import org.fw.base.Val;

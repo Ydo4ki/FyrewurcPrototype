@@ -1,6 +1,6 @@
 package org.fw.esast.util;
 
-import com.ydo4ki.esast.*;
+import com.ydo4ki.esast.expr.*;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.base.SymbolFw;
 import org.fw.base.Val;
@@ -15,8 +15,8 @@ import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCall;
 import org.fw.esast.ExprVitCompilationException;
 import org.fw.esast.expr.CompEnv;
-import com.ydo4ki.esast.lexer.ExprOutput;
-import com.ydo4ki.esast.lexer.TokenOutput;
+import com.ydo4ki.esast.expr.ExprOutput;
+import com.ydo4ki.esast.token.TokenOutput;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,7 +103,10 @@ public final class FwUtils3 {
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
         if (in == null)
             throw new IOException("Source not found: " + filename);
+        return getOperation(in, compEnv, debug);
+    }
 
+    public static Operation getOperation(InputStream in, final CompEnv compEnv, boolean debug) throws IOException {
         Iterable<LocatedExpr<? extends Expr>> expressions = ExprOutput.valueOf(in);
         return new Operation() {
             @Override
@@ -116,8 +119,9 @@ public final class FwUtils3 {
                     try {
                         Val expr = ExprFw.wrap(expression);
                         Val v = compEnv1.asValue().call(CompEnv.syntaxResolve(ExprFw.unwrap(expr), compEnv1)).asVal();
-                        if (!VitFw.isVit(v.getType()))
-                            return v;
+//                        if (!VitFw.isVit(v.getType()))
+//                            throw new ExprVitCompilationException(v);
+//                            return v;
                         vit = VitLib.unwrap(v.asVal(), ExprFw.unwrap(expr));
                     } catch (ExprVitCompilationException | NativeExecutionException e) {
                         System.err.println(expression);

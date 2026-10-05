@@ -1,6 +1,6 @@
 package org.fw.core.cases;
 
-import com.ydo4ki.esast.*;
+import com.ydo4ki.esast.expr.*;
 import com.ydo4ki.fw.internal.lib.devicelib.DeviceLib;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;
@@ -10,11 +10,8 @@ import com.ydo4ki.fw.internal.lib.jlib.data.JLongFw;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import org.fw.core.FW;
-import org.fw.core.abstrait.Value;
-import com.ydo4ki.esast.lexer.ExprOutput;
+import com.ydo4ki.esast.expr.ExprOutput;
 import org.fw.base.Val;
-import com.ydo4ki.fw.internal.lib.memlib.MemLib;
-import com.ydo4ki.fw.internal.lib.memlib.HeapFw;
 import org.fw.core.state.obj.State;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.state.operation.Operation;
@@ -66,7 +63,7 @@ public class Main {
         State state = SystemOperation.systemState;
         CompEnv compEnv = CompEnv.of(CompEnv.compEnv(
                 StdLib.lib.exports(),
-                MemLib.lib.exports(),
+//                MemLib.lib.exports(),
                 DeviceLib.lib.exports(),
                 ModuleLib.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("test-mod"), ModuleFw.module(
@@ -87,8 +84,8 @@ public class Main {
 
                             return new ThreadSleepOperation(DIntFw.unwrap(arg).longValue()).asVal();
                         })),
-                        DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
-                        DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
+                        DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv)
+//                        DeclaredFw.declared(symbol("heap"), HeapFw.systemHeap)
                 )),
                 JMethodFw.methodCallCEnv
         ));

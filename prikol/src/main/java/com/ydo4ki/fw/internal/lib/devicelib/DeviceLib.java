@@ -4,14 +4,13 @@ import com.ydo4ki.fw.internal.debug.Debug;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JMethodFw;
 import com.ydo4ki.fw.internal.lib.jlib._internal.JVMHandles;
 import com.ydo4ki.fw.internal.lib.jlib.data.JOopFw;
-import com.ydo4ki.fw.internal.lib.memlib.MemLib;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.LocatedExpr;
-import com.ydo4ki.esast.lexer.ExprOutput;
-import com.ydo4ki.esast.lexer.TokenOutput;
+import com.ydo4ki.esast.expr.BracketsTypes;
+import com.ydo4ki.esast.expr.LocatedExpr;
+import com.ydo4ki.esast.expr.ExprOutput;
+import com.ydo4ki.esast.token.TokenOutput;
 import org.fw.base.Val;
 import org.fw.esast.expr.forstd.ModuleLib;
 import org.fw.esast.util.FwUtils3;
@@ -39,7 +38,7 @@ public final class DeviceLib {
     static {
         CompEnv compEnv = CompEnv.of(CompEnv.compEnv(
                 StdLib.lib.exports(),
-                MemLib.lib.exports(),
+//                MemLib.lib.exports(),
                 ModuleLib.ModuleCEnvFw.compEnv(ModuleFw.module(
                         DeclaredFw.declared(symbol("_JvmEnv"), JVMHandles.jvmEnv),
                         DeclaredFw.declared(symbol("bufr"), Val._NEW_INSTANCE_(JOopFw.jOop, new BufferedReader(new InputStreamReader(System.in)))),

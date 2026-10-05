@@ -1,7 +1,7 @@
-package com.ydo4ki.esast.lexer;
+package com.ydo4ki.esast.token;
 
-import com.ydo4ki.esast.BracketsType;
-import com.ydo4ki.esast.BracketsTypes;
+import com.ydo4ki.esast.expr.BracketsType;
+import com.ydo4ki.esast.expr.BracketsTypes;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -11,8 +11,27 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * A token output that reads tokens from a source.
+ *
+ * <p>This class implements {@link Iterable} and produces a sequence of
+ * {@link Token} objects by lexing the source code.</p>
+ *
+ * @see Token
+ * @see TokenType
+ * @see BracketsTypes
+ */
 public final class TokenOutput implements Iterable<Token> {
 
+	/**
+	 * Creates a {@code TokenOutput} by reading the entire content of the given
+	 * input stream as UTF-8.
+	 *
+	 * @param in the input stream to read from
+	 * @return a new {@code TokenOutput}
+	 * @throws NullPointerException if {@code in} is {@code null}
+	 * @throws RuntimeException     if an I/O error occurs while reading the stream
+	 */
 	public static TokenOutput valueOf(InputStream in) {
 		return new TokenOutput(readStream(in), null, BracketsTypes.bracketsTypes);
 	}
@@ -29,28 +48,67 @@ public final class TokenOutput implements Iterable<Token> {
 	private final String source;
 	private final File file;
 	private final BracketsTypes bracketsTypes;
-	
+
+	/**
+	 * Creates a {@code TokenOutput} from the given source code, file, and
+	 * bracket types.
+	 *
+	 * @param source        the source code
+	 * @param file          the source file, or {@code null} if unknown
+	 * @param bracketsTypes the bracket types to recognize
+	 */
 	public TokenOutput(String source, File file, BracketsTypes bracketsTypes) {
 		this.source = source;
 		this.file = file;
 		this.bracketsTypes = bracketsTypes;
 	}
+
+	/**
+	 * Creates a {@code TokenOutput} by reading the entire content of the given
+	 * file as UTF-8.
+	 *
+	 * @param file          the path to the source file
+	 * @param bracketsTypes the bracket types to recognize
+	 * @throws IOException if an I/O error occurs while reading the file
+	 */
 	public TokenOutput(Path file, BracketsTypes bracketsTypes) throws IOException {
 		this(String.join("\n", Files.readAllLines(file)), file.toFile(), bracketsTypes);
 	}
+
+	/**
+	 * Creates a {@code TokenOutput} by reading the entire content of the given
+	 * file as UTF-8.
+	 *
+	 * @param file          the source file
+	 * @param bracketsTypes the bracket types to recognize
+	 * @throws IOException if an I/O error occurs while reading the file
+	 */
 	public TokenOutput(File file, BracketsTypes bracketsTypes) throws IOException {
 		this(String.join("\n", Files.readAllLines(file.toPath())), file, bracketsTypes);
 	}
-	
+
+	/**
+	 * Returns the bracket types recognized by this token output.
+	 *
+	 * @return the bracket types
+	 */
 	public BracketsTypes getBracketsTypes() {
 		return bracketsTypes;
 	}
-	
+
+	/**
+	 * Returns an iterator over the tokens.
+	 *
+	 * @return an iterator
+	 */
 	@Override
 	public Iterator<Token> iterator() {
 		return new TokenIterator();
 	}
-	
+
+	/**
+	 * An iterator that lexes the source code into tokens.
+	 */
 	private class TokenIterator implements Iterator<Token> {
 		
 		private int pos = 0;

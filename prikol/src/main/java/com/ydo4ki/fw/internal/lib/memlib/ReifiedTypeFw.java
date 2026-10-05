@@ -1,5 +1,6 @@
 package com.ydo4ki.fw.internal.lib.memlib;
 
+import com.ydo4ki.fw.internal.lib.memlib.bits.Bits;
 import org.fw.core.FW;
 import org.fw.base.CallFw;
 import org.fw.base.SymbolFw;
@@ -7,10 +8,8 @@ import org.fw.base.Type;
 import org.fw.base.Val;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.std.dvec.DVecFw;
-import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
-import com.ydo4ki.fw.internal.lib.memlib.utils.bits.Bits;
 
 import java.util.Objects;
 import java.util.WeakHashMap;

@@ -1,8 +1,8 @@
 package org.fw.test;
 
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.LocatedExpr;
-import com.ydo4ki.esast.lexer.ExprOutput;
+import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.expr.LocatedExpr;
+import com.ydo4ki.esast.expr.ExprOutput;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.DirectCompEnv;
 import org.fw.DirectVitCompilationException;

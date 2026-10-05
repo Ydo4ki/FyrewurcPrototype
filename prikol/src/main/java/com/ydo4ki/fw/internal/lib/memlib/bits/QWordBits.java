@@ -1,4 +1,4 @@
-package com.ydo4ki.fw.internal.lib.memlib.utils.bits;
+package com.ydo4ki.fw.internal.lib.memlib.bits;
 
 public class QWordBits extends Bits {
     public final long value;

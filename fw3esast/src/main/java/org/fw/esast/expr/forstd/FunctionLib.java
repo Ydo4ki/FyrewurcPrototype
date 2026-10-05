@@ -1,9 +1,9 @@
 package org.fw.esast.expr.forstd;
 
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.Expr;
-import com.ydo4ki.esast.ExprList;
-import com.ydo4ki.esast.Symbol;
+import com.ydo4ki.esast.expr.BracketsTypes;
+import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.expr.ExprList;
+import com.ydo4ki.esast.expr.Symbol;
 import com.ydo4ki.fw.internal.lib.ConstraintFw;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.base.EqFw;
@@ -13,7 +13,6 @@ import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
 import org.fw.core.vit.Vit;
 import org.fw.esast.expr.*;
-import org.fw.esast.util.FwUtils3;
 import org.fw.std.DeclaredFw;
 import org.fw.std.FunctionFw;
 import org.fw.std.ModuleFw;

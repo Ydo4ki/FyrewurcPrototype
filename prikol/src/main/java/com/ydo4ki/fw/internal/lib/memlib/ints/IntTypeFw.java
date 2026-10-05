@@ -1,5 +1,7 @@
 package com.ydo4ki.fw.internal.lib.memlib.ints;
 
+import com.ydo4ki.fw.internal.lib.memlib.BitFw;
+import com.ydo4ki.fw.internal.lib.memlib.bits.Bits;
 import com.ydo4ki.fw.internal.lib.stdlib.DIntFw;
 import org.fw.base.CallFw;
 import org.fw.base.SymbolFw;
@@ -7,11 +9,9 @@ import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.core.FW;
 
-import com.ydo4ki.fw.internal.lib.memlib.utils.bits.Bits;
 import org.fw.esast.expr.Lib;
 import com.ydo4ki.fw.internal.lib.memlib.MemUtils;
 import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
-import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 import org.fw.core.util.FwUtils;
 import org.fw.std.DeclaredFw;
 import org.fw.base.TypePayloadInfo;

@@ -1,10 +1,12 @@
 package com.ydo4ki.fw.internal.lib;
 
+import com.ydo4ki.fw.internal.lib.memlib.BitFw;
+import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
 import org.fw.base.Type;
 import org.fw.std.DeclaredFw;
 import org.fw.esast.expr.Lib;
-import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
-import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
+//import com.ydo4ki.fw.internal.lib.memlib.ReifiedTypeFw;
+//import com.ydo4ki.fw.internal.lib.memlib.words.BitFw;
 import org.fw.std.ModuleFw;
 
 import static org.fw.core.FW.symbol;

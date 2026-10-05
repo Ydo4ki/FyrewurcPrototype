@@ -1,13 +1,41 @@
-package com.ydo4ki.esast;
+package com.ydo4ki.esast.expr;
+
+import com.ydo4ki.esast.Location;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * A located symbol, i.e. a {@link Symbol} with location information.
+ */
 public final class LocatedSymbol extends LocatedExpr<Symbol> {
+
+    /**
+     * Creates a located symbol.
+     *
+     * @param expr the underlying symbol
+     * @param location the location of the symbol
+     */
     LocatedSymbol(Symbol expr, Location location) {
         super(expr, location);
     }
 
+    /**
+     * Splits the symbol value into a sequence of located symbols using the given
+     * separator strings.
+     *
+     * <p>The splitting is greedy: at each position the longest matching
+     * separator is chosen. Empty separator strings are ignored. The found
+     * separators are also returned as separate {@link LocatedSymbol} instances.
+     * The locations of the resulting symbols are computed relative to the
+     * location of this symbol.</p>
+     *
+     * <p>If no non-empty separator is provided or there are no separators, a collection containing a single located symbol
+     * with the original value is returned.</p>
+     *
+     * @param separateLines separator strings
+     * @return a collection of located symbols obtained after splitting
+     */
     @Override
     public Collection<? extends LocatedExpr<?>> split(String... separateLines) {
         String line = getExpr().getValue();
@@ -19,7 +47,7 @@ public final class LocatedSymbol extends LocatedExpr<Symbol> {
         List<String> validSeparators = Arrays.stream(separateLines).filter(sep -> !sep.isEmpty()).collect(Collectors.toList());
 
         if (validSeparators.isEmpty()) {
-            return Collections.emptyList();
+            return Collections.singletonList(this);
         }
 
         List<LocatedExpr<Symbol>> result = new ArrayList<>();
@@ -74,6 +102,11 @@ public final class LocatedSymbol extends LocatedExpr<Symbol> {
         return result;
     }
 
+    /**
+     * Returns the value of the underlying symbol.
+     *
+     * @return the symbol value
+     */
     public String getValue() {
         return getExpr().getValue();
     }

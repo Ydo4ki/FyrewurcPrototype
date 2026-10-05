@@ -1,11 +1,10 @@
 package org.fw.esast;
 
 import org.fw.core.FyrewurcException;
-import org.fw.core.abstrait.Value;
 import org.fw.base.Val;
 import org.fw.esast.expr.CompEnv;
 import org.fw.esast.expr.ExprFw;
-import com.ydo4ki.esast.Expr;
+import com.ydo4ki.esast.expr.Expr;
 
 public class ExprVitCompilationException extends FyrewurcException {
     private final Val value;
