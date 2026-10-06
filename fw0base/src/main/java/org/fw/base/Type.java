@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public abstract class Type implements ValAdapter {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
 
     private Val instancer, unpacker;
 
@@ -63,8 +64,9 @@ public abstract class Type implements ValAdapter {
 
         @Override
         Value invokeInstance(Val val, State state) {
-            if (val.getValue() instanceof Operation) {
-                Operation op = (Operation)val.getValue();
+            Object v = magic.unpackVal(val);
+            if (v instanceof Operation) {
+                Operation op = (Operation)v;
                 return op.apply(state);
             }
             return null;
@@ -95,6 +97,7 @@ public abstract class Type implements ValAdapter {
     }
 
     public static final class TelephonistType extends Type {
+
         private final int depth;
         private Val asVal;
 
@@ -105,7 +108,7 @@ public abstract class Type implements ValAdapter {
 
         @Override
         Value callInstance(Val instance, Value arg) {
-            Value v = ((Telephonist)instance.getValue()).call(instance, arg);
+            Value v = ((Telephonist)magic.unpackVal(instance)).call(instance, arg);
 
             Val asVal = v.asVal(null);
             if (asVal != null) return asVal;
@@ -124,7 +127,7 @@ public abstract class Type implements ValAdapter {
 
         @Override
         Value invokeInstance(Val instance, State state) {
-            return ((Telephonist)instance.getValue()).invoke(state);
+            return ((Telephonist)magic.unpackVal(instance)).invoke(state);
         }
 
         @Override

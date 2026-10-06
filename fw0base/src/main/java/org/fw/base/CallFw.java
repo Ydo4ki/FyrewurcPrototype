@@ -13,6 +13,7 @@ import static org.fw.core.FW.*;
 // what do i need to remember
 // aaioasopdiou when was this even written
 public final class CallFw {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
 
     public static final Type call_t = telephonist_native("Call", (d) -> {
         Val arg = d.arg();
@@ -32,7 +33,7 @@ public final class CallFw {
 
     private static final Val construct = FW.lambda_native("Call.construct",
             (func) -> FW.lambda(
-                    (argument) -> Val.of(call_t, new DefinitiveValEnv<>(func, argument))));
+                    (argument) -> magic.newInstance(call_t, new DefinitiveValEnv<>(func, argument))));
 
     static Value fwCall(Value instance, Value arg) {
         return construct.call(instance).call(arg);
@@ -40,7 +41,7 @@ public final class CallFw {
 
     @SuppressWarnings("unchecked")
     public static <V extends Value> DefinitiveValEnv<V> unwrap0(Val call) {
-        return (DefinitiveValEnv<V>) call.getValue();
+        return (DefinitiveValEnv<V>) magic.unpackVal(call);
     }
 
     public static Value getVal(Value call) {

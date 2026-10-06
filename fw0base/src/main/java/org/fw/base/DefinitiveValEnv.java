@@ -5,6 +5,8 @@ import org.fw.core.abstrait.Value;
 import java.util.Objects;
 
 public final class DefinitiveValEnv<V extends Value> {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
+
     private final Val self;
     private final V arg;
 
@@ -23,14 +25,14 @@ public final class DefinitiveValEnv<V extends Value> {
 
     /* instancer */
     public Val instance(Object payload) {
-        return Val.of(self.asType(), payload);
+        return magic.newInstance(self.asType(), payload);
     }
 
     /* unpacker */
     @SuppressWarnings("unchecked")
     public <T> T unpack(Val val) {
         if (val.getType().equals(self.asType()))
-            return (T) val.getValue();
+            return (T) magic.unpackVal(val);
 
         throw new SecurityException("Attempt to unpack external type: " + self.asType() + " while this unpacker is for " + self.asType());
     }

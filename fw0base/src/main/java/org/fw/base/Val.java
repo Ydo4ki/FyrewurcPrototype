@@ -70,7 +70,7 @@ public final class Val implements ValAdapter, TypedValue {
         return (T)getValue();
     }
 
-    Object getValue() {
+    private Object getValue() {
         return value;
     }
 
@@ -97,7 +97,7 @@ public final class Val implements ValAdapter, TypedValue {
     }
 
     // todo: make this private to prevent someone from just putting un unauthorized class to org.fw.base package
-    static Val of(Type type, Object value) {
+    private static Val of(Type type, Object value) {
         return new Val(type, value, null);
     }
 

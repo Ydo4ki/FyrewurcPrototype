@@ -8,18 +8,19 @@ import org.fw.core.util.FwUtils;
 import org.fw.core.vit.Vit;
 
 public final class EqFw {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
 
     public static final Val eq;
     public static final Type eqChecker;
 
     static {
-        eq = FW.lambda("eq", (arg1) -> Val.of(EqFw.eqChecker, arg1));
+        eq = FW.lambda("eq", (arg1) -> magic.newInstance(EqFw.eqChecker, arg1));
         eqChecker = FW.lambda_native("eqChecker", arg -> {
             if (FwUtils.isTypeApiCall(arg, EqFw.eqChecker)) {
                 Val instance = CallFw.getVal(arg).asVal();
                 arg = CallFw.getArg(arg).asVal();
 
-                Value a = (Value) instance.getValue();
+                Value a = (Value) magic.unpackVal(instance);
                 if (a.asVal(null) == null)
                     return new ConstraintValue(Constraint.type(BoolFw.bool));
                 return BoolFw.wrap(a.impliesEquality(arg));

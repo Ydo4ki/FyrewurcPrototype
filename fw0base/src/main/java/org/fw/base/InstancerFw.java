@@ -5,6 +5,8 @@ import org.fw.core.FW;
 import org.fw.core.util.FwUtils;
 
 final class InstancerFw {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
+
     public static final Type instancer = FW.telephonist_native("Instancer", (d) -> {
         Val arg = d.arg();
         if (FwUtils.isTypeApiCall(arg, InstancerFw.instancer)) {
@@ -12,12 +14,12 @@ final class InstancerFw {
             Val cArg = (Val) CallFw.getArg(arg);
 
             Type targetType = d.unpack(instance);
-            return Val.of(targetType, cArg);
+            return magic.newInstance(targetType, cArg);
         }
         return null;
     }).asType();
 
     public static Val mkInstancer(Type type) {
-        return Val.of(instancer, type);
+        return magic.newInstance(instancer, type);
     }
 }

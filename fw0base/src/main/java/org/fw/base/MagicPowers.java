@@ -38,7 +38,7 @@ public final class MagicPowers {
         return newInstance.apply(type, value);
     }
 
-    public Object unpack(Val val) {
+    public Object unpackVal(Val val) {
         return getValue.apply(val);
     }
 
@@ -47,6 +47,12 @@ public final class MagicPowers {
     private static final Set<Class<?>> foreignCertificates = new HashSet<>();
     static {
         foreignCertificates.add(FW.class);
+        foreignCertificates.add(Type.class);
+        foreignCertificates.add(CallFw.class);
+        foreignCertificates.add(DefinitiveValEnv.class);
+        foreignCertificates.add(InstancerFw.class);
+        foreignCertificates.add(UnpackerFw.class);
+        foreignCertificates.add(EqFw.class);
         foreignCertificates.add(TelephonizeFw.class);
     }
 
