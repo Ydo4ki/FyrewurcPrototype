@@ -1,0 +1,9 @@
+[t {telephonist mirror}]
+{eq {type-get {t true}} Call}
+
+{eq {t true 'val'} t}
+{eq {t true 'arg'} true}
+
+[i {t true 'instance' const}]
+{eq {type-get i} t}
+{eq {t true 'unpack' i} const}

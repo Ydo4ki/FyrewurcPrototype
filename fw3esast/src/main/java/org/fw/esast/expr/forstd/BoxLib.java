@@ -1,7 +1,7 @@
 package org.fw.esast.expr.forstd;
 
-import com.ydo4ki.esast.expr.BracketsTypes;
-import com.ydo4ki.esast.expr.ExprList;
+import com.ydo4ki.esast.BracketsTypes;
+import com.ydo4ki.esast.ExprList;
 import org.fw.base.Type;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;

@@ -4,7 +4,7 @@ import org.fw.core.FyrewurcException;
 import org.fw.base.Val;
 import org.fw.esast.expr.CompEnv;
 import org.fw.esast.expr.ExprFw;
-import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.Expr;
 
 public class ExprVitCompilationException extends FyrewurcException {
     private final Val value;

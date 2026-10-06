@@ -1,9 +1,6 @@
 package org.fw.core;
 
-import org.fw.base.DefinitiveValEnv;
-import org.fw.base.SymbolFw;
-import org.fw.base.Type;
-import org.fw.base.Val;
+import org.fw.base.*;
 import org.fw.core.abstrait.LazyCallValue;
 import org.fw.core.abstrait.Value;
 import org.fw.core.vit.Vit;
@@ -14,9 +11,10 @@ import static org.fw.base.EqFw.eq;
 import static org.fw.core.vit.Vit.val;
 
 public final class FW {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
 
     public static Val telephonist(String name, Type.TelephonistType.CallFunction call) {
-        return Val._NEW_INSTANCE_(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call, s -> null));
+        return magic.newInstance(Val.ofTelephonist(0).asType(), new Type.TelephonistType.Telephonist(name, call, s -> null));
     }
 
     public static Val telephonist(Type.TelephonistType.CallFunction call) {
@@ -116,7 +114,7 @@ public final class FW {
     }
 
     public static Val symbol(String value) {
-        return Val._NEW_INSTANCE_(SymbolFw.symbol, value);
+        return magic.newInstance(SymbolFw.symbol, value);
     }
 
     public static Vit vIf(Vit condition, Vit ifTrue, Vit ifFalse) {

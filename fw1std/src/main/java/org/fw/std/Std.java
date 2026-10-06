@@ -27,6 +27,7 @@ import java.util.List;
 public final class Std {
     public static final Val eq = EqFw.eq;
     public static final Val typeGet = TypeGetFw.typeGet;
+    public static final Val $telephonist = TelephonizeFw.telephonize;
     public static final Type call = CallFw.call_t;
     public static final Type telephonist = Val.ofTelephonist(0).asType();
     public static final Type symbol = SymbolFw.symbol;

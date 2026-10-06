@@ -4,7 +4,7 @@ import com.ydo4ki.fw.internal.lib.stdlib.StrFw;
 import com.ydo4ki.fw.internal.lib.ConstraintFw;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
-import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.Expr;
 import org.fw.base.Type;
 import org.fw.base.Val;
 import org.fw.std.*;
@@ -28,11 +28,11 @@ public final class VitErrorFw {
             return vitError.get("builder").call(exprVal).call(StrFw.str("Can't resolve"));
         }
         if (arg.getType().equals(SyntaxResolveFw.toExprResolve)) {
-            throw new Error();
+//            throw new Error();
         }
         if (arg.getType().equals(SyntaxResolveFw.toFnResolve)) {
             Value exprVal = arg.get("passing");
-            throw new Error(exprVal.toString());
+//            throw new Error(exprVal.toString());
         }
         return null;
     });

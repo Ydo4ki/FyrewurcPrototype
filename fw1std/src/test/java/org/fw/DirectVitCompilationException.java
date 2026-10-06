@@ -1,6 +1,6 @@
 package org.fw;
 
-import com.ydo4ki.esast.expr.Expr;
+import com.ydo4ki.esast.Expr;
 import org.fw.core.FyrewurcException;
 
 public class DirectVitCompilationException extends FyrewurcException {

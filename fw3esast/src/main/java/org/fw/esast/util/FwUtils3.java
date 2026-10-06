@@ -1,6 +1,6 @@
 package org.fw.esast.util;
 
-import com.ydo4ki.esast.expr.*;
+import com.ydo4ki.esast.*;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.base.SymbolFw;
 import org.fw.base.Val;
@@ -15,8 +15,7 @@ import org.fw.core.vit.Vit;
 import org.fw.core.vit.VitCall;
 import org.fw.esast.ExprVitCompilationException;
 import org.fw.esast.expr.CompEnv;
-import com.ydo4ki.esast.expr.ExprOutput;
-import com.ydo4ki.esast.token.TokenOutput;
+import com.ydo4ki.esast.TokenOutput;
 
 import java.io.File;
 import java.io.IOException;

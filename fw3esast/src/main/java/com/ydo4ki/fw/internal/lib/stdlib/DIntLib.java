@@ -1,6 +1,6 @@
 package com.ydo4ki.fw.internal.lib.stdlib;
 
-import com.ydo4ki.esast.expr.Symbol;
+import com.ydo4ki.esast.Symbol;
 import org.fw.base.Unspecified;
 import org.fw.base.Val;
 import org.fw.core.FW;

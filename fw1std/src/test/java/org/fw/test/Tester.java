@@ -1,8 +1,8 @@
 package org.fw.test;
 
-import com.ydo4ki.esast.expr.Expr;
-import com.ydo4ki.esast.expr.LocatedExpr;
-import com.ydo4ki.esast.expr.ExprOutput;
+import com.ydo4ki.esast.Expr;
+import com.ydo4ki.esast.LocatedExpr;
+import com.ydo4ki.esast.ExprOutput;
 import com.ydo4ki.fw.internal.lib.stdlib.state.SystemOperation;
 import org.fw.DirectCompEnv;
 import org.fw.DirectVitCompilationException;
@@ -39,7 +39,7 @@ public class Tester {
                 Map<String, Val> defined = new HashMap<>();
                 Function<String, Val> get = s -> {
                     Val ret = defined.get(s);
-                    if (ret == null) ret = (Val) module.call(FW.symbol(s));
+                    if (ret == null) ret = module.call(FW.symbol(s)).asVal(null);
                     return ret;
                 };
                 Val val = Operation.unit;

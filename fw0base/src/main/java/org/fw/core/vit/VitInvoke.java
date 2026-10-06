@@ -43,8 +43,8 @@ public final class VitInvoke extends Vit {
         // WAIT
         operation = VitUtils.simplify(operation);
         if (operation instanceof VitVal) {
-            Val val = (Val)((VitVal) operation).val();
-            if (val._UNPACK_() instanceof Operation) {
+            Val val = ((VitVal) operation).val().asVal(null);
+            if (val != null && val._UNPACK_() instanceof Operation) {
                 Operation op = val._UNPACK_();
                 return op.operationAreYouPureQuestionMark();
             }

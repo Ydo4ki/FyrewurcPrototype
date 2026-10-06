@@ -96,6 +96,7 @@ public final class Val implements ValAdapter, TypedValue {
         return of(type, value);
     }
 
+    // todo: make this private to prevent someone from just putting un unauthorized class to org.fw.base package
     static Val of(Type type, Object value) {
         return new Val(type, value, null);
     }
@@ -190,5 +191,9 @@ public final class Val implements ValAdapter, TypedValue {
             ret = function.apply(ret, val);
         }
         return ret;
+    }
+
+    static {
+        MagicPowers.registerValAccessors(Val::of, Val::getValue);
     }
 }

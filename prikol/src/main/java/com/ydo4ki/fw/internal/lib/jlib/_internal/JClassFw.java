@@ -2,7 +2,7 @@ package com.ydo4ki.fw.internal.lib.jlib._internal;
 
 import org.fw.base.*;
 import org.fw.core.FW;
-import com.ydo4ki.esast.expr.Symbol;
+import com.ydo4ki.esast.Symbol;
 
 import com.ydo4ki.fw.internal.lib.PrimitiveLayoutsFw;
 import com.ydo4ki.fw.internal.lib.jlib.data.JOopFw;

@@ -22,7 +22,6 @@
         </license>
     </licenses>
     <modules>
-        <module>esast</module>
         <module>fw0base</module>
         <module>fw1std</module>
         <module>prikol</module>
