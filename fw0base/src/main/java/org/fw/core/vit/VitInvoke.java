@@ -1,5 +1,6 @@
 package org.fw.core.vit;
 
+import org.fw.base.MagicPowers;
 import org.fw.core.abstrait.Value;
 import org.fw.base.Val;
 import org.fw.core.state.obj.State;
@@ -35,6 +36,8 @@ public final class VitInvoke extends Vit {
         return operation.isConst();
     }
 
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
+
     @Override
     public boolean isPure() {
         // uhhh
@@ -44,8 +47,9 @@ public final class VitInvoke extends Vit {
         operation = VitUtils.simplify(operation);
         if (operation instanceof VitVal) {
             Val val = ((VitVal) operation).val().asVal(null);
-            if (val != null && val._UNPACK_() instanceof Operation) {
-                Operation op = val._UNPACK_();
+            Object u = magic.unpackVal(val);
+            if (val != null && u instanceof Operation) {
+                Operation op = (Operation)u;
                 return op.operationAreYouPureQuestionMark();
             }
         }

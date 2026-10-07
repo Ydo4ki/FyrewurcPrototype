@@ -2,6 +2,10 @@ package org.fw.base;
 
 import com.ydo4ki.callers.Callers;
 import org.fw.core.FW;
+import org.fw.core.state.obj.LaserPointerFw;
+import org.fw.core.state.obj.Scope;
+import org.fw.core.state.obj.ScopeFw;
+import org.fw.core.state.operation.Operation;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -54,6 +58,15 @@ public final class MagicPowers {
         foreignCertificates.add(UnpackerFw.class);
         foreignCertificates.add(EqFw.class);
         foreignCertificates.add(TelephonizeFw.class);
+        foreignCertificates.add(SymbolFw.class);
+        foreignCertificates.add(OperationFw.class);
+
+        foreignCertificates.add(LaserPointerFw.class);
+        foreignCertificates.add(Scope.class);
+        foreignCertificates.add(ScopeFw.class);
+        foreignCertificates.add(Operation.class);
+
+        foreignCertificates.add(TypePayloadInfo.class);
     }
 
     private static boolean isCertifiedWizard(Class<?> callerClass) {

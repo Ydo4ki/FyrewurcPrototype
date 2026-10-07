@@ -1,5 +1,6 @@
 package org.fw.core.state.operation;
 
+import org.fw.base.MagicPowers;
 import org.fw.base.OperationFw;
 import org.fw.core.FW;
 import org.fw.core.abstrait.Value;
@@ -21,13 +22,15 @@ public abstract class Operation implements ValAdapter {
     @Deprecated
     public static final Val unit = FW.lambda_native((arg) -> Operation.unit);
 
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
+
     public abstract Value apply(State state);
 
     private final Val asVal;
     private final Boolean isPure = null;
 
     protected Operation() {
-        this.asVal = Val._NEW_INSTANCE_(OperationFw.operation, this);
+        this.asVal = magic.newInstance(OperationFw.operation, this);
     }
 
     public static Operation read(LaserPointerFw.ValObj obj) {

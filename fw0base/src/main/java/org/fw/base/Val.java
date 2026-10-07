@@ -75,7 +75,7 @@ public final class Val implements ValAdapter, TypedValue {
     }
 
     public boolean equalsSymbol(String symbol) {
-        return this.getType() == SymbolFw.symbol && this._UNPACK_().toString().equals(symbol);
+        return this.getType() == SymbolFw.symbol && this.getValue().toString().equals(symbol);
     }
 
     @Override
@@ -96,7 +96,6 @@ public final class Val implements ValAdapter, TypedValue {
         return of(type, value);
     }
 
-    // todo: make this private to prevent someone from just putting un unauthorized class to org.fw.base package
     private static Val of(Type type, Object value) {
         return new Val(type, value, null);
     }

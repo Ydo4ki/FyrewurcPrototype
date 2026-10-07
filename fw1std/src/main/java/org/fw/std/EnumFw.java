@@ -30,9 +30,9 @@ public final class EnumFw {
             return FW.lambda_native("Enum.construct", (payload) -> {
                 if (!payload.getType().equals(DVecFw.dVec))
                     return null;
-                Val[] keys = payload._UNPACK_();
+                Val[] keys = DVecFw.toJavaArray(payload);
                 Val[] values = new Val[keys.length];
-                Type resultingType = Val._NEW_INSTANCE_(EnumFw.enumeration, new Enum(values)).asType();
+                Type resultingType = d.instance(new Enum(values)).asType();
                 for (int i = 0; i < keys.length; i++) {
                     if (!keys[i].getType().equals(SymbolFw.symbol))
                         return null;

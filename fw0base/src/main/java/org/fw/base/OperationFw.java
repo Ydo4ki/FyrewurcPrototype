@@ -5,8 +5,9 @@ import org.fw.core.FW;
 import org.fw.core.state.operation.Operation;
 
 public final class OperationFw {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
 
-    public static final Type operation = FW.lambda_native("Operation", (arg) -> {
+    public static final Type operation = FW.telephonist_native("Operation", (c) -> {
         return null;
     }).asType();
 
@@ -17,7 +18,7 @@ public final class OperationFw {
 
     public static Operation unwrap(Val operation) {
         if (operation.getType() == OperationFw.operation)
-            return operation._UNPACK_();
+            return (Operation) magic.unpackVal(operation);
         return null;
     }
 }

@@ -1,26 +1,25 @@
 package org.fw.core.state.obj;
 
+import org.fw.base.*;
 import org.fw.core.FW;
-import org.fw.base.CallFw;
-import org.fw.base.SymbolFw;
-import org.fw.base.Type;
-import org.fw.base.Val;
 import org.fw.core.state.operation.Operation;
 import org.fw.core.util.FwUtils;
 
 import java.util.Objects;
 
 public final class LaserPointerFw {
+    private static final MagicPowers magic = MagicPowers.getMagicPowers();
+
     // todo: make them predetermined for each scope, otherwise its possible to do a(b) != a(b)
     public static final Type laserPointer = FW.lambda_native("LaserPointer", (arg) -> {
         if (FwUtils.isTypeApiCall(arg, LaserPointerFw.laserPointer)) {
             Val instance = (Val) CallFw.getVal(arg);
             arg = (Val) CallFw.getArg(arg);
 
-            ValObj obj = instance._UNPACK_();
+            ValObj obj = (ValObj) magic.unpackVal(instance);
 
             if (arg.getType() == SymbolFw.symbol) {
-                String s = arg._UNPACK_().toString();
+                String s = magic.unpackVal(arg).toString();
                 switch (s) {
                     case "owner":
                         return obj.parent().asValHandle();
@@ -61,7 +60,7 @@ public final class LaserPointerFw {
             owner.set(key, x);
         }
 
-        private final Val asVal = Val._NEW_INSTANCE_(laserPointer, this);
+        private final Val asVal = magic.newInstance(laserPointer, this);
 
         public Val asValHandle() {
             return asVal;

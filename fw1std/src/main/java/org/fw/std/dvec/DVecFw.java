@@ -65,4 +65,8 @@ public final class DVecFw {
     public static Val vec(Val... value) {
         return Val._NEW_INSTANCE_(dVec, value);
     }
+
+    public static Val[] toJavaArray(Val dvec) {
+        return dvec._UNPACK_();
+    }
 }
